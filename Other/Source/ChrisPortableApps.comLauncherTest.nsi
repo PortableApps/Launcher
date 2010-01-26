@@ -23,7 +23,7 @@
 ;=== Program Details
 ;!define DEBUG
 !define LAUNCHERDIR "ChrisLauncher"
-!define VER "0.4.0.0"
+!define VER "0.5.0.0"
 Name "Chris's PortableApps.com Launcher Test"
 OutFile "..\..\ChrisPortableApps.comLauncherTest.exe"
 Caption "Chris's PortableApps.com Launcher Test"
@@ -101,6 +101,7 @@ Var LAUNCHERINI
 
 Var APPDIRECTORY
 Var DATADIRECTORY
+Var JAVAMODE
 Var JAVADIRECTORY
 Var ALLUSERSPROFILE
 Var TEMPDIRECTORY
@@ -138,10 +139,20 @@ Var REPLACEVAR_DBS_PORTABLEAPPSMUSICDIRECTORY
 Var REPLACEVAR_DBS_PORTABLEAPPSVIDEOSDIRECTORY
 Var REPLACEVAR_DBS_PORTABLEAPPSDIRECTORY
 
+Var PORTABLEAPPSLANGUAGECODE
+Var PORTABLEAPPSLOCALECODE2
+Var PORTABLEAPPSLOCALECODE3
+Var PORTABLEAPPSLOCALEGLIBC
+Var PORTABLEAPPSLOCALEID
+Var PORTABLEAPPSLOCALEWINNAME
+
 !macro ParseLocations_SlashType VAR SLASHTYPE VARIABLEAPPENDAGE
 	${StrReplace} "${VAR}" "%${SLASHTYPE}APPDIR%" "$${VARIABLEAPPENDAGE}APPDIRECTORY" "${VAR}"
 	${StrReplace} "${VAR}" "%${SLASHTYPE}DATADIR%" "$${VARIABLEAPPENDAGE}DATADIRECTORY" "${VAR}"
-	${StrReplace} "${VAR}" "%${SLASHTYPE}JAVADIR%" "$${VARIABLEAPPENDAGE}JAVADIRECTORY" "${VAR}"
+	${If} $JAVAMODE == "find"
+	${OrIf} $JAVAMODE == "require"
+		${StrReplace} "${VAR}" "%${SLASHTYPE}JAVADIR%" "$${VARIABLEAPPENDAGE}JAVADIRECTORY" "${VAR}"
+	${EndIf}
 	${StrReplace} "${VAR}" "%${SLASHTYPE}ALLUSERSPROFILE%" "$${VARIABLEAPPENDAGE}ALLUSERSPROFILE" "${VAR}"
 	${StrReplace} "${VAR}" "%${SLASHTYPE}LOCALAPPDATA%" "$${VARIABLEAPPENDAGE}LOCALAPPDATA" "${VAR}"
 	${StrReplace} "${VAR}" "%${SLASHTYPE}APPDATA%" "$${VARIABLEAPPENDAGE}APPDATA" "${VAR}"
@@ -156,10 +167,19 @@ Var REPLACEVAR_DBS_PORTABLEAPPSDIRECTORY
 
 !macro ParseLocations VAR
 	${DebugMsg} "Before location parsing, $${VAR} = `${VAR}`"
-	${StrReplace} "${VAR}" "$$DRIVE" "$CURRENTDRIVE" "${VAR}"
-	!insertmacro ParseLocations_SlashType "${VAR}" "" ""
-	!insertmacro ParseLocations_SlashType "${VAR}" "/" "REPLACEVAR_FS_"
-	!insertmacro ParseLocations_SlashType "${VAR}" "\\" "REPLACEVAR_DBS_"
+	;===Paths
+		${StrReplace} "${VAR}" "%DRIVE%" $CURRENTDRIVE "${VAR}"
+		!insertmacro ParseLocations_SlashType "${VAR}" "" ""
+		!insertmacro ParseLocations_SlashType "${VAR}" "/" "REPLACEVAR_FS_"
+		!insertmacro ParseLocations_SlashType "${VAR}" "\\" "REPLACEVAR_DBS_"
+
+	;===Languages
+		${StrReplace} "${VAR}" "%LANGCODE%" $PORTABLEAPPSLANGUAGECODE "${VAR}"
+		${StrReplace} "${VAR}" "%LANGCODE2%" $PORTABLEAPPSLOCALECODE2 "${VAR}"
+		${StrReplace} "${VAR}" "%LANGCODE3%" $PORTABLEAPPSLOCALECODE3 "${VAR}"
+		${StrReplace} "${VAR}" "%LANGGLIBC%" $PORTABLEAPPSLOCALEGLIBC "${VAR}"
+		${StrReplace} "${VAR}" "%LANGID%" $PORTABLEAPPSLOCALEID "${VAR}"
+		${StrReplace} "${VAR}" "%LANGWINNAME%" $PORTABLEAPPSLOCALEWINNAME "${VAR}"
 	${DebugMsg} "After location parsing, $${VAR} = `${VAR}`"
 !macroend
 
@@ -199,6 +219,19 @@ Section "Main"
 		ReadEnvStr $PORTABLEAPPSVIDEOSDIRECTORY PortableApps.comVideos
 		${IfNotThen} ${FileExists} $PORTABLEAPPSVIDEOSDIRECTORY ${|} StrCpy $PORTABLEAPPSVIDEOSDIRECTORY "$PORTABLEAPPSDOCUMENTSDIRECTORY\Videos" ${|}
 
+		ReadEnvStr $PORTABLEAPPSLANGUAGECODE PortableApps.comLanguageCode
+		${IfThen} $PORTABLEAPPSLANGUAGECODE == "" ${|} StrCpy $PORTABLEAPPSLANGUAGECODE "en-us" ${|}
+		ReadEnvStr $PORTABLEAPPSLOCALECODE2 PortableApps.comLocaleCode2
+		${IfThen} $PORTABLEAPPSLOCALECODE2 == "" ${|} StrCpy $PORTABLEAPPSLOCALECODE2 "en" ${|}
+		ReadEnvStr $PORTABLEAPPSLOCALECODE3 PortableApps.comLocaleCode3
+		${IfThen} $PORTABLEAPPSLOCALECODE3 == "" ${|} StrCpy $PORTABLEAPPSLOCALECODE3 "eng" ${|}
+		ReadEnvStr $PORTABLEAPPSLOCALEGLIBC PortableApps.comLocaleglibc
+		${IfThen} $PORTABLEAPPSLOCALEGLIBC == "" ${|} StrCpy $PORTABLEAPPSLOCALEGLIBC "en_US" ${|}
+		ReadEnvStr $PORTABLEAPPSLOCALEID PortableApps.comLocaleID
+		${IfThen} $PORTABLEAPPSLOCALEID == "" ${|} StrCpy $PORTABLEAPPSLOCALEID "1033" ${|}
+		ReadEnvStr $PORTABLEAPPSLOCALEWINNAME PortableApps.comLocaleWinName
+		${IfThen} $PORTABLEAPPSLOCALEWINNAME == "" ${|} StrCpy $PORTABLEAPPSLOCALEWINNAME "LANG_ENGLISH" ${|}
+
 		ReadEnvStr $ALLUSERSPROFILE ALLUSERSPROFILE
 
 	;=== Make forward slash and double backslash versions
@@ -236,19 +269,52 @@ Section "Main"
 			Abort
 		${EndIf}
 
-		StrCpy $JAVADIRECTORY "$PORTABLEAPPSDIRECTORY\CommonFiles\Java"
-		${StrReplace} $REPLACEVAR_FS_JAVADIRECTORY "\" "/" $JAVADIRECTORY
-		${StrReplace} $REPLACEVAR_DBS_JAVADIRECTORY "/" "\\" $REPLACEVAR_FS_JAVADIRECTORY
-		${IfThen} $PROGRAMEXECUTABLE == "java.exe" ${|} StrCpy $USINGJAVAEXECUTABLE "true" ${|}
-		${IfThen} $PROGRAMEXECUTABLE == "javaw.exe" ${|} StrCpy $USINGJAVAEXECUTABLE "true" ${|}
+	;=== Search for Java: CommonFiles, %JAVA_HOME%, registry, %WINDIR%\Java, %PROGRAMFILES%\Java, SearchPath
+		ReadINIStr $JAVAMODE $LAUNCHERINI "CommonFiles" "Java"
+		${If} $JAVAMODE == "find"
+		${OrIf} $JAVAMODE == "require"
+			StrCpy $JAVADIRECTORY "$PORTABLEAPPSDIRECTORY\CommonFiles\Java"
+			${IfNot} ${FileExists} $JAVADIRECTORY
+				ClearErrors
+				ReadEnvStr $JAVADIRECTORY JAVA_HOME
+				${If} ${Errors}
+				${OrIfNot} ${FileExists} $JAVADIRECTORY
+					ClearErrors
+					ReadRegStr $JAVADIRECTORY HKLM "Software\JavaSoft\Java Runtime Environment" "CurrentVersion"
+					ReadRegStr $JAVADIRECTORY HKLM "Software\JavaSoft\Java Runtime Environment\$JAVADIRECTORY" "JavaHome"
+					${If} ${Errors}
+					${OrIfNot} ${FileExists} $JAVADIRECTORY
+						StrCpy $JAVADIRECTORY "$WINDIR\Java"
+						${IfNot} ${FileExists} $JAVADIRECTORY
+							StrCpy $JAVADIRECTORY "$PROGRAMFILES\Java" ; TODO is this right?
+							${IfNot} ${FileExists} $JAVADIRECTORY
+								ClearErrors
+								SearchPath $JAVADIRECTORY "java.exe"
+								${IfNot} ${Errors}
+									${GetParent} $JAVADIRECTORY $JAVADIRECTORY
+									${GetParent} $JAVADIRECTORY $JAVADIRECTORY
+								${Else}
+									StrCpy $JAVADIRECTORY "$PORTABLEAPPSDIRECTORY\CommonFiles\Java"
+								${EndIf}
+							${EndIf}
+						${EndIf}
+					${EndIf}
+				${EndIf}
+			${EndIf}
 
-		ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "RequiresJava"
-		${If} $0 == "true"
-		${AndIfNot} ${FileExists} $JAVADIRECTORY
-			;=== Java Portable is missing - TODO support a local Java installation in some way
-			StrCpy $MISSINGFILEORPATH "Java Portable"
-			MessageBox MB_OK|MB_ICONEXCLAMATION `$(LauncherFileNotFound)`
-			Abort
+			${StrReplace} $REPLACEVAR_FS_JAVADIRECTORY "\" "/" $JAVADIRECTORY
+			${StrReplace} $REPLACEVAR_DBS_JAVADIRECTORY "/" "\\" $REPLACEVAR_FS_JAVADIRECTORY
+
+			${If} $JAVAMODE == "require"
+				${IfNot} ${FileExists} $JAVADIRECTORY
+					;=== Java Portable is missing
+					StrCpy $MISSINGFILEORPATH "Java"
+					MessageBox MB_OK|MB_ICONEXCLAMATION `$(LauncherFileNotFound)`
+					Abort
+				${EndIf}
+				${IfThen} $PROGRAMEXECUTABLE == "java.exe" ${|} StrCpy $USINGJAVAEXECUTABLE "true" ${|}
+				${IfThen} $PROGRAMEXECUTABLE == "javaw.exe" ${|} StrCpy $USINGJAVAEXECUTABLE "true" ${|}
+			${EndIf}
 		${EndIf}
 
 	;=== Check if already running
@@ -347,6 +413,30 @@ Section "Main"
 		${StrReplace} $REPLACEVAR_FS_DATADIRECTORY "\" "/" $DATADIRECTORY
 		${StrReplace} $REPLACEVAR_DBS_DATADIRECTORY "/" "\\" $REPLACEVAR_FS_DATADIRECTORY
 
+	;=== Handle TEMP directory
+		ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "AssignContainedTempDirectory"
+		${If} $0 == "true"
+			ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "WaitForProgram"
+			${If} $0 == "false"
+				StrCpy $TEMPDIRECTORY "$DATADIRECTORY\Temp"
+			${Else}
+				StrCpy $TEMPDIRECTORY "$TEMP\$NAMETemp"
+			${EndIf}
+			${DebugMsg} "Creating temporary directory $TEMPDIRECTORY"
+			${If} ${FileExists} $TEMPDIRECTORY
+				RMDir /r $TEMPDIRECTORY
+			${EndIf}
+			CreateDirectory $TEMPDIRECTORY
+		${Else}
+			StrCpy $TEMPDIRECTORY $TEMP
+		${EndIf}
+
+		${DebugMsg} "Setting %TEMP% and %TMP% to $TEMPDIRECTORY"
+		System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("TEMP", "$TEMPDIRECTORY").n'
+		System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("TMP", "$TEMPDIRECTORY").n'
+		${StrReplace} $REPLACEVAR_FS_TEMPDIRECTORY "\" "/" $TEMPDIRECTORY
+		${StrReplace} $REPLACEVAR_DBS_TEMPDIRECTORY "/" "\\" $REPLACEVAR_FS_TEMPDIRECTORY
+
 	;=== Check for settings
 		${IfNot} ${FileExists} "$DATADIRECTORY\settings"
 			${DebugMsg} "$DATADIRECTORY\settings does not exist. Creating it."
@@ -392,15 +482,6 @@ Section "Main"
 				${EndIf}
 				IntOp $0 $0 + 1
 			${Loop}
-
-			;=== Registry files
-			${ForEachINIPair} "RegistryKeys" $0 $1
-				${IfNot} ${FileExists} "$DATADIRECTORY\settings\$0.reg"
-					${DebugMsg} "Updating drive letter from $LASTDRIVE to $CURRENTDRIVE in $DATADIRECTORY\settings\$0.reg"
-					${ReplaceInFile} "$DATADIRECTORY\settings\$0.reg" "$LASTDRIVE\" "$CURRENTDRIVE\"
-					Delete "$DATADIRECTORY\settings\$0.reg.oldReplaceInFile"
-				${EndIf}
-			${EndForEachINIPair}
 
 			;=== Save drive letter
 			WriteINIStr "$DATADIRECTORY\settings\$NAMESettings.ini" "$NAMESettings" "LastDrive" "$CURRENTDRIVE"
@@ -597,7 +678,7 @@ Section "Main"
 			${EndForEachINIPair}
 
 
-		;=== Run it!
+		;=== Handle working directory
 			ClearErrors
 			ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "SetOutPath"
 			${IfNot} ${Errors}
@@ -605,36 +686,22 @@ Section "Main"
 				${DebugMsg} "Setting working directory to $0."
 				SetOutPath $0
 			${EndIf}
-			ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "AssignContainedTempDirectory"
-			${If} $0 == "true"
-				${DebugMsg} "Creating contained temporary directory at $TEMP\$NAMETemp and setting environment variables $$TEMP and $$TMP to it."
-				StrCpy $TEMPDIRECTORY "$TEMP\$NAMETemp"
-				${If} ${FileExists} $TEMPDIRECTORY
-					RMDir /r $TEMPDIRECTORY
-				${EndIf}
-				CreateDirectory $TEMPDIRECTORY
-				System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("TEMP", "$TEMPDIRECTORY").n'
-				System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("TMP", "$TEMPDIRECTORY").n'
-			${Else}
-				StrCpy $TEMPDIRECTORY $TEMP
-			${EndIf}
 
-			${StrReplace} $REPLACEVAR_FS_TEMPDIRECTORY "\" "/" $TEMPDIRECTORY
-			${StrReplace} $REPLACEVAR_DBS_TEMPDIRECTORY "/" "\\" $REPLACEVAR_FS_TEMPDIRECTORY
-
+		;=== Run it!
 			${DebugMsg} "About to execute the following string and wait till it's done: $EXECSTRING"
 			ExecWait $EXECSTRING
-			${DebugMsg} "$EXECSTRING has finished. Waiting till any other instances of $PROGRAMEXECUTABLE are finished."
+			${DebugMsg} "$EXECSTRING has finished."
 
 		;=== Wait till it's done
-			; TODO This won't work properly for Java applications...
-			; I think we really need to have Java => !WaitForExecutable
-			${Do}
-				Sleep 1000
-				FindProcDLL::FindProc "$PROGRAMEXECUTABLE"
-			${LoopWhile} $R0 = 1
-
-			${DebugMsg} "All instances of $PROGRAMEXECUTABLE are finished."
+			ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "WaitForOtherInstances"
+			${If} $0 != "false"
+				${DebugMsg} "Waiting till any other instances of $PROGRAMEXECUTABLE are finished."
+				${Do}
+					Sleep 1000
+					FindProcDLL::FindProc "$PROGRAMEXECUTABLE"
+				${LoopWhile} $R0 = 1
+				${DebugMsg} "All instances of $PROGRAMEXECUTABLE are finished."
+			${EndIf}
 
 		;=== Remove custom TEMP directory
 			ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "AssignContainedTempDirectory"
@@ -728,6 +795,8 @@ Section "Main"
 				${If} $R0 != "-1"
 					${DebugMsg} "Moving registry key HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0 to $1."
 					${registry::MoveKey} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0" $1 $R0
+					${registry::DeleteKeyEmpty} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME" $R0
+					${registry::DeleteKeyEmpty} "HKEY_CURRENT_USER\Software\PortableApps.com" $R0
 				${EndIf}
 			${EndForEachINIPair}
 			Delete "$DATADIRECTORY\_FailedRegistryKeys.ini"

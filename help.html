@@ -1,5 +1,4 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<!--TODO: RegistryKeyWrite!-->
 <html lang="en-US">
 	<head>
 		<title>Chris's PortableApps.com Launcher Test Help</title>
@@ -151,7 +150,7 @@
 				clear: none;
 				margin-top: 0em;
 			}
-			pre, .ini-head, .ini-key, .ini-value, .inicomment {
+			pre, .ini-head, .ini-key, .ini-value {
 				font-family: Courier New,Courier,monospace;
 			}
 			.ini-head {
@@ -162,10 +161,7 @@
 				color: #0000c0;
 			}
 			.ini-value {
-				color: #000000;
-			}
-			.ini-comment {
-				color: #808080;
+				color: #008000;
 			}
 			@media print {
 				body, .content { margin: 0;
@@ -211,16 +207,19 @@
 <span class="ini-head">[LaunchDetails]</span>
 <span class="ini-key">DefaultCommandLineArguments=</span><span class="ini-value">--data-directory=%DATADIR%\settings</span>
 <span class="ini-key">SetOutPath=</span><span class="ini-value">%APPDIR%\AppName</span>
-<span class="ini-key">AssignContainedTempDirectory=</span><span class="ini-value">true</span>
-<span class="ini-key">SinglePortableAppInstance=</span><span class="ini-value">true</span>
-<span class="ini-key">SingleAppInstance=</span><span class="ini-value">false</span>
+<span class="ini-key">AssignContainedTempDirectory=</span><span class="ini-value">true</span> / <span class="ini-value">false</span>
+<span class="ini-key">SinglePortableAppInstance=</span><span class="ini-value">true</span> / <span class="ini-value">false</span>
+<span class="ini-key">SingleAppInstance=</span><span class="ini-value">true</span> / <span class="ini-value">false</span>
 <span class="ini-key">CloseEXE=</span><span class="ini-value">another_optional_app.exe</span>
-<span class="ini-key">WaitForProgram=</span><span class="ini-value">true</span>
-<span class="ini-key">RequiresJava=</span><span class="ini-value">false</span>
+<span class="ini-key">WaitForProgram=</span><span class="ini-value">true</span> / <span class="ini-value">false</span>
+<span class="ini-key">WaitForOtherInstances=</span><span class="ini-value">true</span> / <span class="ini-value">false</span>
+
+<span class="ini-head">[CommonFiles]</span>
+<span class="ini-key">Java=</span><span class="ini-value">find</span> / <span class="ini-value">require</span> / <em>nothing</em>
 
 <span class="ini-head">[LiveMode]</span>
-<span class="ini-key">CopyApp=</span><span class="ini-value">true</span>
-<span class="ini-key">CopyData=</span><span class="ini-value">true</span>
+<span class="ini-key">CopyApp=</span><span class="ini-value">true</span> / <span class="ini-value">false</span>
+<span class="ini-key">CopyData=</span><span class="ini-value">true</span> / <span class="ini-value">false</span>
 
 <span class="ini-head">[RegistryKeys]</span>
 <span class="ini-key">appname_portable=</span><span class="ini-value">HKEY_CURRENT_USER\Software\Pub\lisher\AppName</span>
@@ -281,12 +280,15 @@
 	<li><span class="ini-head">[LaunchDetails]</span><ul>
 		<li><span class="ini-key">DefaultCommandLineArguments</span><br />This is used as command-line arguments to always pass to the executable, for example "--data-directory=%DATADIR%\settings --music-directory=%PORTABLEAPPSMUSICDIR%". <strong>Substitutions apply.</strong></li>
 		<li><span class="ini-key">SetOutPath</span><br />This is used to change the working directory to start the application in. Only use this if absolutely necessary, as it will (at the moment) mess up relative files passed through thee command-line. Example (normally all it'll ever need): "%APPDIR%\AppName". <strong>Substitutions apply.</strong></li>
-		<li><span class="ini-key">AssignContainedTempDirectory</span><br />If the application writes things to the TEMP directory and does not always clean them up, specify "true" here, and it will be given a subdirectory (in the format %TEMP%\AppNamePortableTemp) as its TEMP directory, which will be removed after the application is closed, thus not leaving anything behind.</li>
+		<li><span class="ini-key">AssignContainedTempDirectory</span><br />If the application writes things to the TEMP directory and does not always clean them up, specify "true" here, and it will be given a subdirectory (in the format %TEMP%\AppNamePortableTemp) as its TEMP directory, which will be removed after the application is closed, thus not leaving anything behind. If WaitForProgram is set to false, this will still work, but it may be slower. The TEMP directory will be set to go in Data\temp, so that it is still functional.  This may slow down some apps, and may also clutter up the running device.  Additionally, this directory will not be deleted upon program completion, but it will be upon the next startup.</li>
 		<li><span class="ini-key">SinglePortableAppInstance</span><br />If you only wish one instance of the portable version of the application to be run, set this to true. If it is set to true, if the launcher is started while another copy of the launcher is already running, the second instance will abort silently. If you wish to prevent a local and portable version of the application from running concurrently, look at SingleAppInstance. Default is false.</li>
 		<li><span class="ini-key">SingleAppInstance</span><br />If you only wish one instance of the application, portable or local, to be run, set this to true or omit it. If it is set to true, if the launcher is started while another copy of the application, portable or local, is already running, it will abort with an error message. Default is true.</li>
 		<li><span class="ini-key">CloseEXE</span><br />If you wish to specify another executable to require to be closed before the portable application is started than the ProgramExecutable entry, enter the file name in here, e.g. "inkview.exe" for Inkscape.</li>
 		<li><span class="ini-key">WaitForProgram</span><br />If you don't need the launcher to wait for the conclusion of the application, set this to false. Note that you should only do this if you do not have registry entries to handle or files to move, for example if you can redirect all settings with command-line arguments or environment variables. Default is true.</li>
-		<li><span class="ini-key">RequiresJava</span><br />If you need the launcher to require Java Portable, from \PortableApps\CommonFiles\Java, set this to true.  Then you can set ProgramExecutable to "javaw.exe" and it'll work it out, and then store the JAR file in DefaultCommandLineArguments. Default is false.<br /><strong>Note/Caveat:</strong> WaitForProgram should also be set to "false" if you are using javaw.exe, if you can possibly help it.  Otherwise you'll run into problems cleaning up if other Java applications get run.</li>
+		<li><span class="ini-key">WaitForOtherInstances</span><br />If the application is single-instance (i.e. if you run another copy of it it won't run but will activate the first one), and the application can't restart itself, you can set this to false. If the application can restart itself at all, e.g. Firefox can, DO NOT set this to true, or else cleanup will start while the application is still running, which won't be good for it. Default is true.</li>
+	</ul></li>
+	<li><span class="ini-head">[CommonFiles]</span><br />This section is for additional dependancies which will normally go in CommonFiles, e.g. Java.<ul>
+		<li><span class="ini-key">Java=</span><span class="ini-value">find</span> / <span class="ini-value">require</span><br />If the application can use Java but does not depend on its being available, set this to "find", and a Java Runtime Environment (JRE) will be found if available, and %JAVADIR% will become available as a replacement variable. If the application is completely dependant on Java, set this to "require". Then you may set ProgramExecutable to "javaw.exe" (normal use) or "java.exe" (useful for testing and debugging) and it will use Java. Then mention the JAR file you need in DefaultCommandLineArguments (as -classpath).<br /><strong>Caveat:</strong> With "require", if you can possibly help it, set WaitForProgram or WaitForOtherInstances to false if you use java.exe or javaw.exe.  Otherwise you'll run into problems cleaning up if other Java applications get run, as it'll look for instances of the application, and find javaw.exe, even though it's another application's javaw.exe instance.</li>
 	</ul></li>
 	<li><span class="ini-head">[LiveMode]</span><br />This section is relevant to running the portable application from a read-only location. As specified here, certain things are copied to the local hard drive, and then the application is run, and any things copied locally are deleted. This is called running locally, or "Live mode".<ul>
 		<li><span class="ini-key">CopyApp</span><br />When run in Live mode, does the application need to be run from a writable location? If yes, specify "true". The default is "true".</li>
@@ -295,7 +297,7 @@
 </ul>
 <p>Below here are the arbitrarily specified entries. For all of these, you may specify as many as are needed, according to the formats specified. For those in the format "<span class="ini-key">1<em>Type</em>=</span><span class="ini-value">something</span>, the numbering system starts at 1, and increments, as in 2, 3, 4. If there is a missing number, any after it will be lost.</p>
 <ul>
-	<li><span class="ini-head">[RegistryKeys]</span><br />These are registry keys for which to manage portability. They come in the form <span class="ini-key"><em>file name</em>=</span><span class="ini-value"><em>registry key location</em></span>; the file name is the location of the place where it is saved, which is in Data\settings\<em>file name</em>.reg.<br /><strong>Example:</strong> <span class="ini-key">appname_portable=</span><span class="ini-value">HKEY_CURRENT_USER\Software\AppName</span></li>
+	<li><span class="ini-head">[RegistryKeys]</span><br />These are registry keys for which to manage portability. They come in the form <span class="ini-key"><em>file name</em>=</span><span class="ini-value"><em>registry key location</em></span>; the file name is the location of the place where it is saved, which is in Data\settings\<em>file name</em>.reg. If you wish to have drive letters updated inside this, look at <span class="ini-head">[FileDriveLetterUpdate]</span>.<br /><strong>Example:</strong> <span class="ini-key">appname_portable=</span><span class="ini-value">HKEY_CURRENT_USER\Software\AppName</span></li>
 	<li><span class="ini-head">[RegistryKeyWrite]</span><br />These are registry values to set for running the portable application, useful for things like disabling file association writing. They come in the form <span class="ini-key"><em>HKEY_ET\Cetera\Key\Value</em>=</span><span class="ini-value">REG_<em>TYPE</em>:<em>value</em></span>; the key name is the place in the registry, with the value appended to it after a final slash, and the value is of the form REG_<em>TYPE</em>:<em>value</em>; <em>REG_TYPE:</em> is optional, and defaults to REG_SZ (a string).<br /><strong>Example:</strong> <span class="ini-key">HKEY_CURRENT_USER\Software\AppName\Key\Value=</span><span class="ini-value">REG_DWORD:16</span></li>
 	<li><span class="ini-head">[RegistryCleanupIfEmpty]</span><br />These are registry keys which get cleaned up after the application has run if they are empty. This is useful if there is a tree which will be left behind, for example, if something stores to HKEY_CURRENT_USER\Software\Publisher\AppName, when AppName is saved, Publisher will still be left, empty. Remove it with a line in here.<br /><strong>Example:</strong> <span class="ini-key">1=</span><span class="ini-value">HKEY_CURRENT_USER\Software\Publisher</span></li>
 	<li><span class="ini-head">[RegistryCleanupForce]</span><br />These are registry keys which get removed after the application has run. This is useful if there is a tree of useless information which will be left behind, for example, if something stores temporary data to HKEY_CURRENT_USER\Software\AppName\Temp. Remove it with a line in here.<br /><strong>Example:</strong> <span class="ini-key">1=</span><span class="ini-value">HKEY_CURRENT_USER\Software\Publisher</span></li>
@@ -312,11 +314,11 @@
 <p>(This applies to INI entries marked above as "substitutions apply".)</p>
 <ul>
 	<li><strong>%DRIVE%</strong> &ndash; the drive letter from which the portable application is running; in Live mode, this is the location of the portable device, <em>not</em> the application or data directory if CopyApp or CopyData are set. e.g. "X:"</li>
-	<li>Directory variables: with all of these variables, after the opening % can come, before the variable name, one of three things: nothing, a forward slash, or a double backslash. This refers to the directory separator to be used; if there is nothing there, it is a backslash. For example, <em>%PORTABLEAPPSDIR%</em> is X:\PortableApps, <em>%/PORTABLEAPPSDIR%</em> is X:/PortableApps, and <em>%\\PORTABLEAPPSDIR%</em> is X:\\PortableApps. If unsure, use the default single backslash.
+	<li><strong>Directory variables:</strong> with all of these variables, after the opening % can come, before the variable name, one of three things: nothing, a forward slash, or a double backslash. This refers to the directory separator to be used; if there is nothing there, it is a backslash. For example, <em>%PORTABLEAPPSDIR%</em> is X:\PortableApps, <em>%/PORTABLEAPPSDIR%</em> is X:/PortableApps, and <em>%\\PORTABLEAPPSDIR%</em> is X:\\PortableApps. If unsure, use the default single backslash.
 	<ul>
 		<li><strong>%APPDIR%</strong> &ndash; the location of the App directory (not including the AppName bit), e.g. X:\PortableApps\AppNamePortable\App</li>
 		<li><strong>%DATADIR%</strong> &ndash; the location of the Data directory (not including the settings or similar bit), e.g. X:\PortableApps\AppNamePortable\Data</li>
-		<li><strong>%JAVADIR%</strong> &ndash; the location of the Java Portable directory (not including "bin"), e.g. X:\PortableApps\CommonFiles\Java.  Note that this will always be set, but it may not exist.  See also <span class="ini-head">[LaunchDetails]</span>:<span class="ini-key">RequiresJava</span> if it must exist for the application to work.</li>
+		<li><strong>%JAVADIR%</strong> &ndash; the location of the Java Portable directory (not including "bin"), e.g. X:\PortableApps\CommonFiles\Java.  This variable will only be available with <span class="ini-head">[CommonFiles]</span>:<span class="ini-key">Java</span> equal to <span class="ini-value">find</span> or <span class="ini-value">require</span>, but if it is <span class="ini-value">find</span>, it may not exist (for <span class="ini-value">require</span> the launcher will abort if Java is not found).</li>
 		<li><strong>%ALLUSERSPROFILE%</strong> &ndash; a local variable for copying to and from. e.g. C:\Documents and Settings\All Users on XP and 2000, C:\ProgramData on Vista.</li>
 		<li><strong>%LOCALAPPDATA%</strong> &ndash; a local variable for copying to and from. e.g. C:\Documents and Settings\Username\Local Settings\Application Data on XP and 2000, C:\Users\Username\AppData\Local on Vista.</li>
 		<li><strong>%APPDATA%</strong> &ndash; a local variable for copying to and from. e.g. C:\Documents and Settings\Username\Application Data on XP and 2000, C:\Users\Username\AppData\Roaming on Vista.</li>
@@ -326,9 +328,16 @@
 		<li><strong>%PORTABLEAPPSPICTURESDIR%</strong> &ndash; the PortableApps.com Pictures directory, e.g X:\Documents\Pictures</li>
 		<li><strong>%PORTABLEAPPSMUSICDIR%</strong> &ndash; the PortableApps.com Music directory, e.g X:\Documents\Music</li>
 		<li><strong>%PORTABLEAPPSVIDEOSDIR%</strong> &ndash; the PortableApps.com Videos directory, e.g X:\Documents\Videos</li>
-		<li><strong>%PORTABLEAPPSDIR%</strong> &ndash; the PortableApps.com applications directory, e.g. X:\PortableApps. Use this in conjunction with "\CommonFiles" to get the common files directory for things like Java apps.</li>
+		<li><strong>%PORTABLEAPPSDIR%</strong> &ndash; the PortableApps.com applications directory, e.g. X:\PortableApps.</li>
 	</ul></li>
-	<li>Language variables: not here yet, but wait a while longer; scheduled for Test 5, barring earlier releases due to bugs.<!--TODO--></li>
+	<li><strong>Language variables:</strong> these variables are for langauge switching.  It's not highly optimised yet, and it's not as powerful as it should be eventually, but it's a start.<ul>
+		<li><strong>%LANGCODE%</strong> &ndash; e.g. "en-us", "pt", "pt-br"</li>
+		<li><strong>%LANGCODE2%</strong> &ndash; e.g. "en", "pt", "pt"</li>
+		<li><strong>%LANGCODE3%</strong> &ndash; e.g. "eng", "por", "por"</li>
+		<li><strong>%LANGGLIBC%</strong> &ndash; e.g. "en_US", "pt", "pt_BR"</li>                                 
+		<li><strong>%LANGID%</strong> &ndash; e.g. "1033", "2070", "1046"</li>
+		<li><strong>%LANGWINNAME%</strong> &ndash; e.g. "LANG_ENGLISH", "LANG_PORTUGUESE", "LANG_PORTUGUESEBR"</li>
+	</ul></li>
 </ul>
 <h3>Sample INI launcher configuration</h3>
 <h4>Sample 7-Zip launcher (App\ChrisLauncher\7-ZipPortable.ini)</h4>
