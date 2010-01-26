@@ -28,8 +28,8 @@
 
 !define NAME "Chris's PortableApps.com Launcher Test"
 !define APPID "ChrisPortableApps.comLauncherTest"
-!define VERSION "0.3.0.0"
-!define FILENAME "ChrisPortableApps.comLauncherTest_3_English"
+!define VERSION "0.4.0.0"
+!define FILENAME "ChrisPortableApps.comLauncherTest_4_English"
 !define CHECKRUNNING "ChrisPortableApps.comLauncherTest.exe"
 !define CLOSENAME "Chris's PortableApps.com Launcher Test"
 !define ADDONSDIRECTORYPRESERVE "NONE"
