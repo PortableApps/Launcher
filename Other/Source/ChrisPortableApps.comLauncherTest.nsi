@@ -21,7 +21,7 @@
 ;Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 ;=== Program Details
-!define DEBUG
+;!define DEBUG
 !define VER "1.9.9.2"
 Name "Chris's PortableApps.com Launcher Test"
 OutFile "..\..\ChrisPortableApps.comLauncherTest.exe"
@@ -93,11 +93,13 @@ Var PORTABLEAPPNAME
 Var APPNAME
 Var PROGRAMDIRECTORY
 Var PROGRAMEXECUTABLE
+Var USINGJAVAEXECUTABLE
 Var RUNLOCALLY
 Var LAUNCHERINI
 
 Var APPDIRECTORY
 Var DATADIRECTORY
+Var JAVADIRECTORY
 Var ALLUSERSPROFILE
 Var TEMPDIRECTORY
 Var PORTABLEAPPSDOCUMENTSDIRECTORY
@@ -108,6 +110,7 @@ Var PORTABLEAPPSDIRECTORY
 
 Var REPLACEVAR_FS_APPDIRECTORY
 Var REPLACEVAR_FS_DATADIRECTORY
+Var REPLACEVAR_FS_JAVADIRECTORY
 Var REPLACEVAR_FS_ALLUSERSPROFILE
 Var REPLACEVAR_FS_LOCALAPPDATA
 Var REPLACEVAR_FS_APPDATA
@@ -121,6 +124,7 @@ Var REPLACEVAR_FS_PORTABLEAPPSDIRECTORY
 
 Var REPLACEVAR_DBS_APPDIRECTORY
 Var REPLACEVAR_DBS_DATADIRECTORY
+Var REPLACEVAR_DBS_JAVADIRECTORY
 Var REPLACEVAR_DBS_ALLUSERSPROFILE
 Var REPLACEVAR_DBS_LOCALAPPDATA
 Var REPLACEVAR_DBS_APPDATA
@@ -135,6 +139,7 @@ Var REPLACEVAR_DBS_PORTABLEAPPSDIRECTORY
 !macro ParseLocations_SlashType VAR SLASHTYPE VARIABLEAPPENDAGE
 	${StrReplace} "${VAR}" "%${SLASHTYPE}APPDIR%" "$${VARIABLEAPPENDAGE}APPDIRECTORY" "${VAR}"
 	${StrReplace} "${VAR}" "%${SLASHTYPE}DATADIR%" "$${VARIABLEAPPENDAGE}DATADIRECTORY" "${VAR}"
+	${StrReplace} "${VAR}" "%${SLASHTYPE}JAVADIR%" "$${VARIABLEAPPENDAGE}JAVADIRECTORY" "${VAR}"
 	${StrReplace} "${VAR}" "%${SLASHTYPE}ALLUSERSPROFILE%" "$${VARIABLEAPPENDAGE}ALLUSERSPROFILE" "${VAR}"
 	${StrReplace} "${VAR}" "%${SLASHTYPE}LOCALAPPDATA%" "$${VARIABLEAPPENDAGE}LOCALAPPDATA" "${VAR}"
 	${StrReplace} "${VAR}" "%${SLASHTYPE}APPDATA%" "$${VARIABLEAPPENDAGE}APPDATA" "${VAR}"
@@ -229,6 +234,21 @@ Section "Main"
 			Abort
 		${EndIf}
 
+		StrCpy $JAVADIRECTORY "$PORTABLEAPPSDIRECTORY\CommonFiles\Java"
+		${StrReplace} $REPLACEVAR_FS_JAVADIRECTORY "\" "/" $JAVADIRECTORY
+		${StrReplace} $REPLACEVAR_DBS_JAVADIRECTORY "/" "\\" $REPLACEVAR_FS_JAVADIRECTORY
+		${IfThen} $PROGRAMEXECUTABLE == "java.exe" ${|} StrCpy $USINGJAVAEXECUTABLE "true" ${|}
+		${IfThen} $PROGRAMEXECUTABLE == "javaw.exe" ${|} StrCpy $USINGJAVAEXECUTABLE "true" ${|}
+
+		ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "RequiresJava"
+		${If} $0 == "true"
+		${AndIfNot} ${FileExists} $JAVADIRECTORY
+			;=== Java Portable is missing - TODO support a local Java installation in some way
+			StrCpy $MISSINGFILEORPATH "Java Portable"
+			MessageBox MB_OK|MB_ICONEXCLAMATION `$(LauncherFileNotFound)`
+			Abort
+		${EndIf}
+
 	;=== Check if already running
 		System::Call 'kernel32::CreateMutexA(i 0, i 0, t "$NAME") i .r1 ?e'
 		Pop $0
@@ -246,6 +266,7 @@ Section "Main"
 		ReadINIStr $RUNLOCALLY "$EXEDIR\$NAME.ini" "$NAME" "RunLocally"
 
 		${IfNot} ${FileExists} "$EXEDIR\App\$PROGRAMDIRECTORY\$PROGRAMEXECUTABLE"
+		${AndIfNot} $USINGJAVAEXECUTABLE == "true"
 			;=== Program executable not where expected
 			StrCpy $MISSINGFILEORPATH $PROGRAMEXECUTABLE
 			MessageBox MB_OK|MB_ICONEXCLAMATION `$(LauncherFileNotFound)`
@@ -255,6 +276,7 @@ Section "Main"
 	;=== Check if already running
 		ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "SingleAppInstance"
 		${If} $0 != "false"
+		${AndIfNot} $USINGJAVAEXECUTABLE == "true"
 			FindProcDLL::FindProc "$PROGRAMEXECUTABLE"
 			${If} $SECONDARYLAUNCH != "true"
 			${AndIf} $R0 = 1
@@ -278,7 +300,7 @@ Section "Main"
 		ReadINIStr $0 "$EXEDIR\$NAME.ini" "$NAME" "DisableSplashScreen"
 		${If} $0 != "true"
 			;=== Show the splash screen before processing the files
-			newadvsplash::show /NOUNLOAD 1500 200 0 -1 /L $EXEDIR\App\Launcher\$NAME.jpg
+			newadvsplash::show /NOUNLOAD 1500 200 0 -1 /L $EXEDIR\App\ChrisLauncher\$NAME.jpg
 		${EndIf}
 
 	;=== Wait for program?  *ONLY USE THIS IF THERE'LL BE NOTHING TO DO AFTERWARDS!
@@ -321,8 +343,8 @@ Section "Main"
 		${StrReplace} $REPLACEVAR_DBS_DATADIRECTORY "/" "\\" $REPLACEVAR_FS_DATADIRECTORY
 
 	;=== Check for settings
-		${IfNot} ${FileExists} "$DATADIRECTORY\settings\*.*"
-			${DebugMsg} "$DATADIRECTORY\settings does not exist or is empty. Creating it."
+		${IfNot} ${FileExists} "$DATADIRECTORY\settings"
+			${DebugMsg} "$DATADIRECTORY\settings does not exist. Creating it."
 			CreateDirectory "$DATADIRECTORY\settings"
 			${If} ${FileExists} $EXEDIR\App\DefaultData\*.*
 				${DebugMsg} "Copying default data from $EXEDIR\App\DefaultData to $DATADIRECTORY."
@@ -429,7 +451,11 @@ Section "Main"
 
 	;=== Construct the execution string
 		${DebugMsg} "Constructing execution string"
-		StrCpy $EXECSTRING `"$APPDIRECTORY\$PROGRAMDIRECTORY\$PROGRAMEXECUTABLE"`
+		${If} $USINGJAVAEXECUTABLE != "true"
+			StrCpy $EXECSTRING `"$APPDIRECTORY\$PROGRAMDIRECTORY\$PROGRAMEXECUTABLE"`
+		${Else}
+			StrCpy $EXECSTRING `"$JAVADIRECTORY\bin\$PROGRAMEXECUTABLE"`
+		${EndIf}
 		${DebugMsg} "Execution string is $EXECSTRING"
 
 		;=== Get any default parameters
@@ -505,15 +531,17 @@ Section "Main"
 				${ParseLocations} $1
 
 				;=== Backup data from a local installation
-				${IfNot} ${FileExists} "$1\$0-BackupBy$NAME"
-				${AndIf} ${FileExists} "$1\$0"
-					${DebugMsg} "Backing up $1\$0 to $1\$0-BackupBy$NAME"
-					Rename "$1\$0" "$1\$0-BackupBy$NAME"
+				${IfNot} ${FileExists} "$1-BackupBy$NAME"
+				${AndIf} ${FileExists} "$1"
+					${DebugMsg} "Backing up $1 to $1-BackupBy$NAME"
+					Rename $1 "$1-BackupBy$NAME"
 				${EndIf}
 				CreateDirectory $1
 				${If} ${FileExists} "$DATADIRECTORY\$0\*.*"
-					${DebugMsg} "Copying $DATADIRECTORY\$0 to $1"
-					CopyFiles /SILENT "$DATADIRECTORY\$0" $1
+					${DebugMsg} "Copying $DATADIRECTORY\$0\*.* to $1\*.*"
+					CopyFiles /SILENT "$DATADIRECTORY\$0\*.*" $1
+				${Else}
+					${DebugMsg} "$DATADIRECTORY\$0\*.* does not exist, so not copying it to $1.$\n(Note for developers: if you want default data, rememberto put files in App\DefaultData\$0)"
 				${EndIf}
 			${EndForEachINIPair}
 
@@ -606,6 +634,8 @@ Section "Main"
 			${DebugMsg} "$EXECSTRING has finished. Waiting till any other instances of $PROGRAMEXECUTABLE are finished."
 
 		;=== Wait till it's done
+			; TODO This won't work properly for Java applications...
+			; I think we really need to have Java => !WaitForExecutable
 			${Do}
 				Sleep 1000
 				FindProcDLL::FindProc "$PROGRAMEXECUTABLE"
@@ -650,17 +680,17 @@ Section "Main"
 				${ParseLocations} $1
 
 				${If} $RUNLOCALLY != "true"
-					${DebugMsg} "Copying settings from $1\$0 to $DATADIRECTORY."
+					${DebugMsg} "Copying settings from $1\*.* to $DATADIRECTORY\$0."
 					RMDir /R "$DATADIRECTORY\$0"
 					CreateDirectory $DATADIRECTORY\$0
-					CopyFiles /SILENT "$1\$0" "$DATADIRECTORY"
+					CopyFiles /SILENT "$1\*.*" "$DATADIRECTORY\$0"
 				${EndIf}
-				${DebugMsg} "Removing portable settings directory from run location ($1\$0)."
-				RMDir /R $1\$0
+				${DebugMsg} "Removing portable settings directory from run location ($1)."
+				RMDir /R $1
 
-				${If} ${FileExists} "$1\$0-BackupBy$NAME"
-					${DebugMsg} "Moving local settings from $1\$0-BackupBy$NAME to $1\$0."
-					Rename "$1\$0-BackupBy$NAME" "$1\$0"
+				${If} ${FileExists} "$1-BackupBy$NAME"
+					${DebugMsg} "Moving local settings from $1-BackupBy$NAME to $1."
+					Rename "$1-BackupBy$NAME" $1
 				${EndIf}
 			${EndForEachINIPair}
 
