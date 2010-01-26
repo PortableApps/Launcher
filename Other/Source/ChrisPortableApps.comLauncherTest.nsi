@@ -22,7 +22,8 @@
 
 ;=== Program Details
 ;!define DEBUG
-!define VER "1.9.9.2"
+!define LAUNCHERDIR "ChrisLauncher"
+!define VER "0.4.0.0"
 Name "Chris's PortableApps.com Launcher Test"
 OutFile "..\..\ChrisPortableApps.comLauncherTest.exe"
 Caption "Chris's PortableApps.com Launcher Test"
@@ -73,6 +74,7 @@ SetDatablockOptimize On
 ;!include ReadINIStrWithDefault.nsh
 !include StrReplace.nsh
 !include ForEachINIPair.nsh
+!include SetFileAttributesDirectoryNormal.nsh
 
 ;=== Program Icon
 Icon "..\..\App\AppInfo\appicon.ico"
@@ -174,7 +176,7 @@ Var REPLACEVAR_DBS_PORTABLEAPPSDIRECTORY
 
 Section "Main"
 	${GetBaseName} $EXEFILE $NAME
-	StrCpy $LAUNCHERINI "$EXEDIR\App\ChrisLauncher\$NAME.ini"
+	StrCpy $LAUNCHERINI "$EXEDIR\App\${LAUNCHERDIR}\$NAME.ini"
 	${DebugMsg} "Launcher INI file is $LAUNCHERINI.$\nUser INI overrides are in $EXEDIR\$NAME.ini."
 	;=== Initialise variables
 		; NOTE: CURRENTDRIVE has an issue; it may need to refer to the app, data
@@ -300,7 +302,7 @@ Section "Main"
 		ReadINIStr $0 "$EXEDIR\$NAME.ini" "$NAME" "DisableSplashScreen"
 		${If} $0 != "true"
 			;=== Show the splash screen before processing the files
-			newadvsplash::show /NOUNLOAD 1500 200 0 -1 /L $EXEDIR\App\ChrisLauncher\$NAME.jpg
+			newadvsplash::show /NOUNLOAD 1500 200 0 -1 /L $EXEDIR\App\${LAUNCHERDIR}\$NAME.jpg
 		${EndIf}
 
 	;=== Wait for program?  *ONLY USE THIS IF THERE'LL BE NOTHING TO DO AFTERWARDS!
@@ -332,6 +334,9 @@ Section "Main"
 				${EndIf}
 				StrCpy $DATADIRECTORY "$TEMP\$NAMELive\Data"
 			${EndIf}
+			${If} ${FileExists} "$TEMP\$NAMELive"
+				${SetFileAttributesDirectoryNormal} "$TEMP\$NAMELive"
+			${EndIf}
 		${Else}
 			StrCpy $APPDIRECTORY "$EXEDIR\App"
 			StrCpy $DATADIRECTORY "$EXEDIR\Data"
@@ -354,6 +359,7 @@ Section "Main"
 
 	;=== Update the drive letter in files
 		${If} $LASTDRIVE != $CURRENTDRIVE
+			;=== Backslash
 			StrCpy $0 1
 			${Do}
 				ClearErrors
@@ -370,19 +376,7 @@ Section "Main"
 				IntOp $0 $0 + 1
 			${Loop}
 
-			${ForEachINIPair} "RegistryKeys" $0 $1
-				${IfNot} ${FileExists} "$DATADIRECTORY\settings\$0.reg"
-					${DebugMsg} "Updating drive letter from $LASTDRIVE to $CURRENTDRIVE in $DATADIRECTORY\settings\$1.reg"
-					${ReplaceInFile} "$DATADIRECTORY\settings\$0.reg" "$LASTDRIVE\" "$CURRENTDRIVE\"
-					Delete "$DATADIRECTORY\settings\$0.reg.oldReplaceInFile"
-				${EndIf}
-			${EndForEachINIPair}
-
-			WriteINIStr "$DATADIRECTORY\settings\$NAMESettings.ini" "$NAMESettings" "LastDrive" "$CURRENTDRIVE"
-		${EndIf}
-
-	;=== Update the drive letter in files
-		${If} $LASTDRIVE != $CURRENTDRIVE
+			;=== Forwardslash
 			StrCpy $0 1
 			${Do}
 				ClearErrors
@@ -399,14 +393,16 @@ Section "Main"
 				IntOp $0 $0 + 1
 			${Loop}
 
+			;=== Registry files
 			${ForEachINIPair} "RegistryKeys" $0 $1
 				${IfNot} ${FileExists} "$DATADIRECTORY\settings\$0.reg"
-					${DebugMsg} "Updating drive letter from $LASTDRIVE to $CURRENTDRIVE in $DATADIRECTORY\settings\$1.reg"
+					${DebugMsg} "Updating drive letter from $LASTDRIVE to $CURRENTDRIVE in $DATADIRECTORY\settings\$0.reg"
 					${ReplaceInFile} "$DATADIRECTORY\settings\$0.reg" "$LASTDRIVE\" "$CURRENTDRIVE\"
 					Delete "$DATADIRECTORY\settings\$0.reg.oldReplaceInFile"
 				${EndIf}
 			${EndForEachINIPair}
 
+			;=== Save drive letter
 			WriteINIStr "$DATADIRECTORY\settings\$NAMESettings.ini" "$NAMESettings" "LastDrive" "$CURRENTDRIVE"
 		${EndIf}
 
@@ -484,7 +480,6 @@ Section "Main"
 		${DebugMsg} "Finished working with execution string: final value is $EXECSTRING"
 
 	;=== Set up environment variables
-		;Read INI pairs:   Section,    Key,Value
 		${ForEachINIPair} "Environment" $0 $1
 			${ParseLocations} $1
 			;=== Now see if we need to prepend, append or change.
@@ -499,7 +494,6 @@ Section "Main"
 					ReadEnvStr $2 $0
 					StrCpy $1 $1 -3
 					StrCpy $1 $1$2
-				;${Else} ; change
 				${EndIf}
 			${EndIf}
 			${DebugMsg} "Changing environment variable $0 to $1"
@@ -531,8 +525,7 @@ Section "Main"
 				${ParseLocations} $1
 
 				;=== Backup data from a local installation
-				${IfNot} ${FileExists} "$1-BackupBy$NAME"
-				${AndIf} ${FileExists} "$1"
+				${If} ${FileExists} $1
 					${DebugMsg} "Backing up $1 to $1-BackupBy$NAME"
 					Rename $1 "$1-BackupBy$NAME"
 				${EndIf}
@@ -762,11 +755,6 @@ Section "Main"
 				${registry::DeleteKey} $1 $R0
 				IntOp $0 $0 + 1
 			${Loop}
-
-			${registry::Unload}
-			newadvsplash::stop /WAIT
-			${DebugMsg} "Finished."
-			;=== Done!
 		${Else}
 			;=== Already running: launch and exit (existing launcher will clear up)
 			ClearErrors
@@ -779,6 +767,10 @@ Section "Main"
 			${DebugMsg} "About to execute the following string and finish: $EXECSTRING"
 			Exec $EXECSTRING
 		${EndIf}
+		${registry::Unload}
+		newadvsplash::stop /WAIT
+		${DebugMsg} "Finished."
+		;=== Done!
 SectionEnd
 
 ; This note is just as something out of interest.  With a SetOutDir directive, it could be worth while examining each command-line argument and turning relative paths into absolute paths, probably with the PathCombine call.  I've used an AutoHotkey implementation of it, but we'd need an NSIS one here.

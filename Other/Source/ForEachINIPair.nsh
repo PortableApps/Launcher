@@ -8,11 +8,12 @@ Var LAUNCHERFILEHANDLE
 	Push $R3 ; character number in line
 	Push $R4 ; character
 	${If} $LAUNCHERFILEHANDLE == ""
-		FileOpen $LAUNCHERFILEHANDLE $EXEDIR\App\Launcher\launcher.ini r
+		FileOpen $LAUNCHERFILEHANDLE $LAUNCHERINI r
 	${Else}
 		FileSeek $LAUNCHERFILEHANDLE 0
 	${EndIf}
 	${Do}
+		ClearErrors
 		FileRead $LAUNCHERFILEHANDLE $R1
 		${TrimNewLines} $R1 $R1
 		${If} ${Errors} ; end of file
