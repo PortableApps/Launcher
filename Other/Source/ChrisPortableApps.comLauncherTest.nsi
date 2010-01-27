@@ -701,6 +701,11 @@ Section "Main"
 			${EndIf}
 
 		;=== Run it!
+			ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "RefreshShellIcons"
+			${If} $0 == "before"
+			${OrIf} $0 == "both"
+				${RefreshShellIcons}
+			${EndIf}
 			${DebugMsg} "About to execute the following string and wait till it's done: $EXECSTRING"
 			ExecWait $EXECSTRING
 			${DebugMsg} "$EXECSTRING has finished."
@@ -839,6 +844,12 @@ Section "Main"
 					IntOp $0 $0 + 1
 				${Loop}
 			${EndIf}
+
+            ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "RefreshShellIcons"
+            ${If} $0 == "after"
+            ${OrIf} $0 == "both"
+                ${RefreshShellIcons}
+            ${EndIf}
 		${Else}
 			;=== Already running: launch and exit (existing launcher will clear up)
 			ClearErrors
