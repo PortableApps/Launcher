@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en-US">
 	<head>
-		<title>Chris's PortableApps.com Launcher Test Help</title>
+		<title>PortableApps.com Launcher Help</title>
 		<link rel="alternate" type="application/rss+xml" title="PortableApps.com" href="http://portableapps.com/feeds/general">
 		<link rel="SHORTCUT ICON" href="Other/Help/images/favicon.ico">
 		<style>
@@ -184,19 +184,19 @@
 <body>
 <div class="logo"><a href="http://portableapps.com/"><img src="Other/Help/images/help_logo_top.png" alt="PortableApps.com - Your Digital Life, Anywhere" height="47" width="229"></a></div>
 <div class="content">
-<h1 class="hastagline">Chris's PortableApps.com Launcher Test Manual</h1>
+<h1 class="hastagline">PortableApps.com Launcher Manual</h1>
 <div class="tagline">
 <h2 class="tagline">your PAL in making portable apps</h2>
 </div>
-<p>Chris's PortableApps.com Launcher Test is a generic launcher, configured by the developer with a simple INI file to make applications into <a href="http://portableapps.com/about/what_is_a_portable_app">portable apps</a>. <a href="http://portableapps.com">Learn more about PortableApps.com...</a></p>
+<p>The PortableApps.com Launcher is a generic launcher, configured by the developer with a simple INI file to make applications into <a href="http://portableapps.com/about/what_is_a_portable_app">portable apps</a>. <a href="http://portableapps.com">Learn more about PortableApps.com...</a></p>
 <p><a href="http://portableapps.com/donate"><img src="Other/Help/images/donation_button.png" alt="Make a Donation" align="top" border="0" height="23" width="110"></a> - Support PortableApps.com's Hosting and Development</p>
-<p><a href="http://PortableApps.com/development/launcher">Go to Chris's PortableApps.com Launcher Test Homepage &gt;&gt;</a></p>
+<p><a href="http://PortableApps.com/development/launcher">Go to the PortableApps.com Launcher Homepage &gt;&gt;</a></p>
 <p><a href="http://PortableApps.com/">Get portable apps at PortableApps.com</a></p>
 <p>This software is OSI Certified Open Source Software. OSI Certified is a certification mark of the Open Source Initiative.</p>
 <h2>Documentation</h2>
-<p>Chris's PortableApps.com Launcher Test gets its splash screen from App\ChrisLauncher\AppNamePortable.jpg. For a development test release, this should be <a href="http://portableapps.com/files/images/development/SplashDevelopmentTestRelease.jpg">the black and white PortableApps.com Development Test Release splash screen</a>. When an application goes on to Pre-Release or official, it gets its own splash screen.</p>
-<p>Chris's PortableApps.com Launcher Test depends on one file for its information and portablization: App\ChrisLauncher\AppNamePortable.ini. AppNamePortable is the base file name of the launcher. When compiled, it is ChrisPortableApps.comLauncherTest.exe, but you should rename it to AppNamePortable.exe, and then the launcher file will be AppNamePortable.ini. This means that you can have multiple launchers using different configurations, which, for example, is needed in the case of OpenOffice.org Portable.</p>
-<p>The second file, <strong>AppNamePortable.ini</strong>, is more complex, and is the backbone of the portability which Chris's PortableApps.com Launcher Test provides. It must be correctly configured to cover everything which the application uses. <strong>Only developers should ever modify the launcher INI file, as improper modifications may lose data or cause data to be left behind.</strong></p>
+<p>The PortableApps.com Launcher gets its splash screen from App\Launcher\AppNamePortable.jpg. For a development test release, this should be <a href="http://portableapps.com/files/images/development/SplashDevelopmentTestRelease.jpg">the black and white PortableApps.com Development Test Release splash screen</a>. When an application goes on to Pre-Release or official, it gets its own splash screen.</p>
+<p>The PortableApps.com Launcher depends on one file for its information and portablization: App\Launcher\AppNamePortable.ini. AppNamePortable is the base file name of the launcher. When compiled, it is PortableApps.comLauncher.exe, but you should rename it to AppNamePortable.exe, and then the launcher file will be AppNamePortable.ini. This means that you can have multiple launchers using different configurations, which, for example, is needed in the case of OpenOffice.org Portable.</p>
+<p>The second file, <strong>AppNamePortable.ini</strong>, is more complex, and is the backbone of the portability which the PortableApps.com Launcher provides. It must be correctly configured to cover everything which the application uses. <strong>Only developers should ever modify the launcher INI file, as improper modifications may lose data or cause data to be left behind.</strong></p>
 <p>Here is the template for the launcher INI file:</p>
 <pre><span class="ini-head">[AppDetails]</span>
 <span class="ini-key">PortableAppLongName=</span><span class="ini-value">App Name Portable</span>
@@ -350,9 +350,9 @@
 	</ul></li>
 </ul>
 <h3>Sample INI launcher configuration</h3>
-<h4>Sample 7-Zip launcher (App\ChrisLauncher\7-ZipPortable.ini)</h4>
+<h4>Sample 7-Zip launcher (App\Launcher\7-ZipPortable.ini)</h4>
 <p>7-Zip stores its settings in the registry, in HKEY_CURRENT_USER\Software\7-Zip. In previous releases of 7-Zip Portable, it has stored this in Data\settings\7zip_portable.reg. 7-Zip itself can be run from a read-only location.</p>
-<p>Here is a fully functional sample launcher file (App\ChrisLauncher\7-ZipPortable.ini), configured correctly for 7-Zip:</p>
+<p>Here is a fully functional sample launcher file (App\Launcher\7-ZipPortable.ini), configured correctly for 7-Zip:</p>
 <pre><span class="ini-head">[AppDetails]</span>
 <span class="ini-key">PortableAppLongName=</span><span class="ini-value">7-Zip Portable</span>
 <span class="ini-key">AppLongName=</span><span class="ini-value">7-Zip</span>
@@ -366,9 +366,9 @@
 <span class="ini-key">7zip_portable=</span><span class="ini-value">HKEY_CURRENT_USER\Software\7-Zip</span>
 </pre>
 <p>To outline what this actually does: in the registry, <span class="ini-key">HKEY_CURRENT_USER\Software\7-Zip</span> is backed up if necessary, and the contents of Data\settings\<span class="ini-key">7zip_portable</span>.reg are inserted into the registry, after updating the drive letter. Then App\<span class="ini-key">7-Zip</span>\<span class="ini-key">7zFM.exe</span> is run. After it is closed, the 7-Zip registry key is stored and deleted, and the backup of local 7-Zip settings is restored if it existed.</p>
-<h4>Sample Code::Blocks launcher (App\ChrisLauncher\CodeBlocksPortable.ini)</h4>
+<h4>Sample Code::Blocks launcher (App\Launcher\CodeBlocksPortable.ini)</h4>
 <p>Code::Blocks stores its settings in the local user's application data directory, in %APPDATA%\codeblocks. However, this cannot just be redirected, as it also depends on %USERPROFILE%, which after testing has been demonstrated to not redirect safely. Thus data must be moved back and forth for running portably. Code::Blocks itself can be run from a read-only location.</p>
-<p>Here is a fully functional sample launcher file (App\ChrisLauncher\CodeBlocksPortable.ini), configured correctly for Code::Blocks:</p>
+<p>Here is a fully functional sample launcher file (App\Launcher\CodeBlocksPortable.ini), configured correctly for Code::Blocks:</p>
 <pre><span class="ini-head">[AppDetails]</span>
 <span class="ini-key">PortableAppLongName=</span><span class="ini-value">Code::Blocks Portable</span>
 <span class="ini-key">PortableAppShortName=</span><span class="ini-value">CodeBlocksPortable</span>
