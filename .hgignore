@@ -1,0 +1,8 @@
+syntax: glob
+# Executables shouldn't go in the repository
+*.exe
+# Nor should Vim swap files (what a disaster that would be)
+.*.swp
+.swp
+# hg revert renames the file to *.orig but we don't want them... we reverted the changes to them, remember?
+*.orig
