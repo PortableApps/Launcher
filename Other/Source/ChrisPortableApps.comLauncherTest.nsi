@@ -23,7 +23,7 @@
 ;=== Program Details
 ;!define DEBUG
 !define LAUNCHERDIR "ChrisLauncher"
-!define VER "0.5.0.0"
+!define VER "0.6.0.0"
 Name "Chris's PortableApps.com Launcher Test"
 OutFile "..\..\ChrisPortableApps.comLauncherTest.exe"
 Caption "Chris's PortableApps.com Launcher Test"
@@ -71,7 +71,6 @@ SetDatablockOptimize On
 
 ;(Custom)
 !include ReplaceInFileWithTextReplace.nsh
-;!include ReadINIStrWithDefault.nsh
 !include StrReplace.nsh
 !include ForEachINIPair.nsh
 !include SetFileAttributesDirectoryNormal.nsh
@@ -99,9 +98,11 @@ Var USINGJAVAEXECUTABLE
 Var RUNLOCALLY
 Var LAUNCHERINI
 
+Var USESREGISTRY
+Var JAVAMODE
+
 Var APPDIRECTORY
 Var DATADIRECTORY
-Var JAVAMODE
 Var JAVADIRECTORY
 Var ALLUSERSPROFILE
 Var TEMPDIRECTORY
@@ -270,7 +271,8 @@ Section "Main"
 		${EndIf}
 
 	;=== Search for Java: CommonFiles, %JAVA_HOME%, registry, %WINDIR%\Java, %PROGRAMFILES%\Java, SearchPath
-		ReadINIStr $JAVAMODE $LAUNCHERINI "CommonFiles" "Java"
+		ReadINIStr $USESREGISTRY $LAUNCHERINI "Activate" "Registry"
+		ReadINIStr $JAVAMODE $LAUNCHERINI "Activate" "Java"
 		${If} $JAVAMODE == "find"
 		${OrIf} $JAVAMODE == "require"
 			StrCpy $JAVADIRECTORY "$PORTABLEAPPSDIRECTORY\CommonFiles\Java"
@@ -552,7 +554,7 @@ Section "Main"
 		${EndIf}
 
 	;=== Get additional parameters from user INI file
-		ReadINIStr $0 "$EXEDIR\$NAME.ini" "$NAME" "AdditionalParameters"
+		ReadINIStr $0 "$EXEDIR\$NAME.ini" $NAME "AdditionalParameters"
 		${If} $0 != ""
 			${DebugMsg} "The user has specified additional command line arguments ($0).  Adding them to execution string."
 			StrCpy $EXECSTRING "$EXECSTRING $0"
@@ -619,64 +621,78 @@ Section "Main"
 				${EndIf}
 			${EndForEachINIPair}
 
-			${ForEachINIPair} "RegistryKeys" $0 $1
-				;=== Backup the registry
-				${registry::KeyExists} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0" $R0
-				${If} $R0 != "0"
-					${registry::KeyExists} $1 $R0
-					${If} $R0 != "-1"
-						${DebugMsg} "Backing up registry key $1 to HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0"
-						${registry::MoveKey} $1 "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0" $R0
-					${EndIf}
-				${EndIf}
-
-				${If} ${FileExists} "$DATADIRECTORY\settings\$0.reg"
-					SetErrors
-					${DebugMsg} "Loading $DATADIRECTORY\settings\$0.reg into the registry."
-					${If} ${FileExists} "$WINDIR\system32\reg.exe"
-						;TODO: Check this works (should): old form: nsExec::ExecToStack `"$WINDIR\system32\reg.exe" import "$DATADIRECTORY\settings\$0.reg"`
-						nsExec::Exec `"$WINDIR\system32\reg.exe" import "$DATADIRECTORY\settings\$0.reg"`
-						Pop $R0
-						${IfThen} $R0 = 0 ${|} ClearErrors ${|}
-					${EndIf}
-
-					${If} ${Errors}
-						${registry::RestoreKey} "$DATADIRECTORY\settings\$0.reg" $R0
-						${If} $R0 != 0
-							WriteINIStr "$DATADIRECTORY\_FailedRegistryKeys.ini" "FailedRegistryKeys" $0 "true"
-							${DebugMsg} "Failed to load $DATADIRECTORY\settings\$0.reg into the registry."
+			${If} $USESREGISTRY == "true"
+				${ForEachINIPair} "RegistryKeys" $0 $1
+					;=== Backup the registry
+					${registry::KeyExists} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\Keys\$0" $R0
+					${If} $R0 != "0"
+						${registry::KeyExists} $1 $R0
+						${If} $R0 != "-1"
+							${DebugMsg} "Backing up registry key $1 to HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\Keys\$0"
+							${registry::MoveKey} $1 "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\Keys\$0" $R0
 						${EndIf}
 					${EndIf}
-				${EndIf}
-			${EndForEachINIPair}
 
-			${ForEachINIPair} "RegistryKeyWrite" $0 $1
-				${GetParent} $0 $2 ; key
-				${GetFileName} $0 $3 ; item
+					${If} ${FileExists} "$DATADIRECTORY\settings\$0.reg"
+						SetErrors
+						${DebugMsg} "Loading $DATADIRECTORY\settings\$0.reg into the registry."
+						${If} ${FileExists} "$WINDIR\system32\reg.exe"
+							nsExec::Exec `"$WINDIR\system32\reg.exe" import "$DATADIRECTORY\settings\$0.reg"`
+							Pop $R0
+							${IfThen} $R0 = 0 ${|} ClearErrors ${|}
+						${EndIf}
 
-				StrLen $4 $1
-				StrCpy $5 "0"
+						${If} ${Errors}
+							${registry::RestoreKey} "$DATADIRECTORY\settings\$0.reg" $R0
+							${If} $R0 != 0
+								WriteINIStr "$DATADIRECTORY\_FailedRegistryKeys.ini" "FailedRegistryKeys" $0 "true"
+								${DebugMsg} "Failed to load $DATADIRECTORY\settings\$0.reg into the registry."
+							${EndIf}
+						${EndIf}
+					${EndIf}
+				${EndForEachINIPair}
+
+				StrCpy $0 1
 				${Do}
-					StrCpy $6 $1 1 $5
-					${IfThen} $6 == ":" ${|} ${ExitDo} ${|}
-					IntOp $5 $5 + 1
-				${LoopUntil} $5 > $4
+					ClearErrors
+					ReadINIStr $1 $LAUNCHERINI "RegistryValueBackupDelete" $0
+					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 
-				${If} $6 == ":"
-					StrCpy $4 $1 $5 ; type (e.g. REG_DWORD)
-					IntOp $5 $5 + 1
-					StrCpy $1 $1 "" $5 ; value
-				${Else}
-					StrCpy $4 "REG_SZ"
-				${EndIf}
 
-				${ParseLocations} $1
+					${DebugMsg} "Backing up registry value $1\$2 to HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\Values\$2"
+					${GetParent} $0 $1
+					${GetFilename} $0 $2
+					${registry::MoveValue} $1 $2 "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\Values" $2 $R0
+					IntOp $0 $0 + 1
+				${Loop}
 
-				${DebugMsg} "Writing '$1' (type '$4') to key '$2', value '$3'$\n(Short form: $2\$3=$4:$1)"
-				; key item value type return
-				${registry::Write} $2 $3 $1 $4 $R0
-			${EndForEachINIPair}
+				${ForEachINIPair} "RegistryValueWrite" $0 $1
+					${GetParent} $0 $2 ; key
+					${GetFileName} $0 $3 ; item
 
+					StrLen $4 $1
+					StrCpy $5 "0"
+					${Do}
+						StrCpy $6 $1 1 $5
+						${IfThen} $6 == ":" ${|} ${ExitDo} ${|}
+						IntOp $5 $5 + 1
+					${LoopUntil} $5 > $4
+
+					${If} $6 == ":"
+						StrCpy $4 $1 $5 ; type (e.g. REG_DWORD)
+						IntOp $5 $5 + 1
+						StrCpy $1 $1 "" $5 ; value
+					${Else}
+						StrCpy $4 "REG_SZ"
+					${EndIf}
+
+					${ParseLocations} $1
+
+					${DebugMsg} "Writing '$1' (type '$4') to key '$2', value '$3'$\n(Short form: $2\$3=$4:$1)"
+					; key item value type return
+					${registry::Write} $2 $3 $1 $4 $R0
+				${EndForEachINIPair}
+			${EndIf}
 
 		;=== Handle working directory
 			ClearErrors
@@ -698,7 +714,7 @@ Section "Main"
 				${DebugMsg} "Waiting till any other instances of $PROGRAMEXECUTABLE are finished."
 				${Do}
 					Sleep 1000
-					FindProcDLL::FindProc "$PROGRAMEXECUTABLE"
+					FindProcDLL::FindProc $PROGRAMEXECUTABLE
 				${LoopWhile} $R0 = 1
 				${DebugMsg} "All instances of $PROGRAMEXECUTABLE are finished."
 			${EndIf}
@@ -780,50 +796,52 @@ Section "Main"
 				IntOp $0 $0 + 1
 			${Loop}
 
-			${ForEachINIPair} "RegistryKeys" $0 $1
-				ClearErrors
-				ReadINIStr $R0 "$DATADIRECTORY\_FailedRegistryKeys.ini" "FailedRegistryKeys" $0
-				${If} ${Errors} ; didn't fail
-				${AndIf} $RUNLOCALLY != "true"
-					${DebugMsg} "Saving registry key $1 to $DATADIRECTORY\settings\$0.reg."
-					${registry::SaveKey} $1 "$DATADIRECTORY\settings\$0.reg" "" $R0
-				${EndIf}
+			${If} $USESREGISTRY == "true"
+				${ForEachINIPair} "RegistryKeys" $0 $1
+					ClearErrors
+					ReadINIStr $R0 "$DATADIRECTORY\_FailedRegistryKeys.ini" "FailedRegistryKeys" $0
+					${If} ${Errors} ; didn't fail
+					${AndIf} $RUNLOCALLY != "true"
+						${DebugMsg} "Saving registry key $1 to $DATADIRECTORY\settings\$0.reg."
+						${registry::SaveKey} $1 "$DATADIRECTORY\settings\$0.reg" "" $R0
+					${EndIf}
 
-				${DebugMsg} "Deleting registry key $1."
-				${registry::DeleteKey} $1 $R0
-				${registry::KeyExists} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0" $R0
-				${If} $R0 != "-1"
-					${DebugMsg} "Moving registry key HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0 to $1."
-					${registry::MoveKey} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0" $1 $R0
-					${registry::DeleteKeyEmpty} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME" $R0
-					${registry::DeleteKeyEmpty} "HKEY_CURRENT_USER\Software\PortableApps.com" $R0
-				${EndIf}
-			${EndForEachINIPair}
-			Delete "$DATADIRECTORY\_FailedRegistryKeys.ini"
+					${DebugMsg} "Deleting registry key $1."
+					${registry::DeleteKey} $1 $R0
+					${registry::KeyExists} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0" $R0
+					${If} $R0 != "-1"
+						${DebugMsg} "Moving registry key HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0 to $1."
+						${registry::MoveKey} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0" $1 $R0
+						${registry::DeleteKeyEmpty} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME" $R0
+						${registry::DeleteKeyEmpty} "HKEY_CURRENT_USER\Software\PortableApps.com" $R0
+					${EndIf}
+				${EndForEachINIPair}
+				Delete "$DATADIRECTORY\_FailedRegistryKeys.ini"
 
-			StrCpy $0 1
-			${Do}
-				ClearErrors
-				ReadINIStr $1 $LAUNCHERINI "RegistryCleanupIfEmpty" $0
-				${If} ${Errors}
-					${ExitDo}
-				${EndIf}
-				${DebugMsg} "Deleting registry key $1 if it is empty."
-				${registry::DeleteKeyEmpty} $1 $R0
-				IntOp $0 $0 + 1
-			${Loop}
+				StrCpy $0 1
+				${Do}
+					ClearErrors
+					ReadINIStr $1 $LAUNCHERINI "RegistryCleanupIfEmpty" $0
+					${If} ${Errors}
+						${ExitDo}
+					${EndIf}
+					${DebugMsg} "Deleting registry key $1 if it is empty."
+					${registry::DeleteKeyEmpty} $1 $R0
+					IntOp $0 $0 + 1
+				${Loop}
 
-			StrCpy $0 1
-			${Do}
-				ClearErrors
-				ReadINIStr $1 $LAUNCHERINI "RegistryCleanupForce" $0
-				${If} ${Errors}
-					${ExitDo}
-				${EndIf}
-				${DebugMsg} "Deleting registry key $1."
-				${registry::DeleteKey} $1 $R0
-				IntOp $0 $0 + 1
-			${Loop}
+				StrCpy $0 1
+				${Do}
+					ClearErrors
+					ReadINIStr $1 $LAUNCHERINI "RegistryCleanupForce" $0
+					${If} ${Errors}
+						${ExitDo}
+					${EndIf}
+					${DebugMsg} "Deleting registry key $1."
+					${registry::DeleteKey} $1 $R0
+					IntOp $0 $0 + 1
+				${Loop}
+			${EndIf}
 		${Else}
 			;=== Already running: launch and exit (existing launcher will clear up)
 			ClearErrors
@@ -836,8 +854,14 @@ Section "Main"
 			${DebugMsg} "About to execute the following string and finish: $EXECSTRING"
 			Exec $EXECSTRING
 		${EndIf}
-		${registry::Unload}
-		newadvsplash::stop /WAIT
+
+		${IfThen} $USESREGISTRY == "true" ${|} ${registry::Unload} ${|}
+
+		${If} $DISABLESPLASHSCREEN != "true"
+		${OrIfNot} ${FileExists} "$EXEDIR\App\${LAUNCHERDIR}\$NAME.jpg"
+			newadvsplash::stop /WAIT
+		${EndIf}
+
 		${DebugMsg} "Finished."
 		;=== Done!
 SectionEnd
