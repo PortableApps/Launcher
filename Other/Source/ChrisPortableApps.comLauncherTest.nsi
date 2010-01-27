@@ -22,20 +22,20 @@
 
 ;=== Program Details
 ;!define DEBUG
-!define LAUNCHERDIR "ChrisLauncher"
-!define VER "0.6.0.0"
-Name "Chris's PortableApps.com Launcher Test"
-OutFile "..\..\ChrisPortableApps.comLauncherTest.exe"
-Caption "Chris's PortableApps.com Launcher Test"
+!define LAUNCHERDIR "Launcher"
+!define VER "0.9.9.1"
+Name "PortableApps.com Launcher"
+OutFile "..\..\PortableApps.comLauncher.exe"
+Caption "PortableApps.com Launcher"
 VIProductVersion "${VER}"
-VIAddVersionKey ProductName "Chris's PortableApps.com Launcher Test"
-VIAddVersionKey Comments "A generic launcher for PortableApps.com applications, allowing applications to be run from a removable drive.  For additional details, read help.html or visit PortableApps.com"
+VIAddVersionKey ProductName "PortableApps.com Launcher"
+VIAddVersionKey Comments "A universal launcher for PortableApps.com applications, allowing applications to be run from a removable drive.  For additional details, visit PortableApps.com"
 VIAddVersionKey CompanyName "PortableApps.com"
 VIAddVersionKey LegalCopyright "PortableApps.com"
-VIAddVersionKey FileDescription "Chris's PortableApps.com Launcher Test"
+VIAddVersionKey FileDescription "PortableApps.com Launcher"
 VIAddVersionKey FileVersion "${VER}"
 VIAddVersionKey ProductVersion "${VER}"
-VIAddVersionKey InternalName "Chris's PortableApps.com Launcher Test"
+VIAddVersionKey InternalName "PortableApps.com Launcher"
 VIAddVersionKey LegalTrademarks "PortableApps.com is a Trademark of Rare Ideas, LLC."
 VIAddVersionKey OriginalFilename "PortableApps.comLauncher.exe"
 ;VIAddVersionKey PrivateBuild ""
@@ -333,7 +333,7 @@ Section "Main"
 
 		${If} ${Errors}
 			;=== Launcher file missing or missing crucial details
-			StrCpy $PORTABLEAPPNAME "Chris's PortableApps.com Launcher Test"
+			StrCpy $PORTABLEAPPNAME "PortableApps.com Launcher"
 			StrCpy $MISSINGFILEORPATH $LAUNCHERINI
 			MessageBox MB_OK|MB_ICONEXCLAMATION `$(LauncherFileNotFound)`
 			Abort
