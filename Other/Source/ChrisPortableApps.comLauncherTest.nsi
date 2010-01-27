@@ -98,6 +98,9 @@ Var USINGJAVAEXECUTABLE
 Var RUNLOCALLY
 Var LAUNCHERINI
 
+Var USESCONTAINEDTEMPDIRECTORY
+Var DISABLESPLASHSCREEN
+
 Var USESREGISTRY
 Var JAVAMODE
 
@@ -278,26 +281,23 @@ Section "Main"
 			StrCpy $JAVADIRECTORY "$PORTABLEAPPSDIRECTORY\CommonFiles\Java"
 			${IfNot} ${FileExists} $JAVADIRECTORY
 				ClearErrors
-				ReadEnvStr $JAVADIRECTORY JAVA_HOME
+				ReadRegStr $JAVADIRECTORY HKLM "Software\JavaSoft\Java Runtime Environment" "CurrentVersion"
+				ReadRegStr $JAVADIRECTORY HKLM "Software\JavaSoft\Java Runtime Environment\$JAVADIRECTORY" "JavaHome"
 				${If} ${Errors}
-				${OrIfNot} ${FileExists} $JAVADIRECTORY
+				${OrIfNot} ${FileExists} $JAVADIRECTORY\bin\java.exe
 					ClearErrors
-					ReadRegStr $JAVADIRECTORY HKLM "Software\JavaSoft\Java Runtime Environment" "CurrentVersion"
-					ReadRegStr $JAVADIRECTORY HKLM "Software\JavaSoft\Java Runtime Environment\$JAVADIRECTORY" "JavaHome"
+					ReadEnvStr $JAVADIRECTORY JAVA_HOME
 					${If} ${Errors}
-					${OrIfNot} ${FileExists} $JAVADIRECTORY
-						StrCpy $JAVADIRECTORY "$WINDIR\Java"
-						${IfNot} ${FileExists} $JAVADIRECTORY
-							StrCpy $JAVADIRECTORY "$PROGRAMFILES\Java" ; TODO is this right?
-							${IfNot} ${FileExists} $JAVADIRECTORY
-								ClearErrors
-								SearchPath $JAVADIRECTORY "java.exe"
-								${IfNot} ${Errors}
-									${GetParent} $JAVADIRECTORY $JAVADIRECTORY
-									${GetParent} $JAVADIRECTORY $JAVADIRECTORY
-								${Else}
-									StrCpy $JAVADIRECTORY "$PORTABLEAPPSDIRECTORY\CommonFiles\Java"
-								${EndIf}
+					${OrIfNot} ${FileExists} $JAVADIRECTORY\bin\java.exe
+						ClearErrors
+						SearchPath $JAVADIRECTORY "java.exe"
+						${IfNot} ${Errors}
+							${GetParent} $JAVADIRECTORY $JAVADIRECTORY
+							${GetParent} $JAVADIRECTORY $JAVADIRECTORY
+						${Else}
+							StrCpy $JAVADIRECTORY "$WINDIR\Java"
+							${IfNot} ${FileExists} $JAVADIRECTORY\bin\java.exe
+								StrCpy $JAVADIRECTORY "$PORTABLEAPPSDIRECTORY\CommonFiles\Java"
 							${EndIf}
 						${EndIf}
 					${EndIf}
@@ -347,7 +347,7 @@ Section "Main"
 		ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "SingleAppInstance"
 		${If} $0 != "false"
 		${AndIfNot} $USINGJAVAEXECUTABLE == "true"
-			FindProcDLL::FindProc "$PROGRAMEXECUTABLE"
+			FindProcDLL::FindProc $PROGRAMEXECUTABLE
 			${If} $SECONDARYLAUNCH != "true"
 			${AndIf} $R0 = 1
 				MessageBox MB_OK|MB_ICONINFORMATION `$(LauncherAlreadyRunning)`
@@ -367,10 +367,11 @@ Section "Main"
 		${EndIf}
 
 	;=== Display splash screen
-		ReadINIStr $0 "$EXEDIR\$NAME.ini" "$NAME" "DisableSplashScreen"
-		${If} $0 != "true"
+		ReadINIStr $DISABLESPLASHSCREEN "$EXEDIR\$NAME.ini" $NAME "DisableSplashScreen"
+		${IfNotThen} ${FileExists} "$EXEDIR\App\${LAUNCHERDIR}\$NAME.jpg" ${|} StrCpy $DISABLESPLASHSCREEN "true" ${|}
+		${If} $DISABLESPLASHSCREEN != "true"
 			;=== Show the splash screen before processing the files
-			newadvsplash::show /NOUNLOAD 1500 200 0 -1 /L $EXEDIR\App\${LAUNCHERDIR}\$NAME.jpg
+			newadvsplash::show /NOUNLOAD 1500 200 0 -1 /L "$EXEDIR\App\${LAUNCHERDIR}\$NAME.jpg"
 		${EndIf}
 
 	;=== Wait for program?  *ONLY USE THIS IF THERE'LL BE NOTHING TO DO AFTERWARDS!
@@ -416,8 +417,8 @@ Section "Main"
 		${StrReplace} $REPLACEVAR_DBS_DATADIRECTORY "/" "\\" $REPLACEVAR_FS_DATADIRECTORY
 
 	;=== Handle TEMP directory
-		ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "AssignContainedTempDirectory"
-		${If} $0 == "true"
+		ReadINIStr $USESCONTAINEDTEMPDIRECTORY $LAUNCHERINI "LaunchDetails" "AssignContainedTempDirectory"
+		${If} $USESCONTAINEDTEMPDIRECTORY != "false"
 			ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "WaitForProgram"
 			${If} $0 == "false"
 				StrCpy $TEMPDIRECTORY "$DATADIRECTORY\Temp"
@@ -462,8 +463,7 @@ Section "Main"
 				${ParseLocations} $1
 				${If} ${FileExists} $1
 					${DebugMsg} "Updating drive letter from $LASTDRIVE to $CURRENTDRIVE in $1; using backslashes"
-					${ReplaceInFile} "$DATADIRECTORY\$1" "$LASTDRIVE\" "$CURRENTDRIVE\"
-					Delete "$1.oldReplaceInFile"
+					${ReplaceInFile} $1 "$LASTDRIVE\" "$CURRENTDRIVE\"
 				${EndIf}
 				IntOp $0 $0 + 1
 			${Loop}
@@ -479,14 +479,13 @@ Section "Main"
 				${ParseLocations} $1
 				${If} ${FileExists} $1
 					${DebugMsg} "Updating drive letter from $LASTDRIVE to $CURRENTDRIVE in $1; using forward slashes"
-					${ReplaceInFile} "$DATADIRECTORY\$1" "$LASTDRIVE/" "$CURRENTDRIVE/"
-					Delete "$1.oldReplaceInFile"
+					${ReplaceInFile} $1 "$LASTDRIVE/" "$CURRENTDRIVE/"
 				${EndIf}
 				IntOp $0 $0 + 1
 			${Loop}
 
 			;=== Save drive letter
-			WriteINIStr "$DATADIRECTORY\settings\$NAMESettings.ini" "$NAMESettings" "LastDrive" "$CURRENTDRIVE"
+			WriteINIStr "$DATADIRECTORY\settings\$NAMESettings.ini" "$NAMESettings" "LastDrive" $CURRENTDRIVE
 		${EndIf}
 
 	;=== Write configuration values with ConfigWrite
@@ -617,7 +616,7 @@ Section "Main"
 					${DebugMsg} "Copying $DATADIRECTORY\$0\*.* to $1\*.*"
 					CopyFiles /SILENT "$DATADIRECTORY\$0\*.*" $1
 				${Else}
-					${DebugMsg} "$DATADIRECTORY\$0\*.* does not exist, so not copying it to $1.$\n(Note for developers: if you want default data, rememberto put files in App\DefaultData\$0)"
+					${DebugMsg} "$DATADIRECTORY\$0\*.* does not exist, so not copying it to $1.$\n(Note for developers: if you want default data, remember to put files in App\DefaultData\$0)"
 				${EndIf}
 			${EndForEachINIPair}
 
@@ -657,8 +656,6 @@ Section "Main"
 					ClearErrors
 					ReadINIStr $1 $LAUNCHERINI "RegistryValueBackupDelete" $0
 					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-
-
 					${DebugMsg} "Backing up registry value $1\$2 to HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\Values\$2"
 					${GetParent} $0 $1
 					${GetFilename} $0 $2
@@ -720,8 +717,7 @@ Section "Main"
 			${EndIf}
 
 		;=== Remove custom TEMP directory
-			ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "AssignContainedTempDirectory"
-			${If} $0 == "true"
+			${If} $USESCONTAINEDTEMPDIRECTORY != "false"
 				${DebugMsg} "Removing contained temporary directory $TEMPDIRECTORY."
 				RMDir /r $TEMPDIRECTORY
 			${EndIf}
@@ -808,10 +804,11 @@ Section "Main"
 
 					${DebugMsg} "Deleting registry key $1."
 					${registry::DeleteKey} $1 $R0
-					${registry::KeyExists} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0" $R0
+					${registry::KeyExists} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\Keys\$0" $R0
 					${If} $R0 != "-1"
-						${DebugMsg} "Moving registry key HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0 to $1."
-						${registry::MoveKey} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\$0" $1 $R0
+						${DebugMsg} "Moving registry key HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\Keys\$0 to $1."
+						${registry::MoveKey} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\Keys\$0" $1 $R0
+						${registry::DeleteKeyEmpty} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\Keys" $R0
 						${registry::DeleteKeyEmpty} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME" $R0
 						${registry::DeleteKeyEmpty} "HKEY_CURRENT_USER\Software\PortableApps.com" $R0
 					${EndIf}
@@ -858,7 +855,6 @@ Section "Main"
 		${IfThen} $USESREGISTRY == "true" ${|} ${registry::Unload} ${|}
 
 		${If} $DISABLESPLASHSCREEN != "true"
-		${OrIfNot} ${FileExists} "$EXEDIR\App\${LAUNCHERDIR}\$NAME.jpg"
 			newadvsplash::stop /WAIT
 		${EndIf}
 
