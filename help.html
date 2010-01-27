@@ -321,7 +321,7 @@
 <p>(This applies to INI entries marked above as "substitutions apply".)</p>
 <ul>
 	<li><strong>%DRIVE%</strong> &ndash; the drive letter from which the portable application is running; in Live mode, this is the location of the portable device, <em>not</em> the application or data directory if CopyApp or CopyData are set. e.g. "X:"</li>
-	<li><strong>Directory variables:</strong> with all of these variables, after the opening % can come, before the variable name, one of three things: nothing, a forward slash, or a double backslash. This refers to the directory separator to be used; if there is nothing there, it is a backslash. For example, <em>%PORTABLEAPPSDIR%</em> is X:\PortableApps, <em>%/PORTABLEAPPSDIR%</em> is X:/PortableApps, and <em>%\\PORTABLEAPPSDIR%</em> is X:\\PortableApps. If unsure, use the default single backslash.
+	<li><strong>Directory variables:</strong> with all of these variables, after the opening % can come, before the variable name, one of four things: nothing, a forward slash, a double backslash, or <code>java.util.prefs:</code>. This refers to the directory separator to be used; if there is nothing there, it is a backslash. For example, <em>%PORTABLEAPPSDIR%</em> is X:\PortableApps, <em>%/PORTABLEAPPSDIR%</em> is X:/PortableApps, and <em>%\\PORTABLEAPPSDIR%</em> is X:\\PortableApps. If unsure, use the default single backslash. <code>java.util.prefs:</code> is a special prefix for registry keys with Java applications that use java.util.prefs to store their settings. It stores paths like this: <em>%java.util.prefs:PORTABLEAPPSDIR%</em> will become <em>\X:\\\Portable\Apps</em>; all characters other than a colon (:) and lowercase letters are prefixed with a backslash (\).
 	<ul>
 		<li><strong>%APPDIR%</strong> &ndash; the location of the App directory (not including the AppName bit), e.g. X:\PortableApps\AppNamePortable\App</li>
 		<li><strong>%DATADIR%</strong> &ndash; the location of the Data directory (not including the settings or similar bit), e.g. X:\PortableApps\AppNamePortable\Data</li>
@@ -391,6 +391,14 @@
 <span class="ini-key">1=</span><span class="ini-value">%DATADIR%\personalities\default.conf</span>
 </pre>
 <p>To outline what this actually does: <span class="ini-key">%APPDATA%\codeblocks</span>\<span class="ini-key">personalities</span> is backed up if necessary, and the contents of Data\<span class="ini-key">personalities</span> are copied to <span class="ini-key">%APPDATA%\codeblocks</span>\<span class="ini-key">personalities</span>, after updating the drive letter in <span class="ini-key">Data\personalities\default.conf</span>. In the same way, the <span class="ini-key">UserTemplates</span> and <span class="ini-key">share</span> directories are backed up and copied. Then App\<span class="ini-key">CodeBlocks</span>\<span class="ini-key">codeblocks.exe</span> is run. After it is closed, the APPDATA directories are copied to the Code::Blocks Portable Data directory and deleted, and the backup of local Code::Blocks settings is restored if it existed. At the end, if <span class="ini-key">%APPDATA%\codeblocks</span> is empty, it is removed.</p>
+
+<h3>A note on Java applications</h3>
+<p>There are a few different ways of doing Java applications.</p>
+<ul>
+	<li><strong>Eclipse-based applications:</strong> these seem to normally accept a command-line argument to the executable included, to specify the Java location to use. Try setting <span class="ini-key">DefaultCommandLineArguments</span> to <span class="ini-value">-vm "%JAVADIR%\bin"</span>.</li>
+	<li><strong>Launch4J-based applications (seems to be most apps):</strong> these apps run an executable, which discovers Java from the registry, and run something which creates an executable in the JRE's directory, in a subdirectory <code>launch4j-tmp</code>, which will run the java application.  Try running the base application (with a local JRE installation) and then use a program such as Microsoft/SysInternals Process Explorer to look at the command line arguments which it then gets started with. In Process Explorer, right-click on the executable and click "Properties", and copy the execution string.</li>
+	<li><strong>Other:</strong> panic! ;-) If you come up with any other techniques and/or circumstances where other techniques would be better, please suggest them.</li>
+</ul>
 </div>
 <div class="footer"></div>
 </body>

@@ -143,12 +143,74 @@ Var REPLACEVAR_DBS_PORTABLEAPPSMUSICDIRECTORY
 Var REPLACEVAR_DBS_PORTABLEAPPSVIDEOSDIRECTORY
 Var REPLACEVAR_DBS_PORTABLEAPPSDIRECTORY
 
+Var REPLACEVAR_JUP_APPDIRECTORY
+Var REPLACEVAR_JUP_DATADIRECTORY
+Var REPLACEVAR_JUP_JAVADIRECTORY
+Var REPLACEVAR_JUP_ALLUSERSPROFILE
+Var REPLACEVAR_JUP_LOCALAPPDATA
+Var REPLACEVAR_JUP_APPDATA
+Var REPLACEVAR_JUP_DOCUMENTS
+Var REPLACEVAR_JUP_TEMPDIRECTORY
+Var REPLACEVAR_JUP_PORTABLEAPPSDOCUMENTSDIRECTORY
+Var REPLACEVAR_JUP_PORTABLEAPPSPICTURESDIRECTORY
+Var REPLACEVAR_JUP_PORTABLEAPPSMUSICDIRECTORY
+Var REPLACEVAR_JUP_PORTABLEAPPSVIDEOSDIRECTORY
+Var REPLACEVAR_JUP_PORTABLEAPPSDIRECTORY
+
 Var PORTABLEAPPSLANGUAGECODE
 Var PORTABLEAPPSLOCALECODE2
 Var PORTABLEAPPSLOCALECODE3
 Var PORTABLEAPPSLOCALEGLIBC
 Var PORTABLEAPPSLOCALEID
 Var PORTABLEAPPSLOCALEWINNAME
+
+!macro MakeJavaUtilPrefsPath VARIABLE
+	;$R0=pos,$R1=char
+	Push $R0 ; len
+	Push $R1 ; pos
+	Push $R2 ; char
+	StrLen $R0 $REPLACEVAR_FS_${VARIABLE}
+	IntOp $R0 $R0 - 1 ; base 0
+	${For} $R1 0 $R0
+		StrCpy $R2 $REPLACEVAR_FS_${VARIABLE} 1 $R1
+		${If} $R2 == "a"
+		${OrIf} $R2 == "b"
+		${OrIf} $R2 == "c"
+		${OrIf} $R2 == "d"
+		${OrIf} $R2 == "e"
+		${OrIf} $R2 == "f"
+		${OrIf} $R2 == "g"
+		${OrIf} $R2 == "h"
+		${OrIf} $R2 == "i"
+		${OrIf} $R2 == "j"
+		${OrIf} $R2 == "k"
+		${OrIf} $R2 == "l"
+		${OrIf} $R2 == "m"
+		${OrIf} $R2 == "n"
+		${OrIf} $R2 == "o"
+		${OrIf} $R2 == "p"
+		${OrIf} $R2 == "q"
+		${OrIf} $R2 == "r"
+		${OrIf} $R2 == "s"
+		${OrIf} $R2 == "t"
+		${OrIf} $R2 == "u"
+		${OrIf} $R2 == "v"
+		${OrIf} $R2 == "w"
+		${OrIf} $R2 == "x"
+		${OrIf} $R2 == "y"
+		${OrIf} $R2 == "z"
+		${OrIf} $R2 == ":"
+			StrCpy $REPLACEVAR_JUP_${VARIABLE} "$REPLACEVAR_JUP_${VARIABLE}$R2"
+		${Else}
+			StrCpy $REPLACEVAR_JUP_${VARIABLE} "$REPLACEVAR_JUP_${VARIABLE}/$R2"
+		${EndIf}
+	${Next}
+	Pop $R2
+	Pop $R1
+	Pop $R0
+!macroend
+
+!define MakeJavaUtilPrefsPath "!insertmacro MakeJavaUtilPrefsPath"
 
 !macro ParseLocations_SlashType VAR SLASHTYPE VARIABLEAPPENDAGE
 	${StrReplace} "${VAR}" "%${SLASHTYPE}APPDIR%" "$${VARIABLEAPPENDAGE}APPDIRECTORY" "${VAR}"
@@ -176,6 +238,10 @@ Var PORTABLEAPPSLOCALEWINNAME
 		!insertmacro ParseLocations_SlashType "${VAR}" "" ""
 		!insertmacro ParseLocations_SlashType "${VAR}" "/" "REPLACEVAR_FS_"
 		!insertmacro ParseLocations_SlashType "${VAR}" "\\" "REPLACEVAR_DBS_"
+		${If} $JAVAMODE == "find"
+		${OrIf} $JAVAMODE == "require"
+			!insertmacro ParseLocations_SlashType "${VAR}" "java.util.prefs:" "REPLACEVAR_JUP_"
+		${EndIf}
 
 	;===Languages
 		${StrReplace} "${VAR}" "%LANGCODE%" $PORTABLEAPPSLANGUAGECODE "${VAR}"
@@ -317,6 +383,16 @@ Section "Main"
 				${IfThen} $PROGRAMEXECUTABLE == "java.exe" ${|} StrCpy $USINGJAVAEXECUTABLE "true" ${|}
 				${IfThen} $PROGRAMEXECUTABLE == "javaw.exe" ${|} StrCpy $USINGJAVAEXECUTABLE "true" ${|}
 			${EndIf}
+			${MakeJavaUtilPrefsPath} JAVADIRECTORY
+			${MakeJavaUtilPrefsPath} ALLUSERSPROFILE
+			${MakeJavaUtilPrefsPath} LOCALAPPDATA
+			${MakeJavaUtilPrefsPath} APPDATA
+			${MakeJavaUtilPrefsPath} DOCUMENTS
+			${MakeJavaUtilPrefsPath} PORTABLEAPPSDOCUMENTSDIRECTORY
+			${MakeJavaUtilPrefsPath} PORTABLEAPPSPICTURESDIRECTORY
+			${MakeJavaUtilPrefsPath} PORTABLEAPPSMUSICDIRECTORY
+			${MakeJavaUtilPrefsPath} PORTABLEAPPSVIDEOSDIRECTORY
+			${MakeJavaUtilPrefsPath} PORTABLEAPPSDIRECTORY
 		${EndIf}
 
 	;=== Check if already running
@@ -413,8 +489,10 @@ Section "Main"
 
 		${StrReplace} $REPLACEVAR_FS_APPDIRECTORY "\" "/" $APPDIRECTORY
 		${StrReplace} $REPLACEVAR_DBS_APPDIRECTORY "/" "\\" $REPLACEVAR_FS_APPDIRECTORY
+		${MakeJavaUtilPrefsPath} APPDIRECTORY
 		${StrReplace} $REPLACEVAR_FS_DATADIRECTORY "\" "/" $DATADIRECTORY
 		${StrReplace} $REPLACEVAR_DBS_DATADIRECTORY "/" "\\" $REPLACEVAR_FS_DATADIRECTORY
+		${MakeJavaUtilPrefsPath} DATADIRECTORY
 
 	;=== Handle TEMP directory
 		ReadINIStr $USESCONTAINEDTEMPDIRECTORY $LAUNCHERINI "LaunchDetails" "AssignContainedTempDirectory"
@@ -439,6 +517,7 @@ Section "Main"
 		System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("TMP", "$TEMPDIRECTORY").n'
 		${StrReplace} $REPLACEVAR_FS_TEMPDIRECTORY "\" "/" $TEMPDIRECTORY
 		${StrReplace} $REPLACEVAR_DBS_TEMPDIRECTORY "/" "\\" $REPLACEVAR_FS_TEMPDIRECTORY
+		${MakeJavaUtilPrefsPath} TEMPDIRECTORY
 
 	;=== Check for settings
 		${IfNot} ${FileExists} "$DATADIRECTORY\settings"
