@@ -823,6 +823,21 @@ Section "Main"
 				StrCpy $0 1
 				${Do}
 					ClearErrors
+					ReadINIStr $1 $LAUNCHERINI "RegistryValueBackupDelete" $0
+					${If} ${Errors}
+						${ExitDo}
+					${EndIf}
+					${DebugMsg} "Deleting registry value $1\$2, then restoring from HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\Values\$2"
+					${GetParent} $0 $1
+					${GetFilename} $0 $2
+					${registry::DeleteValue} $1 $2 $R0
+					${registry::MoveValue} "HKEY_CURRENT_USER\Software\PortableApps.com\$NAME\Values" $2 $1 $2 $R0
+					IntOp $0 $0 + 1
+				${Loop}
+
+				StrCpy $0 1
+				${Do}
+					ClearErrors
 					ReadINIStr $1 $LAUNCHERINI "RegistryCleanupIfEmpty" $0
 					${If} ${Errors}
 						${ExitDo}
