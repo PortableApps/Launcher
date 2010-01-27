@@ -786,7 +786,13 @@ Section "Main"
 				${RefreshShellIcons}
 			${EndIf}
 			${DebugMsg} "About to execute the following string and wait till it's done: $EXECSTRING"
-			ExecWait $EXECSTRING
+			ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "HideCommandLineWindow"
+			${If} $0 == "true"
+				ExecDos::exec $EXECSTRING
+				Pop $0
+			${Else}
+				ExecWait $EXECSTRING
+			${EndIf}
 			${DebugMsg} "$EXECSTRING has finished."
 
 		;=== Wait till it's done
@@ -968,7 +974,7 @@ Section "Main"
 SectionEnd
 
 ; This note is just as something out of interest.  With a SetOutDir directive, it could be worth while examining each command-line argument and turning relative paths into absolute paths, probably with the PathCombine call.  I've used an AutoHotkey implementation of it, but we'd need an NSIS one here.
-;To combine paths $0 and $1: System::Call 'Shlwapi.dll::PathCombineA([i "$dest", ]i r0, i r1) i ."$DEST"'???
+;To combine paths $0 and $1: System::Call 'Shlwapi.dll::PathCombineA(t r0, t r1) t ."$DEST"'???
 ;PathCombine(dir, file) { ; Function taken from http://www.autohotkey.com/forum/topic19489-30.html#124252
 ;	VarSetCapacity(dest, 260, 1) ; MAX_PATH
 ;	DllCall("Shlwapi.dll\PathCombineA", "UInt", &dest, "UInt", &dir, "UInt", &file)
