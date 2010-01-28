@@ -81,7 +81,7 @@ Icon "..\..\App\AppInfo\appicon.ico"
 ;=== Languages
 !macro IncludeLang _LANG
 	LoadLanguageFile "${NSISDIR}\Contrib\Language files\${LAUNCHERLANGUAGE}.nlf"
-	!insertmacro LANGFILE_INCLUDE_WITHDEFAULT PortableApps.comLauncherLANG_${LAUNCHERLANGUAGE}.nsh PortableApps.comLauncherLANG_ENGLISH.nsh
+	!insertmacro LANGFILE_INCLUDE_WITHDEFAULT Languages\${LAUNCHERLANGUAGE}.nsh Languages\English.nsh
 !macroend
 !define IncludeLang "!insertmacro IncludeLang"
 ${IncludeLang} English
