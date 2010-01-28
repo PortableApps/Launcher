@@ -346,7 +346,7 @@ Section "Main"
 			;=== Launcher file missing or missing crucial details
 			StrCpy $PORTABLEAPPNAME "PortableApps.com Launcher"
 			StrCpy $MISSINGFILEORPATH launcher.ini
-			MessageBox MB_OK|MB_ICONEXCLAMATION `$(LauncherFileNotFound)`
+			MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
 			Abort
 		${EndIf}
 
@@ -388,7 +388,7 @@ Section "Main"
 				${IfNot} ${FileExists} $JAVADIRECTORY
 					;=== Java Portable is missing
 					StrCpy $MISSINGFILEORPATH "Java"
-					MessageBox MB_OK|MB_ICONEXCLAMATION `$(LauncherFileNotFound)`
+					MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
 					Abort
 				${EndIf}
 				${IfThen} $PROGRAMEXECUTABLE == "java.exe" ${|} StrCpy $USINGJAVAEXECUTABLE "true" ${|}
@@ -426,7 +426,7 @@ Section "Main"
 		${AndIfNot} $USINGJAVAEXECUTABLE == "true"
 			;=== Program executable not where expected
 			StrCpy $MISSINGFILEORPATH $PROGRAMEXECUTABLE
-			MessageBox MB_OK|MB_ICONEXCLAMATION `$(LauncherFileNotFound)`
+			MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
 			Abort
 		${EndIf}
 
@@ -451,7 +451,7 @@ Section "Main"
 					${EndIf}
 				${EndIf}
 			${EndIf}
-			MessageBox MB_OK|MB_ICONINFORMATION `$(LauncherAlreadyRunning)`
+			MessageBox MB_OK|MB_ICONSTOP `$(LauncherAlreadyRunning)`
 			Abort
 		!macroend
 		${ReadLauncherConfig} $0 Launch SingleAppInstance
