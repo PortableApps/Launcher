@@ -1,24 +1,24 @@
-;Copyright 2004-2009 John T. Haller of PortableApps.com
-;Copyright 2009 Chris Morgan of PortableApps.com
-
-;Website: http://PortableApps.com
-
-;This software is OSI Certified Open Source Software.
-;OSI Certified is a certification mark of the Open Source Initiative.
-
-;This program is free software; you can redistribute it and/or
-;modify it under the terms of the GNU General Public License
-;as published by the Free Software Foundation; either version 2
-;of the License, or (at your option) any later version.
-
-;This program is distributed in the hope that it will be useful,
-;but WITHOUT ANY WARRANTY; without even the implied warranty of
-;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;GNU General Public License for more details.
-
-;You should have received a copy of the GNU General Public License
-;along with this program; if not, write to the Free Software
-;Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+/* Copyright 2004-2010 PortableApps.com
+ * Website: http://portableapps.com/development/launcher
+ * Main developer and contact: Chris Morgan
+ *
+ * This software is OSI Certified Open Source Software.
+ * OSI Certified is a certification mark of the Open Source Initiative.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 ;=== Program Details {{{1
 ;!define DEBUG
@@ -38,26 +38,19 @@ VIAddVersionKey ProductVersion "${VER}"
 VIAddVersionKey InternalName "PortableApps.com Launcher"
 VIAddVersionKey LegalTrademarks "PortableApps.com is a Trademark of Rare Ideas, LLC."
 VIAddVersionKey OriginalFilename "PortableApps.comLauncher.exe"
-;VIAddVersionKey PrivateBuild ""
-;VIAddVersionKey SpecialBuild ""
 !undef VER
 
 ;=== Runtime Switches {{{1
-CRCCheck On
 WindowIcon Off
 SilentInstall Silent
 AutoCloseWindow True
 RequestExecutionLevel user
-
-; Best Compression
-SetCompress Auto
 SetCompressor /SOLID lzma
 SetCompressorDictSize 32
-SetDatablockOptimize On
 
 ;=== Include {{{1
 ;(Standard NSIS) {{{2
-!include Registry.nsh
+!include LangFile.nsh
 !include LogicLib.nsh
 !include FileFunc.nsh
 !insertmacro GetParameters
@@ -68,7 +61,7 @@ SetDatablockOptimize On
 
 ;(NSIS Plugins) {{{2
 !include TextReplace.nsh
-!include LangFile.nsh
+!include Registry.nsh
 
 ;(Custom) {{{2
 !include ReplaceInFileWithTextReplace.nsh

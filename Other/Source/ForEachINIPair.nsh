@@ -1,5 +1,3 @@
-; Copyright (C) 2009 Chris Morgan of PortableApps.com.
-
 Var LAUNCHERFILEHANDLE
 
 !macro ForEachINIPair SECTION KEY VALUE
