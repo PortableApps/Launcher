@@ -1,5 +1,4 @@
-${LangFileString} LauncherFileNotFound "$PORTABLEAPPNAME cannot be started. You may wish to re-install to fix this issue. (ERROR: $MISSINGFILEORPATH could not be found)"
-${LangFileString} LauncherAlreadyRunning "Another instance of $APPNAME is already running. Please close other instances of $APPNAME before launching $PORTABLEAPPNAME."
+${LangFileString} LauncherFileNotFound "无法启动$PORTABLEAPPNAME。重新安装也许可以修正该错误（错误：没有找到$MISSINGFILEORPATH）。"
+${LangFileString} LauncherAlreadyRunning "另一个$APPNAME正在运行，请在启动$PORTABLEAPPNAME前关闭$APPNAME。"
 ${LangFileString} LauncherAskCopyLocal "$PORTABLEAPPNAME appears to be running from a location that is read-only. Would you like to temporarily copy it to the local hard drive and run it from there?$\n$\nPrivacy Note: If you say Yes, your personal data within $PORTABLEAPPNAME will be temporarily copied to a local drive. Although this copy of your data will be deleted when you close $PORTABLEAPPNAME, it may be possible for someone else to access your data later."
 ${LangFileString} LauncherNoReadOnly "$PORTABLEAPPNAME can not run directly from a read-only location and will now close."
-${LangFileString} LauncherPathTooLong "The path to $PORTABLEAPPNAME is too long.  Please shorten the path by eliminating some parent directories or shortening directory names."
