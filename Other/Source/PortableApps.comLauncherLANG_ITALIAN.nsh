@@ -1,0 +1,6 @@
+;Courtesy of sblandin
+${LangFileString} LauncherFileNotFound "Impossibile avviare $PORTABLEAPPNAME. Potrebbe essere necessario re-installare per risolvere questo problema. (ERRORE: Impossibile trovare $MISSINGFILEORPATH)."
+${LangFileString} LauncherAlreadyRunning "È già in esecuzione un'istanza di $APPNAME. Per favore, terminate le altre istanze di $APPNAME prima di avviare $PORTABLEAPPNAME."
+${LangFileString} LauncherAskCopyLocal "Sembra che $PORTABLEAPPNAME venga eseguito da un supporto di sola lettura. Vorresti che venisse copiato temporaneamente sul disco locale ed eseguito da lì?$\n$\nNota sulla privacy: Se risponderai di sì, i tuoi dati personali utilizzati da $PORTABLEAPPNAME verranno temporaneamente copiati sul disco locale. Benchè la copia dei tuoi dati verrà cancellata alla chiusura di $PORTABLEAPPNAME, potrebbe essere possibile che qualcun altro sia in grado di accedere ai tuoi dati più tardi."
+${LangFileString} LauncherNoReadOnly "L'applicazione $PORTABLEAPPNAME non può essere eseguita direttamente da un supporto di sola lettura e verrà chiusa."
+${LangFileString} LauncherPathTooLong "Il percorso $PORTABLEAPPNAME è troppo lungo. Si prega di abbreviarlo eliminando alcune directory superiori o accorciandone i nomi."

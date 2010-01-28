@@ -79,10 +79,17 @@ SetDatablockOptimize On
 Icon "..\..\App\AppInfo\appicon.ico"
 
 ;=== Languages
-!define LAUNCHERLANGUAGE "English"
-
-LoadLanguageFile "${NSISDIR}\Contrib\Language files\${LAUNCHERLANGUAGE}.nlf"
-!include PortableApps.comLauncherLANG_${LAUNCHERLANGUAGE}.nsh
+!macro IncludeLang _LANG
+	LoadLanguageFile "${NSISDIR}\Contrib\Language files\${LAUNCHERLANGUAGE}.nlf"
+	!insertmacro LANGFILE_INCLUDE_WITHDEFAULT PortableApps.comLauncherLANG_${LAUNCHERLANGUAGE}.nsh PortableApps.comLauncherLANG_ENGLISH.nsh
+!macroend
+!define IncludeLang "!insertmacro IncludeLang"
+${IncludeLang} English
+${IncludeLang} French
+${IncludeLang} German
+${IncludeLang} Italian
+${IncludeLang} Japanese
+${IncludeLang} SimpChinese
 
 Var EXECSTRING
 Var LASTDRIVE
@@ -243,6 +250,28 @@ Var PORTABLEAPPSLOCALEWINNAME
 	ReadINIStr ${_OUTPUT} $EXEDIR\App\AppInfo\launcher.ini ${_SECTION} ${_VALUE}
 !macroend
 !define ReadLauncherConfig "!insertmacro ReadLauncherConfig"
+
+Function .onInit
+	!macro CaseLang _LANG_NAME _LANG_ID
+		!ifdef USES_${_LANG_NAME}
+			${Case} ${_LANG_ID}
+		!endif
+	!macroend
+	!define CaseLang "!insertmacro CaseLang"
+
+	ReadEnvStr $0 "PortableApps.comLocaleID"
+	${Switch} $0
+		${CaseLang} ENGLISH              1033
+		${CaseLang} FRENCH               1036
+		${CaseLang} GERMAN               1031
+		${CaseLang} ITALIAN              1040
+		${CaseLang} JAPANESE             1041
+		${CaseLang} SIMPCHINESE          2052
+			; Full list in PortableApps.comInstaller.nsi
+			StrCpy $LANGUAGE $0
+			${Break}
+	${EndSwitch}
+FunctionEnd
 
 Section "Main"
 	ReadINIStr $AppID $EXEDIR\App\AppInfo\appinfo.ini Details AppID
