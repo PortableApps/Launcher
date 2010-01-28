@@ -273,6 +273,14 @@ FunctionEnd
 Section "Main"
 	ReadINIStr $AppID $EXEDIR\App\AppInfo\appinfo.ini Details AppID
 	${DebugMsg} "Launcher INI file is $EXEDIR\App\AppInfo\launcher.ini.$\nUser INI overrides are in $EXEDIR\PortableApps.comLauncher.ini."
+
+	;=== Fail for UNC paths
+		StrCpy $0 $EXEDIR 2
+		${If} $0 == "\\"
+			MessageBox MB_OK|MB_ICONSTOP "$(LauncherNoUNCSupport)"
+			Abort
+		${EndIf}
+
 	;=== Initialise variables
 		; NOTE: CURRENTDRIVE has an issue; it may need to refer to the app, data
 		; or file locations; these could be two different drives in Live mode.
