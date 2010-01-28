@@ -923,11 +923,11 @@ Section "Main"
 				${Loop}
 			${EndIf}
 
-            ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "RefreshShellIcons"
-            ${If} $0 == "after"
-            ${OrIf} $0 == "both"
-                ${RefreshShellIcons}
-            ${EndIf}
+			ReadINIStr $0 $LAUNCHERINI "LaunchDetails" "RefreshShellIcons"
+			${If} $0 == "after"
+			${OrIf} $0 == "both"
+				${RefreshShellIcons}
+			${EndIf}
 		${Else}
 			;=== Already running: launch and exit (existing launcher will clear up)
 			ClearErrors
