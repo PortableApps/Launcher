@@ -448,7 +448,8 @@ Section "Main"
 				${EndIf}
 				StrCpy $APPDIRECTORY "$TEMP\$NAMELive\App"
 			${EndIf}
-			ReadINIStr $0 $LAUNCHERINI "LiveMode" "CopyData"
+			#For the time being at least, I've disabled the option of not copying Data, as it makes file moving etc. from %DATADIRECTORY% break
+			#ReadINIStr $0 $LAUNCHERINI "LiveMode" "CopyData"
 			${If} $0 != "false"
 				${If} $SECONDARYLAUNCH != "true"
 					${DebugMsg} "Live mode: copying $EXEDIR\Data to $TEMP\$NAMELive\Data"

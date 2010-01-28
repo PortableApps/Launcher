@@ -222,7 +222,7 @@
 
 <span class="ini-head">[LiveMode]</span>
 <span class="ini-key">CopyApp=</span><span class="ini-value">true</span> / <span class="ini-value">false</span>
-<span class="ini-key">CopyData=</span><span class="ini-value">true</span> / <span class="ini-value">false</span>
+<!--<span class="ini-key">CopyData=</span><span class="ini-value">true</span> / <span class="ini-value">false</span>-->
 
 <span class="ini-head">[RegistryKeys]</span>
 <span class="ini-key">appname_portable=</span><span class="ini-value">HKEY_CURRENT_USER\Software\Pub\lisher\AppName</span>
@@ -301,7 +301,8 @@
 	</ul></li>
 	<li><span class="ini-head">[LiveMode]</span><br />This section is relevant to running the portable application from a read-only location. As specified here, certain things are copied to the local hard drive, and then the application is run, and any things copied locally are deleted. This is called running locally, or "Live mode".<ul>
 		<li><span class="ini-key">CopyApp</span><br />When run in Live mode, does the application need to be run from a writable location? If yes, specify "true". The default is "true".</li>
-		<li><span class="ini-key">CopyData</span><br />When run in Live mode, does the application data need to be run from a writable location? If yes, specify "true". The default is "true". It is worthwhile noting that most applications will need settings to be writable. If you have anything in the <span class="ini-head">[RegistryKeys]</span> section with drive letters, or anything in the <span class="ini-head">[DriveLetterUpdate]</span> section, you will need this set to "<span class="ini-value">true</span>".</li>
+		<li><span class="ini-key"><s>CopyData</span><br />This option has been removed due to issues with the %DATADIRECTORY% replacement variable in file moving. Data will now always be copied. This may change back in the future.</li>
+		<!--<li><span class="ini-key">CopyData</span><br />When run in Live mode, does the application data need to be run from a writable location? If yes, specify "true". The default is "true". It is worthwhile noting that most applications will need settings to be writable. If you have anything in the <span class="ini-head">[RegistryKeys]</span> section with drive letters, or anything in the <span class="ini-head">[DriveLetterUpdate]</span> section, you will need this set to "<span class="ini-value">true</span>".</li>-->
 	</ul></li>
 </ul>
 <p>Below here are the arbitrarily specified entries. For all of these, you may specify as many as are needed, according to the formats specified. For those in the format "<span class="ini-key">1<em>Type</em>=</span><span class="ini-value">something</span>, the numbering system starts at 1, and increments, as in 2, 3, 4. If there is a missing number, any after it will be lost.</p>
