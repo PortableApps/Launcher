@@ -8,7 +8,7 @@ Var LAUNCHERFILEHANDLE
 	Push $R3 ; character number in line
 	Push $R4 ; character
 	${If} $LAUNCHERFILEHANDLE == ""
-		FileOpen $LAUNCHERFILEHANDLE $LAUNCHERINI r
+		FileOpen $LAUNCHERFILEHANDLE $EXEDIR\App\AppInfo\launcher.ini r
 	${Else}
 		FileSeek $LAUNCHERFILEHANDLE 0
 	${EndIf}
