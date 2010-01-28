@@ -56,7 +56,7 @@ SetCompressorDictSize 32
 SetDatablockOptimize On
 
 ;=== Include {{{1
-;(Standard NSIS)
+;(Standard NSIS) {{{2
 !include Registry.nsh
 !include LogicLib.nsh
 !include FileFunc.nsh
@@ -66,10 +66,11 @@ SetDatablockOptimize On
 !insertmacro TrimNewLines
 !insertmacro ConfigWrite
 
-;(NSIS Plugins)
+;(NSIS Plugins) {{{2
 !include TextReplace.nsh
+!include LangFile.nsh
 
-;(Custom)
+;(Custom) {{{2
 !include ReplaceInFileWithTextReplace.nsh
 !include StrReplace.nsh
 !include ForEachINIPair.nsh
@@ -80,8 +81,8 @@ Icon "..\..\App\AppInfo\appicon.ico"
 
 ;=== Languages {{{1
 !macro IncludeLang _LANG
-	LoadLanguageFile "${NSISDIR}\Contrib\Language files\${LAUNCHERLANGUAGE}.nlf"
-	!insertmacro LANGFILE_INCLUDE_WITHDEFAULT Languages\${LAUNCHERLANGUAGE}.nsh Languages\English.nsh
+	LoadLanguageFile "${NSISDIR}\Contrib\Language files\${_LANG}.nlf"
+	!insertmacro LANGFILE_INCLUDE_WITHDEFAULT Languages\${_LANG}.nsh Languages\English.nsh
 !macroend
 !define IncludeLang "!insertmacro IncludeLang"
 ${IncludeLang} English
@@ -92,6 +93,7 @@ ${IncludeLang} Japanese
 ${IncludeLang} SimpChinese
 
 ;=== Variables {{{1
+Var AppID
 Var EXECSTRING
 Var LASTDRIVE
 Var CURRENTDRIVE
@@ -256,19 +258,14 @@ Var PORTABLEAPPSLOCALEWINNAME
 
 ; onInit: select the language to run the launcher in for any message boxes {{{1
 Function .onInit
-	!macro CaseLang _LANG_NAME _LANG_ID
-			${Case} ${_LANG_ID}
-	!macroend
-	!define CaseLang "!insertmacro CaseLang"
-
 	ReadEnvStr $0 "PortableApps.comLocaleID"
 	${Switch} $0
-		${CaseLang} 1033 ; English
-		${CaseLang} 1036 ; French
-		${CaseLang} 1031 ; German
-		${CaseLang} 1040 ; Italian
-		${CaseLang} 1041 ; Japanese
-		${CaseLang} 2052 ; SimpChinese
+		${Case} 1033 ; English
+		${Case} 1036 ; French
+		${Case} 1031 ; German
+		${Case} 1040 ; Italian
+		${Case} 1041 ; Japanese
+		${Case} 2052 ; SimpChinese
 			StrCpy $LANGUAGE $0
 			${Break}
 	${EndSwitch}
@@ -436,7 +433,7 @@ Section
 		${EndIf}
 
 	;=== Check if application already running {{{2
-		!macro AbortAlreadyRunning ${_EXECUTABLE_NAME}
+		!macro AbortAlreadyRunning _EXECUTABLE_NAME
 			FindProcDLL::FindProc ${_EXECUTABLE_NAME}
 			${If} $SECONDARYLAUNCH != "true"
 			${AndIf} $R0 = 1
