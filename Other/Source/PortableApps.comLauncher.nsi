@@ -275,7 +275,7 @@ Function .onInit
 FunctionEnd
 
 ; Now for the Section which does everything {{{1
-Section "Main"
+Section
 	ReadINIStr $AppID $EXEDIR\App\AppInfo\appinfo.ini Details AppID
 	${DebugMsg} "Launcher INI file is $EXEDIR\App\AppInfo\launcher.ini.$\nUser INI overrides are in $EXEDIR\PortableApps.comLauncher.ini."
 
