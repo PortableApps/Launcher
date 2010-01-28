@@ -253,21 +253,18 @@ Var PORTABLEAPPSLOCALEWINNAME
 
 Function .onInit
 	!macro CaseLang _LANG_NAME _LANG_ID
-		!ifdef USES_${_LANG_NAME}
 			${Case} ${_LANG_ID}
-		!endif
 	!macroend
 	!define CaseLang "!insertmacro CaseLang"
 
 	ReadEnvStr $0 "PortableApps.comLocaleID"
 	${Switch} $0
-		${CaseLang} ENGLISH              1033
-		${CaseLang} FRENCH               1036
-		${CaseLang} GERMAN               1031
-		${CaseLang} ITALIAN              1040
-		${CaseLang} JAPANESE             1041
-		${CaseLang} SIMPCHINESE          2052
-			; Full list in PortableApps.comInstaller.nsi
+		${CaseLang} 1033 ; English
+		${CaseLang} 1036 ; French
+		${CaseLang} 1031 ; German
+		${CaseLang} 1040 ; Italian
+		${CaseLang} 1041 ; Japanese
+		${CaseLang} 2052 ; SimpChinese
 			StrCpy $LANGUAGE $0
 			${Break}
 	${EndSwitch}
