@@ -4,3 +4,4 @@ ${LangFileString} LauncherAskCopyLocal "$PORTABLEAPPNAME appears to be running f
 ${LangFileString} LauncherNoReadOnly "$PORTABLEAPPNAME can not run directly from a read-only location and will now close."
 ${LangFileString} LauncherPathTooLong "The path to $PORTABLEAPPNAME is too long.  Please shorten the path by eliminating some parent directories or shortening directory names."
 ${LangFileString} LauncherNoUNCSupport "$PORTABLEAPPNAME cannot be started from a UNC path. Please map the directory to a drive letter and try again."
+${LangFileString} LauncherNoSpaces "$PORTABLEAPPNAME cannot run from a directory with a space in it.  Please alter the current path ($EXEDIR) to remove any spaces and start the portable app again.  Please see the help.html file for more information."
