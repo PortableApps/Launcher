@@ -194,17 +194,13 @@
 <p><a href="http://PortableApps.com/">Get portable apps at PortableApps.com</a></p>
 <p>This software is OSI Certified Open Source Software. OSI Certified is a certification mark of the Open Source Initiative.</p>
 <h2>Documentation</h2>
-<p>The PortableApps.com Launcher gets its splash screen from App\Launcher\AppNamePortable.jpg. For a development test release, this should be <a href="http://portableapps.com/files/images/development/SplashDevelopmentTestRelease.jpg">the black and white PortableApps.com Development Test Release splash screen</a>. When an application goes on to Pre-Release or official, it gets its own splash screen.</p>
-<p>The PortableApps.com Launcher depends on one file for its information and portablization: App\Launcher\AppNamePortable.ini. AppNamePortable is the base file name of the launcher. When compiled, it is PortableApps.comLauncher.exe, but you should rename it to AppNamePortable.exe, and then the launcher file will be AppNamePortable.ini. This means that you can have multiple launchers using different configurations, which, for example, is needed in the case of OpenOffice.org Portable.</p>
-<p>The second file, <strong>AppNamePortable.ini</strong>, is more complex, and is the backbone of the portability which the PortableApps.com Launcher provides. It must be correctly configured to cover everything which the application uses. <strong>Only developers should ever modify the launcher INI file, as improper modifications may lose data or cause data to be left behind.</strong></p>
-<p>Here is the template for the launcher INI file:</p>
-<pre><span class="ini-head">[AppDetails]</span>
-<span class="ini-key">PortableAppLongName=</span><span class="ini-value">App Name Portable</span>
+<p>The file name of the PortableApps.com Launcher, PortableApps.comLauncher.exe, should never be changed.</p>
+<p>The PortableApps.com Launcher gets its splash screen from App\AppInfo\splash.jpg. For a development test release, this should be <a href="http://portableapps.com/files/images/development/SplashDevelopmentTestRelease.jpg">the black and white PortableApps.com Development Test Release splash screen</a>. When an application goes on to Pre-Release or official, it gets its own splash screen.</p>
+<p>The PortableApps.com Launcher depends on one file for its information and portablization: App\AppInfo\launcher.ini. This often quite complex file is the backbone of the portability which the PoratbleApps.com Launcher provides. It must be correctly configured to cover everything which the application uses. <strong>Only developers should ever modify the launcher INI file, as improper modifications may cause system damage, lose data or cause data to be left behind.</strong></p>
+<p>Here is the format for the launcher INI file:</p>
+<pre><span class="ini-head">[Launch]</span>
 <span class="ini-key">AppLongName=</span><span class="ini-value">App Name</span>
-<span class="ini-key">ProgramDirectory=</span><span class="ini-value">AppName</span>
-<span class="ini-key">ProgramExecutable=</span><span class="ini-value">AppName.exe</span>
-
-<span class="ini-head">[LaunchDetails]</span>
+<span class="ini-key">ProgramExecutable=</span><span class="ini-value">AppName\AppName.exe</span>
 <span class="ini-key">DefaultCommandLineArguments=</span><span class="ini-value">--data-directory=%DATADIR%\settings</span>
 <span class="ini-key">SetOutPath=</span><span class="ini-value">%APPDIR%\AppName</span>
 <span class="ini-key">AssignContainedTempDirectory=</span><span class="ini-value">true</span> / <span class="ini-value">false</span>
@@ -277,13 +273,9 @@
 <h3>Explanation of launcher INI options</h3>
 <p>There are some definite entries, which specify fixed values, and some arbitrary sections and values for custom entries. First here are the definite entries.</p>
 <ul>
-	<li><span class="ini-head">[AppDetails]</span><ul>
-		<li><span class="ini-key">PortableAppLongName</span><br />This is used for error messages to the user. It should have the full display name, like this: "FirefoxPortable", or "Code::Blocks Portable", or "7-Zip Portable".</li>
-		<li><span class="ini-key">AppLongName</span><br />This is used for the error message box provided to the user if there is already a copy of the application running. It should be like this: "Mozilla Firefox", or "Code::Blocks", or "7-Zip".</li>
-		<li><span class="ini-key">ProgramDirectory</span><br />This is the directory which contains the application, inside the "App" directory. It should have no spaces or characters which cannot go in file names, and should be like this: "Firefox", or "CodeBlocks", or "7-Zip".</li>
-		<li><span class="ini-key">ProgramExecutable</span><br />This is the file name of the application to launch, inside the program directory specified above. It should have no spaces or characters which cannot go in file names, and should be like this: "firefox.exe", or "codeblocks.exe", or "7zFM.exe".</li>
-	</ul></li>
-	<li><span class="ini-head">[LaunchDetails]</span><ul>
+	<li><span class="ini-head">[Launch]</span><ul>
+		<li><span class="ini-key">AppLongName</span><br />This is used for the error message box provided to the user if there is already a copy of the application running. It should be like this: "Mozilla Firefox", or "Code::Blocks", or "7-Zip". In theory this field should never be used, as it defaults to the long name specified in appinfo.ini minus the string " Portable" or ", Portable Edition" at the end. Please consider changing the value in appinfo.ini rather than using this field.</li>
+		<li><span class="ini-key">ProgramExecutable</span><br />This is the path to the application to launch, relative to the "App" directory. Generally, it should have no spaces or characters which cannot go in file names, and should be like this: "Firefox\firefox.exe", or "CodeBlocks\codeblocks.exe", or "7-Zip\7zFM.exe", or "gimp\bin\gimp-2.6.exe".</li>
 		<li><span class="ini-key">DefaultCommandLineArguments</span><br />This is used as command-line arguments to always pass to the executable, for example "--data-directory=%DATADIR%\settings --music-directory=%PORTABLEAPPSMUSICDIR%". <strong>Substitutions apply.</strong></li>
 		<li><span class="ini-key">SetOutPath</span><br />This is used to change the working directory to start the application in. Only use this if absolutely necessary, as it will (at the moment) mess up relative files passed through thee command-line. Example (normally all it'll ever need): "%APPDIR%\AppName". <strong>Substitutions apply.</strong></li>
 		<li><span class="ini-key">AssignContainedTempDirectory</span><br />If the application writes things to the TEMP directory and does not always clean them up, specify "true" here, and it will be given a subdirectory (in the format %TEMP%\AppNamePortableTemp) as its TEMP directory, which will be removed after the application is closed, thus not leaving anything behind. If WaitForProgram is set to false, this will still work, but it may be slower. The TEMP directory will be set to go in Data\temp, so that it is still functional.  This may slow down some apps, and may also clutter up the running device.  Additionally, this directory will not be deleted upon program completion, but it will be upon the next startup.<br /><strong>Default:</strong> true</li>
@@ -297,7 +289,7 @@
 	</ul></li>
 	<li><span class="ini-head">[Activate]</span><br />This section is for telling the launcher whether or not it should load certain things, for example Java and registry support.<ul>
 		<li><span class="ini-key">Registry</span> (values: <span class="ini-value">true</span> or <span class="ini-value">false</span>)<br />If the base application uses the registry, set this to true.  <strong>You MUST set this to true if you wish the registry sections to be parsed.</strong> Otherwise they will not be read at all.</li>
-		<li><span class="ini-key">Java</span> (values: <span class="ini-value">find</span>, <span class="ini-value">require</span>, or nothing)<br />If the application can use Java but does not depend on its being available, set this to "find", and a Java Runtime Environment (JRE) will be found if available, and %JAVADIR% will become available as a replacement variable. If the application is completely dependant on Java, set this to "require". Then you may set ProgramExecutable to "javaw.exe" (normal use) or "java.exe" (useful for testing and debugging) and it will use Java. Then mention the JAR file you need in DefaultCommandLineArguments (as -classpath).<br /><strong>Caveat:</strong> With "require", if you can possibly help it, set WaitForProgram or WaitForOtherInstances to false if you use java.exe or javaw.exe.  Otherwise you'll run into problems cleaning up if other Java applications get run, as it'll look for instances of the application, and find javaw.exe, even though it's another application's javaw.exe instance.</li>
+		<li><span class="ini-key">Java</span> (values: <span class="ini-value">find</span>, <span class="ini-value">require</span>, or nothing)<br />If the application can use Java but does not depend on its being available, set this to "find", and a Java Runtime Environment (JRE) will be found if available, and %JAVADIR% will become available as a replacement variable. If the application is completely dependant on Java, set this to "require". Then you may set ProgramExecutable to "javaw.exe" (normal use) or "java.exe" (command line version which may be useful for testing and debugging) and it will use Java. Then mention the JAR file you need in DefaultCommandLineArguments (as -classpath).<br /><strong>Caveat:</strong> With "require", if you can possibly help it, set WaitForProgram or WaitForOtherInstances to false if you use java.exe or javaw.exe.  Otherwise you'll run into problems cleaning up if other Java applications get run, as it'll look for instances of the application, and find javaw.exe, even though it's another application's javaw.exe instance.</li>
 	</ul></li>
 	<li><span class="ini-head">[LiveMode]</span><br />This section is relevant to running the portable application from a read-only location. As specified here, certain things are copied to the local hard drive, and then the application is run, and any things copied locally are deleted. This is called running locally, or "Live mode".<ul>
 		<li><span class="ini-key">CopyApp</span><br />When run in Live mode, does the application need to be run from a writable location? If yes, specify "true". The default is "true".</li>
@@ -324,7 +316,7 @@
 <h4>Substitutions</h4>
 <p>(This applies to INI entries marked above as "substitutions apply".)</p>
 <ul>
-	<li><strong>%DRIVE%</strong> &ndash; the drive letter from which the portable application is running; in Live mode, this is the location of the portable device, <em>not</em> the application or data directory if CopyApp or CopyData are set. e.g. "X:"</li>
+	<li><strong>%DRIVE%</strong> &ndash; the drive letter from which the portable application is running; in Live mode, this is the location of the portable device, <em>not</em> the application or data directory if CopyApp <!--or CopyData are-->is set. e.g. "X:"</li>
 	<li><strong>Directory variables:</strong> with all of these variables, after the opening % can come, before the variable name, one of four things: nothing, a forward slash, a double backslash, or <code>java.util.prefs:</code>. This refers to the directory separator to be used; if there is nothing there, it is a backslash. For example, <em>%PORTABLEAPPSDIR%</em> is X:\PortableApps, <em>%/PORTABLEAPPSDIR%</em> is X:/PortableApps, and <em>%\\PORTABLEAPPSDIR%</em> is X:\\PortableApps. If unsure, use the default single backslash. <code>java.util.prefs:</code> is a special prefix for registry keys with Java applications that use java.util.prefs to store their settings. It stores paths like this: <em>%java.util.prefs:PORTABLEAPPSDIR%</em> will become <em>\X:\\\Portable\Apps</em>; all characters other than a colon (:) and lowercase letters are prefixed with a backslash (\).
 	<ul>
 		<li><strong>%APPDIR%</strong> &ndash; the location of the App directory (not including the AppName bit), e.g. X:\PortableApps\AppNamePortable\App</li>
@@ -351,14 +343,11 @@
 	</ul></li>
 </ul>
 <h3>Sample INI launcher configuration</h3>
-<h4>Sample 7-Zip launcher (App\Launcher\7-ZipPortable.ini)</h4>
+<h4>Sample 7-Zip launcher</h4>
 <p>7-Zip stores its settings in the registry, in HKEY_CURRENT_USER\Software\7-Zip. In previous releases of 7-Zip Portable, it has stored this in Data\settings\7zip_portable.reg. 7-Zip itself can be run from a read-only location.</p>
-<p>Here is a fully functional sample launcher file (App\Launcher\7-ZipPortable.ini), configured correctly for 7-Zip:</p>
-<pre><span class="ini-head">[AppDetails]</span>
-<span class="ini-key">PortableAppLongName=</span><span class="ini-value">7-Zip Portable</span>
-<span class="ini-key">AppLongName=</span><span class="ini-value">7-Zip</span>
-<span class="ini-key">ProgramDirectory=</span><span class="ini-value">7-Zip</span>
-<span class="ini-key">ProgramExecutable=</span><span class="ini-value">7zFM.exe</span>
+<p>Here is a fully functional sample launcher file, configured correctly for 7-Zip:</p>
+<pre><span class="ini-head">[Launch]</span>
+<span class="ini-key">ProgramExecutable=</span><span class="ini-value">7-Zip\7zFM.exe</span>
 
 <span class="ini-head">[Activate]</span>
 <span class="ini-key">Registry=</span><span class="ini-value">true</span>
@@ -367,23 +356,17 @@
 <span class="ini-key">7zip_portable=</span><span class="ini-value">HKEY_CURRENT_USER\Software\7-Zip</span>
 </pre>
 <p>To outline what this actually does: in the registry, <span class="ini-key">HKEY_CURRENT_USER\Software\7-Zip</span> is backed up if necessary, and the contents of Data\settings\<span class="ini-key">7zip_portable</span>.reg are inserted into the registry, after updating the drive letter. Then App\<span class="ini-key">7-Zip</span>\<span class="ini-key">7zFM.exe</span> is run. After it is closed, the 7-Zip registry key is stored and deleted, and the backup of local 7-Zip settings is restored if it existed.</p>
-<h4>Sample Code::Blocks launcher (App\Launcher\CodeBlocksPortable.ini)</h4>
+<h4>Sample Code::Blocks launcher</h4>
 <p>Code::Blocks stores its settings in the local user's application data directory, in %APPDATA%\codeblocks. However, this cannot just be redirected, as it also depends on %USERPROFILE%, which after testing has been demonstrated to not redirect safely. Thus data must be moved back and forth for running portably. Code::Blocks itself can be run from a read-only location.</p>
-<p>Here is a fully functional sample launcher file (App\Launcher\CodeBlocksPortable.ini), configured correctly for Code::Blocks:</p>
-<pre><span class="ini-head">[AppDetails]</span>
-<span class="ini-key">PortableAppLongName=</span><span class="ini-value">Code::Blocks Portable</span>
-<span class="ini-key">PortableAppShortName=</span><span class="ini-value">CodeBlocksPortable</span>
-<span class="ini-key">AppLongName=</span><span class="ini-value">Code::Blocks</span>
-<span class="ini-key">ProgramDirectory=</span><span class="ini-value">CodeBlocks</span>
-<span class="ini-key">ProgramExecutable=</span><span class="ini-value">codeblocks.exe
-</span>
-<span class="ini-head">[LaunchDetails]</span>
+<p>Here is a fully functional sample launcher file, configured correctly for Code::Blocks:</p>
+<pre><span class="ini-head">[Launch]</span>
+<span class="ini-key">ProgramExecutable=</span><span class="ini-value">CodeBlocks\codeblocks.exe</span>
 <span class="ini-key">DefaultCommandLineArguments=</span><span class="ini-value">--no-check-associations --no-dde --no-splash-screen</span>
 
-<span class="ini-head">[LiveMode]</span>
+<!--<span class="ini-head">[LiveMode]</span>
 <span class="ini-key">CopyData=</span><span class="ini-value">true</span>
 
-<span class="ini-head">[DirectoriesMove]</span>
+--><span class="ini-head">[DirectoriesMove]</span>
 <span class="ini-key">personalities=</span><span class="ini-value">%APPDATA%\codeblocks\personalities</span>
 <span class="ini-key">UserTemplates=</span><span class="ini-value">%APPDATA%\codeblocks\UserTemplates</span>
 <span class="ini-key">share=</span><span class="ini-value">%APPDATA%\codeblocks\share</span>
