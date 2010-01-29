@@ -420,7 +420,7 @@ Section
 		${IfNot} ${FileExists} "$EXEDIR\App\$PROGRAMEXECUTABLE"
 		${AndIfNot} $USINGJAVAEXECUTABLE == "true"
 			;=== Program executable not where expected
-			StrCpy $MISSINGFILEORPATH $PROGRAMEXECUTABLE
+			StrCpy $MISSINGFILEORPATH App\$PROGRAMEXECUTABLE
 			MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
 			Abort
 		${EndIf}
