@@ -6,5 +6,5 @@ syntax: glob
 .swp
 # hg revert renames the file to *.orig but we don't want them... we reverted the changes to them, remember?
 *.orig
-# PortableApps.com Installer leaves this but it shouldn't be versioned
-Other/Source/PortableApps.comInstallerConfig.nsh
+
+Other/Source/PortableApps.comInstaller*
