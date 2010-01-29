@@ -1,5 +1,5 @@
 /* Copyright 2004-2010 PortableApps.com
- * Website: http://portableapps.com/development/launcher
+ * Website: http://portableapps.com/development
  * Main developer and contact: Chris Morgan
  *
  * This software is OSI Certified Open Source Software.
