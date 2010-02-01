@@ -62,6 +62,8 @@ SetCompressorDictSize 32
 ;(NSIS Plugins) {{{2
 !include TextReplace.nsh
 !include Registry.nsh
+!include UAC.nsh
+!addplugindir Plugins
 
 ;(Custom) {{{2
 !include ReplaceInFileWithTextReplace.nsh
@@ -86,6 +88,7 @@ ${IncludeLang} Japanese
 ${IncludeLang} SimpChinese
 
 ;=== Variables {{{1
+Var RUNASADMIN
 Var AppID
 Var EXECSTRING
 Var LASTDRIVE
@@ -249,8 +252,64 @@ Var PORTABLEAPPSLOCALEWINNAME
 !macroend
 !define ReadLauncherConfig "!insertmacro ReadLauncherConfig"
 
-; onInit: select the language to run the launcher in for any message boxes {{{1
+
+; UAC elevation function {{{1
+Function UAC_Elevate
+	; Macro for producing the right message box based on the error code {{{2
+	!macro CaseUACCodeAlert CODE FORCEMESSAGE TRYMESSAGE
+		!if "${CODE}" == ""
+			${Default}
+		!else
+			${Case} "${CODE}"
+		!endif
+			${If} $RUNASADMIN == "force"
+				MessageBox MB_OK|MB_ICONSTOP|MB_TOPMOST|MB_SETFOREGROUND "${FORCEMESSAGE}"
+				Abort
+			${ElseIf} $RUNASADMIN == "try"
+				MessageBox MB_OK|MB_ICONINFORMATION|MB_TOPMOST|MB_SETFOREGROUND "${TRYMESSAGE}"
+			${EndIf}
+			${Break}
+	!macroend
+	!define CaseUACCodeAlert "!insertmacro CaseUACCodeAlert"
+
+	Elevate: ; Attempt to elevate to admin {{{2
+		!insertmacro UAC_RunElevated
+		${Switch} $0
+			; Success in changing credentials in some way {{{3
+			${Case} 0
+				${IfThen} $1 = 1 ${|} Abort ${|} ; This is the user-level process and the admin-level process has finished successfully.
+				${IfThen} $3 <> 0 ${|} ${Break} ${|} ; This is the admin-level process: great!
+				${If} $1 = 3 ; RunAs completed successfully, but with a non-admin user
+					${If} $RUNASADMIN == "force"
+						MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION|MB_TOPMOST|MB_SETFOREGROUND "$(LauncherRequiresAdmin)$\r$\n$\r$\n$(LauncherNotAdminTryAgain)" IDRETRY Elevate IDCANCEL Fail
+					${ElseIf} $RUNASADMIN == "try"
+						MessageBox MB_ABORTRETRYIGNORE|MB_ICONEXCLAMATION|MB_TOPMOST|MB_SETFOREGROUND "$(LauncherNotAdminLimitedFunctionality)$\r$\n$\r$\n$(LauncherNotAdminLimitedFunctionalityTryAgain)" IDABORT Fail IDRETRY Elevate
+						Return ; Ignore
+					${EndIf}
+				${EndIf}
+				; If we're still here, we'll fall through as there's no ${Break}
+			; Explicitly failed to get admin {{{3
+			${CaseUACCodeAlert} 1233 \
+				"$(LauncherRequiresAdmin)" \
+				"$(LauncherNotAdminLimitedFunctionality)"
+			; Windows logon service unavailable {{{3
+			${CaseUACCodeAlert} 1062 \
+				"$(LauncherAdminLogonServiceNotRunning)" \
+				"$(LauncherNotAdminLimitedFunctionality)"
+			; Other error, not sure what {{{3
+			${CaseUACCodeAlert} "" \
+				"$(LauncherAdminError)$\r$\n$(LauncherNotAdminLimitedFunctionality)" \
+				"$(LauncherAdminError)$\r$\n$(LauncherNotAdminLimitedFunctionality)"
+		${EndSwitch}
+		Return
+
+	Fail:    ; Failed to elevate to admin, either as required (force), or the user wants to give up (try) {{{2
+		Abort
+FunctionEnd
+
+; onInit: set the language and run as admin if needed {{{1
 Function .onInit
+	; Set the language for message boxes, based on what the Platform has set {{{2
 	ReadEnvStr $0 "PortableApps.comLocaleID"
 	${Switch} $0
 		${Case} 1033 ; English
@@ -262,6 +321,13 @@ Function .onInit
 			StrCpy $LANGUAGE $0
 			${Break}
 	${EndSwitch}
+
+	; Run as admin if needed {{{2
+	${ReadLauncherConfig} $RUNASADMIN Launch RunAsAdmin
+	${If} $RUNASADMIN == force
+	${OrIf} $RUNASADMIN == try
+		Call UAC_Elevate
+	${EndIf}
 FunctionEnd
 
 ; Now for the Section which does everything {{{1
@@ -681,9 +747,9 @@ Section
 			System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i(r0, r1).n'
 		${EndForEachINIPair}
 
-	;=== Backup local data and insert portable data {{{2
+	;=== If primary instance: make it portable {{{2
 		${If} $SECONDARYLAUNCH != "true"
-			;=== Files {{{3
+			;=== Backup local files and insert portable data {{{3
 				${ForEachINIPair} "FilesMove" $0 $1 ; {{{4
 					${ParseLocations} $1
 
@@ -720,7 +786,7 @@ Section
 					${EndIf}
 				${EndForEachINIPair}
 
-			;=== Registry {{{3
+			;=== Backup registry and insert portable data {{{3
 			${If} $USESREGISTRY == "true"
 				;=== RegistryKeys {{{4
 				${ForEachINIPair} "RegistryKeys" $0 $1
@@ -843,9 +909,8 @@ Section
 				RMDir /r $TEMP\$AppIDLive
 			${EndIf}
 
-		;=== Save portable settings and restore any backed up settings {{{3
-			;=== Files {{{4
-			;=== FilesMove {{{5
+		;=== Save portable files and restore any backed up files {{{3
+			;=== FilesMove {{{4
 			${ForEachINIPair} "FilesMove" $0 $1
 				${ParseLocations} $1
 				${GetFileName} $0 $2
@@ -865,7 +930,7 @@ Section
 				${EndIf}
 			${EndForEachINIPair}
 
-			;=== DirectoriesMove {{{5
+			;=== DirectoriesMove {{{4
 			${ForEachINIPair} "DirectoriesMove" $0 $1
 				${ParseLocations} $1
 
@@ -884,7 +949,7 @@ Section
 				${EndIf}
 			${EndForEachINIPair}
 
-			;=== DirectoriesCleanupIfEmpty {{{5
+			;=== DirectoriesCleanupIfEmpty {{{4
 			StrCpy $0 1
 			${Do}
 				ClearErrors
@@ -898,7 +963,7 @@ Section
 				IntOp $0 $0 + 1
 			${Loop}
 
-			;=== DirectoriesCleanupForce {{{5
+			;=== DirectoriesCleanupForce {{{4
 			StrCpy $0 1
 			${Do}
 				ClearErrors
@@ -912,9 +977,9 @@ Section
 				IntOp $0 $0 + 1
 			${Loop}
 
-			;=== Registry {{{4
+			;=== Save portable registry data and restore any backed up data {{{3
 			${If} $USESREGISTRY == "true"
-				;=== RegistryKeys {{{5
+				;=== RegistryKeys {{{4
 				${ForEachINIPair} "RegistryKeys" $0 $1
 					ClearErrors
 					ReadINIStr $R0 "$DATADIRECTORY\_FailedRegistryKeys.ini" "FailedRegistryKeys" $0
@@ -937,7 +1002,7 @@ Section
 				${EndForEachINIPair}
 				Delete "$DATADIRECTORY\_FailedRegistryKeys.ini"
 
-				;=== RegistryValueBackupDelete {{{5
+				;=== RegistryValueBackupDelete {{{4
 				StrCpy $0 1
 				${Do}
 					ClearErrors
@@ -953,7 +1018,7 @@ Section
 					IntOp $0 $0 + 1
 				${Loop}
 
-				;=== RegistryCleanupIfEmpty {{{5
+				;=== RegistryCleanupIfEmpty {{{4
 				StrCpy $0 1
 				${Do}
 					ClearErrors
@@ -966,7 +1031,7 @@ Section
 					IntOp $0 $0 + 1
 				${Loop}
 
-				;=== RegistryCleanupForce {{{5
+				;=== RegistryCleanupForce {{{4
 				StrCpy $0 1
 				${Do}
 					ClearErrors
@@ -980,14 +1045,14 @@ Section
 				${Loop}
 			${EndIf}
 
-			;=== RefreshShellIcons {{{4
+			;=== RefreshShellIcons {{{3
 			${ReadLauncherConfig} $0 Launch RefreshShellIcons
 			${If} $0 == "after"
 			${OrIf} $0 == "both"
 				${RefreshShellIcons}
 			${EndIf}
+	;=== If secondary instance: launch and exit (existing launcher will clear up) {{{2
 		${Else}
-		;=== Already running: launch and exit (existing launcher will clear up) {{{3
 			ClearErrors
 			${ReadLauncherConfig} $0 Launch SetOutPath
 			${IfNot} ${Errors}
@@ -999,16 +1064,15 @@ Section
 			Exec $EXECSTRING
 		${EndIf}
 
-		;=== Unload plug-ins {{{3
+	;=== Unload plug-ins {{{2
 		${IfThen} $USESREGISTRY == "true" ${|} ${registry::Unload} ${|}
 
 		${If} $DISABLESPLASHSCREEN != "true"
 			newadvsplash::stop /WAIT
 		${EndIf}
-
-		${DebugMsg} "Finished."
-		;=== Done!
-SectionEnd ;}}}
+		; UAC.dll appears to no longer have Unload... but then we don't use /NOUNLOAD so it should be fine.
+		;${IfThen} $RUNASADMIN == "true" ${|} UAC::Unload ${|}
+SectionEnd ;}}}1
 
 ; This note is just as something out of interest.  With a SetOutDir directive, it could be worth while examining each command-line argument and turning relative paths into absolute paths, probably with the PathCombine call.  I've used an AutoHotkey implementation of it, but we'd need an NSIS one here.
 ;To combine paths $0 and $1: System::Call 'Shlwapi.dll::PathCombineA(t r0, t r1) t ."$DEST"'???
