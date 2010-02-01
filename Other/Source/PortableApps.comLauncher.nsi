@@ -89,6 +89,7 @@ ${IncludeLang} SimpChinese
 
 ;=== Variables {{{1
 Var RUNASADMIN
+Var RUNNINGASADMIN
 Var AppID
 Var EXECSTRING
 Var LASTDRIVE
@@ -278,7 +279,10 @@ Function UAC_Elevate
 			; Success in changing credentials in some way {{{3
 			${Case} 0
 				${IfThen} $1 = 1 ${|} Abort ${|} ; This is the user-level process and the admin-level process has finished successfully.
-				${IfThen} $3 <> 0 ${|} ${Break} ${|} ; This is the admin-level process: great!
+				${If} $3 <> 0 ; This is the admin-level process: great!
+					StrCpy $RUNNINGASADMIN true
+					Return
+				${EndIf}
 				${If} $1 = 3 ; RunAs completed successfully, but with a non-admin user
 					${If} $RUNASADMIN == "force"
 						MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION|MB_TOPMOST|MB_SETFOREGROUND "$(LauncherRequiresAdmin)$\r$\n$\r$\n$(LauncherNotAdminTryAgain)" IDRETRY Elevate IDCANCEL Fail
