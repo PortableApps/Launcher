@@ -90,6 +90,7 @@ ${!ifndefdefdo} _NewServiceLib_Included
 		${If} $SCManager != 0
 			!ifndef _ServiceMacro_IsCreate
 				${If} $OpenServiceName != "${ServiceName}"
+			!endif
 					; Close the last opened service handle
 					${If} $OpenServiceHandle != 0
 					${AndIf} $OpenServiceHandle != ""
@@ -97,6 +98,7 @@ ${!ifndefdefdo} _NewServiceLib_Included
 					${EndIf}
 					; Now open the service in question
 					StrCpy $OpenServiceName "${ServiceName}"
+			!ifndef _ServiceMacro_IsCreate
 					System::Call 'advapi32::OpenServiceA(i $SCManager, t "${ServiceName}", i ${SERVICE_ALL_ACCESS}) i.s'
 					Pop $OpenServiceHandle
 				${EndIf}
