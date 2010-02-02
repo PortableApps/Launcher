@@ -70,6 +70,7 @@ SetCompressorDictSize 32
 !include StrReplace.nsh
 !include ForEachINIPair.nsh
 !include SetFileAttributesDirectoryNormal.nsh
+!include NewServiceLib.nsh
 
 ;=== Program Icon {{{1
 Icon "..\..\App\AppInfo\appicon.ico"
