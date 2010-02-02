@@ -156,6 +156,13 @@ ${!ifndefdefdo} _NewServiceLib_Included
 	!macroend
 	${!macrodef} ServiceDelete
 
+	!macro ServiceExists ServiceName
+		!insertmacro _ServiceMacroInit
+		StrCpy $0 true ; got here so it exists
+		!insertmacro _ServiceMacroEnd
+	!macroend
+	${!macrodef} ServiceExists
+
 	!macro ServiceStart ServiceName
 		!insertmacro _ServiceMacroInit
 		System::Call 'advapi32::StartServiceA(i $OpenServiceHandle, i 0, i 0) i.r0'
