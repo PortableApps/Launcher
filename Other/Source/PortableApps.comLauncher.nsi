@@ -70,6 +70,7 @@ SetCompressorDictSize 32
 !include StrReplace.nsh
 !include ForEachINIPair.nsh
 !include SetFileAttributesDirectoryNormal.nsh
+!include CompilerUtils.nsh
 !include NewServiceLib.nsh
 
 ;=== Program Icon {{{1
@@ -80,7 +81,7 @@ Icon "..\..\App\AppInfo\appicon.ico"
 	LoadLanguageFile "${NSISDIR}\Contrib\Language files\${_LANG}.nlf"
 	!insertmacro LANGFILE_INCLUDE_WITHDEFAULT Languages\${_LANG}.nsh Languages\English.nsh
 !macroend
-!define IncludeLang "!insertmacro IncludeLang"
+${!macrodef} IncludeLang
 ${IncludeLang} English
 ${IncludeLang} French
 ${IncludeLang} German
@@ -193,7 +194,7 @@ Var PORTABLEAPPSLOCALEWINNAME
 	Pop $R1
 	Pop $R0
 !macroend
-!define MakeJavaUtilPrefsPath "!insertmacro MakeJavaUtilPrefsPath"
+${!macrodef} MakeJavaUtilPrefsPath
 
 ; Macro: generate strings for ParseLocations {{{1
 !macro ParseLocations_SlashType VAR SLASHTYPE VARIABLEAPPENDAGE
@@ -237,7 +238,7 @@ Var PORTABLEAPPSLOCALEWINNAME
 		${StrReplace} "${VAR}" "%LANGWINNAME%" $PORTABLEAPPSLOCALEWINNAME "${VAR}"
 	${DebugMsg} "After location parsing, $${VAR} = `${VAR}`"
 !macroend
-!define ParseLocations "!insertmacro ParseLocations"
+${!macrodef} ParseLocations
 
 ; Macro: print a debug message {{{1
 !macro DebugMsg _MSG
@@ -246,13 +247,20 @@ Var PORTABLEAPPSLOCALEWINNAME
 			Abort ; not using IfCmd as it causes trouble with ' in _MSG
 	!endif
 !macroend
-!define DebugMsg "!insertmacro DebugMsg"
+${!macrodef} DebugMsg
 
 ; Macro: read a value from the launcher configuration file {{{1
 !macro ReadLauncherConfig _OUTPUT _SECTION _VALUE
 	ReadINIStr ${_OUTPUT} $EXEDIR\App\AppInfo\launcher.ini ${_SECTION} ${_VALUE}
 !macroend
-!define ReadLauncherConfig "!insertmacro ReadLauncherConfig"
+${!macrodef} ReadLauncherConfig
+
+!macro ReadLauncherConfigWithDefault _OUTPUT _SECTION _VALUE _DEFAULT
+	ClearErrors
+	${ReadLauncherConfig} ${_OUTPUT} `${_SECTION}` `${_VALUE}`
+	${IfThen} ${Errors} ${|} StrCpy ${_OUTPUT} `${_DEFAULT}` ${|}
+!macroend
+${!macrodef} ReadLauncherConfigWithDefault
 
 
 ; UAC elevation function {{{1
@@ -272,7 +280,7 @@ Function UAC_Elevate
 			${EndIf}
 			${Break}
 	!macroend
-	!define CaseUACCodeAlert "!insertmacro CaseUACCodeAlert"
+	${!macrodef} CaseUACCodeAlert
 
 	Elevate: ; Attempt to elevate to admin {{{2
 		!insertmacro UAC_RunElevated
