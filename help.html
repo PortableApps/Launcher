@@ -281,6 +281,16 @@
 <a href="#Environment" class="ini-head">[Environment]</a>
 <span class="ini-key">PATH=</span><span class="ini-value">%APPDIR%\AppName;{&amp;}</span>
 <span class="ini-key">HOME=</span><span class="ini-value">%DATADIR%\settings</span>
+
+<a href="#Service" class="ini-head">[Service<em>N</em>]</a>
+<a href="#Service:Name" class="ini-key">Name=</a><span class="ini-value">ServiceName</span>
+<a href="#Service:Path" class="ini-key">Path=</a><span class="ini-value">%APPDIR%\AppName\service.exe</span>
+<a href="#Service:Type" class="ini-key">Type=</a><span class="ini-value ini-default">service</span> / <span class="ini-value">service-interaction</span> / <span class="ini-value">driver</span>
+<a href="#Service:User" class="ini-key">User=</a><span class="ini-value">LocalService</span> / <span class="ini-value">NetworkService</span>  / <span class="ini-default">none</span>
+<a href="#Service:Display" class="ini-key">Display=</a><span class="ini-value">Display name</span>
+<a href="#Service:Dependencies" class="ini-key">Dependencies=</a><span class="ini-value">Foo,Bar</span>
+<a href="#Service:Description" class="ini-key">Description=</a><span class="ini-value">Long description of the service</span>
+<a href="#Service:IfExists" class="ini-key">IfExists=</a><span class="ini-value ini-default">skip</span> / <span class="ini-value">replace</span>
 </pre>
 
 <h3>Explanation of launcher INI options</h3>
@@ -326,6 +336,16 @@
 	<li id="DirectoriesCleanupForce"><span class="ini-head">[DirectoriesCleanupForce]</span><br />These are directories which get removed after the application has run. This is useful if there is a tree which will be left behind, for example, if something stores temporary data which can be safely deleted in %APPDATA%\AppName\Temp. Remove it with a line in here.<br />The key names here are numbers.<br /><strong>Example:</strong> <span class="ini-key">1=</span><span class="ini-value">%APPDATA%\Publisher</span><span class="ini-head"></span></li>
 	<li id="FileDriveLetterUpdate"><span class="ini-head">[FileDriveLetterUpdate]</span><br />These are files to update the current drive letter in, given relative to the portable data location (Data), not where it may get moved to (see above).<br />The key names here are "Backslash<em>N</em>" and "Forwardslash<em>N</em>" (the numbering of the two is unrelated). Use Backslash if the paths are stored as X:\file, and Forwardslash if they are stored as X:/file, or use both if necessary.<br /><strong>Substitutions apply.</strong><br /><strong>Example:</strong> <span class="ini-key">1=</span><span class="ini-value">something\settings.conf</span></li>
 	<li id="Environment"><span class="ini-head">[Environment]</span><br />Environment variables to modify, for example "PATH" or "HOME". The value can start or end with "{&amp;}", which is replaced with the original content. This way you can append or prepend things to PATH. <strong>Substitutions apply.</strong><br /><strong>Example:</strong> <span class="ini-key">PATH=</span><span class="ini-value">%APPDIR%\AppName;{&amp;}</span> (this will prepend the executable's directory to the path.)</li></li>
+	<li id="Service"><span class="ini-head">[Service<em>N</em>]</span><br />Services and drivers which are required or recommended by your portable application. There are various keys for each section:<ul>
+		<li id="Service:Name"><span class="ini-key">Name</span><br />The service name.</li>
+		<li id="Service:Path"><span class="ini-key">Path</span><br />The execution string of the service.</li>
+		<li id="Service:Type"><span class="ini-key">Type</span> (values: <span class="ini-value ini-default">service</span>, <span class="ini-value">service-interaction</span> or <span class="ini-value">driver</span>)<br />Specify whether you are dealing with a service, a service with desktop interaction or a driver.</li>
+		<li id="Service:User"><span class="ini-key">User</span> (values: <span class="ini-value">LocalService</span>, <span class="ini-value">NetworkService</span> or <span class="ini-default">none</span>)<br />If the service needs to run as other than LocalSystem, i.e. as LocalService or NetworkService, specify it here (omit the leading <span class="ini-value">NT AUTHORITY\</span>).</li>
+		<li id="Service:Display"><span class="ini-key">Display</span><br />The short display name of the service.</li>
+		<li id="Service:Dependencies"><span class="ini-key">Dependencies</span><br />A comma-separated list of dependencies</li>
+		<li id="Service:Description"><span class="ini-key">Description</span><br />A description of what the service does for the services control panel applet (this should not be necessary)</li>
+		<li id="Service:IfExists"><span class="ini-key">IfExists</span> (values: <span class="ini-value ini-default">skip</span> or <span class="ini-value">replace</span>)<br />If the service already exists, you can either skip it or replace it with the portable version of the service (the original service will be restored afterwards).</li>
+	</ul></li>
 </ul>
 <h4>Substitutions</h4>
 <p>(This applies to INI entries marked above as "substitutions apply".)</p>
