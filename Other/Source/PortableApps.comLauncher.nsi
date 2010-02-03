@@ -53,8 +53,6 @@ SetCompressorDictSize 32
 !include LangFile.nsh
 !include LogicLib.nsh
 !include FileFunc.nsh
-!insertmacro GetParameters
-!insertmacro GetRoot
 !include TextFunc.nsh
 !insertmacro TrimNewLines
 !insertmacro ConfigWrite
