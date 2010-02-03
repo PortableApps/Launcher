@@ -199,7 +199,7 @@
 <p>The PortableApps.com Launcher depends on one file for its information and portablization: App\AppInfo\launcher.ini. This often quite complex file is the backbone of the portability which the PortableApps.com Launcher provides. It must be correctly configured to cover everything which the application uses. <strong>Only developers should ever modify the launcher INI file, as improper modifications may cause system damage, lose data or cause data to be left behind.</strong></p>
 <p>Here is the format for the launcher INI file:</p>
 <pre><span class="ini-head">[Launch]</span>
-<span class="ini-key">AppLongName=</span><span class="ini-value">App Name</span>
+<span class="ini-key">AppName=</span><span class="ini-value">App Name</span>
 <span class="ini-key">ProgramExecutable=</span><span class="ini-value">AppName\AppName.exe</span>
 <span class="ini-key">DefaultCommandLineArguments=</span><span class="ini-value">--data-directory=%DATADIR%\settings</span>
 <span class="ini-key">SetOutPath=</span><span class="ini-value">%APPDIR%\AppName</span>
@@ -275,7 +275,7 @@
 <p>There are some definite entries, which specify fixed values, and some arbitrary sections and values for custom entries. First here are the definite entries.</p>
 <ul>
 	<li><span class="ini-head">[Launch]</span><ul>
-		<li><span class="ini-key">AppLongName</span><br />This is used for the error message box provided to the user if there is already a copy of the application running. It should be like this: "Mozilla Firefox", or "Code::Blocks", or "7-Zip". In theory this field should never be used, as it defaults to the long name specified in appinfo.ini minus the string " Portable" or ", Portable Edition" at the end. Please consider changing the value in appinfo.ini rather than using this field.</li>
+		<li><span class="ini-key">AppName</span><br />This is used for the error message box provided to the user if there is already a copy of the application running. It should be like this: "Mozilla Firefox", or "Code::Blocks", or "7-Zip". In theory this field should never be used, as it defaults to the long name specified in appinfo.ini minus the string " Portable" or ", Portable Edition" at the end. Please consider changing the value in appinfo.ini rather than using this field.</li>
 		<li><span class="ini-key">ProgramExecutable</span><br />This is the path to the application to launch, relative to the "App" directory. Generally, it should have no spaces or characters which cannot go in file names, and should be like this: "Firefox\firefox.exe", or "CodeBlocks\codeblocks.exe", or "7-Zip\7zFM.exe", or "gimp\bin\gimp-2.6.exe".</li>
 		<li><span class="ini-key">DefaultCommandLineArguments</span><br />This is used as command-line arguments to always pass to the executable, for example "--data-directory=%DATADIR%\settings --music-directory=%PORTABLEAPPSMUSICDIR%". <strong>Substitutions apply.</strong></li>
 		<li><span class="ini-key">SetOutPath</span><br />This is used to change the working directory to start the application in. Only use this if absolutely necessary, as it will (at the moment) mess up relative files passed through the command-line. Example (normally all it'll ever need): "%APPDIR%\AppName". <strong>Substitutions apply.</strong></li>
