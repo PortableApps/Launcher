@@ -506,7 +506,7 @@ Section
 
 	;=== Check if application already running {{{2
 		!macro AbortAlreadyRunning _EXECUTABLE_NAME
-			FindProcDLL::FindProc ${_EXECUTABLE_NAME}
+			FindProcDLL::FindProc "${_EXECUTABLE_NAME}"
 			${If} $SECONDARYLAUNCH != "true"
 			${AndIf} $R0 = 1
 				${ReadLauncherConfig} $APPNAME Launch AppName
@@ -524,14 +524,15 @@ Section
 						${EndIf}
 					${EndIf}
 				${EndIf}
+				MessageBox MB_OK|MB_ICONSTOP `$(LauncherAlreadyRunning)`
+				Abort
 			${EndIf}
-			MessageBox MB_OK|MB_ICONSTOP `$(LauncherAlreadyRunning)`
-			Abort
 		!macroend
 		${ReadLauncherConfig} $0 Launch SingleAppInstance
 		${If} $0 != "false"
 		${AndIfNot} $USINGJAVAEXECUTABLE == "true"
-			!insertmacro AbortAlreadyRunning $PROGRAMEXECUTABLE
+			${GetFileName} $PROGRAMEXECUTABLE $0
+			!insertmacro AbortAlreadyRunning $0
 		${EndIf}
 
 		ClearErrors
