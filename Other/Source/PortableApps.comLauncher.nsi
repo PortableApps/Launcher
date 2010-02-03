@@ -901,9 +901,18 @@ Section
 		;=== Wait till it's done {{{3
 			${ReadLauncherConfig} $0 Launch WaitForOtherInstances
 			${If} $0 != "false"
-				${DebugMsg} "Waiting till any other instances of $PROGRAMEXECUTABLE are finished."
+				${ReadLauncherConfig} $0 Launch WaitForEXE
+				${If} $0 != ""
+					${DebugMsg} "Waiting till any other instances of $PROGRAMEXECUTABLE and $0 are finished."
+				${Else}
+					${DebugMsg} "Waiting till any other instances of $PROGRAMEXECUTABLE are finished."
+				${EndIf}
 				${Do}
 					Sleep 1000
+					${If} $0 != ""
+						FindProcDLL::FindProc /NOUNLOAD $0
+						${IfThen} $R0 = 1 ${|} ${Continue} ${|}
+					${EndIf}
 					FindProcDLL::FindProc $PROGRAMEXECUTABLE
 				${LoopWhile} $R0 = 1
 				${DebugMsg} "All instances of $PROGRAMEXECUTABLE are finished."
