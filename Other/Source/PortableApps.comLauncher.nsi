@@ -901,10 +901,11 @@ Section
 			${ReadLauncherConfig} $0 Launch WaitForOtherInstances
 			${If} $0 != false
 				${ReadLauncherConfig} $0 Launch WaitForEXE
+				${GetFileName} $PROGRAMEXECUTABLE $1
 				${If} $0 != ""
-					${DebugMsg} "Waiting till any other instances of $PROGRAMEXECUTABLE and $0 are finished."
+					${DebugMsg} "Waiting till any other instances of $1 and $0 are finished."
 				${Else}
-					${DebugMsg} "Waiting till any other instances of $PROGRAMEXECUTABLE are finished."
+					${DebugMsg} "Waiting till any other instances of $1 are finished."
 				${EndIf}
 				${Do}
 					Sleep 1000
@@ -912,9 +913,9 @@ Section
 						FindProcDLL::FindProc /NOUNLOAD $0
 						${IfThen} $R0 = 1 ${|} ${Continue} ${|}
 					${EndIf}
-					FindProcDLL::FindProc $PROGRAMEXECUTABLE
+					FindProcDLL::FindProc $1
 				${LoopWhile} $R0 = 1
-				${DebugMsg} "All instances of $PROGRAMEXECUTABLE are finished."
+				${DebugMsg} "All instances of $1 are finished."
 			${EndIf}
 
 		;=== Remove custom TEMP directory {{{3
