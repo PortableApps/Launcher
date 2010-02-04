@@ -872,6 +872,46 @@ Section
 				${EndForEachINIPair}
 			${EndIf}
 
+			;=== Handle services and drivers {{{3
+				!macro ServiceReadConfig INI Parameter
+					${ReadLauncherConfig} $1 Service$0 ${INI}
+					!if ${Parameter} == path
+						${ParseLocations} $1
+					!endif
+					!if ${Parameter} == user
+						${If} $1 == LocalService
+						${OrIf} $1 == NetworkService
+							StrCpy $1 "NT AUTHORITY\$1"
+						${EndIf}
+					!endif
+					${IfThen} $1 != "" ${|} StrCpy $2 "$2 /${Parameter}=$1" ${|}
+				!macroend
+				StrCpy $0 1
+				${Do}
+					ClearErrors
+					StrCpy $2 ""
+					!insertmacro ServiceReadConfig Name         name
+					${ServiceExists} $1 $3
+					${If} $3 == true ; Service already exists
+						${ReadLauncherConfig} $3 Service$0 IfExists
+						${If} $3 == replace
+							MessageBox MB_ICONEXCLAMATION "TODO: The backing up and replacement of services is not yet implemented. The local service will remain."
+							; ${NewServiceLib.BackupService} $1 $DATADIRECTORY\PortableApps.comLauncherWorkingData.ini Service$1
+							; ${NewServiceLib.DeleteService} $1
+						${EndIf}
+						WriteINIStr $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini Service$0 ExistedBefore true
+					${EndIf}
+					!insertmacro ServiceReadConfig Path         path
+					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
+					!insertmacro ServiceReadConfig Display      display
+					!insertmacro ServiceReadConfig Type         type
+					!insertmacro ServiceReadConfig User         user
+					!insertmacro ServiceReadConfig Dependencies dependencies
+					!insertmacro ServiceReadConfig Description  description
+					${ServiceCreate} $2 $1
+					IntOp $0 $0 + 1
+				${Loop}
+
 		;=== Handle working directory {{{3
 			ClearErrors
 			${ReadLauncherConfig} $0 Launch SetOutPath
@@ -923,6 +963,17 @@ Section
 				${DebugMsg} "Removing contained temporary directory $TEMPDIRECTORY."
 				RMDir /r $TEMPDIRECTORY
 			${EndIf}
+
+			;=== Handle services and drivers {{{3
+				StrCpy $0 1
+				${Do}
+					ClearErrors
+					${ReadLauncherConfig} $1 Service$0 Name
+					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
+					; TODO: save state in PortableApps.comLauncherRuntimeData.ini to prevent doing anything silly.
+					; Possibly also check the service path to make sure it's the right one we delete.
+					${ServiceDelete} $1 $2
+				${Loop}
 
 		;=== Save portable files and restore any backed up files {{{3
 			;=== FilesMove {{{4
