@@ -945,7 +945,7 @@ Section
 				${DebugMsg} "Removing portable settings file $1 from run location."
 				Delete $1
 
-				${IfNot} ${FileExists} $1-BackupBy$AppID
+				${If} ${FileExists} $1-BackupBy$AppID
 					${DebugMsg} "Moving local settings file from $1-BackupBy$AppID to $1"
 					Rename $1-BackupBy$AppID $1
 				${EndIf}
