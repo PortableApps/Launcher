@@ -924,12 +924,6 @@ Section
 				RMDir /r $TEMPDIRECTORY
 			${EndIf}
 
-		;=== Remove Live TEMP directory (run locally) {{{3
-			${If} $RUNLOCALLY == true
-				${DebugMsg} "Removing Live mode directory $TEMP\$AppIDLive."
-				RMDir /r $TEMP\$AppIDLive
-			${EndIf}
-
 		;=== Save portable files and restore any backed up files {{{3
 			;=== FilesMove {{{4
 			${ForEachINIPair} FilesMove $0 $1
@@ -1064,6 +1058,12 @@ Section
 					${registry::DeleteKey} $1 $R0
 					IntOp $0 $0 + 1
 				${Loop}
+			${EndIf}
+
+		;=== Remove Live TEMP directory (run locally) {{{3
+			${If} $RUNLOCALLY == true
+				${DebugMsg} "Removing Live mode directory $TEMP\$AppIDLive."
+				RMDir /r $TEMP\$AppIDLive
 			${EndIf}
 
 			;=== RefreshShellIcons {{{3
