@@ -257,6 +257,10 @@ Var PORTABLEAPPSLOCALEWINNAME
 !macroend
 !define ReadLauncherConfigWithDefault "!insertmacro ReadLauncherConfigWithDefault"
 
+!macro ReadUserOverrideConfig _OUTPUT _VALUE
+	ReadINIStr ${_OUTPUT} $EXEDIR\PortableApps.comLauncher.ini PortableApps.comLauncher ${_VALUE}
+!macroend
+!define ReadUserOverrideConfig "!insertmacro ReadUserOverrideConfig"
 
 ; UAC elevation function {{{1
 Function UAC_Elevate
@@ -341,7 +345,6 @@ FunctionEnd
 ; Now for the Section which does everything {{{1
 Section
 	ReadINIStr $AppID $EXEDIR\App\AppInfo\appinfo.ini Details AppID
-	${DebugMsg} "Launcher INI file is $EXEDIR\App\AppInfo\launcher.ini.$\nUser INI overrides are in $EXEDIR\PortableApps.comLauncher.ini."
 
 	;=== Fail for UNC paths {{{2
 		StrCpy $0 $EXEDIR 2
@@ -489,7 +492,7 @@ Section
 		${EndIf}
 
 	;=== Read the user customisations INI file {{{2
-		ReadINIStr $RUNLOCALLY $EXEDIR\PortableApps.comLauncher.ini PortableApps.comLauncher RunLocally
+		${ReadUserOverrideConfig} $RUNLOCALLY RunLocally
 
 		${IfNot} ${FileExists} $EXEDIR\App\$PROGRAMEXECUTABLE
 		${AndIfNot} $USINGJAVAEXECUTABLE == true
@@ -537,7 +540,7 @@ Section
 		${EndIf}
 
 	;=== Display splash screen {{{2
-		ReadINIStr $DISABLESPLASHSCREEN $EXEDIR\PortableApps.comLauncher.ini PortableApps.comLauncher DisableSplashScreen
+		${ReadUserOverrideConfig} $DISABLESPLASHSCREEN DisableSplashScreen
 		${IfNotThen} ${FileExists} $EXEDIR\App\AppInfo\splash.jpg ${|} StrCpy $DISABLESPLASHSCREEN true ${|}
 		${If} $DISABLESPLASHSCREEN != true
 			;=== Show the splash screen before processing the files
@@ -727,7 +730,7 @@ Section
 		${EndIf}
 
 	;=== Get additional parameters from user INI file {{{2
-		ReadINIStr $0 $EXEDIR\PortableApps.comLauncher.ini PortableApps.comLauncher AdditionalParameters
+		${ReadUserOverrideConfig} $0 AdditionalParameters
 		${If} $0 != ""
 			${DebugMsg} "The user has specified additional command line arguments ($0).  Adding them to execution string."
 			StrCpy $EXECSTRING "$EXECSTRING $0"
