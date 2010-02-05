@@ -22,7 +22,7 @@
 
 ;=== Program Details {{{1
 ;!define DEBUG
-!define VER "0.9.9.1"
+!define VER "0.9.9.2"
 Name "PortableApps.com Launcher"
 OutFile ..\..\PortableApps.comLauncher.exe
 Caption "PortableApps.com Launcher"
