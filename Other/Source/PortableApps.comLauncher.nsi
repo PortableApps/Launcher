@@ -479,7 +479,7 @@ Section
 		${EndIf}
 
 	;=== Check if launcher already running {{{2
-		System::Call 'kernel32::CreateMutexA(i 0, i 0, t "PortableApps.comLauncher$AppID") i .r1 ?e'
+		System::Call 'kernel32::CreateMutex(i0,i0,t"PortableApps.comLauncher$AppID")?e'
 		Pop $0
 		${IfNot} $0 = 0
 			${ReadLauncherConfig} $0 Launch SinglePortableAppInstance
@@ -611,8 +611,8 @@ Section
 		${EndIf}
 
 		${DebugMsg} "Setting %TEMP% and %TMP% to $TEMPDIRECTORY"
-		System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("TEMP", "$TEMPDIRECTORY").n'
-		System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i("TMP", "$TEMPDIRECTORY").n'
+		System::Call 'Kernel32::SetEnvironmentVariable(t"TEMP",t"$TEMPDIRECTORY")'
+		System::Call 'Kernel32::SetEnvironmentVariable(t"TMP",t"$TEMPDIRECTORY")'
 		${StrReplace} $REPLACEVAR_FS_TEMPDIRECTORY \ / $TEMPDIRECTORY
 		${StrReplace} $REPLACEVAR_DBS_TEMPDIRECTORY / \\ $REPLACEVAR_FS_TEMPDIRECTORY
 		${MakeJavaUtilPrefsPath} TEMPDIRECTORY
@@ -756,7 +756,7 @@ Section
 				${EndIf}
 			${EndIf}
 			${DebugMsg} "Changing environment variable $0 to $1"
-			System::Call 'Kernel32::SetEnvironmentVariableA(t, t) i(r0, r1).n'
+			System::Call 'Kernel32::SetEnvironmentVariable(tr0,tr1)'
 		${EndForEachINIPair}
 
 	;=== If primary instance: make it portable {{{2
