@@ -286,10 +286,11 @@
 <a href="#Service" class="ini-head">[Service<em>N</em>]</a>
 <a href="#Service:Name" class="ini-key">Name=</a><span class="ini-value">ServiceName</span>
 <a href="#Service:Path" class="ini-key">Path=</a><span class="ini-value">%APPDIR%\AppName\service.exe</span>
-<a href="#Service:Type" class="ini-key">Type=</a><span class="ini-value ini-default">service</span> / <span class="ini-value">service-interaction</span> / <span class="ini-value">driver</span>
+<a href="#Service:Type" class="ini-key">Type=</a><span class="ini-value ini-default">service</span> / <span class="ini-value">driver-kernel</span> / <span class="ini-value">driver-file-system</span>
+
 <a href="#Service:User" class="ini-key">User=</a><span class="ini-value">LocalService</span> / <span class="ini-value">NetworkService</span>  / <span class="ini-default">none</span>
 <a href="#Service:Display" class="ini-key">Display=</a><span class="ini-value">Display name</span>
-<a href="#Service:Dependencies" class="ini-key">Dependencies=</a><span class="ini-value">Foo,Bar</span>
+<a href="#Service:Dependencies" class="ini-key">Dependencies=</a><span class="ini-value">Foo/Bar</span>
 <a href="#Service:Description" class="ini-key">Description=</a><span class="ini-value">Long description of the service</span>
 <a href="#Service:IfExists" class="ini-key">IfExists=</a><span class="ini-value ini-default">skip</span> / <span class="ini-value">replace</span>
 </pre>
@@ -341,10 +342,10 @@
 	<li id="Service"><span class="ini-head">[Service<em>N</em>]</span><br />Services and drivers which are required or recommended by your portable application. There are various keys for each section:<ul>
 		<li id="Service:Name"><span class="ini-key">Name</span><br />The service name.</li>
 		<li id="Service:Path"><span class="ini-key">Path</span><br />The execution string of the service.</li>
-		<li id="Service:Type"><span class="ini-key">Type</span> (values: <span class="ini-value ini-default">service</span>, <span class="ini-value">service-interaction</span> or <span class="ini-value">driver</span>)<br />Specify whether you are dealing with a service, a service with desktop interaction or a driver.</li>
+		<li id="Service:Type"><span class="ini-key">Type</span> (values: <span class="ini-value ini-default">service</span>, <span class="ini-value">driver-kernel</span> or <span class="ini-value">driver-file-system</span>)<br />Specify whether you are dealing with a service, a service with desktop interaction or a driver.</li>
 		<li id="Service:User"><span class="ini-key">User</span> (values: <span class="ini-value">LocalService</span>, <span class="ini-value">NetworkService</span> or <span class="ini-default">none</span>)<br />If the service needs to run as other than LocalSystem, i.e. as LocalService or NetworkService, specify it here (omit the leading <span class="ini-value">NT AUTHORITY\</span>).</li>
 		<li id="Service:Display"><span class="ini-key">Display</span><br />The short display name of the service.</li>
-		<li id="Service:Dependencies"><span class="ini-key">Dependencies</span><br />A comma-separated list of dependencies</li>
+		<li id="Service:Dependencies"><span class="ini-key">Dependencies</span><br />A slash-separated list of dependencies</li>
 		<li id="Service:Description"><span class="ini-key">Description</span><br />A description of what the service does for the services control panel applet (this should not be necessary)</li>
 		<li id="Service:IfExists"><span class="ini-key">IfExists</span> (values: <span class="ini-value ini-default">skip</span> or <span class="ini-value">replace</span>)<br />If the service already exists, you can either skip it or replace it with the portable version of the service (the original service will be restored afterwards).</li>
 	</ul></li>
