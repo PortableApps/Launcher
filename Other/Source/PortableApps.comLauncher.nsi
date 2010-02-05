@@ -258,7 +258,7 @@ Var PORTABLEAPPSLOCALEWINNAME
 !define ReadLauncherConfigWithDefault "!insertmacro ReadLauncherConfigWithDefault"
 
 !macro ReadUserOverrideConfig _OUTPUT _VALUE
-	ReadINIStr ${_OUTPUT} $EXEDIR\PortableApps.comLauncher.ini PortableApps.comLauncher ${_VALUE}
+	ReadINIStr ${_OUTPUT} $EXEDIR\$AppID.ini PortableApps.comLauncher ${_VALUE}
 !macroend
 !define ReadUserOverrideConfig "!insertmacro ReadUserOverrideConfig"
 
