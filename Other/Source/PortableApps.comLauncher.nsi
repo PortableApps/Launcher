@@ -726,7 +726,22 @@ Section
 		${GetParameters} $0
 		${If} $0 != ""
 			${DebugMsg} "Parameters were passed ($0).  Adding them to execution string."
-			StrCpy $EXECSTRING "$EXECSTRING $0"
+			ClearErrors
+			${ReadLauncherConfig} $1 Launch SetOutPath
+			${If} ${Errors}
+				StrCpy $EXECSTRING "$EXECSTRING $0"
+			${Else}
+				; Make relative paths absolute so they work post-SetOutPath
+				; TODO: examine string bit by bit rather than all at once
+				ClearErrors
+				GetFullPathName $1 $0
+				${If} ${Errors}
+					StrCpy $EXECSTRING "$EXECSTRING $0"
+				${Else}
+					${DebugMsg} "There is a SetOutPath directive, and the command line contained a path, $0, which has been rewritten to $1."
+					StrCpy $EXECSTRING "$EXECSTRING $1"
+				${EndIf}
+			${EndIf}
 		${EndIf}
 
 	;=== Get additional parameters from user INI file {{{2
@@ -1182,15 +1197,6 @@ Section
 		; UAC.dll appears to no longer have Unload... but then we don't use /NOUNLOAD so it should be fine.
 		;${IfThen} $RUNASADMIN == true ${|} UAC::Unload ${|}
 SectionEnd ;}}}1
-
-; This note is just as something out of interest.  With a SetOutDir directive, it could be worth while examining each command-line argument and turning relative paths into absolute paths, probably with the PathCombine call.  I've used an AutoHotkey implementation of it, but we'd need an NSIS one here.
-;To combine paths $0 and $1: System::Call 'Shlwapi.dll::PathCombineA(t r0, t r1) t ."$DEST"'???
-;PathCombine(dir, file) { ; Function taken from http://www.autohotkey.com/forum/topic19489-30.html#124252
-;	VarSetCapacity(dest, 260, 1) ; MAX_PATH
-;	DllCall("Shlwapi.dll\PathCombineA", "UInt", &dest, "UInt", &dir, "UInt", &file)
-;	Return, dest
-;}
-
 
 ; This file has been optimised for use in Vim with folding.
 ; (If you can't cope, :set nofoldenable) vim:foldenable:foldmethod=marker
