@@ -1035,6 +1035,25 @@ Section
 				${Loop}
 
 		;=== Save portable files and restore any backed up files {{{3
+			;=== DirectoriesMove {{{4
+			${ForEachINIPair} DirectoriesMove $0 $1
+				${ParseLocations} $1
+
+				${If} $RUNLOCALLY != true
+					${DebugMsg} "Copying settings from $1\*.* to $DATADIRECTORY\$0."
+					RMDir /R $DATADIRECTORY\$0
+					CreateDirectory $DATADIRECTORY\$0
+					CopyFiles /SILENT $1\*.* $DATADIRECTORY\$0
+				${EndIf}
+				${DebugMsg} "Removing portable settings directory from run location ($1)."
+				RMDir /R $1
+
+				${If} ${FileExists} $1-BackupBy$AppID
+					${DebugMsg} "Moving local settings from $1-BackupBy$AppID to $1."
+					Rename $1-BackupBy$AppID $1
+				${EndIf}
+			${EndForEachINIPair}
+
 			;=== FilesMove {{{4
 			${ForEachINIPair} FilesMove $0 $1
 				${ParseLocations} $1
@@ -1051,25 +1070,6 @@ Section
 
 				${If} ${FileExists} $1-BackupBy$AppID
 					${DebugMsg} "Moving local settings file from $1-BackupBy$AppID to $1"
-					Rename $1-BackupBy$AppID $1
-				${EndIf}
-			${EndForEachINIPair}
-
-			;=== DirectoriesMove {{{4
-			${ForEachINIPair} DirectoriesMove $0 $1
-				${ParseLocations} $1
-
-				${If} $RUNLOCALLY != true
-					${DebugMsg} "Copying settings from $1\*.* to $DATADIRECTORY\$0."
-					RMDir /R $DATADIRECTORY\$0
-					CreateDirectory $DATADIRECTORY\$0
-					CopyFiles /SILENT $1\*.* $DATADIRECTORY\$0
-				${EndIf}
-				${DebugMsg} "Removing portable settings directory from run location ($1)."
-				RMDir /R $1
-
-				${If} ${FileExists} $1-BackupBy$AppID
-					${DebugMsg} "Moving local settings from $1-BackupBy$AppID to $1."
 					Rename $1-BackupBy$AppID $1
 				${EndIf}
 			${EndForEachINIPair}
