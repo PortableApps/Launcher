@@ -968,6 +968,13 @@ Section
 			${OrIf} $0 == both
 				${RefreshShellIcons}
 			${EndIf}
+
+			${ReadLauncherConfig} $0 Launch LaunchAppAfterSplash
+			${If} $0 == true
+				StrCpy $DISABLESPLASHSCREEN true ; no need to unload at the end
+				newadvsplash::stop /WAIT
+			${EndIf}
+
 			${DebugMsg} "About to execute the following string and wait till it's done: $EXECSTRING"
 			${ReadLauncherConfig} $0 Launch HideCommandLineWindow
 			${If} $0 == true
