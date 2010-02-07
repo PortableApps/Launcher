@@ -67,6 +67,8 @@ SetCompressorDictSize 32
 !include StrReplace.nsh
 !include ForEachINIPair.nsh
 !include SetFileAttributesDirectoryNormal.nsh
+!include ProcFunc.nsh
+!insertmacro ProcessExists
 
 ;=== Program Icon {{{1
 Icon ..\..\App\AppInfo\appicon.ico
@@ -504,9 +506,9 @@ Section
 
 	;=== Check if application already running {{{2
 		!macro AbortAlreadyRunning _EXECUTABLE_NAME
-			FindProcDLL::FindProc "${_EXECUTABLE_NAME}"
+			${ProcessExists} "${_EXECUTABLE_NAME}" $0
 			${If} $SECONDARYLAUNCH != true
-			${AndIf} $R0 = 1
+			${AndIf} $0 > 0
 				${ReadLauncherConfig} $APPNAME Launch AppName
 				${If} $APPNAME == ""
 					; Calculate the application name - non-portable version
@@ -998,11 +1000,11 @@ Section
 				${Do}
 					Sleep 1000
 					${If} $0 != ""
-						FindProcDLL::FindProc /NOUNLOAD $0
-						${IfThen} $R0 = 1 ${|} ${Continue} ${|}
+						${ProcessExists} $0 $R0
+						${IfThen} $1 > 0 ${|} ${Continue} ${|}
 					${EndIf}
-					FindProcDLL::FindProc $1
-				${LoopWhile} $R0 = 1
+					${ProcessExists} $1 $R0
+				${LoopWhile} $R0 > 0
 				${DebugMsg} "All instances of $1 are finished."
 			${EndIf}
 
