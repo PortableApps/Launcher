@@ -630,7 +630,8 @@ Section
 		${EndIf}
 
 	;=== Update the drive letter in files {{{2
-		${If} $LASTDRIVE != $CURRENTDRIVE
+		${If} $LASTDRIVE != ""
+		${AndIf} $LASTDRIVE != $CURRENTDRIVE
 			;=== Backslash {{{3
 			StrCpy $0 1
 			${Do}
@@ -662,10 +663,10 @@ Section
 				${EndIf}
 				IntOp $0 $0 + 1
 			${Loop}
-
-			;=== Save drive letter {{{3
-			WriteINIStr $DATADIRECTORY\settings\$AppIDSettings.ini $AppIDSettings LastDrive $CURRENTDRIVE
 		${EndIf}
+
+		;=== Save drive letter {{{3
+		WriteINIStr $DATADIRECTORY\settings\$AppIDSettings.ini $AppIDSettings LastDrive $CURRENTDRIVE
 
 	;=== Write configuration values with ConfigWrite {{{2
 		StrCpy $0 1
