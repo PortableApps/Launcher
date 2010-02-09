@@ -867,10 +867,10 @@ Section
 					ClearErrors
 					${ReadLauncherConfig} $1 RegistryValueBackupDelete $0
 					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-					${DebugMsg} "Backing up registry value $1\$2 to HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values\$2"
-					${GetParent} $0 $1
-					${GetFilename} $0 $2
-					${registry::MoveValue} $1 $2 HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values $2 $R0
+					${GetParent} $1 $2
+					${GetFilename} $1 $3
+					${DebugMsg} "Backing up registry value $1 to HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values\$1"
+					${registry::MoveValue} $2 $3 HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values $1 $R0
 					IntOp $0 $0 + 1
 				${Loop}
 
@@ -1164,11 +1164,11 @@ Section
 					${If} ${Errors}
 						${ExitDo}
 					${EndIf}
-					${DebugMsg} "Deleting registry value $1\$2, then restoring from HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values\$2"
-					${GetParent} $0 $1
-					${GetFilename} $0 $2
-					${registry::DeleteValue} $1 $2 $R0
-					${registry::MoveValue} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values $2 $1 $2 $R0
+					${GetParent} $1 $2
+					${GetFilename} $1 $3
+					${DebugMsg} "Deleting registry value $1, then restoring from HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values\$2"
+					${registry::DeleteValue} $2 $3 $R0
+					${registry::MoveValue} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values $1 $2 $3 $R0
 					IntOp $0 $0 + 1
 				${Loop}
 
