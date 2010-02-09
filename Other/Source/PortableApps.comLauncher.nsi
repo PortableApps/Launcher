@@ -637,9 +637,7 @@ Section
 			${Do}
 				ClearErrors
 				${ReadLauncherConfig} $1 FileDriveLetterUpdate Backslash$0
-				${If} ${Errors}
-					${ExitDo}
-				${EndIf}
+				${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 				${ParseLocations} $1
 				${If} ${FileExists} $1
 					${DebugMsg} "Updating drive letter from $LASTDRIVE to $CURRENTDRIVE in $1; using backslashes"
@@ -653,9 +651,7 @@ Section
 			${Do}
 				ClearErrors
 				${ReadLauncherConfig} $1 FileDriveLetterUpdate Forwardslash$0
-				${If} ${Errors}
-					${ExitDo}
-				${EndIf}
+				${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 				${ParseLocations} $1
 				${If} ${FileExists} $1
 					${DebugMsg} "Updating drive letter from $LASTDRIVE to $CURRENTDRIVE in $1; using forward slashes"
@@ -675,9 +671,7 @@ Section
 			${ReadLauncherConfig} $1 FileWriteConfigWrite $0File
 			${ReadLauncherConfig} $2 FileWriteConfigWrite $0Entry
 			${ReadLauncherConfig} $3 FileWriteConfigWrite $0Value
-			${If} ${Errors}
-				${ExitDo}
-			${EndIf}
+			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ParseLocations} $1
 			${ParseLocations} $3
 			${If} ${FileExists} $1
@@ -695,9 +689,7 @@ Section
 			${ReadLauncherConfig} $2 FileWriteINI $0Section
 			${ReadLauncherConfig} $3 FileWriteINI $0Key
 			${ReadLauncherConfig} $4 FileWriteINI $0Value
-			${If} ${Errors}
-				${ExitDo}
-			${EndIf}
+			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ParseLocations} $1
 			${ParseLocations} $4
 			${If} ${FileExists} $1
@@ -1108,9 +1100,7 @@ Section
 			${Do}
 				ClearErrors
 				${ReadLauncherConfig} $1 DirectoriesCleanupIfEmpty $0
-				${If} ${Errors}
-					${ExitDo}
-				${EndIf}
+				${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 				${ParseLocations} $1
 				${DebugMsg} "Cleaning up $1 if it is empty."
 				RMDir $1
@@ -1122,9 +1112,7 @@ Section
 			${Do}
 				ClearErrors
 				${ReadLauncherConfig} $1 DirectoriesCleanupForce $0
-				${If} ${Errors}
-					${ExitDo}
-				${EndIf}
+				${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 				${ParseLocations} $1
 				${DebugMsg} "Removing directory $1."
 				RMDir /r $1
@@ -1161,9 +1149,7 @@ Section
 				${Do}
 					ClearErrors
 					${ReadLauncherConfig} $1 RegistryValueBackupDelete $0
-					${If} ${Errors}
-						${ExitDo}
-					${EndIf}
+					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 					${GetParent} $1 $2
 					${GetFilename} $1 $3
 					${DebugMsg} "Deleting registry value $1, then restoring from HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values\$2"
@@ -1177,9 +1163,7 @@ Section
 				${Do}
 					ClearErrors
 					${ReadLauncherConfig} $1 RegistryCleanupIfEmpty $0
-					${If} ${Errors}
-						${ExitDo}
-					${EndIf}
+					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 					${DebugMsg} "Deleting registry key $1 if it is empty."
 					${registry::DeleteKeyEmpty} $1 $R0
 					IntOp $0 $0 + 1
@@ -1190,9 +1174,7 @@ Section
 				${Do}
 					ClearErrors
 					${ReadLauncherConfig} $1 RegistryCleanupForce $0
-					${If} ${Errors}
-						${ExitDo}
-					${EndIf}
+					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 					${DebugMsg} "Deleting registry key $1."
 					${registry::DeleteKey} $1 $R0
 					IntOp $0 $0 + 1
