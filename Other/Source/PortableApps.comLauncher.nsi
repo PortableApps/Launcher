@@ -775,7 +775,7 @@ Section
 			${EndIf}
 			${DebugMsg} "Changing environment variable $0 to $1"
 			System::Call 'Kernel32::SetEnvironmentVariable(tr0,tr1)'
-		${EndForEachINIPair}
+		${NextINIPair}
 
 	;=== If primary instance: make it portable {{{2
 		${If} $SECONDARYLAUNCH != true
@@ -797,7 +797,7 @@ Section
 						${DebugMsg} "Copying $DATADIRECTORY\$0 to $1"
 						CopyFiles /SILENT $DATADIRECTORY\$0 $1
 					${EndIf}
-				${EndForEachINIPair}
+				${NextINIPair}
 
 				${ForEachINIPair} DirectoriesMove $0 $1 ; {{{4
 					${ParseLocations} $1
@@ -814,7 +814,7 @@ Section
 					${Else}
 						${DebugMsg} "$DATADIRECTORY\$0\*.* does not exist, so not copying it to $1.$\n(Note for developers: if you want default data, remember to put files in App\DefaultData\$0)"
 					${EndIf}
-				${EndForEachINIPair}
+				${NextINIPair}
 
 			;=== Backup registry and insert portable data {{{3
 			${If} $USESREGISTRY == true
@@ -847,7 +847,7 @@ Section
 							${EndIf}
 						${EndIf}
 					${EndIf}
-				${EndForEachINIPair}
+				${NextINIPair}
 
 				;=== RegistryValueBackupDelete {{{4
 				StrCpy $0 1
@@ -888,7 +888,7 @@ Section
 					${DebugMsg} "Writing '$1' (type '$4') to key '$2', value '$3'$\n(Short form: $2\$3=$4:$1)"
 					; key item value type return
 					${registry::Write} $2 $3 $1 $4 $R0
-				${EndForEachINIPair}
+				${NextINIPair}
 			${EndIf}
 
 			;=== Handle services and drivers {{{3
@@ -1055,7 +1055,7 @@ Section
 					${DebugMsg} "Moving local settings from $1-BackupBy$AppID to $1."
 					Rename $1-BackupBy$AppID $1
 				${EndIf}
-			${EndForEachINIPair}
+			${NextINIPair}
 
 			;=== FilesMove {{{4
 			${ForEachINIPair} FilesMove $0 $1
@@ -1075,7 +1075,7 @@ Section
 					${DebugMsg} "Moving local settings file from $1-BackupBy$AppID to $1"
 					Rename $1-BackupBy$AppID $1
 				${EndIf}
-			${EndForEachINIPair}
+			${NextINIPair}
 
 			;=== DirectoriesCleanupIfEmpty {{{4
 			StrCpy $0 1
@@ -1127,7 +1127,7 @@ Section
 						${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID $R0
 						${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com $R0
 					${EndIf}
-				${EndForEachINIPair}
+				${NextINIPair}
 				Delete $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini
 
 				;=== RegistryValueBackupDelete {{{4

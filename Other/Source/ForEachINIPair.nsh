@@ -1,61 +1,69 @@
-Var LAUNCHERFILEHANDLE
-Var _FEIP1 ; current line
-Var _FEIP2 ; length of line
-Var _FEIP3 ; character number in line
-Var _FEIP4 ; character
+Var _FEIP_FileHandle
+Var _FEIP_Line
+Var _FEIP_LineLength
+Var _FEIP_CharNum
+Var _FEIP_Char
 
 !macro ForEachINIPair SECTION KEY VALUE
-	${If} $LAUNCHERFILEHANDLE == ""
-		FileOpen $LAUNCHERFILEHANDLE $EXEDIR\App\AppInfo\launcher.ini r
+	!ifdef _ForEachINIPair_Open
+		!error "There is already a ForEachINIPair clause open!"
+	!endif
+	!define _ForEachINIPair_Open
+	${If} $_FEIP_FileHandle == ""
+		FileOpen $_FEIP_FileHandle $EXEDIR\App\AppInfo\launcher.ini r
 	${Else}
-		FileSeek $LAUNCHERFILEHANDLE 0
+		FileSeek $_FEIP_FileHandle 0
 	${EndIf}
 	${Do}
 		ClearErrors
-		FileRead $LAUNCHERFILEHANDLE $_FEIP1
-		${TrimNewLines} $_FEIP1 $_FEIP1
+		FileRead $_FEIP_FileHandle $_FEIP_Line
+		${TrimNewLines} $_FEIP_Line $_FEIP_Line
 		${If} ${Errors} ; end of file
-		${OrIf} $_FEIP1 == "[${SECTION}]" ; right section
+		${OrIf} $_FEIP_Line == "[${SECTION}]" ; right section
 			${ExitDo}
 		${EndIf}
 	${Loop}
 
 	${IfNot} ${Errors} ; right section
 		${Do}
-			FileRead $LAUNCHERFILEHANDLE $_FEIP1
+			FileRead $_FEIP_FileHandle $_FEIP_Line
 
-			StrCpy $_FEIP2 $_FEIP1 1
+			StrCpy $_FEIP_LineLength $_FEIP_Line 1
 			${If} ${Errors} ; end of file
-			${OrIf} $_FEIP2 == '[' ; new section
+			${OrIf} $_FEIP_LineLength == '[' ; new section
 				${ExitDo} ; finished
 			${EndIf}
 
-			${If} $_FEIP2 == ';' ; a comment line
+			${If} $_FEIP_LineLength == ';' ; a comment line
 				${Continue}
 			${EndIf}
 
-			StrLen $_FEIP2 $_FEIP1
-			StrCpy $_FEIP3 '0'
+			StrLen $_FEIP_LineLength $_FEIP_Line
+			StrCpy $_FEIP_CharNum '0'
 			${Do}
-				StrCpy $_FEIP4 $_FEIP1 1 $_FEIP3
-				${IfThen} $_FEIP4 == '=' ${|} ${ExitDo} ${|}
-				IntOp $_FEIP3 $_FEIP3 + 1
-			${LoopUntil} $_FEIP3 > $_FEIP2
+				StrCpy $_FEIP_Char $_FEIP_Line 1 $_FEIP_CharNum
+				${IfThen} $_FEIP_Char == '=' ${|} ${ExitDo} ${|}
+				IntOp $_FEIP_CharNum $_FEIP_CharNum + 1
+			${LoopUntil} $_FEIP_CharNum > $_FEIP_LineLength
 
-			${TrimNewLines} $_FEIP1 $_FEIP1
+			${TrimNewLines} $_FEIP_Line $_FEIP_Line
 
-			${If} $_FEIP4 == '='
-				StrCpy ${KEY} $_FEIP1 $_FEIP3
-				IntOp $_FEIP3 $_FEIP3 + 1
-				StrCpy ${VALUE} $_FEIP1 "" $_FEIP3
+			${If} $_FEIP_Char == '='
+				StrCpy ${KEY} $_FEIP_Line $_FEIP_CharNum
+				IntOp $_FEIP_CharNum $_FEIP_CharNum + 1
+				StrCpy ${VALUE} $_FEIP_Line "" $_FEIP_CharNum
 !macroend
 
-!macro EndForEachINIPair
+!macro NextINIPair
+	!ifndef _ForEachINIPair_Open
+		!error "There isn't a ForEachINIPair clause open!"
+	!endif
+	!undef _ForEachINIPair_Open
 			${EndIf}
 		${Loop}
 	${EndIf}
-	;FileClose $LAUNCHERFILEHANDLE
+	;FileClose $_FEIP_FileHandle
 !macroend
 
 !define ForEachINIPair '!insertmacro ForEachINIPair'
-!define EndForEachINIPair '!insertmacro EndForEachINIPair'
+!define NextINIPair '!insertmacro NextINIPair'
