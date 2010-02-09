@@ -633,31 +633,31 @@ Section
 		${If} $LASTDRIVE != ""
 		${AndIf} $LASTDRIVE != $CURRENTDRIVE
 			;=== Backslash {{{3
-			StrCpy $0 1
+			StrCpy $R0 1
 			${Do}
 				ClearErrors
-				${ReadLauncherConfig} $1 FileDriveLetterUpdate Backslash$0
+				${ReadLauncherConfig} $1 FileDriveLetterUpdate Backslash$R0
 				${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 				${ParseLocations} $1
 				${If} ${FileExists} $1
 					${DebugMsg} "Updating drive letter from $LASTDRIVE to $CURRENTDRIVE in $1; using backslashes"
 					${ReplaceInFile} $1 $LASTDRIVE\ "$CURRENTDRIVE\"
 				${EndIf}
-				IntOp $0 $0 + 1
+				IntOp $R0 $R0 + 1
 			${Loop}
 
 			;=== Forwardslash {{{3
-			StrCpy $0 1
+			StrCpy $R0 1
 			${Do}
 				ClearErrors
-				${ReadLauncherConfig} $1 FileDriveLetterUpdate Forwardslash$0
+				${ReadLauncherConfig} $1 FileDriveLetterUpdate Forwardslash$R0
 				${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 				${ParseLocations} $1
 				${If} ${FileExists} $1
 					${DebugMsg} "Updating drive letter from $LASTDRIVE to $CURRENTDRIVE in $1; using forward slashes"
 					${ReplaceInFile} $1 $LASTDRIVE/ $CURRENTDRIVE/
 				${EndIf}
-				IntOp $0 $0 + 1
+				IntOp $R0 $R0 + 1
 			${Loop}
 		${EndIf}
 
@@ -665,12 +665,12 @@ Section
 		WriteINIStr $DATADIRECTORY\settings\$AppIDSettings.ini $AppIDSettings LastDrive $CURRENTDRIVE
 
 	;=== Write configuration values with ConfigWrite {{{2
-		StrCpy $0 1
+		StrCpy $R0 1
 		${Do}
 			ClearErrors
-			${ReadLauncherConfig} $1 FileWriteConfigWrite $0File
-			${ReadLauncherConfig} $2 FileWriteConfigWrite $0Entry
-			${ReadLauncherConfig} $3 FileWriteConfigWrite $0Value
+			${ReadLauncherConfig} $1 FileWriteConfigWrite $R0File
+			${ReadLauncherConfig} $2 FileWriteConfigWrite $R0Entry
+			${ReadLauncherConfig} $3 FileWriteConfigWrite $R0Value
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ParseLocations} $1
 			${ParseLocations} $3
@@ -678,17 +678,17 @@ Section
 				${DebugMsg} "Writing configuration to a file with ConfigWrite.$\nFile: $1$\nEntry: `$2`$\nValue: `$3`"
 				${ConfigWrite} $1 $2 $3 $R0
 			${EndIf}
-			IntOp $0 $0 + 1
+			IntOp $R0 $R0 + 1
 		${Loop}
 
 	;=== Write configuration values with WriteINIStr {{{2
-		StrCpy $0 1
+		StrCpy $R0 1
 		${Do}
 			ClearErrors
-			${ReadLauncherConfig} $1 FileWriteINI $0File
-			${ReadLauncherConfig} $2 FileWriteINI $0Section
-			${ReadLauncherConfig} $3 FileWriteINI $0Key
-			${ReadLauncherConfig} $4 FileWriteINI $0Value
+			${ReadLauncherConfig} $1 FileWriteINI $R0File
+			${ReadLauncherConfig} $2 FileWriteINI $R0Section
+			${ReadLauncherConfig} $3 FileWriteINI $R0Key
+			${ReadLauncherConfig} $4 FileWriteINI $R0Value
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ParseLocations} $1
 			${ParseLocations} $4
@@ -696,7 +696,7 @@ Section
 				${DebugMsg} "Writing INI configuration to a file.$\nFile: $1$\nSection: `$2`$\nKey: `$3`$\nValue: `$4`"
 				WriteINIStr $1 $2 $3 $4
 			${EndIf}
-			IntOp $0 $0 + 1
+			IntOp $R0 $R0 + 1
 		${Loop}
 
 	;=== Construct the execution string {{{2
@@ -825,12 +825,12 @@ Section
 				;=== RegistryKeys {{{4
 				${ForEachINIPair} RegistryKeys $0 $1
 					;=== Backup the registry
-					${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $R0
-					${If} $R0 != 0
-						${registry::KeyExists} $1 $R0
-						${If} $R0 != -1
+					${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $R9
+					${If} $R9 != 0
+						${registry::KeyExists} $1 $R9
+						${If} $R9 != -1
 							${DebugMsg} "Backing up registry key $1 to HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0"
-							${registry::MoveKey} $1 HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $R0
+							${registry::MoveKey} $1 HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $R9
 						${EndIf}
 					${EndIf}
 
@@ -839,13 +839,13 @@ Section
 						${DebugMsg} "Loading $DATADIRECTORY\settings\$0.reg into the registry."
 						${If} ${FileExists} $WINDIR\system32\reg.exe
 							nsExec::Exec `"$WINDIR\system32\reg.exe" import "$DATADIRECTORY\settings\$0.reg"`
-							Pop $R0
-							${IfThen} $R0 = 0 ${|} ClearErrors ${|}
+							Pop $R9
+							${IfThen} $R9 = 0 ${|} ClearErrors ${|}
 						${EndIf}
 
 						${If} ${Errors}
-							${registry::RestoreKey} $DATADIRECTORY\settings\$0.reg $R0
-							${If} $R0 != 0
+							${registry::RestoreKey} $DATADIRECTORY\settings\$0.reg $R9
+							${If} $R9 != 0
 								WriteINIStr $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0 true
 								${DebugMsg} "Failed to load $DATADIRECTORY\settings\$0.reg into the registry."
 							${EndIf}
@@ -854,16 +854,16 @@ Section
 				${NextINIPair}
 
 				;=== RegistryValueBackupDelete {{{4
-				StrCpy $0 1
+				StrCpy $R0 1
 				${Do}
 					ClearErrors
-					${ReadLauncherConfig} $1 RegistryValueBackupDelete $0
+					${ReadLauncherConfig} $1 RegistryValueBackupDelete $R0
 					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 					${GetParent} $1 $2
 					${GetFilename} $1 $3
 					${DebugMsg} "Backing up registry value $1 to HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values\$1"
-					${registry::MoveValue} $2 $3 HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values $1 $R0
-					IntOp $0 $0 + 1
+					${registry::MoveValue} $2 $3 HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values $1 $R9
+					IntOp $R0 $R0 + 1
 				${Loop}
 
 				;=== RegistryValueWrite {{{4
@@ -891,22 +891,22 @@ Section
 
 					${DebugMsg} "Writing '$1' (type '$4') to key '$2', value '$3'$\n(Short form: $2\$3=$4:$1)"
 					; key item value type return
-					${registry::Write} $2 $3 $1 $4 $R0
+					${registry::Write} $2 $3 $1 $4 $R9
 				${NextINIPair}
 			${EndIf}
 
 			;=== Handle services and drivers {{{3
-				StrCpy $0 1
+				StrCpy $R0 1
 				${Do}
 					ClearErrors
-					${ReadLauncherConfig} $1 Service$0 Name
-					${ReadLauncherConfig} $4 Service$0 Path
+					${ReadLauncherConfig} $1 Service$R0 Name
+					${ReadLauncherConfig} $4 Service$R0 Path
 					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 					${ParseLocations} $4
 					SimpleSC::ExistsService $1
 					Pop $2
 					${If} $2 == 0 ; Service already exists
-						${ReadLauncherConfig} $2 Service$0 IfExists
+						${ReadLauncherConfig} $2 Service$R0 IfExists
 						${If} $2 == replace
 							MessageBox MB_ICONEXCLAMATION "TODO: The backing up and replacement of services is not yet implemented. The local service will remain."
 							/*
@@ -925,14 +925,14 @@ Section
 							${DebugMsg} "Removed local service $1 (error code $9)
 							*/
 						${EndIf}
-						WriteINIStr $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini Service$0 ExistedBefore true
-						StrCpy $R0 no-create
+						WriteINIStr $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini Service$R0 ExistedBefore true
+						StrCpy $R9 no-create
 					${EndIf}
-					${If} $R0 == no-create
+					${If} $R9 == no-create
 						${DebugMsg} "Not creating service $1 (local service already exists)"
 					${Else}
-						${ReadLauncherConfigWithDefault} $2 Service$0 Display $1
-						${ReadLauncherConfig} $3 Service$0 Type
+						${ReadLauncherConfigWithDefault} $2 Service$R0 Display $1
+						${ReadLauncherConfig} $3 Service$R0 Type
 						${If} $3 == driver-kernel
 							StrCpy $3 1
 						${ElseIf} $3 == driver-file-system
@@ -940,8 +940,8 @@ Section
 						${Else}
 							StrCpy $3 16
 						${EndIf}
-						${ReadLauncherConfig} $5 Service$0 Dependencies
-						${ReadLauncherConfig} $6 Service$0 User
+						${ReadLauncherConfig} $5 Service$R0 Dependencies
+						${ReadLauncherConfig} $6 Service$R0 User
 						${If} $4 == LocalService
 						${OrIf} $4 == NetworkService
 							StrCpy $4 "NT AUTHORITY\$4"
@@ -950,13 +950,13 @@ Section
 						Pop $9
 						${DebugMsg} "Installed service $1 (error code $9)"
 						ClearErrors
-						${ReadLauncherConfig} $7 Service$0 Description
+						${ReadLauncherConfig} $7 Service$R0 Description
 						${If} ${Errors}
 							SimpleSC::SetServiceDescription $1 $7
 							Pop $9
 							${DebugMsg} "Set service $1's description to $7"
 						${EndIf}
-						IntOp $0 $0 + 1
+						IntOp $R0 $R0 + 1
 					${EndIf}
 				${Loop}
 
@@ -1005,11 +1005,11 @@ Section
 				${Do}
 					Sleep 1000
 					${If} $0 != ""
-						${ProcessExists} $0 $R0
-						${IfThen} $1 > 0 ${|} ${Continue} ${|}
+						${ProcessExists} $0 $R9
+						${IfThen} $R9 > 0 ${|} ${Continue} ${|}
 					${EndIf}
-					${ProcessExists} $1 $R0
-				${LoopWhile} $R0 > 0
+					${ProcessExists} $1 $R9
+				${LoopWhile} $R9 > 0
 				${DebugMsg} "All instances of $1 are finished."
 			${EndIf}
 
@@ -1020,10 +1020,10 @@ Section
 			${EndIf}
 
 			;=== Handle services and drivers {{{3
-				StrCpy $0 1
+				StrCpy $R0 1
 				${Do}
 					ClearErrors
-					${ReadLauncherConfig} $1 Service$0 Name
+					${ReadLauncherConfig} $1 Service$R0 Name
 					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 					; TODO: save state in PortableApps.comLauncherRuntimeData.ini to prevent doing anything silly.
 					; Possibly also check the service path to make sure it's the right one we delete.
@@ -1096,88 +1096,88 @@ Section
 			${NextINIPair}
 
 			;=== DirectoriesCleanupIfEmpty {{{4
-			StrCpy $0 1
+			StrCpy $R0 1
 			${Do}
 				ClearErrors
-				${ReadLauncherConfig} $1 DirectoriesCleanupIfEmpty $0
+				${ReadLauncherConfig} $1 DirectoriesCleanupIfEmpty $R0
 				${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 				${ParseLocations} $1
 				${DebugMsg} "Cleaning up $1 if it is empty."
 				RMDir $1
-				IntOp $0 $0 + 1
+				IntOp $R0 $R0 + 1
 			${Loop}
 
 			;=== DirectoriesCleanupForce {{{4
-			StrCpy $0 1
+			StrCpy $R0 1
 			${Do}
 				ClearErrors
-				${ReadLauncherConfig} $1 DirectoriesCleanupForce $0
+				${ReadLauncherConfig} $1 DirectoriesCleanupForce $R0
 				${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 				${ParseLocations} $1
 				${DebugMsg} "Removing directory $1."
 				RMDir /r $1
-				IntOp $0 $0 + 1
+				IntOp $R0 $R0 + 1
 			${Loop}
 
-			;=== Save portable registry data and restore any backed up data {{{3
+		;=== Save portable registry data and restore any backed up data {{{3
 			${If} $USESREGISTRY == true
 				;=== RegistryKeys {{{4
 				${ForEachINIPair} RegistryKeys $0 $1
 					ClearErrors
-					ReadINIStr $R0 $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0
+					ReadINIStr $R9 $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0
 					${If} ${Errors} ; didn't fail
 					${AndIf} $RUNLOCALLY != true
 						${DebugMsg} "Saving registry key $1 to $DATADIRECTORY\settings\$0.reg."
-						${registry::SaveKey} $1 $DATADIRECTORY\settings\$0.reg "" $R0
+						${registry::SaveKey} $1 $DATADIRECTORY\settings\$0.reg "" $R9
 					${EndIf}
 
 					${DebugMsg} "Deleting registry key $1."
-					${registry::DeleteKey} $1 $R0
-					${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $R0
-					${If} $R0 != -1
+					${registry::DeleteKey} $1 $R9
+					${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $R9
+					${If} $R9 != -1
 						${DebugMsg} "Moving registry key HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 to $1."
-						${registry::MoveKey} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $1 $R0
-						${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys $R0
-						${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID $R0
-						${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com $R0
+						${registry::MoveKey} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $1 $R9
+						${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys $R9
+						${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID $R9
+						${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com $R9
 					${EndIf}
 				${NextINIPair}
 				Delete $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini
 
 				;=== RegistryValueBackupDelete {{{4
-				StrCpy $0 1
+				StrCpy $R0 1
 				${Do}
 					ClearErrors
-					${ReadLauncherConfig} $1 RegistryValueBackupDelete $0
+					${ReadLauncherConfig} $1 RegistryValueBackupDelete $R0
 					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 					${GetParent} $1 $2
 					${GetFilename} $1 $3
 					${DebugMsg} "Deleting registry value $1, then restoring from HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values\$2"
-					${registry::DeleteValue} $2 $3 $R0
-					${registry::MoveValue} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values $1 $2 $3 $R0
-					IntOp $0 $0 + 1
+					${registry::DeleteValue} $2 $3 $R9
+					${registry::MoveValue} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values $1 $2 $3 $R9
+					IntOp $R0 $R0 + 1
 				${Loop}
 
 				;=== RegistryCleanupIfEmpty {{{4
-				StrCpy $0 1
+				StrCpy $R0 1
 				${Do}
 					ClearErrors
-					${ReadLauncherConfig} $1 RegistryCleanupIfEmpty $0
+					${ReadLauncherConfig} $1 RegistryCleanupIfEmpty $R0
 					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 					${DebugMsg} "Deleting registry key $1 if it is empty."
-					${registry::DeleteKeyEmpty} $1 $R0
-					IntOp $0 $0 + 1
+					${registry::DeleteKeyEmpty} $1 $R9
+					IntOp $R0 $R0 + 1
 				${Loop}
 
 				;=== RegistryCleanupForce {{{4
-				StrCpy $0 1
+				StrCpy $R0 1
 				${Do}
 					ClearErrors
-					${ReadLauncherConfig} $1 RegistryCleanupForce $0
+					${ReadLauncherConfig} $1 RegistryCleanupForce $R0
 					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 					${DebugMsg} "Deleting registry key $1."
-					${registry::DeleteKey} $1 $R0
-					IntOp $0 $0 + 1
+					${registry::DeleteKey} $1 $R9
+					IntOp $R0 $R0 + 1
 				${Loop}
 			${EndIf}
 
@@ -1187,7 +1187,7 @@ Section
 				RMDir /r $TEMP\$AppIDLive
 			${EndIf}
 
-			;=== RefreshShellIcons {{{3
+		;=== RefreshShellIcons {{{3
 			${ReadLauncherConfig} $0 Launch RefreshShellIcons
 			${If} $0 == after
 			${OrIf} $0 == both
