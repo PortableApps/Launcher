@@ -67,6 +67,7 @@ SetCompressorDictSize 32
 !include SetFileAttributesDirectoryNormal.nsh
 !include ProcFunc.nsh
 !insertmacro ProcessExists
+!include EmptyWorkingSet.nsh
 
 ;=== Program Icon {{{1
 Icon ..\..\App\AppInfo\appicon.ico
@@ -225,6 +226,7 @@ Section Execute  ;{{{1
 			${DebugMsg} "About to execute the following string and finish: $ExecString"
 		${EndIf}
 	!endif
+	${EmptyWorkingSet}
 	${ReadLauncherConfig} $0 Launch HideCommandLineWindow
 	${If} $0 == true
 		; TODO: do this without a plug-in or at least some way it won't wait with secondary
@@ -249,6 +251,7 @@ Section Execute  ;{{{1
 				${DebugMsg} "Waiting till any other instances of $1 are finished."
 			${EndIf}
 			${Do}
+				${EmptyWorkingSet}
 				Sleep 1000
 				${If} $0 != ""
 					${ProcessExists} $0 $R9
