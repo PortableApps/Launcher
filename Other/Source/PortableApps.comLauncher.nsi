@@ -250,8 +250,8 @@ Section Execute  ;{{{1
 			${Else}
 				${DebugMsg} "Waiting till any other instances of $1 are finished."
 			${EndIf}
+			${EmptyWorkingSet}
 			${Do}
-				${EmptyWorkingSet}
 				Sleep 1000
 				${If} $0 != ""
 					${ProcessExists} $0 $R9
