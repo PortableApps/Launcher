@@ -58,8 +58,6 @@ SetCompressorDictSize 32
 
 ;(NSIS Plugins) {{{2
 !include TextReplace.nsh
-!include Registry.nsh
-!include UAC.nsh
 !addplugindir Plugins
 
 ;(Custom) {{{2
@@ -87,118 +85,18 @@ ${IncludeLang} Japanese
 ${IncludeLang} SimpChinese
 
 ;=== Variables {{{1
-Var RUNASADMIN
-Var RUNNINGASADMIN
 Var AppID
-Var EXECSTRING
-Var LASTDRIVE
-Var CURRENTDRIVE
-Var SECONDARYLAUNCH ; also handles "don't wait for program"
-Var MISSINGFILEORPATH
-Var PORTABLEAPPNAME
-Var APPNAME
-Var PROGRAMEXECUTABLE
-Var USINGJAVAEXECUTABLE
-Var RUNLOCALLY
-
-Var USESCONTAINEDTEMPDIRECTORY
-Var DISABLESPLASHSCREEN
-
-Var USESREGISTRY
-Var JAVAMODE
-
-Var APPDIRECTORY
-Var DATADIRECTORY
-Var JAVADIRECTORY
-Var ALLUSERSPROFILE
-Var TEMPDIRECTORY
-Var PORTABLEAPPSDOCUMENTSDIRECTORY
-Var PORTABLEAPPSPICTURESDIRECTORY
-Var PORTABLEAPPSMUSICDIRECTORY
-Var PORTABLEAPPSVIDEOSDIRECTORY
-Var PORTABLEAPPSDIRECTORY
-
-!macro Var_ReplaceVar _VAR
-Var REPLACEVAR_FS_${_VAR}
-Var REPLACEVAR_DBS_${_VAR}
-Var REPLACEVAR_JUP_${_VAR}
-!macroend
-
-!insertmacro Var_ReplaceVar APPDIRECTORY
-!insertmacro Var_ReplaceVar DATADIRECTORY
-!insertmacro Var_ReplaceVar JAVADIRECTORY
-!insertmacro Var_ReplaceVar ALLUSERSPROFILE
-!insertmacro Var_ReplaceVar LOCALAPPDATA
-!insertmacro Var_ReplaceVar APPDATA
-!insertmacro Var_ReplaceVar DOCUMENTS
-!insertmacro Var_ReplaceVar TEMPDIRECTORY
-!insertmacro Var_ReplaceVar PORTABLEAPPSDOCUMENTSDIRECTORY
-!insertmacro Var_ReplaceVar PORTABLEAPPSPICTURESDIRECTORY
-!insertmacro Var_ReplaceVar PORTABLEAPPSMUSICDIRECTORY
-!insertmacro Var_ReplaceVar PORTABLEAPPSVIDEOSDIRECTORY
-!insertmacro Var_ReplaceVar PORTABLEAPPSDIRECTORY
-
-Var PORTABLEAPPSLANGUAGECODE
-Var PORTABLEAPPSLOCALECODE2
-Var PORTABLEAPPSLOCALECODE3
-Var PORTABLEAPPSLOCALEGLIBC
-Var PORTABLEAPPSLOCALEID
-Var PORTABLEAPPSLOCALEWINNAME
-
-; Macro: Make java.util.prefs path {{{1
-!macro MakeJavaUtilPrefsPath VARIABLE
-	;$R0=pos,$R1=char
-	Push $R0 ; len
-	Push $R1 ; pos
-	Push $R2 ; char
-	StrLen $R0 $REPLACEVAR_FS_${VARIABLE}
-	IntOp $R0 $R0 - 1 ; base 0
-	${For} $R1 0 $R0
-		StrCpy $R2 $REPLACEVAR_FS_${VARIABLE} 1 $R1
-		${If} $R2 ==   a
-		${OrIf} $R2 == b
-		${OrIf} $R2 == c
-		${OrIf} $R2 == d
-		${OrIf} $R2 == e
-		${OrIf} $R2 == f
-		${OrIf} $R2 == g
-		${OrIf} $R2 == h
-		${OrIf} $R2 == i
-		${OrIf} $R2 == j
-		${OrIf} $R2 == k
-		${OrIf} $R2 == l
-		${OrIf} $R2 == m
-		${OrIf} $R2 == n
-		${OrIf} $R2 == o
-		${OrIf} $R2 == p
-		${OrIf} $R2 == q
-		${OrIf} $R2 == r
-		${OrIf} $R2 == s
-		${OrIf} $R2 == t
-		${OrIf} $R2 == u
-		${OrIf} $R2 == v
-		${OrIf} $R2 == w
-		${OrIf} $R2 == x
-		${OrIf} $R2 == y
-		${OrIf} $R2 == z
-		${OrIf} $R2 == :
-			StrCpy $REPLACEVAR_JUP_${VARIABLE} "$REPLACEVAR_JUP_${VARIABLE}$R2"
-		${Else}
-			StrCpy $REPLACEVAR_JUP_${VARIABLE} "$REPLACEVAR_JUP_${VARIABLE}/$R2"
-		${EndIf}
-	${Next}
-	Pop $R2
-	Pop $R1
-	Pop $R0
-!macroend
-!define MakeJavaUtilPrefsPath "!insertmacro MakeJavaUtilPrefsPath"
+Var MissingFileOrPath
+Var AppNamePortable
+Var AppName
+Var ProgramExecutable
 
 ; Macro: generate strings for ParseLocations {{{1
 !macro ParseLocations_SlashType VAR SLASHTYPE VARIABLEAPPENDAGE
 	${StrReplace} "${VAR}" "%${SLASHTYPE}APPDIR%" "$${VARIABLEAPPENDAGE}APPDIRECTORY" "${VAR}"
 	${StrReplace} "${VAR}" "%${SLASHTYPE}DATADIR%" "$${VARIABLEAPPENDAGE}DATADIRECTORY" "${VAR}"
-	${If} $JAVAMODE == find
-	${OrIf} $JAVAMODE == require
+	${If} $JavaMode == find
+	${OrIf} $JavaMode == require
 		${StrReplace} "${VAR}" "%${SLASHTYPE}JAVADIR%" "$${VARIABLEAPPENDAGE}JAVADIRECTORY" "${VAR}"
 	${EndIf}
 	${StrReplace} "${VAR}" "%${SLASHTYPE}ALLUSERSPROFILE%" "$${VARIABLEAPPENDAGE}ALLUSERSPROFILE" "${VAR}"
@@ -217,12 +115,12 @@ Var PORTABLEAPPSLOCALEWINNAME
 !macro ParseLocations VAR
 	${DebugMsg} "Before location parsing, $${VAR} = `${VAR}`"
 	;===Paths {{{2
-		${StrReplace} "${VAR}" %DRIVE% $CURRENTDRIVE "${VAR}"
+		${StrReplace} "${VAR}" %DRIVE% $CurrentDrive "${VAR}"
 		!insertmacro ParseLocations_SlashType "${VAR}" "" ""
 		!insertmacro ParseLocations_SlashType "${VAR}" / REPLACEVAR_FS_
 		!insertmacro ParseLocations_SlashType "${VAR}" \\ REPLACEVAR_DBS_
-		${If} $JAVAMODE == find
-		${OrIf} $JAVAMODE == require
+		${If} $JavaMode == find
+		${OrIf} $JavaMode == require
 			!insertmacro ParseLocations_SlashType "${VAR}" java.util.prefs: REPLACEVAR_JUP_
 		${EndIf}
 
@@ -264,957 +162,138 @@ Var PORTABLEAPPSLOCALEWINNAME
 !macroend
 !define ReadUserOverrideConfig "!insertmacro ReadUserOverrideConfig"
 
-; UAC elevation function {{{1
-Function UAC_Elevate
-	; Macro for producing the right message box based on the error code {{{2
-	!macro CaseUACCodeAlert CODE FORCEMESSAGE TRYMESSAGE
-		!if "${CODE}" == ""
-			${Default}
-		!else
-			${Case} "${CODE}"
-		!endif
-			${If} $RUNASADMIN == force
-				MessageBox MB_OK|MB_ICONSTOP|MB_TOPMOST|MB_SETFOREGROUND "${FORCEMESSAGE}"
-				Abort
-			${ElseIf} $RUNASADMIN == try
-				MessageBox MB_OK|MB_ICONINFORMATION|MB_TOPMOST|MB_SETFOREGROUND "${TRYMESSAGE}"
-			${EndIf}
-			${Break}
-	!macroend
-	!define CaseUACCodeAlert "!insertmacro CaseUACCodeAlert"
+!include Segments.nsh ;{{{1 Include all the code }}}
 
-	Elevate: ; Attempt to elevate to admin {{{2
-		!insertmacro UAC_RunElevated
-		${Switch} $0
-			; Success in changing credentials in some way {{{3
-			${Case} 0
-				${IfThen} $1 = 1 ${|} Abort ${|} ; This is the user-level process and the admin-level process has finished successfully.
-				${If} $3 <> 0 ; This is the admin-level process: great!
-					StrCpy $RUNNINGASADMIN true
-					Return
-				${EndIf}
-				${If} $1 = 3 ; RunAs completed successfully, but with a non-admin user
-					${If} $RUNASADMIN == force
-						MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION|MB_TOPMOST|MB_SETFOREGROUND "$(LauncherRequiresAdmin)$\r$\n$\r$\n$(LauncherNotAdminTryAgain)" IDRETRY Elevate IDCANCEL Fail
-					${ElseIf} $RUNASADMIN == try
-						MessageBox MB_ABORTRETRYIGNORE|MB_ICONEXCLAMATION|MB_TOPMOST|MB_SETFOREGROUND "$(LauncherNotAdminLimitedFunctionality)$\r$\n$\r$\n$(LauncherNotAdminLimitedFunctionalityTryAgain)" IDABORT Fail IDRETRY Elevate
-						Return ; Ignore
-					${EndIf}
-				${EndIf}
-				; If we're still here, we'll fall through as there's no ${Break}
-			; Explicitly failed to get admin {{{3
-			${CaseUACCodeAlert} 1233 \
-				"$(LauncherRequiresAdmin)" \
-				"$(LauncherNotAdminLimitedFunctionality)"
-			; Windows logon service unavailable {{{3
-			${CaseUACCodeAlert} 1062 \
-				"$(LauncherAdminLogonServiceNotRunning)" \
-				"$(LauncherNotAdminLimitedFunctionality)"
-			; Other error, not sure what {{{3
-			${CaseUACCodeAlert} "" \
-				"$(LauncherAdminError)$\r$\n$(LauncherNotAdminLimitedFunctionality)" \
-				"$(LauncherAdminError)$\r$\n$(LauncherNotAdminLimitedFunctionality)"
-		${EndSwitch}
-		Return
-
-	Fail:    ; Failed to elevate to admin, either as required (force), or the user wants to give up (try) {{{2
-		Abort
+Function .onInit ;{{{1
+	!insertmacro LauncherLanguage_.onInit
+	!insertmacro RunAsAdmin_.onInit
 FunctionEnd
 
-; onInit: set the language and run as admin if needed {{{1
-Function .onInit
-	; Set the language for message boxes, based on what the Platform has set {{{2
-	ReadEnvStr $0 PortableApps.comLocaleID
-	${Switch} $0
-		${Case} 1033 ; English
-		${Case} 1036 ; French
-		${Case} 1031 ; German
-		${Case} 1040 ; Italian
-		${Case} 1041 ; Japanese
-		${Case} 2052 ; SimpChinese
-			StrCpy $LANGUAGE $0
-			${Break}
-	${EndSwitch}
+Section Init     ;{{{1
+	!insertmacro Core_Init
+	!insertmacro DriveLetter_Init
+	!insertmacro Variables_Init
+	!insertmacro Registry_Init
+	!insertmacro Java_Init
+	!insertmacro Mutex_Init
+	!insertmacro RunLocally_Init
+	!insertmacro Temp_Init
+	!insertmacro InstanceManagement_Init
+	!insertmacro SplashScreen_Init
+	!insertmacro RefreshShellIcons_Init
+SectionEnd
 
-	; Run as admin if needed {{{2
-	${ReadLauncherConfig} $RUNASADMIN Launch RunAsAdmin
-	${If} $RUNASADMIN == force
-	${OrIf} $RUNASADMIN == try
-		Call UAC_Elevate
+Section Pre      ;{{{1
+	!insertmacro RunLocally_Pre
+	!insertmacro Temp_Pre
+	!insertmacro Environment_Pre
+	!insertmacro ExecString_Pre
+	${If} $SecondaryLaunch != true
+		;=== Run PrePrimary segments
+		!insertmacro Settings_PrePrimary
+		!insertmacro DriveLetter_PrePrimary
+		!insertmacro FileWrite_PrePrimary
+		!insertmacro FilesMove_PrePrimary
+		!insertmacro DirectoriesMove_PrePrimary
+		!insertmacro RegistryKeys_PrePrimary
+		!insertmacro RegistryValueBackupDelete_PrePrimary
+		!insertmacro RegistryValueWrite_PrePrimary
+		!insertmacro Services_PrePrimary
+	${Else}
+		;=== Run PreSecondary segments
+		;!insertmacro *_PreSecondary
 	${EndIf}
+SectionEnd
+
+Section PreExec  ;{{{1
+	!insertmacro RefreshShellIcons_PreExec
+	!insertmacro SetOutPath_PreExec
+	${If} $SecondaryLaunch != true
+		;=== Run PreExecPrimary segments
+		!insertmacro SplashScreen_PreExecPrimary
+	${Else}
+		;=== Run PreExecSecondary segments
+		;!insertmacro *_PreExecSecondary
+	${EndIf}
+SectionEnd
+
+Section Execute  ;{{{1
+	!ifdef DEBUG
+		${If} $SecondaryLaunch != true
+			${DebugMsg} "About to execute the following string and wait till it's done: $ExecString"
+		${Else}
+			${DebugMsg} "About to execute the following string and finish: $ExecString"
+		${EndIf}
+	!endif
+	${ReadLauncherConfig} $0 Launch HideCommandLineWindow
+	${If} $0 == true
+		; TODO: do this without a plug-in or at least some way it won't wait with secondary
+		ExecDos::exec $ExecString
+		Pop $0
+	${ElseIf} $SecondaryLaunch != true
+		ExecWait $ExecString
+	${Else}
+		Exec $ExecString
+	${EndIf}
+	${DebugMsg} "$ExecString has finished."
+
+	${If} $SecondaryLaunch != true
+		; Wait till it's done
+		${ReadLauncherConfig} $0 Launch WaitForOtherInstances
+		${If} $0 != false
+			${ReadLauncherConfig} $0 Launch WaitForEXE
+			${GetFileName} $ProgramExecutable $1
+			${If} $0 != ""
+				${DebugMsg} "Waiting till any other instances of $1 and $0 are finished."
+			${Else}
+				${DebugMsg} "Waiting till any other instances of $1 are finished."
+			${EndIf}
+			${Do}
+				Sleep 1000
+				${If} $0 != ""
+					${ProcessExists} $0 $R9
+					${IfThen} $R9 > 0 ${|} ${Continue} ${|}
+				${EndIf}
+				${ProcessExists} $1 $R9
+			${LoopWhile} $R9 > 0
+			${DebugMsg} "All instances of $1 are finished."
+		${EndIf}
+	${EndIf}
+SectionEnd
+
+Section Post     ;{{{1
+	${If} $SecondaryLaunch != true
+		;=== Run PostPrimary segments
+		!insertmacro Temp_PostPrimary ; OK anywhere
+		!insertmacro Services_PostPrimary
+		!insertmacro RegistryValueBackupDelete_PostPrimary
+		!insertmacro RegistryKeys_PostPrimary
+		!insertmacro RegistryCleanup_PostPrimary
+		!insertmacro DirectoriesMove_PostPrimary
+		!insertmacro FilesMove_PostPrimary
+		!insertmacro DirectoriesCleanup_PostPrimary
+		!insertmacro RunLocally_PostPrimary
+	${Else}
+		;=== Run PostSecondary segments
+		;!insertmacro *_PostSecondary
+	${EndIf}
+	!insertmacro RefreshShellIcons_Post
+SectionEnd
+
+Section Unload ;{{{1
+	Call Unload
+SectionEnd
+
+Function .onInstFailed ;{{{1
+	; If Abort is called
+	Call Unload
 FunctionEnd
 
-; Now for the Section which does everything {{{1
-Section
-	ReadINIStr $AppID $EXEDIR\App\AppInfo\appinfo.ini Details AppID
-
-	;=== Fail for UNC paths {{{2
-		StrCpy $0 $EXEDIR 2
-		${If} $0 == "\\"
-			MessageBox MB_OK|MB_ICONSTOP "$(LauncherNoUNCSupport)"
-			Abort
-		${EndIf}
-
-	;=== Initialise variables {{{2
-		; NOTE: CURRENTDRIVE has an issue; it may need to refer to the app, data
-		; or file locations; these could be two different drives in Live mode.
-		; Which drive letter should we use?  Working on the running device, as
-		; file locations (e.g. for MRU) seems most likely.
-		ReadINIStr $LASTDRIVE $EXEDIR\Data\settings\$AppIDSettings.ini $AppIDSettings LastDrive
-		${GetRoot} $EXEDIR $CURRENTDRIVE
-		${GetParent} $EXEDIR $PORTABLEAPPSDIRECTORY
-
-		ReadEnvStr $PORTABLEAPPSDOCUMENTSDIRECTORY PortableApps.comDocuments
-		${IfNotThen} ${FileExists} $PORTABLEAPPSDOCUMENTSDIRECTORY ${|} StrCpy $PORTABLEAPPSDOCUMENTSDIRECTORY $CURRENTDRIVE\Documents ${|}
-
-		ReadEnvStr $PORTABLEAPPSPICTURESDIRECTORY PortableApps.comPictures
-		${IfNotThen} ${FileExists} $PORTABLEAPPSPICTURESDIRECTORY ${|} StrCpy $PORTABLEAPPSPICTURESDIRECTORY $PORTABLEAPPSDOCUMENTSDIRECTORY\Pictures ${|}
-
-		ReadEnvStr $PORTABLEAPPSMUSICDIRECTORY PortableApps.comMusic
-		${IfNotThen} ${FileExists} $PORTABLEAPPSMUSICDIRECTORY ${|} StrCpy $PORTABLEAPPSMUSICDIRECTORY $PORTABLEAPPSDOCUMENTSDIRECTORY\Music ${|}
-
-		ReadEnvStr $PORTABLEAPPSVIDEOSDIRECTORY PortableApps.comVideos
-		${IfNotThen} ${FileExists} $PORTABLEAPPSVIDEOSDIRECTORY ${|} StrCpy $PORTABLEAPPSVIDEOSDIRECTORY $PORTABLEAPPSDOCUMENTSDIRECTORY\Videos ${|}
-
-		ReadEnvStr $PORTABLEAPPSLANGUAGECODE PortableApps.comLanguageCode
-		${IfThen} $PORTABLEAPPSLANGUAGECODE == "" ${|} StrCpy $PORTABLEAPPSLANGUAGECODE en-us ${|}
-		ReadEnvStr $PORTABLEAPPSLOCALECODE2 PortableApps.comLocaleCode2
-		${IfThen} $PORTABLEAPPSLOCALECODE2 == "" ${|} StrCpy $PORTABLEAPPSLOCALECODE2 en ${|}
-		ReadEnvStr $PORTABLEAPPSLOCALECODE3 PortableApps.comLocaleCode3
-		${IfThen} $PORTABLEAPPSLOCALECODE3 == "" ${|} StrCpy $PORTABLEAPPSLOCALECODE3 eng ${|}
-		ReadEnvStr $PORTABLEAPPSLOCALEGLIBC PortableApps.comLocaleglibc
-		${IfThen} $PORTABLEAPPSLOCALEGLIBC == "" ${|} StrCpy $PORTABLEAPPSLOCALEGLIBC en_US ${|}
-		ReadEnvStr $PORTABLEAPPSLOCALEID PortableApps.comLocaleID
-		${IfThen} $PORTABLEAPPSLOCALEID == "" ${|} StrCpy $PORTABLEAPPSLOCALEID 1033 ${|}
-		ReadEnvStr $PORTABLEAPPSLOCALEWINNAME PortableApps.comLocaleWinName
-		${IfThen} $PORTABLEAPPSLOCALEWINNAME == "" ${|} StrCpy $PORTABLEAPPSLOCALEWINNAME LANG_ENGLISH ${|}
-
-		ReadEnvStr $ALLUSERSPROFILE ALLUSERSPROFILE
-
-	;=== Make forward slash and double backslash versions {{{2
-		${StrReplace} $REPLACEVAR_FS_ALLUSERSPROFILE \ / $ALLUSERSPROFILE
-		${StrReplace} $REPLACEVAR_DBS_ALLUSERSPROFILE / \\ $REPLACEVAR_FS_ALLUSERSPROFILE
-		${StrReplace} $REPLACEVAR_FS_LOCALAPPDATA \ / $LOCALAPPDATA
-		${StrReplace} $REPLACEVAR_DBS_LOCALAPPDATA / \\ $REPLACEVAR_FS_LOCALAPPDATA
-		${StrReplace} $REPLACEVAR_FS_APPDATA \ / $APPDATA
-		${StrReplace} $REPLACEVAR_DBS_APPDATA / \\ $REPLACEVAR_FS_APPDATA
-		${StrReplace} $REPLACEVAR_FS_DOCUMENTS \ / $DOCUMENTS
-		${StrReplace} $REPLACEVAR_DBS_DOCUMENTS / \\ $REPLACEVAR_FS_DOCUMENTS
-		${StrReplace} $REPLACEVAR_FS_PORTABLEAPPSDOCUMENTSDIRECTORY \ / $PORTABLEAPPSDOCUMENTSDIRECTORY
-		${StrReplace} $REPLACEVAR_DBS_PORTABLEAPPSDOCUMENTSDIRECTORY / \\ $REPLACEVAR_FS_PORTABLEAPPSDOCUMENTSDIRECTORY
-		${StrReplace} $REPLACEVAR_FS_PORTABLEAPPSPICTURESDIRECTORY \ / $PORTABLEAPPSPICTURESDIRECTORY
-		${StrReplace} $REPLACEVAR_DBS_PORTABLEAPPSPICTURESDIRECTORY / \\ $REPLACEVAR_FS_PORTABLEAPPSPICTURESDIRECTORY
-		${StrReplace} $REPLACEVAR_FS_PORTABLEAPPSMUSICDIRECTORY \ / $PORTABLEAPPSMUSICDIRECTORY
-		${StrReplace} $REPLACEVAR_DBS_PORTABLEAPPSMUSICDIRECTORY / \\ $REPLACEVAR_FS_PORTABLEAPPSMUSICDIRECTORY
-		${StrReplace} $REPLACEVAR_FS_PORTABLEAPPSVIDEOSDIRECTORY \ / $PORTABLEAPPSVIDEOSDIRECTORY
-		${StrReplace} $REPLACEVAR_DBS_PORTABLEAPPSVIDEOSDIRECTORY / \\ $REPLACEVAR_FS_PORTABLEAPPSVIDEOSDIRECTORY
-		${StrReplace} $REPLACEVAR_FS_PORTABLEAPPSDIRECTORY \ / $PORTABLEAPPSDIRECTORY
-		${StrReplace} $REPLACEVAR_DBS_PORTABLEAPPSDIRECTORY / \\ $REPLACEVAR_FS_PORTABLEAPPSDIRECTORY
-
-	;=== Load launcher details {{{2
-		ClearErrors
-		ReadINIStr $PORTABLEAPPNAME $EXEDIR\App\AppInfo\appinfo.ini Details Name
-		${ReadLauncherConfig} $PROGRAMEXECUTABLE Launch ProgramExecutable
-
-		${If} ${Errors}
-			;=== Launcher file missing or missing crucial details
-			StrCpy $PORTABLEAPPNAME "PortableApps.com Launcher"
-			StrCpy $MISSINGFILEORPATH launcher.ini
-			MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
-			Abort
-		${EndIf}
-
-	;=== Search for Java: PortableApps.com CommonFiles, registry, %JAVA_HOME%, SearchPath, %WINDIR%\Java {{{2
-		${ReadLauncherConfig} $USESREGISTRY Activate Registry
-		${ReadLauncherConfig} $JAVAMODE Activate Java
-		${If} $JAVAMODE == find
-		${OrIf} $JAVAMODE == require
-			StrCpy $JAVADIRECTORY $PORTABLEAPPSDIRECTORY\CommonFiles\Java
-			${IfNot} ${FileExists} $JAVADIRECTORY
-				ClearErrors
-				ReadRegStr $JAVADIRECTORY HKLM "Software\JavaSoft\Java Runtime Environment" CurrentVersion
-				ReadRegStr $JAVADIRECTORY HKLM "Software\JavaSoft\Java Runtime Environment\$JAVADIRECTORY" JavaHome
-				${If} ${Errors}
-				${OrIfNot} ${FileExists} $JAVADIRECTORY\bin\java.exe
-					ClearErrors
-					ReadEnvStr $JAVADIRECTORY JAVA_HOME
-					${If} ${Errors}
-					${OrIfNot} ${FileExists} $JAVADIRECTORY\bin\java.exe
-						ClearErrors
-						SearchPath $JAVADIRECTORY java.exe
-						${IfNot} ${Errors}
-							${GetParent} $JAVADIRECTORY $JAVADIRECTORY
-							${GetParent} $JAVADIRECTORY $JAVADIRECTORY
-						${Else}
-							StrCpy $JAVADIRECTORY $WINDIR\Java
-							${IfNot} ${FileExists} $JAVADIRECTORY\bin\java.exe
-								StrCpy $JAVADIRECTORY $PORTABLEAPPSDIRECTORY\CommonFiles\Java
-							${EndIf}
-						${EndIf}
-					${EndIf}
-				${EndIf}
-			${EndIf}
-
-			${StrReplace} $REPLACEVAR_FS_JAVADIRECTORY \ / $JAVADIRECTORY
-			${StrReplace} $REPLACEVAR_DBS_JAVADIRECTORY / \\ $REPLACEVAR_FS_JAVADIRECTORY
-
-			${If} $JAVAMODE == require
-				${IfNot} ${FileExists} $JAVADIRECTORY
-					;=== Java Portable is missing
-					StrCpy $MISSINGFILEORPATH Java
-					MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
-					Abort
-				${EndIf}
-				${IfThen} $PROGRAMEXECUTABLE == java.exe ${|} StrCpy $USINGJAVAEXECUTABLE true ${|}
-				${IfThen} $PROGRAMEXECUTABLE == javaw.exe ${|} StrCpy $USINGJAVAEXECUTABLE true ${|}
-			${EndIf}
-			${MakeJavaUtilPrefsPath} JAVADIRECTORY
-			${MakeJavaUtilPrefsPath} ALLUSERSPROFILE
-			${MakeJavaUtilPrefsPath} LOCALAPPDATA
-			${MakeJavaUtilPrefsPath} APPDATA
-			${MakeJavaUtilPrefsPath} DOCUMENTS
-			${MakeJavaUtilPrefsPath} PORTABLEAPPSDOCUMENTSDIRECTORY
-			${MakeJavaUtilPrefsPath} PORTABLEAPPSPICTURESDIRECTORY
-			${MakeJavaUtilPrefsPath} PORTABLEAPPSMUSICDIRECTORY
-			${MakeJavaUtilPrefsPath} PORTABLEAPPSVIDEOSDIRECTORY
-			${MakeJavaUtilPrefsPath} PORTABLEAPPSDIRECTORY
-		${EndIf}
-
-	;=== Check if launcher already running {{{2
-		System::Call 'kernel32::CreateMutex(i0,i0,t"PortableApps.comLauncher$AppID")?e'
-		Pop $0
-		${IfNot} $0 = 0
-			${ReadLauncherConfig} $0 Launch SinglePortableAppInstance
-			${If} $0 == true
-				${DebugMsg} "Launcher already running and [Launch]->SingleInstance=true: aborting."
-				Abort
-			${EndIf}
-			${DebugMsg} "Launcher already running: secondary launch."
-			StrCpy $SECONDARYLAUNCH true
-		${EndIf}
-
-	;=== Read the user customisations INI file {{{2
-		${ReadUserOverrideConfig} $RUNLOCALLY RunLocally
-
-		${IfNot} ${FileExists} $EXEDIR\App\$PROGRAMEXECUTABLE
-		${AndIfNot} $USINGJAVAEXECUTABLE == true
-			;=== Program executable not where expected
-			StrCpy $MISSINGFILEORPATH App\$PROGRAMEXECUTABLE
-			MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
-			Abort
-		${EndIf}
-
-	;=== Check if application already running {{{2
-		!macro AbortAlreadyRunning _EXECUTABLE_NAME
-			${ProcessExists} "${_EXECUTABLE_NAME}" $0
-			${If} $SECONDARYLAUNCH != true
-			${AndIf} $0 > 0
-				${ReadLauncherConfig} $APPNAME Launch AppName
-				${If} $APPNAME == ""
-					; Calculate the application name - non-portable version
-					StrCpy $0 $PORTABLEAPPNAME "" -9
-					${If} $0 == " Portable"
-						StrCpy $APPNAME $PORTABLEAPPNAME -9
-					${Else}
-						StrCpy $1 $PORTABLEAPPNAME "" -18
-						${If} $0 == ", Portable Edition"
-							StrCpy $APPNAME $PORTABLEAPPNAME -18
-						${Else}
-							StrCpy $APPNAME $PORTABLEAPPNAME
-						${EndIf}
-					${EndIf}
-				${EndIf}
-				MessageBox MB_OK|MB_ICONSTOP `$(LauncherAlreadyRunning)`
-				Abort
-			${EndIf}
-		!macroend
-		${ReadLauncherConfig} $0 Launch SingleAppInstance
-		${If} $0 != false
-		${AndIfNot} $USINGJAVAEXECUTABLE == true
-			${GetFileName} $PROGRAMEXECUTABLE $0
-			!insertmacro AbortAlreadyRunning $0
-		${EndIf}
-
-		ClearErrors
-		${ReadLauncherConfig} $0 Launch CloseEXE
-		${IfNot} ${Errors}
-			!insertmacro AbortAlreadyRunning $0
-		${EndIf}
-
-	;=== Display splash screen {{{2
-		${ReadUserOverrideConfig} $DISABLESPLASHSCREEN DisableSplashScreen
-		${IfNotThen} ${FileExists} $EXEDIR\App\AppInfo\splash.jpg ${|} StrCpy $DISABLESPLASHSCREEN true ${|}
-		${If} $DISABLESPLASHSCREEN != true
-			;=== Show the splash screen before processing the files
-			newadvsplash::show /NOUNLOAD 1500 200 0 -1 /L $EXEDIR\App\AppInfo\splash.jpg
-		${EndIf}
-
-	;=== Wait for program?  *ONLY USE THIS IF THERE'LL BE NOTHING TO DO AFTERWARDS! {{{2
-	; TODO: automatically work something out about this
-		${ReadLauncherConfig} $0 Launch WaitForProgram
-		${If} $0 == false
-			${DebugMsg} "WaitForProgram is set to false: SECONDARYLAUNCH set to true."
-			StrCpy $SECONDARYLAUNCH true
-		${EndIf}
-
-	;=== Handle Live mode (run locally) {{{2
-		${If} $RUNLOCALLY == true
-			${DebugMsg} "Live mode enabled"
-			${ReadLauncherConfig} $0 LiveMode CopyApp
-			${If} $0 != false
-				${If} $SECONDARYLAUNCH != true
-					${DebugMsg} "Live mode: copying $EXEDIR\App to $TEMP\$AppIDLive\App"
-					CreateDirectory $TEMP\$AppIDLive
-					CopyFiles /SILENT $EXEDIR\App $TEMP\$AppIDLive
-				${EndIf}
-				StrCpy $APPDIRECTORY $TEMP\$AppIDLive\App
-			${EndIf}
-			#For the time being at least, I've disabled the option of not copying Data, as it makes file moving etc. from %DATADIRECTORY% break
-			#${ReadLauncherConfig} $0 LiveMode CopyData
-			${If} $0 != false
-				${If} $SECONDARYLAUNCH != true
-					${DebugMsg} "Live mode: copying $EXEDIR\Data to $TEMP\$AppIDLive\Data"
-					CreateDirectory $TEMP\$AppIDLive
-					CopyFiles /SILENT $EXEDIR\Data $TEMP\$AppIDLive
-				${EndIf}
-				StrCpy $DATADIRECTORY $TEMP\$AppIDLive\Data
-			${EndIf}
-			${If} ${FileExists} $TEMP\$AppIDLive
-				${SetFileAttributesDirectoryNormal} $TEMP\$AppIDLive
-			${EndIf}
-		${Else}
-			StrCpy $APPDIRECTORY $EXEDIR\App
-			StrCpy $DATADIRECTORY $EXEDIR\Data
-		${EndIf}
-
-		${StrReplace} $REPLACEVAR_FS_APPDIRECTORY \ / $APPDIRECTORY
-		${StrReplace} $REPLACEVAR_DBS_APPDIRECTORY / \\ $REPLACEVAR_FS_APPDIRECTORY
-		${MakeJavaUtilPrefsPath} APPDIRECTORY
-		${StrReplace} $REPLACEVAR_FS_DATADIRECTORY \ / $DATADIRECTORY
-		${StrReplace} $REPLACEVAR_DBS_DATADIRECTORY / \\ $REPLACEVAR_FS_DATADIRECTORY
-		${MakeJavaUtilPrefsPath} DATADIRECTORY
-
-	;=== Handle TEMP directory {{{2
-		${ReadLauncherConfig} $USESCONTAINEDTEMPDIRECTORY Launch AssignContainedTempDirectory
-		${If} $USESCONTAINEDTEMPDIRECTORY != false
-			${ReadLauncherConfig} $0 Launch WaitForProgram
-			${If} $0 == false
-				StrCpy $TEMPDIRECTORY $DATADIRECTORY\Temp
-			${Else}
-				StrCpy $TEMPDIRECTORY $TEMP\$AppIDTemp
-			${EndIf}
-			${DebugMsg} "Creating temporary directory $TEMPDIRECTORY"
-			${If} ${FileExists} $TEMPDIRECTORY
-				RMDir /r $TEMPDIRECTORY
-			${EndIf}
-			CreateDirectory $TEMPDIRECTORY
-		${Else}
-			StrCpy $TEMPDIRECTORY $TEMP
-		${EndIf}
-
-		${DebugMsg} "Setting %TEMP% and %TMP% to $TEMPDIRECTORY"
-		System::Call 'Kernel32::SetEnvironmentVariable(t"TEMP",t"$TEMPDIRECTORY")'
-		System::Call 'Kernel32::SetEnvironmentVariable(t"TMP",t"$TEMPDIRECTORY")'
-		${StrReplace} $REPLACEVAR_FS_TEMPDIRECTORY \ / $TEMPDIRECTORY
-		${StrReplace} $REPLACEVAR_DBS_TEMPDIRECTORY / \\ $REPLACEVAR_FS_TEMPDIRECTORY
-		${MakeJavaUtilPrefsPath} TEMPDIRECTORY
-
-	;=== Check for settings {{{2
-		${IfNot} ${FileExists} $DATADIRECTORY\settings
-			${DebugMsg} "$DATADIRECTORY\settings does not exist. Creating it."
-			CreateDirectory $DATADIRECTORY\settings
-			${If} ${FileExists} $EXEDIR\App\DefaultData\*.*
-				${DebugMsg} "Copying default data from $EXEDIR\App\DefaultData to $DATADIRECTORY."
-				CopyFiles /SILENT $EXEDIR\App\DefaultData\*.* $DATADIRECTORY
-			${EndIf}
-		${EndIf}
-
-	;=== Update the drive letter in files {{{2
-		${If} $LASTDRIVE != ""
-		${AndIf} $LASTDRIVE != $CURRENTDRIVE
-			;=== Backslash {{{3
-			StrCpy $R0 1
-			${Do}
-				ClearErrors
-				${ReadLauncherConfig} $1 FileDriveLetterUpdate Backslash$R0
-				${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-				${ParseLocations} $1
-				${If} ${FileExists} $1
-					${DebugMsg} "Updating drive letter from $LASTDRIVE to $CURRENTDRIVE in $1; using backslashes"
-					${ReplaceInFile} $1 $LASTDRIVE\ "$CURRENTDRIVE\"
-				${EndIf}
-				IntOp $R0 $R0 + 1
-			${Loop}
-
-			;=== Forwardslash {{{3
-			StrCpy $R0 1
-			${Do}
-				ClearErrors
-				${ReadLauncherConfig} $1 FileDriveLetterUpdate Forwardslash$R0
-				${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-				${ParseLocations} $1
-				${If} ${FileExists} $1
-					${DebugMsg} "Updating drive letter from $LASTDRIVE to $CURRENTDRIVE in $1; using forward slashes"
-					${ReplaceInFile} $1 $LASTDRIVE/ $CURRENTDRIVE/
-				${EndIf}
-				IntOp $R0 $R0 + 1
-			${Loop}
-		${EndIf}
-
-		;=== Save drive letter {{{3
-		WriteINIStr $DATADIRECTORY\settings\$AppIDSettings.ini $AppIDSettings LastDrive $CURRENTDRIVE
-
-	;=== Write configuration values with ConfigWrite {{{2
-		StrCpy $R0 1
-		${Do}
-			ClearErrors
-			${ReadLauncherConfig} $1 FileWriteConfigWrite $R0File
-			${ReadLauncherConfig} $2 FileWriteConfigWrite $R0Entry
-			${ReadLauncherConfig} $3 FileWriteConfigWrite $R0Value
-			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-			${ParseLocations} $1
-			${ParseLocations} $3
-			${If} ${FileExists} $1
-				${DebugMsg} "Writing configuration to a file with ConfigWrite.$\nFile: $1$\nEntry: `$2`$\nValue: `$3`"
-				${ConfigWrite} $1 $2 $3 $R0
-			${EndIf}
-			IntOp $R0 $R0 + 1
-		${Loop}
-
-	;=== Write configuration values with WriteINIStr {{{2
-		StrCpy $R0 1
-		${Do}
-			ClearErrors
-			${ReadLauncherConfig} $1 FileWriteINI $R0File
-			${ReadLauncherConfig} $2 FileWriteINI $R0Section
-			${ReadLauncherConfig} $3 FileWriteINI $R0Key
-			${ReadLauncherConfig} $4 FileWriteINI $R0Value
-			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-			${ParseLocations} $1
-			${ParseLocations} $4
-			${If} ${FileExists} $1
-				${DebugMsg} "Writing INI configuration to a file.$\nFile: $1$\nSection: `$2`$\nKey: `$3`$\nValue: `$4`"
-				WriteINIStr $1 $2 $3 $4
-			${EndIf}
-			IntOp $R0 $R0 + 1
-		${Loop}
-
-	;=== Construct the execution string {{{2
-		${DebugMsg} "Constructing execution string"
-		${If} $USINGJAVAEXECUTABLE != true
-			StrCpy $EXECSTRING `"$APPDIRECTORY\$PROGRAMEXECUTABLE"`
-		${Else}
-			StrCpy $EXECSTRING `"$JAVADIRECTORY\bin\$PROGRAMEXECUTABLE"`
-		${EndIf}
-		${DebugMsg} "Execution string is $EXECSTRING"
-
-		;=== Get any default parameters {{{3
-		ClearErrors
-		${ReadLauncherConfig} $0 Launch DefaultCommandLineArguments
-		${IfNot} ${Errors}
-			${DebugMsg} "There are default command line arguments ($0).  Adding them to execution string after parsing."
-			${ParseLocations} $0
-			StrCpy $EXECSTRING "$EXECSTRING $0"
-		${EndIf}
-
-		;=== Get any passed parameters {{{3
-		${GetParameters} $0
-		${If} $0 != ""
-			${DebugMsg} "Parameters were passed ($0).  Adding them to execution string."
-			ClearErrors
-			${ReadLauncherConfig} $1 Launch SetOutPath
-			${If} ${Errors}
-				StrCpy $EXECSTRING "$EXECSTRING $0"
-			${Else}
-				; Make relative paths absolute so they work post-SetOutPath
-				; TODO: examine string bit by bit rather than all at once
-				ClearErrors
-				GetFullPathName $1 $0
-				${If} ${Errors}
-					StrCpy $EXECSTRING "$EXECSTRING $0"
-				${Else}
-					${DebugMsg} "There is a SetOutPath directive, and the command line contained a path, $0, which has been rewritten to $1."
-					StrCpy $EXECSTRING "$EXECSTRING $1"
-				${EndIf}
-			${EndIf}
-		${EndIf}
-
-	;=== Get additional parameters from user INI file {{{2
-		${ReadUserOverrideConfig} $0 AdditionalParameters
-		${If} $0 != ""
-			${DebugMsg} "The user has specified additional command line arguments ($0).  Adding them to execution string."
-			StrCpy $EXECSTRING "$EXECSTRING $0"
-		${EndIf}
-
-		${DebugMsg} "Finished working with execution string: final value is $EXECSTRING"
-
-	;=== Set up environment variables {{{2
-		${ForEachINIPair} Environment $0 $1
-			${ParseLocations} $1
-			;=== Now see if we need to prepend, append or change.
-			StrCpy $2 $1 3 ; first three characters
-			${If} $2 == "{&}" ; append
-				ReadEnvStr $2 $0
-				StrCpy $1 $1 "" 3
-				StrCpy $1 $2$1
-			${Else}
-				StrCpy $2 $1 "" -3 ; last three characters
-				${If} $2 == "{&}" ; prepend
-					ReadEnvStr $2 $0
-					StrCpy $1 $1 -3
-					StrCpy $1 $1$2
-				${EndIf}
-			${EndIf}
-			${DebugMsg} "Changing environment variable $0 to $1"
-			System::Call 'Kernel32::SetEnvironmentVariable(tr0,tr1)'
-		${NextINIPair}
-
-	;=== If primary instance: make it portable {{{2
-		${If} $SECONDARYLAUNCH != true
-			;=== Backup local files and insert portable data {{{3
-				${ForEachINIPair} FilesMove $0 $1 ; {{{4
-					${ParseLocations} $1
-
-					${GetFileName} $0 $2
-
-					StrCpy $0 $DATADIRECTORY\$0
-					StrCpy $1 $1\$2
-
-					;=== Backup data from a local installation
-					${IfNot} ${FileExists} $1-BackupBy$AppID
-					${AndIf} ${FileExists} $1
-						${DebugMsg} "Backing up $1 to $1-BackupBy$AppID"
-						Rename $1 $1-BackupBy$AppID
-					${EndIf}
-					${If} ${FileExists} $0
-						${DebugMsg} "Copying $0 to $1"
-						${GetRoot} $0 $2 ; compare
-						${GetRoot} $1 $3 ; drive
-						${If} $2 == $3   ; letters
-							Rename $0 $1 ; same volume, rename OK
-						${Else}
-							${GetParent} $1 $1
-							${IfNot} ${FileExists} $1
-								CreateDirectory $1
-								WriteINIStr $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini FilesMove RemoveIfEmpty:$1 true
-							${EndIf}
-							CopyFiles /SILENT $0 $1
-						${EndIf}
-					${EndIf}
-				${NextINIPair}
-
-				${ForEachINIPair} DirectoriesMove $0 $1 ; {{{4
-					${ParseLocations} $1
-
-					;=== Backup data from a local installation
-					${If} ${FileExists} $1
-						${DebugMsg} "Backing up $1 to $1-BackupBy$AppID"
-						Rename $1 $1-BackupBy$AppID
-					${EndIf}
-					CreateDirectory $1
-					${If} ${FileExists} $DATADIRECTORY\$0\*.*
-						${DebugMsg} "Copying $DATADIRECTORY\$0\*.* to $1\*.*"
-						CopyFiles /SILENT $DATADIRECTORY\$0\*.* $1
-					${Else}
-						${DebugMsg} "$DATADIRECTORY\$0\*.* does not exist, so not copying it to $1.$\n(Note for developers: if you want default data, remember to put files in App\DefaultData\$0)"
-					${EndIf}
-				${NextINIPair}
-
-			;=== Backup registry and insert portable data {{{3
-			${If} $USESREGISTRY == true
-				;=== RegistryKeys {{{4
-				${ForEachINIPair} RegistryKeys $0 $1
-					;=== Backup the registry
-					${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $R9
-					${If} $R9 != 0
-						${registry::KeyExists} $1 $R9
-						${If} $R9 != -1
-							${DebugMsg} "Backing up registry key $1 to HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0"
-							${registry::MoveKey} $1 HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $R9
-						${EndIf}
-					${EndIf}
-
-					${If} ${FileExists} $DATADIRECTORY\settings\$0.reg
-						SetErrors
-						${DebugMsg} "Loading $DATADIRECTORY\settings\$0.reg into the registry."
-						${If} ${FileExists} $WINDIR\system32\reg.exe
-							nsExec::Exec `"$WINDIR\system32\reg.exe" import "$DATADIRECTORY\settings\$0.reg"`
-							Pop $R9
-							${IfThen} $R9 = 0 ${|} ClearErrors ${|}
-						${EndIf}
-
-						${If} ${Errors}
-							${registry::RestoreKey} $DATADIRECTORY\settings\$0.reg $R9
-							${If} $R9 != 0
-								WriteINIStr $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0 true
-								${DebugMsg} "Failed to load $DATADIRECTORY\settings\$0.reg into the registry."
-							${EndIf}
-						${EndIf}
-					${EndIf}
-				${NextINIPair}
-
-				;=== RegistryValueBackupDelete {{{4
-				StrCpy $R0 1
-				${Do}
-					ClearErrors
-					${ReadLauncherConfig} $1 RegistryValueBackupDelete $R0
-					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-					${GetParent} $1 $2
-					${GetFilename} $1 $3
-					${DebugMsg} "Backing up registry value $1 to HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values\$1"
-					${registry::MoveValue} $2 $3 HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values $1 $R9
-					IntOp $R0 $R0 + 1
-				${Loop}
-
-				;=== RegistryValueWrite {{{4
-				${ForEachINIPair} RegistryValueWrite $0 $1
-					${GetParent} $0 $2 ; key
-					${GetFileName} $0 $3 ; item
-
-					StrLen $4 $1
-					StrCpy $5 0
-					${Do}
-						StrCpy $6 $1 1 $5
-						${IfThen} $6 == : ${|} ${ExitDo} ${|}
-						IntOp $5 $5 + 1
-					${LoopUntil} $5 > $4
-
-					${If} $6 == :
-						StrCpy $4 $1 $5 ; type (e.g. REG_DWORD)
-						IntOp $5 $5 + 1
-						StrCpy $1 $1 "" $5 ; value
-					${Else}
-						StrCpy $4 REG_SZ
-					${EndIf}
-
-					${ParseLocations} $1
-
-					${DebugMsg} "Writing '$1' (type '$4') to key '$2', value '$3'$\n(Short form: $2\$3=$4:$1)"
-					; key item value type return
-					${registry::Write} $2 $3 $1 $4 $R9
-				${NextINIPair}
-			${EndIf}
-
-			;=== Handle services and drivers {{{3
-				StrCpy $R0 1
-				${Do}
-					ClearErrors
-					${ReadLauncherConfig} $1 Service$R0 Name
-					${ReadLauncherConfig} $4 Service$R0 Path
-					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-					${ParseLocations} $4
-					SimpleSC::ExistsService $1
-					Pop $2
-					${If} $2 == 0 ; Service already exists
-						${ReadLauncherConfig} $2 Service$R0 IfExists
-						${If} $2 == replace
-							MessageBox MB_ICONEXCLAMATION "TODO: The backing up and replacement of services is not yet implemented. The local service will remain."
-							/*
-							SimpleSC::GetServiceDisplayName $1
-							Pop $9
-							Pop $2
-							${DebugMsg} "Local service $1's display name is $2 (error code $9)"
-							SimpleSC::GetServiceBinaryPath $1
-							Pop $9
-							Pop $3
-							${DebugMsg} "Local service $1's binary path is $3 (error code $9)"
-							; TODO: this is going to be very messy. I'm not going to do it till later.
-							;${NewServiceLib.BackupService} $1 $DATADIRECTORY\PortableApps.comLauncherWorkingData.ini Service$1
-							SimpleSC::RemoveService $1
-							Pop $9
-							${DebugMsg} "Removed local service $1 (error code $9)
-							*/
-						${EndIf}
-						WriteINIStr $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini Service$R0 ExistedBefore true
-						StrCpy $R9 no-create
-					${EndIf}
-					${If} $R9 == no-create
-						${DebugMsg} "Not creating service $1 (local service already exists)"
-					${Else}
-						${ReadLauncherConfigWithDefault} $2 Service$R0 Display $1
-						${ReadLauncherConfig} $3 Service$R0 Type
-						${If} $3 == driver-kernel
-							StrCpy $3 1
-						${ElseIf} $3 == driver-file-system
-							StrCpy $3 2
-						${Else}
-							StrCpy $3 16
-						${EndIf}
-						${ReadLauncherConfig} $5 Service$R0 Dependencies
-						${ReadLauncherConfig} $6 Service$R0 User
-						${If} $4 == LocalService
-						${OrIf} $4 == NetworkService
-							StrCpy $4 "NT AUTHORITY\$4"
-						${EndIf}
-						SimpleSC::InstallService $1 $2 $3 3 $4 $5 $6 "" ; the 3 is for manual start, "" is an empty password
-						Pop $9
-						${DebugMsg} "Installed service $1 (error code $9)"
-						ClearErrors
-						${ReadLauncherConfig} $7 Service$R0 Description
-						${If} ${Errors}
-							SimpleSC::SetServiceDescription $1 $7
-							Pop $9
-							${DebugMsg} "Set service $1's description to $7"
-						${EndIf}
-						IntOp $R0 $R0 + 1
-					${EndIf}
-				${Loop}
-
-		;=== Handle working directory {{{3
-			ClearErrors
-			${ReadLauncherConfig} $0 Launch SetOutPath
-			${IfNot} ${Errors}
-				${ParseLocations} $0
-				${DebugMsg} "Setting working directory to $0."
-				SetOutPath $0
-			${EndIf}
-
-		;=== Run it! {{{3
-			${ReadLauncherConfig} $0 Launch RefreshShellIcons
-			${If} $0 == before
-			${OrIf} $0 == both
-				${RefreshShellIcons}
-			${EndIf}
-
-			${ReadLauncherConfig} $0 Launch LaunchAppAfterSplash
-			${If} $0 == true
-				StrCpy $DISABLESPLASHSCREEN true ; no need to unload at the end
-				newadvsplash::stop /WAIT
-			${EndIf}
-
-			${DebugMsg} "About to execute the following string and wait till it's done: $EXECSTRING"
-			${ReadLauncherConfig} $0 Launch HideCommandLineWindow
-			${If} $0 == true
-				ExecDos::exec $EXECSTRING
-				Pop $0
-			${Else}
-				ExecWait $EXECSTRING
-			${EndIf}
-			${DebugMsg} "$EXECSTRING has finished."
-
-		;=== Wait till it's done {{{3
-			${ReadLauncherConfig} $0 Launch WaitForOtherInstances
-			${If} $0 != false
-				${ReadLauncherConfig} $0 Launch WaitForEXE
-				${GetFileName} $PROGRAMEXECUTABLE $1
-				${If} $0 != ""
-					${DebugMsg} "Waiting till any other instances of $1 and $0 are finished."
-				${Else}
-					${DebugMsg} "Waiting till any other instances of $1 are finished."
-				${EndIf}
-				${Do}
-					Sleep 1000
-					${If} $0 != ""
-						${ProcessExists} $0 $R9
-						${IfThen} $R9 > 0 ${|} ${Continue} ${|}
-					${EndIf}
-					${ProcessExists} $1 $R9
-				${LoopWhile} $R9 > 0
-				${DebugMsg} "All instances of $1 are finished."
-			${EndIf}
-
-		;=== Remove custom TEMP directory {{{3
-			${If} $USESCONTAINEDTEMPDIRECTORY != false
-				${DebugMsg} "Removing contained temporary directory $TEMPDIRECTORY."
-				RMDir /r $TEMPDIRECTORY
-			${EndIf}
-
-			;=== Handle services and drivers {{{3
-				StrCpy $R0 1
-				${Do}
-					ClearErrors
-					${ReadLauncherConfig} $1 Service$R0 Name
-					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-					; TODO: save state in PortableApps.comLauncherRuntimeData.ini to prevent doing anything silly.
-					; Possibly also check the service path to make sure it's the right one we delete.
-					SimpleSC::GetServiceStatus $1
-					Pop $9 ; error code
-					Pop $2 ; return value
-					${DebugMsg} "Service $1's status: $2 (error code $9)"
-					${If} $2 != 1 ; 1 = stopped
-						SimpleSC::StopService $1
-						Pop $9
-						${DebugMsg} "Stopped service $1 (error code $9)"
-					${EndIf}
-					SimpleSC::RemoveService $1
-					Pop $9
-					${DebugMsg} "Removed service $1 (error code $9)"
-				${Loop}
-
-		;=== Save portable files and restore any backed up files {{{3
-			;=== DirectoriesMove {{{4
-			${ForEachINIPair} DirectoriesMove $0 $1
-				${ParseLocations} $1
-
-				${If} $RUNLOCALLY != true
-					${DebugMsg} "Copying settings from $1\*.* to $DATADIRECTORY\$0."
-					RMDir /R $DATADIRECTORY\$0
-					CreateDirectory $DATADIRECTORY\$0
-					CopyFiles /SILENT $1\*.* $DATADIRECTORY\$0
-				${EndIf}
-				${DebugMsg} "Removing portable settings directory from run location ($1)."
-				RMDir /R $1
-
-				${If} ${FileExists} $1-BackupBy$AppID
-					${DebugMsg} "Moving local settings from $1-BackupBy$AppID to $1."
-					Rename $1-BackupBy$AppID $1
-				${EndIf}
-			${NextINIPair}
-
-			;=== FilesMove {{{4
-			${ForEachINIPair} FilesMove $0 $1
-				${ParseLocations} $1
-				${GetFileName} $0 $2
-				StrCpy $0 $DATADIRECTORY\$0
-				StrCpy $4 $1
-				StrCpy $1 $1\$2
-
-				${If} $RUNLOCALLY != true
-					${DebugMsg} "Copying file from $1 to $DATADIRECTORY\$0"
-					${GetRoot} $0 $2 ; compare
-					${GetRoot} $1 $3 ; drive
-					${If} $2 == $3   ; letters
-						Rename $1 $0 ; same volume, rename OK
-					${Else}
-						Delete $0
-						${GetParent} $0 $0
-						CopyFiles /SILENT $1 $0
-
-						ReadINIStr $2 $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini FilesMove RemoveIfEmpty:$4
-						${If} $2 == true
-							RMDir $4
-						${EndIf}
-					${EndIf}
-				${EndIf}
-				${DebugMsg} "Removing portable settings file $1 from run location."
-				Delete $1
-
-				${If} ${FileExists} $1-BackupBy$AppID
-					${DebugMsg} "Moving local settings file from $1-BackupBy$AppID to $1"
-					Rename $1-BackupBy$AppID $1
-				${EndIf}
-			${NextINIPair}
-
-			;=== DirectoriesCleanupIfEmpty {{{4
-			StrCpy $R0 1
-			${Do}
-				ClearErrors
-				${ReadLauncherConfig} $1 DirectoriesCleanupIfEmpty $R0
-				${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-				${ParseLocations} $1
-				${DebugMsg} "Cleaning up $1 if it is empty."
-				RMDir $1
-				IntOp $R0 $R0 + 1
-			${Loop}
-
-			;=== DirectoriesCleanupForce {{{4
-			StrCpy $R0 1
-			${Do}
-				ClearErrors
-				${ReadLauncherConfig} $1 DirectoriesCleanupForce $R0
-				${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-				${ParseLocations} $1
-				${DebugMsg} "Removing directory $1."
-				RMDir /r $1
-				IntOp $R0 $R0 + 1
-			${Loop}
-
-		;=== Save portable registry data and restore any backed up data {{{3
-			${If} $USESREGISTRY == true
-				;=== RegistryKeys {{{4
-				${ForEachINIPair} RegistryKeys $0 $1
-					ClearErrors
-					ReadINIStr $R9 $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0
-					${If} ${Errors} ; didn't fail
-					${AndIf} $RUNLOCALLY != true
-						${DebugMsg} "Saving registry key $1 to $DATADIRECTORY\settings\$0.reg."
-						${registry::SaveKey} $1 $DATADIRECTORY\settings\$0.reg "" $R9
-					${EndIf}
-
-					${DebugMsg} "Deleting registry key $1."
-					${registry::DeleteKey} $1 $R9
-					${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $R9
-					${If} $R9 != -1
-						${DebugMsg} "Moving registry key HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 to $1."
-						${registry::MoveKey} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $1 $R9
-						${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys $R9
-						${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID $R9
-						${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com $R9
-					${EndIf}
-				${NextINIPair}
-				Delete $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini
-
-				;=== RegistryValueBackupDelete {{{4
-				StrCpy $R0 1
-				${Do}
-					ClearErrors
-					${ReadLauncherConfig} $1 RegistryValueBackupDelete $R0
-					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-					${GetParent} $1 $2
-					${GetFilename} $1 $3
-					${DebugMsg} "Deleting registry value $1, then restoring from HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values\$2"
-					${registry::DeleteValue} $2 $3 $R9
-					${registry::MoveValue} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Values $1 $2 $3 $R9
-					IntOp $R0 $R0 + 1
-				${Loop}
-
-				;=== RegistryCleanupIfEmpty {{{4
-				StrCpy $R0 1
-				${Do}
-					ClearErrors
-					${ReadLauncherConfig} $1 RegistryCleanupIfEmpty $R0
-					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-					${DebugMsg} "Deleting registry key $1 if it is empty."
-					${registry::DeleteKeyEmpty} $1 $R9
-					IntOp $R0 $R0 + 1
-				${Loop}
-
-				;=== RegistryCleanupForce {{{4
-				StrCpy $R0 1
-				${Do}
-					ClearErrors
-					${ReadLauncherConfig} $1 RegistryCleanupForce $R0
-					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-					${DebugMsg} "Deleting registry key $1."
-					${registry::DeleteKey} $1 $R9
-					IntOp $R0 $R0 + 1
-				${Loop}
-			${EndIf}
-
-		;=== Remove Live TEMP directory (run locally) {{{3
-			${If} $RUNLOCALLY == true
-				${DebugMsg} "Removing Live mode directory $TEMP\$AppIDLive."
-				RMDir /r $TEMP\$AppIDLive
-			${EndIf}
-
-		;=== RefreshShellIcons {{{3
-			${ReadLauncherConfig} $0 Launch RefreshShellIcons
-			${If} $0 == after
-			${OrIf} $0 == both
-				${RefreshShellIcons}
-			${EndIf}
-	;=== If secondary instance: launch and exit (existing launcher will clear up) {{{2
-		${Else}
-			ClearErrors
-			${ReadLauncherConfig} $0 Launch SetOutPath
-			${IfNot} ${Errors}
-				${ParseLocations} $0
-				${DebugMsg} "Setting working directory to $0."
-				SetOutPath $0
-			${EndIf}
-			${DebugMsg} "About to execute the following string and finish: $EXECSTRING"
-			Exec $EXECSTRING
-		${EndIf}
-
-	;=== Unload plug-ins {{{2
-		${IfThen} $USESREGISTRY == true ${|} ${registry::Unload} ${|}
-
-		${If} $DISABLESPLASHSCREEN != true
-			newadvsplash::stop /WAIT
-		${EndIf}
-		; UAC.dll appears to no longer have Unload... but then we don't use /NOUNLOAD so it should be fine.
-		;${IfThen} $RUNASADMIN == true ${|} UAC::Unload ${|}
-SectionEnd ;}}}1
+Function Unload   ;{{{1
+		!insertmacro Registry_Unload
+		!insertmacro SplashScreen_Unload
+		!insertmacro Core_Unload
+FunctionEnd ;}}}1
 
 ; This file has been optimised for use in Vim with folding.
 ; (If you can't cope, :set nofoldenable) vim:foldenable:foldmethod=marker
