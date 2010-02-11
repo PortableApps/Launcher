@@ -139,7 +139,7 @@ Var ProgramExecutable
 ; Macro: print a debug message {{{1
 !macro DebugMsg _MSG
 	!ifdef DEBUG
-		MessageBox MB_OKCANCEL|MB_ICONINFORMATION "Debug message (line ${__LINE__}):$\n$\n${_MSG}" IDOK +2
+		MessageBox MB_OKCANCEL|MB_ICONINFORMATION "Debug message in ${__FILE__} line ${__LINE__}:$\n$\n${_MSG}" IDOK +2
 			Abort ; not using IfCmd as it causes trouble with ' in _MSG
 	!endif
 !macroend
