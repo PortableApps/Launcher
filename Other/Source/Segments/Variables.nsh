@@ -1,5 +1,49 @@
 ${SegmentFile}
 
+; Macros {{{1
+!macro ParseLocations_SlashType VAR SLASHTYPE VARIABLEAPPENDAGE ;{{{2
+	${StrReplace} "${VAR}" "%${SLASHTYPE}APPDIR%" "$${VARIABLEAPPENDAGE}APPDIRECTORY" "${VAR}"
+	${StrReplace} "${VAR}" "%${SLASHTYPE}DATADIR%" "$${VARIABLEAPPENDAGE}DATADIRECTORY" "${VAR}"
+	${If} $JavaMode == find
+	${OrIf} $JavaMode == require
+		${StrReplace} "${VAR}" "%${SLASHTYPE}JAVADIR%" "$${VARIABLEAPPENDAGE}JAVADIRECTORY" "${VAR}"
+	${EndIf}
+	${StrReplace} "${VAR}" "%${SLASHTYPE}ALLUSERSPROFILE%" "$${VARIABLEAPPENDAGE}ALLUSERSPROFILE" "${VAR}"
+	${StrReplace} "${VAR}" "%${SLASHTYPE}LOCALAPPDATA%" "$${VARIABLEAPPENDAGE}LOCALAPPDATA" "${VAR}"
+	${StrReplace} "${VAR}" "%${SLASHTYPE}APPDATA%" "$${VARIABLEAPPENDAGE}APPDATA" "${VAR}"
+	${StrReplace} "${VAR}" "%${SLASHTYPE}DOCUMENTS%" "$${VARIABLEAPPENDAGE}DOCUMENTS" "${VAR}"
+	${StrReplace} "${VAR}" "%${SLASHTYPE}TEMP%" "$${VARIABLEAPPENDAGE}TEMPDIRECTORY" "${VAR}"
+	${StrReplace} "${VAR}" "%${SLASHTYPE}PORTABLEAPPSDOCUMENTSDIR%" "$${VARIABLEAPPENDAGE}PORTABLEAPPSDOCUMENTSDIRECTORY" "${VAR}"
+	${StrReplace} "${VAR}" "%${SLASHTYPE}PORTABLEAPPSPICTURESDIR%" "$${VARIABLEAPPENDAGE}PORTABLEAPPSPICTURESDIRECTORY" "${VAR}"
+	${StrReplace} "${VAR}" "%${SLASHTYPE}PORTABLEAPPSMUSICDIR%" "$${VARIABLEAPPENDAGE}PORTABLEAPPSMUSICDIRECTORY" "${VAR}"
+	${StrReplace} "${VAR}" "%${SLASHTYPE}PORTABLEAPPSVIDEOSDIR%" "$${VARIABLEAPPENDAGE}PORTABLEAPPSVIDEOSDIRECTORY" "${VAR}"
+	${StrReplace} "${VAR}" "%${SLASHTYPE}PORTABLEAPPSDIR%" "$${VARIABLEAPPENDAGE}PORTABLEAPPSDIRECTORY" "${VAR}"
+!macroend
+
+!macro ParseLocations VAR ;{{{2
+	${DebugMsg} "Before location parsing, $${VAR} = `${VAR}`"
+	;===Paths {{{3
+		${StrReplace} "${VAR}" %DRIVE% $CurrentDrive "${VAR}"
+		!insertmacro ParseLocations_SlashType "${VAR}" "" ""
+		!insertmacro ParseLocations_SlashType "${VAR}" / REPLACEVAR_FS_
+		!insertmacro ParseLocations_SlashType "${VAR}" \\ REPLACEVAR_DBS_
+		${If} $JavaMode == find
+		${OrIf} $JavaMode == require
+			!insertmacro ParseLocations_SlashType "${VAR}" java.util.prefs: REPLACEVAR_JUP_
+		${EndIf}
+
+	;===Languages {{{3
+		${StrReplace} "${VAR}" %LANGCODE% $PORTABLEAPPSLANGUAGECODE "${VAR}"
+		${StrReplace} "${VAR}" %LANGCODE2% $PORTABLEAPPSLOCALECODE2 "${VAR}"
+		${StrReplace} "${VAR}" %LANGCODE3% $PORTABLEAPPSLOCALECODE3 "${VAR}"
+		${StrReplace} "${VAR}" %LANGGLIBC% $PORTABLEAPPSLOCALEGLIBC "${VAR}"
+		${StrReplace} "${VAR}" %LANGID% $PORTABLEAPPSLOCALEID "${VAR}"
+		${StrReplace} "${VAR}" %LANGWINNAME% $PORTABLEAPPSLOCALEWINNAME "${VAR}"
+	${DebugMsg} "After location parsing, $${VAR} = `${VAR}`"
+!macroend
+!define ParseLocations "!insertmacro ParseLocations"
+
+; Variables {{{1
 Var APPDIRECTORY
 Var DATADIRECTORY
 Var ALLUSERSPROFILE
@@ -36,6 +80,7 @@ Var PORTABLEAPPSLOCALEGLIBC
 Var PORTABLEAPPSLOCALEID
 Var PORTABLEAPPSLOCALEWINNAME
 
+; Segments {{{1
 ${SegmentInit}
 	;=== Initialise variables
 	${GetParent} $EXEDIR $PORTABLEAPPSDIRECTORY
