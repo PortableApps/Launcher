@@ -786,15 +786,16 @@ ${Execute} "[command]" "[working_dir]" $var
 	System::Call 'kernel32::CreateToolhelp32Snapshot(i 2, i 0)i .r3'
 	IntCmp $3 -1 done
 		System::Call 'kernel32::Process32FirstW(i r3, i r2)i .r4'
-		IntCmp $4 0 done
+		IntCmp $4 0 endloop
 			loop:
 				System::Call '*$2(i,i,i,i,i,i,i,i,i,&w520 .r5)'
 				StrCmp $5 $0 0 next_process
 					StrCpy $_LOGICLIB_TEMP 1
-					goto endloop
+					Goto endloop
 				next_process:
 				System::Call 'kernel32::Process32NextW(i r3, i r2)i .r4'
-				IntCmp $4 0 endloop loop loop
+				IntCmp $4 0 endloop
+				Goto loop
 			endloop:
 			System::Call 'kernel32::CloseHandle(i r3)' ; close snapshot
 	done:
