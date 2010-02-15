@@ -20,6 +20,11 @@ _____________________________________________________________________________
                EnumProcessPaths|ProcessWait|ProcessWait2|ProcessWaitClose|
                CloseProcess|TerminateProcess|Execute]
 
+ There is also a LogicLib extension:
+    ${If} ${ProcessExists} file.exe
+      ...
+    ${EndIf}
+
 _____________________________________________________________________________
 
                        Thanks to:
@@ -31,6 +36,13 @@ _____________________________________________________________________________
 
                        Individual documentation:
 _____________________________________________________________________________
+
+${ProcessExists} "[process]"
+	"[process]"			; Name or PID
+
+	Use with a LogicLib conditional command like If or Unless.
+	Evaluates to true if the process exists or false if it does not or
+	the CreateToolhelp32Snapshot fails.
 
 ${GetProcessPID} "[process]" $var
 	"[process]"			; Name or PID
@@ -165,6 +177,21 @@ ${Execute} "[command]" "[working_dir]" $var
 
 !define WAIT_TIMEOUT 0x00000102
 
+!macro ProcessExists
+	!error "ProcessExists has been renamed to GetProcessPID"
+!macroend
+!macro _ProcessExists _a _b _t _f
+	!insertmacro _LOGICLIB_TEMP
+	!verbose push
+	!verbose ${_PROCFUNC_VERBOSE}
+	Push `${_b}`
+	${CallArtificialFunction} LLProcessExists_
+	IntCmp $_LOGICLIB_TEMP 0 `${_f}`
+	Goto `${_t}`
+	!verbose pop
+!macroend
+!define ProcessExists `"" ProcessExists`
+
 !macro GetProcessPID
 !macroend
 !define GetProcessPID "!insertmacro GetProcessPIDCall"
@@ -173,7 +200,11 @@ ${Execute} "[command]" "[working_dir]" $var
 	!verbose ${_PROCFUNC_VERBOSE}
 	Push 0
 	Push `${process}`
+	!ifdef CallArtificialFunction_TYPE ; macro nesting disallowed, breaks otherwise if used from WaitClose
+	${CallArtificialFunction2} ProcFuncs_
+	!else
 	${CallArtificialFunction} ProcFuncs_
+	!endif
 	Pop ${outVar}
 	!verbose pop
 !macroend
@@ -739,6 +770,40 @@ ${Execute} "[command]" "[working_dir]" $var
 	Pop $3
 	Pop $2
 	Pop $1
+!macroend
+
+!macro LLProcessExists_
+	Exch $0 ; process name
+	Push $2
+	Push $3
+	Push $4
+	Push $5
+	
+	StrCpy $_LOGICLIB_TEMP 0
+	
+	System::Call '*(&l4,i,i,i,i,i,i,i,i,&w520)i .r2' ; $2 = PROCESSENTRY32W structure
+	; take system process snapshot in $3
+	System::Call 'kernel32::CreateToolhelp32Snapshot(i 2, i 0)i .r3'
+	IntCmp $3 -1 done
+		System::Call 'kernel32::Process32FirstW(i r3, i r2)i .r4'
+		IntCmp $4 0 done
+			loop:
+				System::Call '*$2(i,i,i,i,i,i,i,i,i,&w520 .r5)'
+				StrCmp $5 $0 0 next_process
+					StrCpy $_LOGICLIB_TEMP 1
+					goto endloop
+				next_process:
+				System::Call 'kernel32::Process32NextW(i r3, i r2)i .r4'
+				IntCmp $4 0 endloop loop loop
+			endloop:
+			System::Call 'kernel32::CloseHandle(i r3)' ; close snapshot
+	done:
+	System::Free $2 ; free buffer
+	Pop $5
+	Pop $4
+	Pop $3
+	Pop $2
+	Pop $0
 !macroend
 
 !endif ; PROCFUNC_INCLUDED

@@ -1,9 +1,8 @@
 ${SegmentFile}
 
 !macro _InstanceManagement_AbortIfRunning
-	${ProcessExists} $0 $0
 	${If} $SecondaryLaunch != true
-	${AndIf} $0 > 0
+	${AndIf} ${ProcessExists} $0
 		${ReadLauncherConfig} $AppName Launch AppName
 		${If} $AppName == ""
 			; Calculate the application name - non-portable version
