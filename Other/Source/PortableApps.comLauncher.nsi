@@ -207,7 +207,8 @@ Section Execute  ;{{{1
 			${EndIf}
 			${EmptyWorkingSet}
 			${Do}
-				${If} ${ProcessExists} $0
+				${If} $0 != ""
+				${AndIf} ${ProcessExists} $0
 					${ProcessWaitClose} $0 -1 $R9
 				${ElseIf} ${ProcessExists} $1
 					${ProcessWaitClose} $1 -1 $R9
