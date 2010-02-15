@@ -15,7 +15,7 @@ _____________________________________________________________________________
     [SectionEnd|FunctionEnd]
 
 
- ProcFunction=[ProcessExists|GetProcessPath|GetProcessParent|GetProcessName|
+ ProcFunction=[GetProcessPID|GetProcessPath|GetProcessParent|GetProcessName|
                EnumProcessPaths|ProcessWait|ProcessWait2|ProcessWaitClose|
                CloseProcess|TerminateProcess|Execute]
 
@@ -31,7 +31,7 @@ _____________________________________________________________________________
                        Individual documentation:
 _____________________________________________________________________________
 
-${ProcessExists} "[process]" $var
+${GetProcessPID} "[process]" $var
 	"[process]"			; Name or PID
 	
 	$var(output)		; -2 - CreateToolhelp32Snapshot failed
@@ -164,10 +164,10 @@ ${Execute} "[command]" "[working_dir]" $var
 
 !define WAIT_TIMEOUT 0x00000102
 
-!macro ProcessExists
+!macro GetProcessPID
 !macroend
-!define ProcessExists "!insertmacro ProcessExistsCall"
-!macro ProcessExistsCall process outVar
+!define GetProcessPID "!insertmacro GetProcessPIDCall"
+!macro GetProcessPIDCall process outVar
 	!verbose push
 	!verbose ${_PROCFUNC_VERBOSE}
 	Push 0
@@ -320,7 +320,7 @@ ${Execute} "[command]" "[working_dir]" $var
 	Push 0 ; set return value if not found
 	
 	; set mode of operation in $1
-	${Select} $1 ; mode 0 = ProcessExists, mode 1 = GetProcessPath, mode 2 = GetProcessParent
+	${Select} $1 ; mode 0 = GetProcessPID, mode 1 = GetProcessPath, mode 2 = GetProcessParent
 		${Case} 0
 			StrCpy $2 $0 4 -4
 			${If} $2 == ".exe"
@@ -367,7 +367,7 @@ ${Execute} "[command]" "[working_dir]" $var
 				${EndSelect}
 				; is this process the one we are looking for?
 				${If} $5 == $0 ; string test works ok for numeric PIDs as well
-					${Select} $1 ; mode 0/1 = ProcessExists, mode 2/3 = GetProcessPath, mode 4/5 = GetProcessParent, mode 6 = GetProcessName
+					${Select} $1 ; mode 0/1 = GetProcessPID, mode 2/3 = GetProcessPath, mode 4/5 = GetProcessParent, mode 6 = GetProcessName
 						${Case2} 0 1
 							; return pid
 							Pop $5 ; old return value
@@ -569,7 +569,7 @@ ${Execute} "[command]" "[working_dir]" $var
 	${LoopUntil} $R0 = 1
 	
 	${If} $R0 = 1 ; success, get pid
-		${ProcessExists} $0 $0
+		${GetProcessPID} $0 $0
 		Push $0 ; return pid
 	${EndIf}
 	
@@ -589,8 +589,7 @@ ${Execute} "[command]" "[working_dir]" $var
 	; passed process name or pid
 	StrCpy $2 $0 4 -4
 	${If} $2 == ".exe"
-		; get process pid
-		${ProcessExists} $0 $0
+		${GetProcessPID} $0 $0
 	${EndIf}
 	
 	; else passed pid directly
@@ -628,8 +627,7 @@ ${Execute} "[command]" "[working_dir]" $var
 	; passed process name or pid
 	StrCpy $1 $0 4 -4
 	${If} $1 == ".exe"
-		; get process pid
-		${ProcessExists} $0 $0
+		${GetProcessPID} $0 $0
 	${EndIf}
 	
 	; else passed pid directly
@@ -670,8 +668,7 @@ ${Execute} "[command]" "[working_dir]" $var
 	; passed process name or pid
 	StrCpy $1 $0 4 -4
 	${If} $1 == ".exe"
-		; get process pid
-		${ProcessExists} $0 $0
+		${GetProcessPID} $0 $0
 	${EndIf}
 	
 	; else passed pid directly
