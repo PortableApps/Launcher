@@ -66,7 +66,6 @@ SetCompressorDictSize 32
 !include ForEachINIPair.nsh
 !include SetFileAttributesDirectoryNormal.nsh
 !include ProcFunc.nsh
-!insertmacro ProcessExists
 !include EmptyWorkingSet.nsh
 
 ;=== Program Icon {{{1
@@ -252,14 +251,15 @@ Section Execute  ;{{{1
 			${EndIf}
 			${EmptyWorkingSet}
 			${Do}
-				Sleep 1000
-				${If} $0 != ""
-					${ProcessExists} $0 $R9
-					${IfThen} $R9 > 0 ${|} ${Continue} ${|}
+				${If} ${ProcessExists} $0
+					${ProcessWaitClose} $0 -1 $R9
+				${ElseIf} ${ProcessExists} $1
+					${ProcessWaitClose} $1 -1 $R9
+				${Else}
+					${Break}
 				${EndIf}
-				${ProcessExists} $1 $R9
-			${LoopWhile} $R9 > 0
-			${DebugMsg} "All instances of $1 are finished."
+			${Loop}
+			${DebugMsg} "All instances are finished."
 		${EndIf}
 	${EndIf}
 SectionEnd
