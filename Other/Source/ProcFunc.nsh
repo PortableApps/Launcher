@@ -5,6 +5,7 @@ _____________________________________________________________________________
 _____________________________________________________________________________
 
  2008-2010 Erik Pilsits aka wraithdu
+ License: zlib/libpng
 
  See documentation for more information about the following functions.
 
