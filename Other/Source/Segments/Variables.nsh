@@ -21,6 +21,8 @@ ${SegmentFile}
 !macroend
 
 !macro ParseLocations VAR ;{{{2
+	!verbose push
+	!verbose 3
 	${DebugMsg} "Before location parsing, $${VAR} = `${VAR}`"
 	;===Paths {{{3
 		${WordReplace} "${VAR}" %DRIVE% $CurrentDrive + "${VAR}"
@@ -40,6 +42,7 @@ ${SegmentFile}
 		${WordReplace} "${VAR}" %LANGID% $PORTABLEAPPSLOCALEID + "${VAR}"
 		${WordReplace} "${VAR}" %LANGWINNAME% $PORTABLEAPPSLOCALEWINNAME + "${VAR}"
 	${DebugMsg} "After location parsing, $${VAR} = `${VAR}`"
+	!verbose pop
 !macroend
 !define ParseLocations "!insertmacro ParseLocations"
 
