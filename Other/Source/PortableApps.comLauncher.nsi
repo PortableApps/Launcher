@@ -76,6 +76,7 @@ ${!echo} "Including required files..."
 !include SetFileAttributesDirectoryNormal.nsh
 !include ProcFunc.nsh
 !include EmptyWorkingSet.nsh
+!include SetEnvironmentVariable.nsh
 
 ;=== Program Icon {{{1
 Icon ..\..\App\AppInfo\appicon.ico
