@@ -23,7 +23,7 @@
 ;=== Program Details {{{1
 ;!define DEBUG_ALL ; Debug all segments
 ;!define DEBUG_SEGMENT_[SegmentName] ; debug this segment
-!define VER "0.9.9.2"
+!searchparse /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" VER
 Name "PortableApps.com Launcher"
 OutFile ..\..\PortableApps.comLauncher.exe
 Caption "PortableApps.com Launcher"
