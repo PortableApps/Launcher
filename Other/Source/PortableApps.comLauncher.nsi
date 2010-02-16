@@ -23,6 +23,15 @@
 ;=== Program Details {{{1
 ;!define DEBUG_ALL ; Debug all segments
 ;!define DEBUG_SEGMENT_[SegmentName] ; debug this segment
+!verbose 3
+!macro !echo msg
+	!verbose push
+	!verbose 4
+	!echo "${msg}"
+	!verbose pop
+!macroend
+!define !echo "!insertmacro !echo"
+${!echo} "Specifying program details and setting options..."
 !searchparse /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" VER
 Name "PortableApps.com Launcher"
 OutFile ..\..\PortableApps.comLauncher.exe
@@ -49,6 +58,7 @@ SetCompressor /SOLID lzma
 SetCompressorDictSize 32
 
 ;=== Include {{{1
+${!echo} "Including required files..."
 ;(Standard NSIS) {{{2
 !include LangFile.nsh
 !include LogicLib.nsh
@@ -71,6 +81,7 @@ SetCompressorDictSize 32
 Icon ..\..\App\AppInfo\appicon.ico
 
 ;=== Languages {{{1
+${!echo} "Loading language strings..."
 !macro IncludeLang _LANG
 	LoadLanguageFile "${NSISDIR}\Contrib\Language files\${_LANG}.nlf"
 	!insertmacro LANGFILE_INCLUDE_WITHDEFAULT Languages\${_LANG}.nsh Languages\English.nsh
@@ -84,6 +95,7 @@ ${IncludeLang} Japanese
 ${IncludeLang} SimpChinese
 
 ;=== Variables {{{1
+${!echo} "Initialising variables and macros..."
 Var AppID
 Var MissingFileOrPath
 Var AppNamePortable
@@ -129,7 +141,9 @@ Var ProgramExecutable
 !macroend
 !define ReadUserOverrideConfig "!insertmacro ReadUserOverrideConfig"
 
+${!echo} "Loading segments..."
 !include Segments.nsh ;{{{1 Include all the code }}}
+!verbose 4
 
 Function .onInit ;{{{1
 	${RunSegment} LauncherLanguage .onInit
