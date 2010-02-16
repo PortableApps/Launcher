@@ -84,7 +84,7 @@ ${EnumProcessPaths} "Function" $var
 		...user commands
 		Push [1/0]			; must return 1 on the stack to continue
 							; must return some value or corrupt the stack
-							; DO NOT save data in $0-$8
+							; DO NOT save data in $0-$9
 	FunctionEnd
 
 ${ProcessWait} "[process]" "[timeout]" $var
@@ -341,13 +341,9 @@ ${Execute} "[command]" "[working_dir]" $var
 !macroend
 
 !macro ProcFuncs_
-	Exch $0 ; process / PID
-	Exch
-	Exch $1 ; mode
-	Push $2
-	Push $3
-	Push $4
-	Push $5
+	System::Store "s" ; store registers in System's private stack
+	Pop $0 ; process / PID
+	Pop $1 ; mode
 	
 	Push 0 ; set return value if not found
 	
@@ -438,26 +434,12 @@ ${Execute} "[command]" "[working_dir]" $var
 	${EndUnless}
 	System::Free $2 ; free buffer
 	
-	Exch 6 ; place return value at bottom of stack
-	; restore registers
-	Pop $0 ; pop $0 first because of Exch 6
-	Pop $5
-	Pop $4
-	Pop $3
-	Pop $2
-	Pop $1
+	System::Store "l" ; restore registers
 !macroend
 
 !macro EnumProcessPaths_
-	Exch $0 ; user_func
-	Push $1
-	Push $2
-	Push $3
-	Push $4
-	Push $5
-	Push $6
-	Push $7
-	Push $8
+	System::Store "s" ; store registers in System's private stack
+	Pop $0 ; user_func
 	
 	StrCpy $1 1 ; OK to loop
 	
@@ -480,20 +462,12 @@ ${Execute} "[command]" "[working_dir]" $var
 					; get full path
 					System::Call 'psapi::GetModuleFileNameExW(i r6, i 0, w .r7, i ${NSIS_MAX_STRLEN})i .r8' ; $7 = path
 					${Unless} $8 = 0 ; no path
-						Push $0 ; save registers
-						Push $2
-						Push $3
-						Push $4
-						Push $6
+						System::Store "s" ; store registers in System's private stack
 						Push $5 ; PID to stack
 						Push $7 ; path to stack
 						Call $0 ; user func must return 1 on the stack to continue looping
+						System::Store "l" ; restore registers
 						Pop $1 ; continue?
-						Pop $6 ; restore registers
-						Pop $4
-						Pop $3
-						Pop $2
-						Pop $0
 					${EndUnless}
 					System::Call 'kernel32::CloseHandle(i r6)'
 				${EndUnless}
@@ -505,28 +479,13 @@ ${Execute} "[command]" "[working_dir]" $var
 	${EndUnless}
 	System::Free $2 ; free buffer
 	
-	Exch 9
-	Pop $0
-	Pop $8
-	Pop $7
-	Pop $6
-	Pop $5
-	Pop $4
-	Pop $3
-	Pop $2
-	Pop $1
+	System::Store "l" ; restore registers
 !macroend
 
 !macro ProcessWait_
-	Exch $0 ; process
-	Exch
-	Exch $1 ; timeout
-	Push $2
-	Push $3
-	Push $4
-	Push $5
-	Push $6
-	Push $7
+	System::Store "s" ; store registers in System's private stack
+	Pop $0 ; process
+	Pop $1 ; timeout
 	
 	StrCpy $6 1 ; initialize loop
 	StrCpy $7 0 ; initialize timeout counter
@@ -568,29 +527,20 @@ ${Execute} "[command]" "[working_dir]" $var
 	${Loop} ; processwaitloop
 	System::Free $2 ; free buffer
 	
-	Exch 8 ; place return value at bottom of stack
-	; restore registers
-	Pop $0 ; pop $0 first
-	Pop $7
-	Pop $6
-	Pop $5
-	Pop $4
-	Pop $3
-	Pop $2
-	Pop $1
+	System::Store "l" ; restore registers
 !macroend
 
 !macro ProcessWait2_
-	Exch $0 ; process
-	Exch
-	Exch $1 ; timeout
-	Push $2
-	Push $R0 ; FindProcDLL return value
+	System::Store "s" ; store registers in System's private stack
+	System::Store "P0" ; FindProcDLL return value
+	Pop $0 ; process
+	Pop $1 ; timeout
 	
 	StrCpy $2 0 ; initialize timeout counter
 	
 	${Do}
 		FindProcDLL::FindProc $0
+		${IfThen} $R0 = 1 ${|} ${Break} ${|}
 		${If} $1 >= 0
 			IntOp $2 $2 + 250
 		${AndIf} $2 >= $1
@@ -598,25 +548,21 @@ ${Execute} "[command]" "[working_dir]" $var
 			${Break}
 		${EndIf}
 		Sleep 250
-	${LoopUntil} $R0 = 1
+	${Loop}
 	
 	${If} $R0 = 1 ; success, get pid
 		${GetProcessPID} $0 $0
 		Push $0 ; return pid
 	${EndIf}
 	
-	Exch 4
-	Pop $0
-	Pop $R0
-	Pop $2
-	Pop $1
+	System::Store "R0" ; restore registers
+	System::Store "l"
 !macroend
 
 !macro ProcessWaitClose_
-	Exch $0 ; process / PID
-	Exch
-	Exch $1 ; timeout
-	Push $2
+	System::Store "s" ; store registers in System's private stack
+	Pop $0 ; process / PID
+	Pop $1 ; timeout
 	
 	; passed process name or pid
 	StrCpy $2 $0 4 -4
@@ -643,18 +589,12 @@ ${Execute} "[command]" "[working_dir]" $var
 		Push 0 ; failure return value
 	${EndUnless}
 	
-	Exch 3
-	Pop $0
-	Pop $2
-	Pop $1
+	System::Store "l" ; restore registers
 !macroend
 
 !macro CloseProcess_
-	Exch $0 ; process / PID
-	Push $1
-	Push $2
-	Push $3
-	Push $4
+	System::Store "s" ; store registers in System's private stack
+	Pop $0 ; process / PID
 	
 	; passed process name or pid
 	StrCpy $1 $0 4 -4
@@ -684,18 +624,12 @@ ${Execute} "[command]" "[working_dir]" $var
 		Push 0 ; failure return value
 	${EndUnless}
 	
-	Exch 5
-	Pop $0
-	Pop $4
-	Pop $3
-	Pop $2
-	Pop $1
+	System::Store "l" ; restore registers
 !macroend
 
 !macro TerminateProcess_
-	Exch $0 ; process / PID
-	Push $1
-	Push $2
+	System::Store "s" ; store registers in System's private stack
+	Pop $0 ; process / PID
 	
 	; passed process name or pid
 	StrCpy $1 $0 4 -4
@@ -722,21 +656,13 @@ ${Execute} "[command]" "[working_dir]" $var
 		Push 0 ; failure return value
 	${EndUnless}
 	
-	Exch 3
-	Pop $0
-	Pop $2
-	Pop $1
+	System::Store "l" ; restore registers
 !macroend
 
 !macro Execute_
-	Exch $0 ; cmdline
-	Exch
-	Exch $1 ; wrkdir
-	Push $2
-	Push $3
-	Push $4
-	Push $5
-	Push $6
+	System::Store "s" ; store registers in System's private stack
+	Pop $0 ; cmdline
+	Pop $1 ; wrkdir
 	
 	System::Alloc 68 ; 4*16 + 2*2 / STARTUPINFO structure = $2
 	Pop $2
@@ -762,22 +688,12 @@ ${Execute} "[command]" "[working_dir]" $var
 	System::Free $2 ; free STARTUPINFO struct
 	System::Free $3 ; free PROCESS_INFORMATION struct
 	
-	Exch 7
-	Pop $0
-	Pop $6
-	Pop $5
-	Pop $4
-	Pop $3
-	Pop $2
-	Pop $1
+	System::Store "l" ; restore registers
 !macroend
 
 !macro LLProcessExists_
-	Exch $0 ; process name
-	Push $2
-	Push $3
-	Push $4
-	Push $5
+	System::Store "s" ; store registers in System's private stack
+	Pop $0 ; process name
 	
 	StrCpy $_LOGICLIB_TEMP 0
 	
@@ -800,11 +716,8 @@ ${Execute} "[command]" "[working_dir]" $var
 			System::Call 'kernel32::CloseHandle(i r3)' ; close snapshot
 	done:
 	System::Free $2 ; free buffer
-	Pop $5
-	Pop $4
-	Pop $3
-	Pop $2
-	Pop $0
+	
+	System::Store "l" ; restore registers
 !macroend
 
 !endif ; PROCFUNC_INCLUDED
