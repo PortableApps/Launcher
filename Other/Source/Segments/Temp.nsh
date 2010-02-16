@@ -23,12 +23,8 @@ ${SegmentPre}
 		StrCpy $TEMPDIRECTORY $TEMP
 	${EndIf}
 
-	${DebugMsg} "Setting %TEMP% and %TMP% to $TEMPDIRECTORY"
-	System::Call 'Kernel32::SetEnvironmentVariable(t"TEMP",t"$TEMPDIRECTORY")'
-	System::Call 'Kernel32::SetEnvironmentVariable(t"TMP",t"$TEMPDIRECTORY")'
-	${WordReplace} $TEMPDIRECTORY \ /  + $REPLACEVAR_FS_TEMPDIRECTORY
-	${WordReplace} $TEMPDIRECTORY \ // + $REPLACEVAR_DBS_TEMPDIRECTORY
-	${MakeJavaUtilPrefsPath} TEMPDIRECTORY
+	${DebugMsg} "Setting %TEMP% to $TEMPDIRECTORY"
+	${SetEnvironmentVariablesPath} TEMP $TEMPDIRECTORY
 !macroend
 
 ${SegmentPostPrimary}

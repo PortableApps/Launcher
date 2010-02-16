@@ -36,12 +36,8 @@ ${SegmentPre}
 		StrCpy $DATADIRECTORY $EXEDIR\Data
 	${EndIf}
 
-	${WordReplace} $APPDIRECTORY \ /  + $REPLACEVAR_FS_APPDIRECTORY
-	${WordReplace} $APPDIRECTORY \ \\ + $REPLACEVAR_DBS_APPDIRECTORY
-	${MakeJavaUtilPrefsPath} APPDIRECTORY
-	${WordReplace} $DATADIRECTORY \ /  + $REPLACEVAR_FS_DATADIRECTORY
-	${WordReplace} $DATADIRECTORY \ \\ + $REPLACEVAR_DBS_DATADIRECTORY
-	${MakeJavaUtilPrefsPath} DATADIRECTORY
+	${SetEnvironmentVariablesPath} PAL:AppDir $APPDIRECTORY
+	${SetEnvironmentVariablesPath} PAL:DataDir $DATADIRECTORY
 !macroend
 
 ${SegmentPostPrimary}

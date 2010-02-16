@@ -1,137 +1,150 @@
 ${SegmentFile}
 
 ; Macros {{{1
-!macro ParseLocations_SlashType VAR SLASHTYPE VARIABLEAPPENDAGE ;{{{2
-	${WordReplace} "${VAR}" "%${SLASHTYPE}APPDIR%" "$${VARIABLEAPPENDAGE}APPDIRECTORY" + "${VAR}"
-	${WordReplace} "${VAR}" "%${SLASHTYPE}DATADIR%" "$${VARIABLEAPPENDAGE}DATADIRECTORY" + "${VAR}"
-	${If} $JavaMode == find
-	${OrIf} $JavaMode == require
-		${WordReplace} "${VAR}" "%${SLASHTYPE}JAVADIR%" "$${VARIABLEAPPENDAGE}JAVADIRECTORY" + "${VAR}"
-	${EndIf}
-	${WordReplace} "${VAR}" "%${SLASHTYPE}ALLUSERSPROFILE%" "$${VARIABLEAPPENDAGE}ALLUSERSPROFILE" + "${VAR}"
-	${WordReplace} "${VAR}" "%${SLASHTYPE}LOCALAPPDATA%" "$${VARIABLEAPPENDAGE}LOCALAPPDATA" + "${VAR}"
-	${WordReplace} "${VAR}" "%${SLASHTYPE}APPDATA%" "$${VARIABLEAPPENDAGE}APPDATA" + "${VAR}"
-	${WordReplace} "${VAR}" "%${SLASHTYPE}DOCUMENTS%" "$${VARIABLEAPPENDAGE}DOCUMENTS" + "${VAR}"
-	${WordReplace} "${VAR}" "%${SLASHTYPE}TEMP%" "$${VARIABLEAPPENDAGE}TEMPDIRECTORY" + "${VAR}"
-	${WordReplace} "${VAR}" "%${SLASHTYPE}PORTABLEAPPSDOCUMENTSDIR%" "$${VARIABLEAPPENDAGE}PORTABLEAPPSDOCUMENTSDIRECTORY" + "${VAR}"
-	${WordReplace} "${VAR}" "%${SLASHTYPE}PORTABLEAPPSPICTURESDIR%" "$${VARIABLEAPPENDAGE}PORTABLEAPPSPICTURESDIRECTORY" + "${VAR}"
-	${WordReplace} "${VAR}" "%${SLASHTYPE}PORTABLEAPPSMUSICDIR%" "$${VARIABLEAPPENDAGE}PORTABLEAPPSMUSICDIRECTORY" + "${VAR}"
-	${WordReplace} "${VAR}" "%${SLASHTYPE}PORTABLEAPPSVIDEOSDIR%" "$${VARIABLEAPPENDAGE}PORTABLEAPPSVIDEOSDIRECTORY" + "${VAR}"
-	${WordReplace} "${VAR}" "%${SLASHTYPE}PORTABLEAPPSDIR%" "$${VARIABLEAPPENDAGE}PORTABLEAPPSDIRECTORY" + "${VAR}"
+!define SetEnvironmentVariablesPath "!insertmacro SetEnvironmentVariablesPathCall"
+!macro SetEnvironmentVariablesPathCall _VARIABLE_NAME _PATH
+	Push "${_VARIABLE_NAME}"
+	Push "${_PATH}"
+	${CallArtificialFunction2} SetEnvironmentVariablesPath_
 !macroend
 
-!macro ParseLocations VAR ;{{{2
-	!verbose push
-	!verbose 3
-	${DebugMsg} "Before location parsing, $${VAR} = `${VAR}`"
-	;===Paths {{{3
-		${WordReplace} "${VAR}" %DRIVE% $CurrentDrive + "${VAR}"
-		!insertmacro ParseLocations_SlashType "${VAR}" "" ""
-		!insertmacro ParseLocations_SlashType "${VAR}" /  REPLACEVAR_FS_
-		!insertmacro ParseLocations_SlashType "${VAR}" \\ REPLACEVAR_DBS_
-		${If} $JavaMode == find
-		${OrIf} $JavaMode == require
-			!insertmacro ParseLocations_SlashType "${VAR}" java.util.prefs: REPLACEVAR_JUP_
-		${EndIf}
+!macro SetEnvironmentVariablesPath_
+	/* This function sets environment variables with different formats for paths.
+	 * For example:
+	 *   ${SetEnvironmentVariablesPath} PortableApps.comAppDirectory $EXEDIR\App
+	 * Will produce the following environment variables:
+	 *   %PAL:AppDir%                 = X:\PortableApps\AppNamePortable\App
+	 *   %PAL:AppDir:Forwardslash%    = X:/PortableApps/AppNamePortable/App
+	 *   %PAL:AppDir:DoubleBackslash% = X:\\PortableApps\\AppNamePortable\\App
+	 *   %PAL:AppDir:java.util.prefs% = /X:///Portable/Apps///App/Name/Portable///App
+	 */
+	Exch $R0 ; path
+	Exch
+	Exch $R1 ; variable name
 
-	;===Languages {{{3
-		${WordReplace} "${VAR}" %LANGCODE% $PORTABLEAPPSLANGUAGECODE + "${VAR}"
-		${WordReplace} "${VAR}" %LANGCODE2% $PORTABLEAPPSLOCALECODE2 + "${VAR}"
-		${WordReplace} "${VAR}" %LANGCODE3% $PORTABLEAPPSLOCALECODE3 + "${VAR}"
-		${WordReplace} "${VAR}" %LANGGLIBC% $PORTABLEAPPSLOCALEGLIBC + "${VAR}"
-		${WordReplace} "${VAR}" %LANGID% $PORTABLEAPPSLOCALEID + "${VAR}"
-		${WordReplace} "${VAR}" %LANGWINNAME% $PORTABLEAPPSLOCALEWINNAME + "${VAR}"
+	Push $R2 ; forwardslash
+	Push $R3 ; double backslash, java.util.prefs
+	Push $R7 ; jup len
+	Push $R8 ; jup pos
+	Push $R9 ; jup char
+	;=== Set the backslashes path as given (e.g. X:\PortableApps\AppNamePortable)
+	${SetEnvironmentVariable} $R1 $R0
+	;=== Make the forwardslashes path (e.g. X:/PortableApps/AppNamePortable)
+	${WordReplace} $R0 \ / + $R2
+	${SetEnvironmentVariable} "$R1:Forwardslash" $R2
+	;=== Make the double backslashes path (e.g. X:\\PortableApps\\AppNamePortable)
+	${WordReplace} $R0 \ \\ + $R3
+	${SetEnvironmentVariable} "$R1:DoubleBackslash" $R3
+	;=== Make the java.util.prefs path
+	; Based on the forwardslashes path, s/[^a-z:]/\/&/g
+	StrCpy $R3 ""
+	StrLen $R7 $R7
+	IntOp $R7 $R7 - 1 ; base 0
+	${For} $R8 0 $R7
+		StrCpy $R9 $R7 1 $R8
+		${If}   $R9 == a
+		${OrIf} $R9 == b
+		${OrIf} $R9 == c
+		${OrIf} $R9 == d
+		${OrIf} $R9 == e
+		${OrIf} $R9 == f
+		${OrIf} $R9 == g
+		${OrIf} $R9 == h
+		${OrIf} $R9 == i
+		${OrIf} $R9 == j
+		${OrIf} $R9 == k
+		${OrIf} $R9 == l
+		${OrIf} $R9 == m
+		${OrIf} $R9 == n
+		${OrIf} $R9 == o
+		${OrIf} $R9 == p
+		${OrIf} $R9 == q
+		${OrIf} $R9 == r
+		${OrIf} $R9 == s
+		${OrIf} $R9 == t
+		${OrIf} $R9 == u
+		${OrIf} $R9 == v
+		${OrIf} $R9 == w
+		${OrIf} $R9 == x
+		${OrIf} $R9 == y
+		${OrIf} $R9 == z
+		${OrIf} $R9 == :
+			StrCpy $R3 $R3$R9
+		${Else}
+			StrCpy $R3 $R3/$R9
+		${EndIf}
+	${Next}
+	${SetEnvironmentVariable} "$R1:java.util.prefs" $R3
+	Pop $R9
+	Pop $R8
+	Pop $R7
+	Pop $R3
+	Pop $R2
+	Pop $R1
+	Pop $R0
+!macroend
+
+!macro SetEnvironmentVariablesPathFromEnvironmentVariable _VARIABLE_NAME
+	Push $R0
+	ReadEnvStr $R0 "${_VARIABLE_NAME}"
+	${SetEnvironmentVariablesPath} "${_VARIABLE_NAME}" $R0
+	Pop $R0
+!macroend
+!define SetEnvironmentVariablesPathFromEnvironmentVariable "!insertmacro SetEnvironmentVariablesPathFromEnvironmentVariable"
+
+!macro ParseLocations VAR ;{{{2
+	${DebugMsg} "Before location parsing, $${VAR} = `${VAR}`"
+	ExpandEnvStrings ${VAR} ${VAR}
 	${DebugMsg} "After location parsing, $${VAR} = `${VAR}`"
-	!verbose pop
 !macroend
 !define ParseLocations "!insertmacro ParseLocations"
 
 ; Variables {{{1
 Var APPDIRECTORY
 Var DATADIRECTORY
-Var ALLUSERSPROFILE
 Var TEMPDIRECTORY
-Var PORTABLEAPPSDOCUMENTSDIRECTORY
-Var PORTABLEAPPSPICTURESDIRECTORY
-Var PORTABLEAPPSMUSICDIRECTORY
-Var PORTABLEAPPSVIDEOSDIRECTORY
 Var PORTABLEAPPSDIRECTORY
-
-!macro Var_ReplaceVar _VAR
-Var REPLACEVAR_FS_${_VAR}
-Var REPLACEVAR_DBS_${_VAR}
-Var REPLACEVAR_JUP_${_VAR}
-!macroend
-
-!insertmacro Var_ReplaceVar APPDIRECTORY
-!insertmacro Var_ReplaceVar DATADIRECTORY
-!insertmacro Var_ReplaceVar ALLUSERSPROFILE
-!insertmacro Var_ReplaceVar LOCALAPPDATA
-!insertmacro Var_ReplaceVar APPDATA
-!insertmacro Var_ReplaceVar DOCUMENTS
-!insertmacro Var_ReplaceVar TEMPDIRECTORY
-!insertmacro Var_ReplaceVar PORTABLEAPPSDOCUMENTSDIRECTORY
-!insertmacro Var_ReplaceVar PORTABLEAPPSPICTURESDIRECTORY
-!insertmacro Var_ReplaceVar PORTABLEAPPSMUSICDIRECTORY
-!insertmacro Var_ReplaceVar PORTABLEAPPSVIDEOSDIRECTORY
-!insertmacro Var_ReplaceVar PORTABLEAPPSDIRECTORY
-
-Var PORTABLEAPPSLANGUAGECODE
-Var PORTABLEAPPSLOCALECODE2
-Var PORTABLEAPPSLOCALECODE3
-Var PORTABLEAPPSLOCALEGLIBC
-Var PORTABLEAPPSLOCALEID
-Var PORTABLEAPPSLOCALEWINNAME
 
 ; Segments {{{1
 ${SegmentInit}
 	;=== Initialise variables
+	${SetEnvironmentVariable} PAL:Drive $CurrentDrive
+	${SetEnvironmentVariable} PAL:LastDrive $LastDrive
+
 	${GetParent} $EXEDIR $PORTABLEAPPSDIRECTORY
+	${SetEnvironmentVariablesPath} PAL:PortableAppsDir $PORTABLEAPPSDIRECTORY
 
-	ReadEnvStr $PORTABLEAPPSDOCUMENTSDIRECTORY PortableApps.comDocuments
-	${IfNotThen} ${FileExists} $PORTABLEAPPSDOCUMENTSDIRECTORY ${|} StrCpy $PORTABLEAPPSDOCUMENTSDIRECTORY $CurrentDrive\Documents ${|}
+	ReadEnvStr $0 PortableApps.comDocuments
+	${IfNotThen} ${FileExists} $0 ${|} StrCpy $0 $CurrentDrive\Documents ${|}
+	${SetEnvironmentVariablesPath} PAL:DocumentsDir $0
 
-	ReadEnvStr $PORTABLEAPPSPICTURESDIRECTORY PortableApps.comPictures
-	${IfNotThen} ${FileExists} $PORTABLEAPPSPICTURESDIRECTORY ${|} StrCpy $PORTABLEAPPSPICTURESDIRECTORY $PORTABLEAPPSDOCUMENTSDIRECTORY\Pictures ${|}
+	ReadEnvStr $1 PortableApps.comPictures
+	${IfNotThen} ${FileExists} $1 ${|} StrCpy $1 $0\Pictures ${|}
+	${SetEnvironmentVariablesPath} PAL:PicturesDir $1
 
-	ReadEnvStr $PORTABLEAPPSMUSICDIRECTORY PortableApps.comMusic
-	${IfNotThen} ${FileExists} $PORTABLEAPPSMUSICDIRECTORY ${|} StrCpy $PORTABLEAPPSMUSICDIRECTORY $PORTABLEAPPSDOCUMENTSDIRECTORY\Music ${|}
+	ReadEnvStr $1 PortableApps.comMusic
+	${IfNotThen} ${FileExists} $1 ${|} StrCpy $1 $0\Music ${|}
+	${SetEnvironmentVariablesPath} PAL:MusicDir $1
 
-	ReadEnvStr $PORTABLEAPPSVIDEOSDIRECTORY PortableApps.comVideos
-	${IfNotThen} ${FileExists} $PORTABLEAPPSVIDEOSDIRECTORY ${|} StrCpy $PORTABLEAPPSVIDEOSDIRECTORY $PORTABLEAPPSDOCUMENTSDIRECTORY\Videos ${|}
+	ReadEnvStr $1 PortableApps.comVideos
+	${IfNotThen} ${FileExists} $1 ${|} StrCpy $1 $0\Videos ${|}
+	${SetEnvironmentVariablesPath} PAL:VideosDir $1
 
-	ReadEnvStr $PORTABLEAPPSLANGUAGECODE PortableApps.comLanguageCode
-	${IfThen} $PORTABLEAPPSLANGUAGECODE == "" ${|} StrCpy $PORTABLEAPPSLANGUAGECODE en-us ${|}
-	ReadEnvStr $PORTABLEAPPSLOCALECODE2 PortableApps.comLocaleCode2
-	${IfThen} $PORTABLEAPPSLOCALECODE2 == "" ${|} StrCpy $PORTABLEAPPSLOCALECODE2 en ${|}
-	ReadEnvStr $PORTABLEAPPSLOCALECODE3 PortableApps.comLocaleCode3
-	${IfThen} $PORTABLEAPPSLOCALECODE3 == "" ${|} StrCpy $PORTABLEAPPSLOCALECODE3 eng ${|}
-	ReadEnvStr $PORTABLEAPPSLOCALEGLIBC PortableApps.comLocaleglibc
-	${IfThen} $PORTABLEAPPSLOCALEGLIBC == "" ${|} StrCpy $PORTABLEAPPSLOCALEGLIBC en_US ${|}
-	ReadEnvStr $PORTABLEAPPSLOCALEID PortableApps.comLocaleID
-	${IfThen} $PORTABLEAPPSLOCALEID == "" ${|} StrCpy $PORTABLEAPPSLOCALEID 1033 ${|}
-	ReadEnvStr $PORTABLEAPPSLOCALEWINNAME PortableApps.comLocaleWinName
-	${IfThen} $PORTABLEAPPSLOCALEWINNAME == "" ${|} StrCpy $PORTABLEAPPSLOCALEWINNAME LANG_ENGLISH ${|}
+	ReadEnvStr $0 PortableApps.comLanguageCode
+	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLanguageCode en-us ${|}
+	ReadEnvStr $0 PortableApps.comLocaleCode2
+	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleCode2 en ${|}
+	ReadEnvStr $0 PortableApps.comLocaleCode3
+	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleCode3 eng ${|}
+	ReadEnvStr $0 PortableApps.comLocaleglibc
+	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleglibc en_US ${|}
+	ReadEnvStr $0 PortableApps.comLocaleID
+	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleID 1033 ${|}
+	ReadEnvStr $0 PortableApps.comLocaleWinName
+	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleWinName LANG_ENGLISH ${|}
 
-	ReadEnvStr $ALLUSERSPROFILE ALLUSERSPROFILE
-
-	;=== Make forward slash and double backslash versions
-	${WordReplace} $ALLUSERSPROFILE                \ /  + $REPLACEVAR_FS_ALLUSERSPROFILE
-	${WordReplace} $ALLUSERSPROFILE                \ \\ + $REPLACEVAR_DBS_ALLUSERSPROFILE
-	${WordReplace} $LOCALAPPDATA                   \ /  + $REPLACEVAR_FS_LOCALAPPDATA
-	${WordReplace} $LOCALAPPDATA                   \ \\ + $REPLACEVAR_DBS_LOCALAPPDATA
-	${WordReplace} $APPDATA                        \ /  + $REPLACEVAR_FS_APPDATA
-	${WordReplace} $APPDATA                        \ \\ + $REPLACEVAR_DBS_APPDATA
-	${WordReplace} $DOCUMENTS                      \ /  + $REPLACEVAR_FS_DOCUMENTS
-	${WordReplace} $DOCUMENTS                      \ \\ + $REPLACEVAR_DBS_DOCUMENTS
-	${WordReplace} $PORTABLEAPPSDOCUMENTSDIRECTORY \ /  + $REPLACEVAR_FS_PORTABLEAPPSDOCUMENTSDIRECTORY
-	${WordReplace} $PORTABLEAPPSDOCUMENTSDIRECTORY \ \\ + $REPLACEVAR_DBS_PORTABLEAPPSDOCUMENTSDIRECTORY
-	${WordReplace} $PORTABLEAPPSPICTURESDIRECTORY  \ /  + $REPLACEVAR_FS_PORTABLEAPPSPICTURESDIRECTORY
-	${WordReplace} $PORTABLEAPPSPICTURESDIRECTORY  \ \\ + $REPLACEVAR_DBS_PORTABLEAPPSPICTURESDIRECTORY
-	${WordReplace} $PORTABLEAPPSMUSICDIRECTORY     \ /  + $REPLACEVAR_FS_PORTABLEAPPSMUSICDIRECTORY
-	${WordReplace} $PORTABLEAPPSMUSICDIRECTORY     \ \\ + $REPLACEVAR_DBS_PORTABLEAPPSMUSICDIRECTORY
-	${WordReplace} $PORTABLEAPPSVIDEOSDIRECTORY    \ /  + $REPLACEVAR_FS_PORTABLEAPPSVIDEOSDIRECTORY
-	${WordReplace} $PORTABLEAPPSVIDEOSDIRECTORY    \ \\ + $REPLACEVAR_DBS_PORTABLEAPPSVIDEOSDIRECTORY
-	${WordReplace} $PORTABLEAPPSDIRECTORY          \ /  + $REPLACEVAR_FS_PORTABLEAPPSDIRECTORY
-	${WordReplace} $PORTABLEAPPSDIRECTORY          \ \\ + $REPLACEVAR_DBS_PORTABLEAPPSDIRECTORY
+	${SetEnvironmentVariablesPathFromEnvironmentVariable} ALLUSERSPROFILE
+	${SetEnvironmentVariablesPath} LOCALAPPDATA $LOCALAPPDATA
+	${SetEnvironmentVariablesPath} APPDATA $APPDATA
+	${SetEnvironmentVariablesPath} DOCUMENTS $DOCUMENTS
 !macroend
