@@ -21,7 +21,8 @@
  */
 
 ;=== Program Details {{{1
-;!define DEBUG
+;!define DEBUG_ALL ; Debug all segments
+;!define DEBUG_SEGMENT_[SegmentName] ; debug this segment
 !define VER "0.9.9.2"
 Name "PortableApps.com Launcher"
 OutFile ..\..\PortableApps.comLauncher.exe
@@ -91,9 +92,21 @@ Var ProgramExecutable
 
 ; Macro: print a debug message {{{1
 !macro DebugMsg _MSG
-	!ifdef DEBUG
+	!ifdef DEBUG_ALL
+		!define _DebugMsg_DEBUG
+	!else
+		!ifdef Segment
+			!ifdef DEBUG_SEGMENT_${Segment}
+				!define _DebugMsg_DEBUG
+			!endif
+		!else
+			!define _DebugMsg_DEBUG
+		!endif
+	!endif
+	!ifdef _DebugMsg_DEBUG
 		MessageBox MB_OKCANCEL|MB_ICONINFORMATION "Debug message in ${__FILE__} line ${__LINE__}:$\n$\n${_MSG}" IDOK +2
 			Abort ; not using IfCmd as it causes trouble with ' in _MSG
+		!undef _DebugMsg_DEBUG
 	!endif
 !macroend
 !define DebugMsg "!insertmacro DebugMsg"
@@ -119,55 +132,55 @@ Var ProgramExecutable
 !include Segments.nsh ;{{{1 Include all the code }}}
 
 Function .onInit ;{{{1
-	!insertmacro LauncherLanguage_.onInit
-	!insertmacro RunAsAdmin_.onInit
+	${RunSegment} LauncherLanguage .onInit
+	${RunSegment} RunAsAdmin .onInit
 FunctionEnd
 
 Section Init     ;{{{1
-	!insertmacro Core_Init
-	!insertmacro DriveLetter_Init
-	!insertmacro Variables_Init
-	!insertmacro Registry_Init
-	!insertmacro Java_Init
-	!insertmacro Mutex_Init
-	!insertmacro RunLocally_Init
-	!insertmacro Temp_Init
-	!insertmacro InstanceManagement_Init
-	!insertmacro SplashScreen_Init
-	!insertmacro RefreshShellIcons_Init
+	${RunSegment} Core Init
+	${RunSegment} DriveLetter Init
+	${RunSegment} Variables Init
+	${RunSegment} Registry Init
+	${RunSegment} Java Init
+	${RunSegment} Mutex Init
+	${RunSegment} RunLocally Init
+	${RunSegment} Temp Init
+	${RunSegment} InstanceManagement Init
+	${RunSegment} SplashScreen Init
+	${RunSegment} RefreshShellIcons Init
 SectionEnd
 
 Section Pre      ;{{{1
-	!insertmacro RunLocally_Pre
-	!insertmacro Temp_Pre
-	!insertmacro Environment_Pre
-	!insertmacro ExecString_Pre
+	${RunSegment} RunLocally Pre
+	${RunSegment} Temp Pre
+	${RunSegment} Environment Pre
+	${RunSegment} ExecString Pre
 	${If} $SecondaryLaunch != true
 		;=== Run PrePrimary segments
-		!insertmacro Settings_PrePrimary
-		!insertmacro DriveLetter_PrePrimary
-		!insertmacro FileWrite_PrePrimary
-		!insertmacro FilesMove_PrePrimary
-		!insertmacro DirectoriesMove_PrePrimary
-		!insertmacro RegistryKeys_PrePrimary
-		!insertmacro RegistryValueBackupDelete_PrePrimary
-		!insertmacro RegistryValueWrite_PrePrimary
-		!insertmacro Services_PrePrimary
+		${RunSegment} Settings PrePrimary
+		${RunSegment} DriveLetter PrePrimary
+		${RunSegment} FileWrite PrePrimary
+		${RunSegment} FilesMove PrePrimary
+		${RunSegment} DirectoriesMove PrePrimary
+		${RunSegment} RegistryKeys PrePrimary
+		${RunSegment} RegistryValueBackupDelete PrePrimary
+		${RunSegment} RegistryValueWrite PrePrimary
+		${RunSegment} Services PrePrimary
 	${Else}
 		;=== Run PreSecondary segments
-		;!insertmacro *_PreSecondary
+		;${RunSegment} * PreSecondary
 	${EndIf}
 SectionEnd
 
 Section PreExec  ;{{{1
-	!insertmacro RefreshShellIcons_PreExec
-	!insertmacro SetOutPath_PreExec
+	${RunSegment} RefreshShellIcons PreExec
+	${RunSegment} SetOutPath PreExec
 	${If} $SecondaryLaunch != true
 		;=== Run PreExecPrimary segments
-		!insertmacro SplashScreen_PreExecPrimary
+		${RunSegment} SplashScreen PreExecPrimary
 	${Else}
 		;=== Run PreExecSecondary segments
-		;!insertmacro *_PreExecSecondary
+		;${RunSegment} * PreExecSecondary
 	${EndIf}
 SectionEnd
 
@@ -222,20 +235,20 @@ SectionEnd
 Section Post     ;{{{1
 	${If} $SecondaryLaunch != true
 		;=== Run PostPrimary segments
-		!insertmacro Temp_PostPrimary ; OK anywhere
-		!insertmacro Services_PostPrimary
-		!insertmacro RegistryValueBackupDelete_PostPrimary
-		!insertmacro RegistryKeys_PostPrimary
-		!insertmacro RegistryCleanup_PostPrimary
-		!insertmacro DirectoriesMove_PostPrimary
-		!insertmacro FilesMove_PostPrimary
-		!insertmacro DirectoriesCleanup_PostPrimary
-		!insertmacro RunLocally_PostPrimary
+		${RunSegment} Temp PostPrimary ; OK anywhere
+		${RunSegment} Services PostPrimary
+		${RunSegment} RegistryValueBackupDelete PostPrimary
+		${RunSegment} RegistryKeys PostPrimary
+		${RunSegment} RegistryCleanup PostPrimary
+		${RunSegment} DirectoriesMove PostPrimary
+		${RunSegment} FilesMove PostPrimary
+		${RunSegment} DirectoriesCleanup PostPrimary
+		${RunSegment} RunLocally PostPrimary
 	${Else}
 		;=== Run PostSecondary segments
-		;!insertmacro *_PostSecondary
+		;${RunSegment} * PostSecondary
 	${EndIf}
-	!insertmacro RefreshShellIcons_Post
+	${RunSegment} RefreshShellIcons Post
 SectionEnd
 
 Section Unload ;{{{1
@@ -248,9 +261,9 @@ Function .onInstFailed ;{{{1
 FunctionEnd
 
 Function Unload   ;{{{1
-		!insertmacro Registry_Unload
-		!insertmacro SplashScreen_Unload
-		!insertmacro Core_Unload
+		${RunSegment} Registry Unload
+		${RunSegment} SplashScreen Unload
+		${RunSegment} Core Unload
 FunctionEnd ;}}}1
 
 ; This file has been optimised for use in Vim with folding.

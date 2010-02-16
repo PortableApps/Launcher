@@ -39,7 +39,15 @@
 !macroend
 !define SegmentFile "!insertmacro SegmentFile"
 
-/* Run an action {{{1
+; Run an action {{{1
+!macro RunSegment Segment Hook
+	${DebugMsg} "About to run segment ${Segment}, hook ${Hook}"
+	!insertmacro ${Segment}_${Hook}
+	${DebugMsg} "Finished segment ${Segment}, hook ${Hook}"
+!macroend
+!define RunSegment "!insertmacro RunSegment"
+
+/* Run an action (not being used) {{{1
  * action = (.on)?Init|Unload|(Pre(Exec)?|Post)(Primary|Secondary)?
  * ${RunSegmentAction}        action
  * ${RunSegmentActionReverse} action <-- use this for Post as it does them in the reverse order (so that it's nested)
