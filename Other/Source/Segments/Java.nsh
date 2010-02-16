@@ -88,8 +88,8 @@ ${SegmentInit}
 			${EndIf}
 		${EndIf}
 
-		${StrReplace} $REPLACEVAR_FS_JAVADIRECTORY \ / $JAVADIRECTORY
-		${StrReplace} $REPLACEVAR_DBS_JAVADIRECTORY / \\ $REPLACEVAR_FS_JAVADIRECTORY
+		${WordReplace} $JAVADIRECTORY \ /  + $REPLACEVAR_FS_JAVADIRECTORY
+		${WordReplace} $JAVADIRECTORY \ \\ + $REPLACEVAR_DBS_JAVADIRECTORY
 
 		${If} $JavaMode == require
 			${IfNot} ${FileExists} $JAVADIRECTORY
