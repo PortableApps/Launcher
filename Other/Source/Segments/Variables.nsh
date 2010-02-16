@@ -144,6 +144,7 @@ ${SegmentInit}
 	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleWinName LANG_ENGLISH ${|}
 
 	${SetEnvironmentVariablesPathFromEnvironmentVariable} ALLUSERSPROFILE
+	${SetEnvironmentVariablesPathFromEnvironmentVariable} USERPROFILE
 	${SetEnvironmentVariablesPath} LOCALAPPDATA $LOCALAPPDATA
 	${SetEnvironmentVariablesPath} APPDATA $APPDATA
 	${SetEnvironmentVariablesPath} DOCUMENTS $DOCUMENTS
