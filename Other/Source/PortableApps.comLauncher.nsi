@@ -53,8 +53,7 @@ SetCompressorDictSize 32
 !include LogicLib.nsh
 !include FileFunc.nsh
 !include TextFunc.nsh
-!insertmacro TrimNewLines
-!insertmacro ConfigWrite
+!include WordFunc.nsh
 
 ;(NSIS Plugins) {{{2
 !include TextReplace.nsh
@@ -62,7 +61,6 @@ SetCompressorDictSize 32
 
 ;(Custom) {{{2
 !include ReplaceInFileWithTextReplace.nsh
-!include StrReplace.nsh
 !include ForEachINIPair.nsh
 !include SetFileAttributesDirectoryNormal.nsh
 !include ProcFunc.nsh
