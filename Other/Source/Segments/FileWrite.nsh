@@ -31,16 +31,12 @@ ${SegmentPrePrimary}
 			${ReadLauncherConfig} $2 FileWrite$R0 Find
 			${ReadLauncherConfig} $3 FileWrite$R0 Replace
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-			${ReadLauncherConfig} $4 FileWrite$R0 OnlyIfDriveLetterChanged
-			${If} $4 != true
-			${OrIf} $LastDrive != ""
-			${OrIf} $LastDrive != $CurrentDrive
-				${ParseLocations} $2
-				${ParseLocations} $3
-				${If} ${FileExists} $1
-					${DebugMsg} "Finding and replacing in a file.$\nFile: $1$\nFind: `$2`$\nReplace: `$3`"
-					${ReplaceInFile} $1 $2 $3
-				${EndIf}
+			${ParseLocations} $2
+			${ParseLocations} $3
+			${If} $2 != $3
+			${AndIf} ${FileExists} $1
+				${DebugMsg} "Finding and replacing in a file.$\nFile: $1$\nFind: `$2`$\nReplace: `$3`"
+				${ReplaceInFile} $1 $2 $3
 			${EndIf}
 		${EndIf}
 		IntOp $R0 $R0 + 1
