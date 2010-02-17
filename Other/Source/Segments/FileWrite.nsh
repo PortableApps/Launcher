@@ -32,9 +32,9 @@ ${SegmentPrePrimary}
 			${ReadLauncherConfig} $3 FileWrite$R0 Replace
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ReadLauncherConfig} $4 FileWrite$R0 OnlyIfDriveLetterChanged
-			${If} $4 == true
-			${AndIf} $LastDrive != ""
-			${AndIf} $LastDrive != $CurrentDrive
+			${If} $4 != true
+			${OrIf} $LastDrive != ""
+			${OrIf} $LastDrive != $CurrentDrive
 				${ParseLocations} $2
 				${ParseLocations} $3
 				${If} ${FileExists} $1
