@@ -21,8 +21,14 @@
  */
 
 ;=== Program Details {{{1
-;!define DEBUG_ALL ; Debug all segments
-;!define DEBUG_SEGMENT_[SegmentName] ; debug this segment
+;Two debug methods:
+; · Debug everything
+;     !define DEBUG_ALL
+; · Debug just certain portions
+;   · Debug outside any segments
+;       !define DEBUG_GLOBAL
+;   · Debug a given segment or segments
+;       !define DEBUG_SEGMENT_[SegmentName]
 !verbose 3
 !macro !echo msg
 	!verbose push
@@ -112,7 +118,7 @@ Var ProgramExecutable
 			!ifdef DEBUG_SEGMENT_${Segment}
 				!define _DebugMsg_DEBUG
 			!endif
-		!else
+		!else ifdef DEBUG_GLOBAL
 			!define _DebugMsg_DEBUG
 		!endif
 	!endif
