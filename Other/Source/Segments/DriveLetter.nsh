@@ -8,6 +8,7 @@ Var CurrentDrive
 
 ${SegmentInit}
 	ReadINIStr $LastDrive $EXEDIR\Data\settings\$AppIDSettings.ini $AppIDSettings LastDrive
+	${IfThen} $LastDrive == "" ${|} StrCpy $LastDrive NONE ${|}
 	${GetRoot} $EXEDIR $CurrentDrive
 !macroend
 
