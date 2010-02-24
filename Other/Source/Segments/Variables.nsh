@@ -100,10 +100,9 @@ ${SegmentFile}
 !define ParseLocations "!insertmacro ParseLocations"
 
 ; Variables {{{1
-Var APPDIRECTORY
-Var DATADIRECTORY
-Var TEMPDIRECTORY
-Var PORTABLEAPPSDIRECTORY
+Var AppDirectory
+Var DataDirectory
+Var PortableAppsDirectory
 
 ; Segments {{{1
 ${SegmentInit}
@@ -119,8 +118,8 @@ ${SegmentInit}
 	${SetEnvironmentVariable} PAL:DriveLetter $0
 	${SetEnvironmentVariable} PAL:LastDriveLetter $1
 
-	${GetParent} $EXEDIR $PORTABLEAPPSDIRECTORY
-	${SetEnvironmentVariablesPath} PAL:PortableAppsDir $PORTABLEAPPSDIRECTORY
+	${GetParent} $EXEDIR $PortableAppsDirectory
+	${SetEnvironmentVariablesPath} PAL:PortableAppsDir $PortableAppsDirectory
 
 	ReadEnvStr $0 PortableApps.comDocuments
 	${IfNotThen} ${FileExists} $0 ${|} StrCpy $0 $CurrentDrive\Documents ${|}

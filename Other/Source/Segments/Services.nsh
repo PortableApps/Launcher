@@ -24,13 +24,13 @@ ${SegmentPrePrimary}
 				Pop $3
 				${DebugMsg} "Local service $1's binary path is $3 (error code $9)"
 				; TODO: this is going to be very messy. I'm not going to do it till later.
-				;${NewServiceLib.BackupService} $1 $DATADIRECTORY\PortableApps.comLauncherWorkingData.ini Service$1
+				;${NewServiceLib.BackupService} $1 $DataDirectory\PortableApps.comLauncherWorkingData.ini Service$1
 				SimpleSC::RemoveService $1
 				Pop $9
 				${DebugMsg} "Removed local service $1 (error code $9)
 				*/
 			${EndIf}
-			WriteINIStr $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini Service$R0 ExistedBefore true
+			WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData.ini Service$R0 ExistedBefore true
 			StrCpy $R9 no-create
 		${EndIf}
 		${If} $R9 == no-create

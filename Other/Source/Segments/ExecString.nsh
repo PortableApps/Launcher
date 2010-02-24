@@ -5,9 +5,9 @@ Var ExecString
 ${SegmentPre}
 	${DebugMsg} "Constructing execution string"
 	${If} $UsingJavaExecutable != true
-		StrCpy $ExecString `"$APPDIRECTORY\$ProgramExecutable"`
+		StrCpy $ExecString `"$AppDirectory\$ProgramExecutable"`
 	${Else}
-		StrCpy $ExecString `"$JAVADIRECTORY\bin\$ProgramExecutable"`
+		StrCpy $ExecString `"$JavaDirectory\bin\$ProgramExecutable"`
 	${EndIf}
 	${DebugMsg} "Execution string is $ExecString"
 

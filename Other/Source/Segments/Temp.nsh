@@ -1,6 +1,7 @@
 ${SegmentFile}
 
 Var UsesContainedTempDirectory
+Var TempDirectory
 
 ${SegmentInit}
 	${ReadLauncherConfig} $UsesContainedTempDirectory Launch AssignContainedTempDirectory
@@ -10,26 +11,26 @@ ${SegmentPre}
 	${If} $UsesContainedTempDirectory != false
 		${ReadLauncherConfig} $0 Launch WaitForProgram
 		${If} $0 == false
-			StrCpy $TEMPDIRECTORY $DATADIRECTORY\Temp
+			StrCpy $TempDirectory $DataDirectory\Temp
 		${Else}
-			StrCpy $TEMPDIRECTORY $TEMP\$AppIDTemp
+			StrCpy $TempDirectory $TEMP\$AppIDTemp
 		${EndIf}
-		${DebugMsg} "Creating temporary directory $TEMPDIRECTORY"
-		${If} ${FileExists} $TEMPDIRECTORY
-			RMDir /r $TEMPDIRECTORY
+		${DebugMsg} "Creating temporary directory $TempDirectory"
+		${If} ${FileExists} $TempDirectory
+			RMDir /r $TempDirectory
 		${EndIf}
-		CreateDirectory $TEMPDIRECTORY
+		CreateDirectory $TempDirectory
 	${Else}
-		StrCpy $TEMPDIRECTORY $TEMP
+		StrCpy $TempDirectory $TEMP
 	${EndIf}
 
-	${DebugMsg} "Setting %TEMP% to $TEMPDIRECTORY"
-	${SetEnvironmentVariablesPath} TEMP $TEMPDIRECTORY
+	${DebugMsg} "Setting %TEMP% to $TempDirectory"
+	${SetEnvironmentVariablesPath} TEMP $TempDirectory
 !macroend
 
 ${SegmentPostPrimary}
 	${If} $UsesContainedTempDirectory != false
-		${DebugMsg} "Removing contained temporary directory $TEMPDIRECTORY."
-		RMDir /r $TEMPDIRECTORY
+		${DebugMsg} "Removing contained temporary directory $TempDirectory."
+		RMDir /r $TempDirectory
 	${EndIf}
 !macroend

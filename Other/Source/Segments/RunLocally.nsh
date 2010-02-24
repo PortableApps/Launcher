@@ -16,9 +16,9 @@ ${SegmentPre}
 				CreateDirectory $TEMP\$AppIDLive
 				CopyFiles /SILENT $EXEDIR\App $TEMP\$AppIDLive
 			${EndIf}
-			StrCpy $APPDIRECTORY $TEMP\$AppIDLive\App
+			StrCpy $AppDirectory $TEMP\$AppIDLive\App
 		${EndIf}
-		#For the time being at least, I've disabled the option of not copying Data, as it makes file moving etc. from %DATADIRECTORY% break
+		#For the time being at least, I've disabled the option of not copying Data, as it makes file moving etc. from %DataDirectory% break
 		#${ReadLauncherConfig} $0 LiveMode CopyData
 		${If} $0 != false
 			${If} $SecondaryLaunch != true
@@ -26,18 +26,18 @@ ${SegmentPre}
 				CreateDirectory $TEMP\$AppIDLive
 				CopyFiles /SILENT $EXEDIR\Data $TEMP\$AppIDLive
 			${EndIf}
-			StrCpy $DATADIRECTORY $TEMP\$AppIDLive\Data
+			StrCpy $DataDirectory $TEMP\$AppIDLive\Data
 		${EndIf}
 		${If} ${FileExists} $TEMP\$AppIDLive
 			${SetFileAttributesDirectoryNormal} $TEMP\$AppIDLive
 		${EndIf}
 	${Else}
-		StrCpy $APPDIRECTORY $EXEDIR\App
-		StrCpy $DATADIRECTORY $EXEDIR\Data
+		StrCpy $AppDirectory $EXEDIR\App
+		StrCpy $DataDirectory $EXEDIR\Data
 	${EndIf}
 
-	${SetEnvironmentVariablesPath} PAL:AppDir $APPDIRECTORY
-	${SetEnvironmentVariablesPath} PAL:DataDir $DATADIRECTORY
+	${SetEnvironmentVariablesPath} PAL:AppDir $AppDirectory
+	${SetEnvironmentVariablesPath} PAL:DataDir $DataDirectory
 !macroend
 
 ${SegmentPostPrimary}

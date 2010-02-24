@@ -6,7 +6,7 @@ ${SegmentPrePrimary}
 
 		${GetFileName} $0 $2
 
-		StrCpy $0 $DATADIRECTORY\$0
+		StrCpy $0 $DataDirectory\$0
 		StrCpy $1 $1\$2
 
 		;=== Backup data from a local installation
@@ -25,7 +25,7 @@ ${SegmentPrePrimary}
 				${GetParent} $1 $1
 				${IfNot} ${FileExists} $1
 					CreateDirectory $1
-					WriteINIStr $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini FilesMove RemoveIfEmpty:$1 true
+					WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData.ini FilesMove RemoveIfEmpty:$1 true
 				${EndIf}
 				CopyFiles /SILENT $0 $1
 			${EndIf}
@@ -37,12 +37,12 @@ ${SegmentPostPrimary}
 	${ForEachINIPair} FilesMove $0 $1
 		${ParseLocations} $1
 		${GetFileName} $0 $2
-		StrCpy $0 $DATADIRECTORY\$0
+		StrCpy $0 $DataDirectory\$0
 		StrCpy $4 $1
 		StrCpy $1 $1\$2
 
 		${If} $RunLocally != true
-			${DebugMsg} "Copying file from $1 to $DATADIRECTORY\$0"
+			${DebugMsg} "Copying file from $1 to $DataDirectory\$0"
 			${GetRoot} $0 $2 ; compare
 			${GetRoot} $1 $3 ; drive
 			${If} $2 == $3   ; letters
@@ -52,7 +52,7 @@ ${SegmentPostPrimary}
 				${GetParent} $0 $0
 				CopyFiles /SILENT $1 $0
 
-				ReadINIStr $2 $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini FilesMove RemoveIfEmpty:$4
+				ReadINIStr $2 $DataDirectory\PortableApps.comLauncherRuntimeData.ini FilesMove RemoveIfEmpty:$4
 				${If} $2 == true
 					RMDir $4
 				${EndIf}

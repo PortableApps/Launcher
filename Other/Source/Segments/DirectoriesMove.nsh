@@ -2,7 +2,7 @@ ${SegmentFile}
 
 ${SegmentPrePrimary}
 	${ForEachINIPair} DirectoriesMove $0 $1
-		StrCpy $0 $DATADIRECTORY\$0
+		StrCpy $0 $DataDirectory\$0
 		${ParseLocations} $1
 
 		;=== Backup data from a local installation
@@ -23,14 +23,14 @@ ${SegmentPrePrimary}
 			${EndIf}
 		${Else}
 			CreateDirectory $1
-			${DebugMsg} "$DATADIRECTORY\$0\*.* does not exist, so not copying it to $1.$\n(Note for developers: if you want default data, remember to put files in App\DefaultData\$0)"
+			${DebugMsg} "$DataDirectory\$0\*.* does not exist, so not copying it to $1.$\n(Note for developers: if you want default data, remember to put files in App\DefaultData\$0)"
 		${EndIf}
 	${NextINIPair}
 !macroend
 
 ${SegmentPostPrimary}
 	${ForEachINIPair} DirectoriesMove $0 $1
-		StrCpy $0 $DATADIRECTORY\$0
+		StrCpy $0 $DataDirectory\$0
 		${ParseLocations} $1
 
 		${If} $RunLocally != true

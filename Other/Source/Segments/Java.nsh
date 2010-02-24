@@ -2,43 +2,43 @@ ${SegmentFile}
 
 Var UsingJavaExecutable
 Var JavaMode
-Var JAVADIRECTORY
+Var JavaDirectory
 
 ${SegmentInit}
 	;=== Search for Java: PortableApps.com CommonFiles, registry, %JAVA_HOME%, SearchPath, %WINDIR%\Java
 	${ReadLauncherConfig} $JavaMode Activate Java
 	${If} $JavaMode == find
 	${OrIf} $JavaMode == require
-		StrCpy $JAVADIRECTORY $PORTABLEAPPSDIRECTORY\CommonFiles\Java
-		${IfNot} ${FileExists} $JAVADIRECTORY
+		StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\Java
+		${IfNot} ${FileExists} $JavaDirectory
 			ClearErrors
-			ReadRegStr $JAVADIRECTORY HKLM "Software\JavaSoft\Java Runtime Environment" CurrentVersion
-			ReadRegStr $JAVADIRECTORY HKLM "Software\JavaSoft\Java Runtime Environment\$JAVADIRECTORY" JavaHome
+			ReadRegStr $0 HKLM "Software\JavaSoft\Java Runtime Environment" CurrentVersion
+			ReadRegStr $JavaDirectory HKLM "Software\JavaSoft\Java Runtime Environment\$0" JavaHome
 			${If} ${Errors}
-			${OrIfNot} ${FileExists} $JAVADIRECTORY\bin\java.exe
+			${OrIfNot} ${FileExists} $JavaDirectory\bin\java.exe
 				ClearErrors
-				ReadEnvStr $JAVADIRECTORY JAVA_HOME
+				ReadEnvStr $JavaDirectory JAVA_HOME
 				${If} ${Errors}
-				${OrIfNot} ${FileExists} $JAVADIRECTORY\bin\java.exe
+				${OrIfNot} ${FileExists} $JavaDirectory\bin\java.exe
 					ClearErrors
-					SearchPath $JAVADIRECTORY java.exe
+					SearchPath $JavaDirectory java.exe
 					${IfNot} ${Errors}
-						${GetParent} $JAVADIRECTORY $JAVADIRECTORY
-						${GetParent} $JAVADIRECTORY $JAVADIRECTORY
+						${GetParent} $JavaDirectory $JavaDirectory
+						${GetParent} $JavaDirectory $JavaDirectory
 					${Else}
-						StrCpy $JAVADIRECTORY $WINDIR\Java
-						${IfNot} ${FileExists} $JAVADIRECTORY\bin\java.exe
-							StrCpy $JAVADIRECTORY $PORTABLEAPPSDIRECTORY\CommonFiles\Java
+						StrCpy $JavaDirectory $WINDIR\Java
+						${IfNot} ${FileExists} $JavaDirectory\bin\java.exe
+							StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\Java
 						${EndIf}
 					${EndIf}
 				${EndIf}
 			${EndIf}
 		${EndIf}
 
-		${SetEnvironmentVariablesPath} JAVA_HOME $JAVADIRECTORY
+		${SetEnvironmentVariablesPath} JAVA_HOME $JavaDirectory
 
 		${If} $JavaMode == require
-			${IfNot} ${FileExists} $JAVADIRECTORY
+			${IfNot} ${FileExists} $JavaDirectory
 				;=== Java Portable is missing
 				StrCpy $MissingFileOrPath Java
 				MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
