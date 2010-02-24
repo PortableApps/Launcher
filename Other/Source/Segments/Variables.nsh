@@ -108,8 +108,16 @@ Var PORTABLEAPPSDIRECTORY
 ; Segments {{{1
 ${SegmentInit}
 	;=== Initialise variables
+	StrCpy $0 $CurrentDrive 1
+	${If} $LastDrive == ""
+		StrCpy $1 NONE
+	${Else}
+		StrCpy $1 $LastDrive 1
+	${EndIf}
 	${SetEnvironmentVariable} PAL:Drive $CurrentDrive
 	${SetEnvironmentVariable} PAL:LastDrive $LastDrive
+	${SetEnvironmentVariable} PAL:DriveLetter $0
+	${SetEnvironmentVariable} PAL:LastDriveLetter $1
 
 	${GetParent} $EXEDIR $PORTABLEAPPSDIRECTORY
 	${SetEnvironmentVariablesPath} PAL:PortableAppsDir $PORTABLEAPPSDIRECTORY
