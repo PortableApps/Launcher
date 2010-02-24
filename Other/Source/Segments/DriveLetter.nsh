@@ -14,5 +14,5 @@ ${SegmentInit}
 
 ${SegmentPrePrimary}
 	; Past the possible abort stage
-	WriteINIStr $DATADIRECTORY\settings\$AppIDSettings.ini $AppIDSettings LastDrive $CurrentDrive
+	WriteINIStr $DataDirectory\settings\$AppIDSettings.ini $AppIDSettings LastDrive $CurrentDrive
 !macroend

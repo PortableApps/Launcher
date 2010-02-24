@@ -13,20 +13,20 @@ ${SegmentPrePrimary}
 				${EndIf}
 			${EndIf}
 
-			${If} ${FileExists} $DATADIRECTORY\settings\$0.reg
+			${If} ${FileExists} $DataDirectory\settings\$0.reg
 				SetErrors
-				${DebugMsg} "Loading $DATADIRECTORY\settings\$0.reg into the registry."
+				${DebugMsg} "Loading $DataDirectory\settings\$0.reg into the registry."
 				${If} ${FileExists} $WINDIR\system32\reg.exe
-					nsExec::Exec `"$WINDIR\system32\reg.exe" import "$DATADIRECTORY\settings\$0.reg"`
+					nsExec::Exec `"$WINDIR\system32\reg.exe" import "$DataDirectory\settings\$0.reg"`
 					Pop $R9
 					${IfThen} $R9 = 0 ${|} ClearErrors ${|}
 				${EndIf}
 
 				${If} ${Errors}
-					${registry::RestoreKey} $DATADIRECTORY\settings\$0.reg $R9
+					${registry::RestoreKey} $DataDirectory\settings\$0.reg $R9
 					${If} $R9 != 0
-						WriteINIStr $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0 true
-						${DebugMsg} "Failed to load $DATADIRECTORY\settings\$0.reg into the registry."
+						WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0 true
+						${DebugMsg} "Failed to load $DataDirectory\settings\$0.reg into the registry."
 					${EndIf}
 				${EndIf}
 			${EndIf}
@@ -38,11 +38,11 @@ ${SegmentPostPrimary}
 	${If} $UsesRegistry == true
 		${ForEachINIPair} RegistryKeys $0 $1
 			ClearErrors
-			ReadINIStr $R9 $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0
+			ReadINIStr $R9 $DataDirectory\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0
 			${If} ${Errors} ; didn't fail
 			${AndIf} $RunLocally != true
-				${DebugMsg} "Saving registry key $1 to $DATADIRECTORY\settings\$0.reg."
-				${registry::SaveKey} $1 $DATADIRECTORY\settings\$0.reg "" $R9
+				${DebugMsg} "Saving registry key $1 to $DataDirectory\settings\$0.reg."
+				${registry::SaveKey} $1 $DataDirectory\settings\$0.reg "" $R9
 			${EndIf}
 
 			${DebugMsg} "Deleting registry key $1."

@@ -22,6 +22,6 @@ ${SegmentInit}
 !macroend
 
 ${SegmentUnload}
-	Delete $DATADIRECTORY\PortableApps.comLauncherRuntimeData.ini
+	Delete $DataDirectory\PortableApps.comLauncherRuntimeData.ini
 	System::Free 0
 !macroend
