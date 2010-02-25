@@ -20,8 +20,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-;=== Program Details {{{1
-;Two debug methods:
+;=== Debugging {{{1
+; If you want to debug this, create PortableApps.comLauncherDebug.nsh.
+; It should then have lines like these:
 ; · Debug everything
 ;     !define DEBUG_ALL
 ; · Debug just certain portions
@@ -29,6 +30,9 @@
 ;       !define DEBUG_GLOBAL
 ;   · Debug a given segment or segments
 ;       !define DEBUG_SEGMENT_[SegmentName]
+!include /NONFATAL PortableApps.comLauncherDebug.nsh
+
+;=== Program Details {{{1
 !verbose 3
 !macro !echo msg
 	!verbose push
