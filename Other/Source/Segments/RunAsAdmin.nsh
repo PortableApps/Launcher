@@ -35,10 +35,15 @@ ${Segment.onInit} ; {{{1
 			${!IfDebug}
 				${Select} $0
 					${Case} 0
-						StrCpy $R9 "Changed credentials"
-						${IfThen} $1 = 1 ${|} StrCpy $R9 "$R9 to admin: this is the user-level process, admin has finished." ${|}
-						${IfThen} $3 <> 0 ${|} StrCpy $R9 "$R9 to admin: this is the admin process." ${|}
-						${IfThen} $1 = 3 ${|} StrCpy $R9 "$R9, but not to admin." ${|}
+						${If} $1 = 1
+							StrCpy $R9 "Changed credentials to admin: this is the user-level process, admin has finished."
+						${ElseIf} $3 <> 0
+							StrCpy $R9 "Changed credentials to admin: this is the admin process."
+						${ElseIf} $1 = 3
+							StrCpy $R9 "Changed credentials, but not to admin."
+						${Else}
+							StrCpy $R9 "Given 'changed credentials' status code but unknown values ($$2=$2, $$3=$3)"
+						${EndIf}
 					${Case} 1233
 						StrCpy $R9 "Failed to elevate to admin (cancelled)."
 					${Case} 1062
@@ -46,7 +51,7 @@ ${Segment.onInit} ; {{{1
 					${Default}
 						StrCpy $R9 "Unknown error (code $0)."
 				${EndSelect}
-				${DebugMsg} "UAC_RunElevated return values:$\n$$0=$0$\n$$1=$1$\n$\n"
+				${DebugMsg} "UAC_RunElevated return values:$\n$$0=$0$\n$$1=$1$\n$\n$R9"
 			!endif
 
 			${Switch} $0
