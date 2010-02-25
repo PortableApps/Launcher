@@ -6,6 +6,7 @@ Var UsesRegistry
 
 ${SegmentInit}
 	${ReadLauncherConfig} $UsesRegistry Activate Registry
+	${DebugMsg} "Registry sections enabled."
 !macroend
 
 ${SegmentUnload}

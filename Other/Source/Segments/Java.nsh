@@ -29,12 +29,14 @@ ${SegmentInit}
 						StrCpy $JavaDirectory $WINDIR\Java
 						${IfNot} ${FileExists} $JavaDirectory\bin\java.exe
 							StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\Java
+							${DebugMsg} "Unable to find Java installation."
 						${EndIf}
 					${EndIf}
 				${EndIf}
 			${EndIf}
 		${EndIf}
 
+		${DebugMsg} "Selected Java path: $JavaDirectory"
 		${SetEnvironmentVariablesPath} JAVA_HOME $JavaDirectory
 
 		${If} $JavaMode == require
