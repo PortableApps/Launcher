@@ -109,23 +109,29 @@ Var AppNamePortable
 Var AppName
 Var ProgramExecutable
 
-; Macro: print a debug message {{{1
-!macro DebugMsg _MSG
+; Macro: check if in debug mode for the current section {{{1
+!macro !IfDebug
 	!ifdef DEBUG_ALL
-		!define _DebugMsg_DEBUG
+		!define _!IfDebug_DEBUG
 	!else
 		!ifdef Segment
 			!ifdef DEBUG_SEGMENT_${Segment}
-				!define _DebugMsg_DEBUG
+				!define _!IfDebug_DEBUG
 			!endif
 		!else ifdef DEBUG_GLOBAL
-			!define _DebugMsg_DEBUG
+			!define _!IfDebug_DEBUG
 		!endif
 	!endif
-	!ifdef _DebugMsg_DEBUG
+	!ifdef _!IfDebug_DEBUG
+		!undef _!IfDebug_DEBUG
+!macroend
+!define !IfDebug "!insertmacro !IfDebug"
+
+; Macro: print a debug message {{{1
+!macro DebugMsg _MSG
+	${!IfDebug}
 		MessageBox MB_OKCANCEL|MB_ICONINFORMATION "Debug message in ${__FILE__} line ${__LINE__}:$\n$\n${_MSG}" IDOK +2
-			Abort ; not using IfCmd as it causes trouble with ' in _MSG
-		!undef _DebugMsg_DEBUG
+			Abort
 	!endif
 !macroend
 !define DebugMsg "!insertmacro DebugMsg"
@@ -206,7 +212,7 @@ Section PreExec  ;{{{1
 SectionEnd
 
 Section Execute  ;{{{1
-	!ifdef DEBUG
+	${!IfDebug}
 		${If} $SecondaryLaunch != true
 			${DebugMsg} "About to execute the following string and wait till it's done: $ExecString"
 		${Else}
