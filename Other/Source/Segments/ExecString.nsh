@@ -13,7 +13,7 @@ ${SegmentPre}
 
 	;=== Get any default parameters
 	ClearErrors
-	${ReadLauncherConfig} $0 Launch DefaultCommandLineArguments
+	${ReadLauncherConfig} $0 Launch CommandLineArguments
 	${IfNot} ${Errors}
 		${DebugMsg} "There are default command line arguments ($0).  Adding them to execution string after parsing."
 		${ParseLocations} $0
