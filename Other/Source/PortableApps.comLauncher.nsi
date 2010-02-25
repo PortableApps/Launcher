@@ -216,7 +216,7 @@ SectionEnd
 
 Section PreExec  ;{{{1
 	${RunSegment} RefreshShellIcons PreExec
-	${RunSegment} SetOutPath PreExec
+	${RunSegment} WorkingDirectory PreExec
 	${If} $SecondaryLaunch != true
 		;=== Run PreExecPrimary segments
 		${RunSegment} SplashScreen PreExecPrimary

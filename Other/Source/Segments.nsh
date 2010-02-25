@@ -75,14 +75,14 @@
 !macro RunSegmentAction _ACTION
 	${_RunSingleSegmentAction} Mutex
 	${_RunSingleSegmentAction} SplashScreen
-	${_RunSingleSegmentAction} SetOutPath
+	${_RunSingleSegmentAction} WorkingDirectory
 	${_RunSingleSegmentAction} RefreshShellIcons
 !macroend
 !define RunSegmentAction "!insertmacro RunSegment"
 
 !macro RunSegmentActionReverse _ACTION
 	${_RunSingleSegmentAction} RefreshShellIcons
-	${_RunSingleSegmentAction} SetOutPath
+	${_RunSingleSegmentAction} WorkingDirectory
 	${_RunSingleSegmentAction} SplashScreen
 	${_RunSingleSegmentAction} Mutex
 !macroend

@@ -25,7 +25,7 @@ ${SegmentPre}
 	${If} $0 != ""
 		${DebugMsg} "Parameters were passed ($0).  Adding them to execution string."
 		ClearErrors
-		${ReadLauncherConfig} $1 Launch SetOutPath
+		${ReadLauncherConfig} $1 Launch WorkingDirectory
 		${If} ${Errors}
 			StrCpy $ExecString "$ExecString $0"
 		${Else}
@@ -36,7 +36,7 @@ ${SegmentPre}
 			${If} ${Errors}
 				StrCpy $ExecString "$ExecString $0"
 			${Else}
-				${DebugMsg} "There is a SetOutPath directive, and the command line contained a path, $0, which has been rewritten to $1."
+				${DebugMsg} "There is a WorkingDirectory directive, and the command line contained a path, $0, which has been rewritten to $1."
 				StrCpy $ExecString "$ExecString $1"
 			${EndIf}
 		${EndIf}
