@@ -4,12 +4,18 @@ ${SegmentInit}
 	ClearErrors
 	ReadINIStr $AppID $EXEDIR\App\AppInfo\appinfo.ini Details AppID
 	ReadINIStr $AppNamePortable $EXEDIR\App\AppInfo\appinfo.ini Details Name
+	${If} ${Errors}
+		;=== Launcher file missing or missing crucial details
+		StrCpy $AppNamePortable "PortableApps.com Launcher"
+		StrCpy $MissingFileOrPath $EXEDIR\appinfo.ini
+		MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
+		Abort
+	${EndIf}
 	${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutable
 
 	${If} ${Errors}
 		;=== Launcher file missing or missing crucial details
-		StrCpy $AppNamePortable "PortableApps.com Launcher"
-		StrCpy $MissingFileOrPath "appinfo.ini or launcher.ini"
+		StrCpy $MissingFileOrPath $EXEDIR\launcher.ini
 		MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
 		Abort
 	${EndIf}
