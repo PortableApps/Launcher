@@ -41,9 +41,17 @@
 
 ; Run an action {{{1
 !macro RunSegment Segment Hook
-	${DebugMsg} "About to run segment ${Segment}, hook ${Hook}"
+	${!IfDebug}
+		!ifdef DEBUG_SEGWRAP
+			${DebugMsg} "About to execute segment"
+		!endif
+	!endif
 	!insertmacro ${Segment}_${Hook}
-	${DebugMsg} "Finished segment ${Segment}, hook ${Hook}"
+	${!IfDebug}
+		!ifdef DEBUG_SEGWRAP
+			${DebugMsg} "Finished executing segment"
+		!endif
+	!endif
 !macroend
 !define RunSegment "!insertmacro RunSegment"
 

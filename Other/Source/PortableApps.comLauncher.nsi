@@ -25,6 +25,9 @@
 ; It should then have lines like these:
 ; · Debug everything
 ;     !define DEBUG_ALL
+;   · This leaves out the "about to execute segment" and "finished executing
+;     segment" messages unless you put this line in:
+;       !define DEBUG_SEGWRAP
 ; · Debug just certain portions
 ;   · Debug outside any segments
 ;       !define DEBUG_GLOBAL
@@ -134,8 +137,15 @@ Var ProgramExecutable
 ; Macro: print a debug message {{{1
 !macro DebugMsg _MSG
 	${!IfDebug}
-		MessageBox MB_OKCANCEL|MB_ICONINFORMATION "Debug message in ${__FILE__} line ${__LINE__}:$\n$\n${_MSG}" IDOK +2
+		!ifdef Segment
+			!define _DebugMsg_Seg "$\n$\nSegment: ${Segment}$\nHook: ${Hook}"
+		!else
+			!define _DebugMsg_Seg ""
+		!endif
+		; ${__FILE__} is useless, always PortableApps.comLauncher.nsi
+		MessageBox MB_OKCANCEL|MB_ICONINFORMATION "Debug message at line ${__LINE__}${_DebugMsg_Seg}$\n____________________$\n$\n${_MSG}" IDOK +2
 			Abort
+		!undef _DebugMsg_Seg
 	!endif
 !macroend
 !define DebugMsg "!insertmacro DebugMsg"
