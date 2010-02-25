@@ -1,5 +1,24 @@
 ${SegmentFile}
 
+${Segment.onInit}
+	StrCpy $0 $EXEDIR 2
+	${If} $0 == "\\"
+		; UNC path; may occur in the inner instance with RunAsAdmin
+		ClearErrors
+		${!IfDebug}
+			StrCpy $0 $EXEDIR
+		!endif
+		ReadEnvStr $EXEDIR PAL:PackageDir
+		${If} ${Errors}
+			MessageBox MB_OK|MB_ICONSTOP "$(LauncherNoUNCSupport)"
+			Abort
+		${EndIf}
+		${DebugMsg} "$$EXEDIR ($0) was a UNC path (due to the UAC plug-in), set $$EXEDIR to %PAL:PackageDir% which is $EXEDIR."
+	${Else}
+		${SetEnvironmentVariable} PAL:PackageDir $EXEDIR
+	${EndIf}
+!macroend
+
 ${SegmentInit}
 	ClearErrors
 	ReadINIStr $AppID $EXEDIR\App\AppInfo\appinfo.ini Details AppID
@@ -17,12 +36,6 @@ ${SegmentInit}
 		;=== Launcher file missing or missing crucial details
 		StrCpy $MissingFileOrPath $EXEDIR\App\AppInfo\launcher.ini
 		MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
-		Abort
-	${EndIf}
-
-	StrCpy $0 $EXEDIR 2
-	${If} $0 == "\\"
-		MessageBox MB_OK|MB_ICONSTOP "$(LauncherNoUNCSupport)"
 		Abort
 	${EndIf}
 !macroend

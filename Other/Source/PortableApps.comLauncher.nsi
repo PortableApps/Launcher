@@ -163,6 +163,7 @@ ${!echo} "Loading segments..."
 !verbose 4
 
 Function .onInit ;{{{1
+	${RunSegment} Core .onInit
 	${RunSegment} LauncherLanguage .onInit
 	${RunSegment} RunAsAdmin .onInit
 FunctionEnd
