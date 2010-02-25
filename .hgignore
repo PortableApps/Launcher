@@ -10,3 +10,4 @@ syntax: glob
 *.orig
 
 Other/Source/PortableApps.comInstaller*
+Other/Source/PortableApps.comLauncherDebug.nsh
