@@ -29,7 +29,26 @@ ${Segment.onInit} ; {{{1
 	${If} $RunAsAdmin == force
 	${OrIf} $RunAsAdmin == try
 		Elevate: ; Attempt to elevate to admin {{{2
+			${DebugMsg} "Attempting to run as admin"
 			!insertmacro UAC_RunElevated
+
+			${!IfDebug}
+				${Select} $0
+					${Case} 0
+						StrCpy $R9 "Changed credentials"
+						${IfThen} $1 = 1 ${|} StrCpy $R9 "$R9 to admin: this is the user-level process, admin has finished." ${|}
+						${IfThen} $3 <> 0 ${|} StrCpy $R9 "$R9 to admin: this is the admin process." ${|}
+						${IfThen} $1 = 3 ${|} StrCpy $R9 "$R9, but not to admin." ${|}
+					${Case} 1233
+						StrCpy $R9 "Failed to elevate to admin (cancelled)."
+					${Case} 1062
+						StrCpy $R9 "Failed to elevate to admin (Windows logon service was unavailable)."
+					${Default}
+						StrCpy $R9 "Unknown error (code $0)."
+				${EndSelect}
+				${DebugMsg} "UAC_RunElevated return values:$\n$$0=$0$\n$$1=$1$\n$\n"
+			!endif
+
 			${Switch} $0
 				; Success in changing credentials in some way {{{3
 				${Case} 0
