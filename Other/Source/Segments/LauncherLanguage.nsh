@@ -9,6 +9,7 @@ ${Segment.onInit}
 		${Case} 1040 ; Italian
 		${Case} 1041 ; Japanese
 		${Case} 2052 ; SimpChinese
+			${DebugMsg} "Setting language code to $0"
 			StrCpy $LANGUAGE $0
 			${Break}
 	${EndSwitch}
