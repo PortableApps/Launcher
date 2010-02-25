@@ -4,7 +4,7 @@ Var UsesContainedTempDirectory
 Var TempDirectory
 
 ${SegmentInit}
-	${ReadLauncherConfig} $UsesContainedTempDirectory Launch AssignContainedTempDirectory
+	${ReadLauncherConfig} $UsesContainedTempDirectory Launch CleanTemp
 !macroend
 
 ${SegmentPre}
