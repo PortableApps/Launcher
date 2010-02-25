@@ -24,8 +24,9 @@ ${SegmentPre}
 		StrCpy $TempDirectory $TEMP
 	${EndIf}
 
-	${DebugMsg} "Setting %TEMP% to $TempDirectory"
+	${DebugMsg} "Setting %TEMP% and %TMP% to $TempDirectory"
 	${SetEnvironmentVariablesPath} TEMP $TempDirectory
+	${SetEnvironmentVariable} TMP $TempDirectory
 !macroend
 
 ${SegmentPostPrimary}
