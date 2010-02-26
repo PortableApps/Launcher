@@ -4,12 +4,12 @@ ${SegmentPrePrimary}
 	${If} $UsesRegistry == true
 		${ForEachINIPair} RegistryKeys $0 $1
 			;=== Backup the registry
-			${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $R9
+			${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$0 $R9
 			${If} $R9 != 0
 				${registry::KeyExists} $1 $R9
 				${If} $R9 != -1
-					${DebugMsg} "Backing up registry key $1 to HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0"
-					${registry::MoveKey} $1 HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $R9
+					${DebugMsg} "Backing up registry key $1 to HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1"
+					${registry::MoveKey} $1 HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 $R9
 				${EndIf}
 			${EndIf}
 
@@ -47,14 +47,16 @@ ${SegmentPostPrimary}
 
 			${DebugMsg} "Deleting registry key $1."
 			${registry::DeleteKey} $1 $R9
-			${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $R9
+			${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 $R9
 			${If} $R9 != -1
-				${DebugMsg} "Moving registry key HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 to $1."
-				${registry::MoveKey} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys\$0 $1 $R9
-				${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID\Keys $R9
-				${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com\$AppID $R9
-				${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com $R9
+				${DebugMsg} "Moving registry key HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 to $1."
+				${registry::MoveKey} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 $1 $R9
+				${Do}
+					${GetParent} $1 $1
+					${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 $R9
+				${LoopUntil} $1 == ""
 			${EndIf}
 		${NextINIPair}
+		${registry::DeleteKeyEmpty} HKEY_CURRENT_USER\Software\PortableApps.com $R9
 	${EndIf}
 !macroend
