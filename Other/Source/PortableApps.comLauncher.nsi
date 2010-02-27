@@ -45,7 +45,11 @@
 !macroend
 !define !echo "!insertmacro !echo"
 ${!echo} "Specifying program details and setting options..."
-!searchparse /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" VER
+!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" VER
+!ifndef VER
+	!define VER 1.0.0.0
+	!warning "Unable to get version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value 1.0.0.0 instead."
+!endif
 Name "PortableApps.com Launcher"
 OutFile ..\..\PortableApps.comLauncher.exe
 Caption "PortableApps.com Launcher"
