@@ -81,7 +81,11 @@ ${!echo} "Including required files..."
 
 ;(NSIS Plugins) {{{2
 !include TextReplace.nsh
-!addplugindir Plugins
+!ifdef NSIS_UNICODE
+	!addplugindir Plugins\U
+!else
+	!addplugindir Plugins\A
+!endif
 
 ;(Custom) {{{2
 !include ReplaceInFileWithTextReplace.nsh
