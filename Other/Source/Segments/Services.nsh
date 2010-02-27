@@ -1,3 +1,7 @@
+!ifdef NSIS_UNICODE
+	!warning "Services are currently disabled as the SimpleSC plug-in is not Unicode-compatible."
+!else
+
 ${SegmentFile}
 
 ${SegmentPrePrimary}
@@ -88,3 +92,5 @@ ${SegmentPostPrimary}
 		${DebugMsg} "Removed service $1 (error code $9)"
 	${Loop}
 !macroend
+
+!endif
