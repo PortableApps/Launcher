@@ -41,6 +41,9 @@
 
 ; Run an action {{{1
 !macro RunSegment Segment Hook
+	!ifmacrondef ${Segment}_${Hook}
+		!warning "Segment ${Segment}, hook ${Hook} was called but does not exist!"
+	!else
 	${!IfDebug}
 		!ifdef DEBUG_SEGWRAP
 			${DebugMsg} "About to execute segment"
@@ -51,6 +54,7 @@
 		!ifdef DEBUG_SEGWRAP
 			${DebugMsg} "Finished executing segment"
 		!endif
+	!endif
 	!endif
 !macroend
 !define RunSegment "!insertmacro RunSegment"
