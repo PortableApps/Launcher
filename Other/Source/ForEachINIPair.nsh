@@ -10,7 +10,7 @@ Var _FEIP_Char
 	!endif
 	!define _ForEachINIPair_Open
 	${If} $_FEIP_FileHandle == ""
-		FileOpen $_FEIP_FileHandle $EXEDIR\App\AppInfo\launcher.ini r
+		FileOpen $_FEIP_FileHandle $LauncherFile r
 	${Else}
 		FileSeek $_FEIP_FileHandle 0
 	${EndIf}
