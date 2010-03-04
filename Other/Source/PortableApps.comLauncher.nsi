@@ -160,7 +160,7 @@ Var ProgramExecutable
 
 ; Macro: read a value from the launcher configuration file {{{1
 !macro ReadLauncherConfig _OUTPUT _SECTION _VALUE
-	ReadINIStr ${_OUTPUT} $EXEDIR\App\AppInfo\launcher.ini ${_SECTION} ${_VALUE}
+	ReadINIStr ${_OUTPUT} $LauncherFile ${_SECTION} ${_VALUE}
 !macroend
 !define ReadLauncherConfig "!insertmacro ReadLauncherConfig"
 

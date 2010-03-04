@@ -1,5 +1,7 @@
 ${SegmentFile}
 
+Var LauncherFile
+
 ${Segment.onInit}
 	StrCpy $0 $EXEDIR 2
 	${If} $0 == "\\"
@@ -30,11 +32,16 @@ ${SegmentInit}
 		MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
 		Abort
 	${EndIf}
+
+	${GetBaseName} $EXEFILE $0
+	StrCpy $LauncherFile $EXEDIR\App\AppInfo\launcher-$0.ini
+	${IfNotThen} ${FileExists} $LauncherFile ${|} StrCpy $LauncherFile $EXEDIR\App\AppInfo\launcher.ini ${|}
+
 	${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutable
 
 	${If} ${Errors}
 		;=== Launcher file missing or missing crucial details
-		StrCpy $MissingFileOrPath $EXEDIR\App\AppInfo\launcher.ini
+		StrCpy $MissingFileOrPath $LauncherFile
 		MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
 		Abort
 	${EndIf}
