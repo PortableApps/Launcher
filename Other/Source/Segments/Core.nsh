@@ -37,7 +37,9 @@ ${SegmentInit}
 	StrCpy $LauncherFile $EXEDIR\App\AppInfo\launcher-$0.ini
 	${IfNotThen} ${FileExists} $LauncherFile ${|} StrCpy $LauncherFile $EXEDIR\App\AppInfo\launcher.ini ${|}
 
-	${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutable
+	${GetParameters} $0
+	${IfThen} $0				 != "" ${|} ${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutableWhenParameters	${|}
+	${IfThen} $ProgramExecutable == "" ${|} ${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutable				${|}
 
 	${If} ${Errors}
 		;=== Launcher file missing or missing crucial details
