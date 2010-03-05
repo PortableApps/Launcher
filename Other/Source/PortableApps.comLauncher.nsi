@@ -259,24 +259,22 @@ Section Execute  ;{{{1
 		; Wait till it's done
 		${ReadLauncherConfig} $0 Launch WaitForOtherInstances
 		${If} $0 != false
-			${ReadLauncherConfig} $0 Launch WaitForEXE
 			${GetFileName} $ProgramExecutable $1
-			${If} $0 != ""
-				${DebugMsg} "Waiting till any other instances of $1 and $0 are finished."
-			${Else}
-				${DebugMsg} "Waiting till any other instances of $1 are finished."
-			${EndIf}
+			${DebugMsg} "Waiting till any other instances of $1 and any [Launch]:WaitForEXE[N] values are finished."
 			${EmptyWorkingSet}
 			${Do}
-				${If} $0 != ""
-				${AndIf} ${ProcessExists} $0
-					${ProcessWaitClose} $0 -1 $R9
-				${ElseIf} ${ProcessExists} $1
-					${ProcessWaitClose} $1 -1 $R9
-				${Else}
-					${Break}
-				${EndIf}
-			${Loop}
+				${ProcessWaitClose} $1 -1 $R9
+				${IfThen} $R9 > 0 ${|} ${Continue} ${|}
+				StrCpy $0 1
+				${Do}
+					ClearErrors
+					${ReadLauncherConfig} $2 Launch WaitForEXE$0
+					${IfThen} ${Errors} ${|} ${ExitDo} ${|}
+					${ProcessWaitClose} $2 -1 $R9
+					${IfThen} $R9 > 0 ${|} ${ExitDo} ${|}
+					IntOp $0 $0 + 1
+				${Loop}
+			${LoopWhile} $R9 > 0
 			${DebugMsg} "All instances are finished."
 		${EndIf}
 	${EndIf}
