@@ -5,9 +5,9 @@ Var DisableSplashScreen
 ${SegmentInit}
 	${If} $DisableSplashScreen != true
 		${ReadUserOverrideConfig} $DisableSplashScreen DisableSplashScreen
-		${IfNotThen} ${FileExists} $EXEDIR\App\AppInfo\splash.jpg ${|} StrCpy $DisableSplashScreen true ${|}
+		${IfNotThen} ${FileExists} $EXEDIR\App\AppInfo\Launcher\splash.jpg ${|} StrCpy $DisableSplashScreen true ${|}
 		${If} $DisableSplashScreen != true
-			newadvsplash::show /NOUNLOAD 1500 200 0 -1 /L $EXEDIR\App\AppInfo\splash.jpg
+			newadvsplash::show /NOUNLOAD 1500 200 0 -1 /L $EXEDIR\App\AppInfo\Launcher\splash.jpg
 		${EndIf}
 	${EndIf}
 !macroend
