@@ -3,8 +3,14 @@ ${SegmentFile}
 ${SegmentPrePrimary}
 	${If} $UsesRegistry == true
 		${ForEachINIPair} RegistryValueWrite $0 $1
-			${GetParent} $0 $2 ; key
-			${GetFileName} $0 $3 ; item
+			StrCpy $2 $0 "" -1
+			${If} $2 == "\"
+				StrCpy $2 $0 -1
+				StrCpy $3 "" ; default value
+			${Else}
+				${GetParent} $0 $2 ; key
+				${GetFileName} $0 $3 ; item
+			${EndIf}
 
 			StrLen $4 $1
 			StrCpy $5 0
