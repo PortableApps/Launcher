@@ -4,6 +4,7 @@ ${SegmentPrePrimary}
 	${If} $UsesRegistry == true
 		${ForEachINIPair} RegistryKeys $0 $1
 			;=== Backup the registry
+			${ValidateRegistryKey} $1
 			${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 $R9
 			${If} $R9 != 0
 				${registry::KeyExists} $1 $R9
@@ -37,6 +38,7 @@ ${SegmentPrePrimary}
 ${SegmentPostPrimary}
 	${If} $UsesRegistry == true
 		${ForEachINIPair} RegistryKeys $0 $1
+			${ValidateRegistryKey} $1
 			ClearErrors
 			ReadINIStr $R9 $DataDirectory\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0
 			${If} ${Errors} ; didn't fail
