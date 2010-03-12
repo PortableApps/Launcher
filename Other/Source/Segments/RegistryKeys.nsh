@@ -4,7 +4,7 @@ ${SegmentPrePrimary}
 	${If} $UsesRegistry == true
 		${ForEachINIPair} RegistryKeys $0 $1
 			;=== Backup the registry
-			${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$0 $R9
+			${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 $R9
 			${If} $R9 != 0
 				${registry::KeyExists} $1 $R9
 				${If} $R9 != -1
