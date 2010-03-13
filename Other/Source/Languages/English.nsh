@@ -9,5 +9,5 @@ ${LangFileString} LauncherRequiresAdmin "$AppNamePortable requires administrativ
 ${LangFileString} LauncherNotAdminTryAgain "Press Retry to try authenticating again or Cancel to quit."
 ${LangFileString} LauncherNotAdminLimitedFunctionality "Some features of $AppNamePortable will not work if you do not run as administrator."
 ${LangFileString} LauncherNotAdminLimitedFunctionalityTryAgain "Press Abort to quit, Retry to try authenticating again or Ignore to continue anyway."
-${LangFileString} LauncherAdminError "Unable to run as administrator, error $0"
+${LangFileString} LauncherAdminError "Unable to run as administrator, error $0."
 ${LangFileString} LauncherAdminLogonServiceNotRunning "$AppNamePortable requires administrative privileges, but the Windows Logon service is not running. $AppNamePortable can not start."
