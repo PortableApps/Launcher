@@ -183,6 +183,7 @@ ${!echo} "Loading segments..."
 
 Function .onInit ;{{{1
 	${RunSegment} Core .onInit
+	${RunSegment} Temp .onInit
 	${RunSegment} LauncherLanguage .onInit
 	${RunSegment} RunAsAdmin .onInit
 FunctionEnd

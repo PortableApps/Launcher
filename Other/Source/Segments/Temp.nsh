@@ -2,6 +2,17 @@ ${SegmentFile}
 
 Var UsesContainedTempDirectory
 Var TempDirectory
+Var TMP ; $TEMP is read-only but may be "wrong", as we see it, after launcher nesting
+
+${Segment.onInit}
+	ReadEnvStr $TMP PAL:_TEMP
+	${If} ${Errors}
+		StrCpy $TMP $TEMP
+	${Else}
+		${SetEnvironmentVariable} TEMP $TMP
+		${SetEnvironmentVariable} TMP $TMP
+	${EndIf}
+!macroend
 
 ${SegmentInit}
 	${ReadLauncherConfig} $UsesContainedTempDirectory Launch CleanTemp
@@ -13,7 +24,7 @@ ${SegmentPre}
 		${If} $0 == false
 			StrCpy $TempDirectory $DataDirectory\Temp
 		${Else}
-			StrCpy $TempDirectory $TEMP\$AppIDTemp
+			StrCpy $TempDirectory $TMP\$AppIDTemp
 		${EndIf}
 		${DebugMsg} "Creating temporary directory $TempDirectory"
 		${If} ${FileExists} $TempDirectory
@@ -21,12 +32,13 @@ ${SegmentPre}
 		${EndIf}
 		CreateDirectory $TempDirectory
 	${Else}
-		StrCpy $TempDirectory $TEMP
+		StrCpy $TempDirectory $TMP
 	${EndIf}
 
 	${DebugMsg} "Setting %TEMP% and %TMP% to $TempDirectory"
 	${SetEnvironmentVariablesPath} TEMP $TempDirectory
 	${SetEnvironmentVariable} TMP $TempDirectory
+	${SetEnvironmentVariable} PAL:_TEMP $TMP
 !macroend
 
 ${SegmentPostPrimary}
