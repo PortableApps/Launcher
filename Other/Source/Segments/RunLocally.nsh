@@ -12,24 +12,24 @@ ${SegmentPre}
 		${ReadLauncherConfig} $0 LiveMode CopyApp
 		${If} $0 != false
 			${If} $SecondaryLaunch != true
-				${DebugMsg} "Live mode: copying $EXEDIR\App to $TEMP\$AppIDLive\App"
-				CreateDirectory $TEMP\$AppIDLive
-				CopyFiles /SILENT $EXEDIR\App $TEMP\$AppIDLive
+				${DebugMsg} "Live mode: copying $EXEDIR\App to $TMP\$AppIDLive\App"
+				CreateDirectory $TMP\$AppIDLive
+				CopyFiles /SILENT $EXEDIR\App $TMP\$AppIDLive
 			${EndIf}
-			StrCpy $AppDirectory $TEMP\$AppIDLive\App
+			StrCpy $AppDirectory $TMP\$AppIDLive\App
 		${EndIf}
 		#For the time being at least, I've disabled the option of not copying Data, as it makes file moving etc. from %DataDirectory% break
 		#${ReadLauncherConfig} $0 LiveMode CopyData
 		${If} $0 != false
 			${If} $SecondaryLaunch != true
-				${DebugMsg} "Live mode: copying $EXEDIR\Data to $TEMP\$AppIDLive\Data"
-				CreateDirectory $TEMP\$AppIDLive
-				CopyFiles /SILENT $EXEDIR\Data $TEMP\$AppIDLive
+				${DebugMsg} "Live mode: copying $EXEDIR\Data to $TMP\$AppIDLive\Data"
+				CreateDirectory $TMP\$AppIDLive
+				CopyFiles /SILENT $EXEDIR\Data $TMP\$AppIDLive
 			${EndIf}
-			StrCpy $DataDirectory $TEMP\$AppIDLive\Data
+			StrCpy $DataDirectory $TMP\$AppIDLive\Data
 		${EndIf}
-		${If} ${FileExists} $TEMP\$AppIDLive
-			${SetFileAttributesDirectoryNormal} $TEMP\$AppIDLive
+		${If} ${FileExists} $TMP\$AppIDLive
+			${SetFileAttributesDirectoryNormal} $TMP\$AppIDLive
 		${EndIf}
 	${Else}
 		StrCpy $AppDirectory $EXEDIR\App
@@ -42,7 +42,7 @@ ${SegmentPre}
 
 ${SegmentPostPrimary}
 	${If} $RunLocally == true
-		${DebugMsg} "Removing Live mode directory $TEMP\$AppIDLive."
-		RMDir /r $TEMP\$AppIDLive
+		${DebugMsg} "Removing Live mode directory $TMP\$AppIDLive."
+		RMDir /r $TMP\$AppIDLive
 	${EndIf}
 !macroend
