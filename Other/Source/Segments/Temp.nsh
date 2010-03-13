@@ -5,6 +5,7 @@ Var TempDirectory
 Var TMP ; $TEMP is read-only but may be "wrong", as we see it, after launcher nesting
 
 ${Segment.onInit}
+	ClearErrors
 	ReadEnvStr $TMP PAL:_TEMP
 	${If} ${Errors}
 		StrCpy $TMP $TEMP
