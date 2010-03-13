@@ -47,6 +47,14 @@ ${SegmentInit}
 		MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
 		Abort
 	${EndIf}
+	${ReadLauncherConfig} $0 Launch NoSpacesInPath
+	${If} $0 == true
+		${WordFind} $EXEDIR ` ` E+1 $R9
+		${IfNot} ${Errors} ; errors = space not found, no errors means space in path
+			MessageBox MB_OK|MB_ICONSTOP `$(LauncherNoSpaces)`
+			Abort
+		${EndIf}
+	${EndIf}
 !macroend
 
 ${SegmentUnload}
