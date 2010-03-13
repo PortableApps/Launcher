@@ -1,10 +1,22 @@
-!ifdef NSIS_UNICODE
-	!warning "Services are currently disabled as the SimpleSC plug-in is not Unicode-compatible."
-!else
-
 ${SegmentFile}
 
+; Currently services are disabled as
+;   (a) they're not used yet (possibly unstable) and
+;   (b) the plug-in is fairly large (at time of reporting, 122591B vs. 96901B, 25KB larger)
+; TODO: switch back to NSIS code... got to sort out the null byte issue with dependencies.
+
+;!define SERVICES_ENABLED
+
+!ifndef SERVICES_ENABLED
+	!echo "The Services segment is currently disabled."
+!else ifdef NSIS_UNICODE
+	!warning "The Services segment is disabled for your build as the SimpleSC plug-in is not Unicode-compatible."
+	!undef SERVICES_ENABLED
+!endif
+
+
 ${SegmentPrePrimary}
+!ifdef SERVICES_ENABLED
 	StrCpy $R0 1
 	${Do}
 		ClearErrors
@@ -68,9 +80,11 @@ ${SegmentPrePrimary}
 			IntOp $R0 $R0 + 1
 		${EndIf}
 	${Loop}
+!endif
 !macroend
 
 ${SegmentPostPrimary}
+!ifdef SERVICES_ENABLED
 	StrCpy $R0 1
 	${Do}
 		ClearErrors
@@ -91,6 +105,5 @@ ${SegmentPostPrimary}
 		Pop $9
 		${DebugMsg} "Removed service $1 (error code $9)"
 	${Loop}
-!macroend
-
 !endif
+!macroend
