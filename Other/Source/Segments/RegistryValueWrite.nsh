@@ -3,6 +3,7 @@ ${SegmentFile}
 ${SegmentPrePrimary}
 	${If} $UsesRegistry == true
 		${ForEachINIPair} RegistryValueWrite $0 $1
+			${ValidateRegistryKey} $0
 			StrCpy $2 $0 "" -1
 			${If} $2 == "\"
 				StrCpy $2 $0 -1

@@ -7,6 +7,7 @@ ${SegmentPrePrimary}
 			ClearErrors
 			${ReadLauncherConfig} $1 RegistryValueBackupDelete $R0
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
+			${ValidateRegistryKey} $1
 			${GetParent} $1 $2
 			${GetFilename} $1 $3
 			${DebugMsg} "Backing up registry value $1 to HKEY_CURRENT_USER\Software\PortableApps.com\Values\$1"
@@ -23,6 +24,7 @@ ${SegmentPostPrimary}
 			ClearErrors
 			${ReadLauncherConfig} $1 RegistryValueBackupDelete $R0
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
+			${ValidateRegistryKey} $1
 			${GetParent} $1 $2
 			${GetFilename} $1 $3
 			${DebugMsg} "Deleting registry value $1, then restoring from HKEY_CURRENT_USER\Software\PortableApps.com\Values\$2"
