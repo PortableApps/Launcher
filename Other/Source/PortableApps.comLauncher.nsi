@@ -119,6 +119,7 @@ ${IncludeLang} SimpChinese
 ;=== Variables {{{1
 ${!echo} "Initialising variables and macros..."
 Var AppID
+Var BaseName
 Var MissingFileOrPath
 Var AppNamePortable
 Var AppName
@@ -172,7 +173,7 @@ Var ProgramExecutable
 !define ReadLauncherConfigWithDefault "!insertmacro ReadLauncherConfigWithDefault"
 
 !macro ReadUserOverrideConfig _OUTPUT _VALUE
-	ReadINIStr ${_OUTPUT} $EXEDIR\$AppID.ini PortableApps.comLauncher ${_VALUE}
+	ReadINIStr ${_OUTPUT} $EXEDIR\$BaseName.ini $BaseName ${_VALUE}
 !macroend
 !define ReadUserOverrideConfig "!insertmacro ReadUserOverrideConfig"
 

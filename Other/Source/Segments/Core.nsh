@@ -33,8 +33,8 @@ ${SegmentInit}
 		Abort
 	${EndIf}
 
-	${GetBaseName} $EXEFILE $0
-	StrCpy $LauncherFile $EXEDIR\App\AppInfo\Launcher\$0.ini
+	${GetBaseName} $EXEFILE $BaseName
+	StrCpy $LauncherFile $EXEDIR\App\AppInfo\Launcher\$BaseName.ini
 
 	${GetParameters} $0
 	${IfThen} $0				 != "" ${|} ${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutableWhenParameters	${|}
