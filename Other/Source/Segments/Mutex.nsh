@@ -4,7 +4,7 @@ Var SecondaryLaunch
 
 ${SegmentInit}
 	;=== Check if launcher already running
-	System::Call 'kernel32::CreateMutex(i0,i0,t"PortableApps.comLauncher$AppID$EXEFILE")?e'
+	System::Call 'kernel32::CreateMutex(i0,i0,t"PortableApps.comLauncher$AppID-$BaseName")?e'
 	Pop $0
 	${IfNot} $0 = 0
 		${ReadLauncherConfig} $0 Launch SinglePortableAppInstance
