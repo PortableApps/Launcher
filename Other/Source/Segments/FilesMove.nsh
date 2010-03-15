@@ -51,15 +51,15 @@ ${SegmentPostPrimary}
 				Delete $0
 				${GetParent} $0 $0
 				CopyFiles /SILENT $1 $0
-
-				ReadINIStr $2 $DataDirectory\PortableApps.comLauncherRuntimeData.ini FilesMove RemoveIfEmpty:$4
-				${If} $2 == true
-					RMDir $4
-				${EndIf}
 			${EndIf}
 		${EndIf}
 		${DebugMsg} "Removing portable settings file $1 from run location."
 		Delete $1
+
+		ReadINIStr $2 $DataDirectory\PortableApps.comLauncherRuntimeData.ini FilesMove RemoveIfEmpty:$4
+		${If} $2 == true
+			RMDir $4
+		${EndIf}
 
 		${If} ${FileExists} $1-BackupBy$AppID
 			${DebugMsg} "Moving local settings file from $1-BackupBy$AppID to $1"
