@@ -124,6 +124,7 @@ Var MissingFileOrPath
 Var AppNamePortable
 Var AppName
 Var ProgramExecutable
+Var Status
 
 ; Macro: check if in debug mode for the current section {{{1
 !macro !IfDebug
@@ -328,9 +329,15 @@ FunctionEnd
 
 Section           ;{{{1
 	Call Init
-	${CallPS} Pre +
-	${CallPS} PreExec +
-	Call Execute
+	ReadINIStr $Status $EXEDIR\Data\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher Status
+	${If} $Status != running
+		${CallPS} Pre +
+		${CallPS} PreExec +
+		WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher Status running
+		; File gets deleted in segment Core, hook Unload, so it'll only be "running"
+		; in case of power-outage, disk removal while running or something like that.
+		Call Execute
+	${EndIf}
 	${CallPS} Post -
 	Call Unload
 SectionEnd
