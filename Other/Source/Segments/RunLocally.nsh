@@ -36,6 +36,8 @@ ${SegmentPre}
 		StrCpy $DataDirectory $EXEDIR\Data
 	${EndIf}
 
+	CreateDirectory $DataDirectory
+
 	${SetEnvironmentVariablesPath} PAL:AppDir $AppDirectory
 	${SetEnvironmentVariablesPath} PAL:DataDir $DataDirectory
 !macroend
