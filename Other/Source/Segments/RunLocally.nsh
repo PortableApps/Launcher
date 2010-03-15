@@ -20,14 +20,14 @@ ${SegmentPre}
 		${EndIf}
 		#For the time being at least, I've disabled the option of not copying Data, as it makes file moving etc. from %DataDirectory% break
 		#${ReadLauncherConfig} $0 LiveMode CopyData
-		${If} $0 != false
+		#${If} $0 != false
 			${If} $SecondaryLaunch != true
 				${DebugMsg} "Live mode: copying $EXEDIR\Data to $TMP\$AppIDLive\Data"
 				CreateDirectory $TMP\$AppIDLive
 				CopyFiles /SILENT $EXEDIR\Data $TMP\$AppIDLive
 			${EndIf}
 			StrCpy $DataDirectory $TMP\$AppIDLive\Data
-		${EndIf}
+		#${EndIf}
 		${If} ${FileExists} $TMP\$AppIDLive
 			${SetFileAttributesDirectoryNormal} $TMP\$AppIDLive
 		${EndIf}
