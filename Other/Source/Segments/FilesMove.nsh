@@ -47,7 +47,7 @@ ${SegmentPostPrimary}
 			${GetRoot} $1 $3 ; drive
 			${If} $2 == $3   ; letters
 				Rename $1 $0 ; same volume, rename OK
-			${Else}
+			${ElseIf} ${FileExists} $1
 				Delete $0
 				${GetParent} $0 $0
 				CopyFiles /SILENT $1 $0
