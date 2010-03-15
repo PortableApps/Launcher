@@ -147,7 +147,7 @@ Var ProgramExecutable
 !macro DebugMsg _MSG
 	${!IfDebug}
 		!ifdef Segment
-			!define _DebugMsg_Seg "$\n$\nSegment: ${Segment}$\nHook: ${Hook}"
+			!define _DebugMsg_Seg "$\n$\nSegment: ${Segment}$\nHook: ${__FUNCTION__}"
 		!else
 			!define _DebugMsg_Seg ""
 		!endif
@@ -181,62 +181,64 @@ ${!echo} "Loading segments..."
 !include Segments.nsh ;{{{1 Include all the code }}}
 !verbose 4
 
-Function .onInit ;{{{1
-	${RunSegment} Core .onInit
-	${RunSegment} Temp .onInit
-	${RunSegment} LauncherLanguage .onInit
-	${RunSegment} RunAsAdmin .onInit
+Function .onInit          ;{{{1
+	${RunSegment} Core
+	${RunSegment} Temp
+	${RunSegment} LauncherLanguage
+	${RunSegment} RunAsAdmin
 FunctionEnd
 
-Section Init     ;{{{1
-	${RunSegment} Core Init
-	${RunSegment} DriveLetter Init
-	${RunSegment} Variables Init
-	${RunSegment} Registry Init
-	${RunSegment} Java Init
-	${RunSegment} Mutex Init
-	${RunSegment} RunLocally Init
-	${RunSegment} Temp Init
-	${RunSegment} InstanceManagement Init
-	${RunSegment} SplashScreen Init
-	${RunSegment} RefreshShellIcons Init
-SectionEnd
+Function Init             ;{{{1
+	${RunSegment} Core
+	${RunSegment} DriveLetter
+	${RunSegment} Variables
+	${RunSegment} Registry
+	${RunSegment} Java
+	${RunSegment} Mutex
+	${RunSegment} RunLocally
+	${RunSegment} Temp
+	${RunSegment} InstanceManagement
+	${RunSegment} SplashScreen
+	${RunSegment} RefreshShellIcons
+FunctionEnd
 
-Section Pre      ;{{{1
-	${RunSegment} RunLocally Pre
-	${RunSegment} Temp Pre
-	${RunSegment} Environment Pre
-	${RunSegment} ExecString Pre
-	${If} $SecondaryLaunch != true
-		;=== Run PrePrimary segments
-		${RunSegment} Settings PrePrimary
-		${RunSegment} DriveLetter PrePrimary
-		${RunSegment} FileWrite PrePrimary
-		${RunSegment} FilesMove PrePrimary
-		${RunSegment} DirectoriesMove PrePrimary
-		${RunSegment} RegistryKeys PrePrimary
-		${RunSegment} RegistryValueBackupDelete PrePrimary
-		${RunSegment} RegistryValueWrite PrePrimary
-		${RunSegment} Services PrePrimary
-	${Else}
-		;=== Run PreSecondary segments
-		;${RunSegment} * PreSecondary
-	${EndIf}
-SectionEnd
+Function Pre              ;{{{1
+	${RunSegment} RunLocally
+	${RunSegment} Temp
+	${RunSegment} Environment
+	${RunSegment} ExecString
+FunctionEnd
 
-Section PreExec  ;{{{1
-	${RunSegment} RefreshShellIcons PreExec
-	${RunSegment} WorkingDirectory PreExec
-	${If} $SecondaryLaunch != true
-		;=== Run PreExecPrimary segments
-		${RunSegment} SplashScreen PreExecPrimary
-	${Else}
-		;=== Run PreExecSecondary segments
-		;${RunSegment} * PreExecSecondary
-	${EndIf}
-SectionEnd
+Function PrePrimary       ;{{{1
+	${RunSegment} Settings
+	${RunSegment} DriveLetter
+	${RunSegment} FileWrite
+	${RunSegment} FilesMove
+	${RunSegment} DirectoriesMove
+	${RunSegment} RegistryKeys
+	${RunSegment} RegistryValueBackupDelete
+	${RunSegment} RegistryValueWrite
+	${RunSegment} Services
+FunctionEnd
 
-Section Execute  ;{{{1
+Function PreSecondary     ;{{{1
+	;${RunSegment} *
+FunctionEnd
+
+Function PreExec          ;{{{1
+	${RunSegment} RefreshShellIcons
+	${RunSegment} WorkingDirectory
+FunctionEnd
+
+Function PreExecPrimary   ;{{{1
+	${RunSegment} SplashScreen
+FunctionEnd
+
+Function PreExecSecondary ;{{{1
+	;${RunSegment} *
+FunctionEnd
+
+Function Execute          ;{{{1
 	${!IfDebug}
 		${If} $SecondaryLaunch != true
 			${DebugMsg} "About to execute the following string and wait till it's done: $ExecString"
@@ -280,40 +282,62 @@ Section Execute  ;{{{1
 			${DebugMsg} "All instances are finished."
 		${EndIf}
 	${EndIf}
-SectionEnd
+FunctionEnd
 
-Section Post     ;{{{1
-	${If} $SecondaryLaunch != true
-		;=== Run PostPrimary segments
-		${RunSegment} Temp PostPrimary ; OK anywhere
-		${RunSegment} Services PostPrimary
-		${RunSegment} RegistryValueBackupDelete PostPrimary
-		${RunSegment} RegistryKeys PostPrimary
-		${RunSegment} RegistryCleanup PostPrimary
-		${RunSegment} DirectoriesMove PostPrimary
-		${RunSegment} FilesMove PostPrimary
-		${RunSegment} DirectoriesCleanup PostPrimary
-		${RunSegment} RunLocally PostPrimary
+Function PostPrimary      ;{{{1
+	${RunSegment} Temp ; OK anywhere
+	${RunSegment} Services
+	${RunSegment} RegistryValueBackupDelete
+	${RunSegment} RegistryKeys
+	${RunSegment} RegistryCleanup
+	${RunSegment} DirectoriesMove
+	${RunSegment} FilesMove
+	${RunSegment} DirectoriesCleanup
+	${RunSegment} RunLocally
+FunctionEnd
+
+Function PostSecondary    ;{{{1
+	;${RunSegment} *
+FunctionEnd
+
+Function Post             ;{{{1
+	${RunSegment} RefreshShellIcons
+FunctionEnd
+
+Function Unload           ;{{{1
+		${RunSegment} Registry
+		${RunSegment} SplashScreen
+		${RunSegment} Core
+FunctionEnd
+
+; Call a segment-calling function with primary/secondary variants as well {{{1
+!macro CallPS _func _rev
+	!if ${_rev} == +
+		Call ${_func}
+	!endif
+	${If} $SecondaryLaunch == true
+		Call ${_func}Secondary
 	${Else}
-		;=== Run PostSecondary segments
-		;${RunSegment} * PostSecondary
+		Call ${_func}Primary
 	${EndIf}
-	${RunSegment} RefreshShellIcons Post
-SectionEnd
+	!if ${_rev} != +
+		Call ${_func}
+	!endif
+!macroend
+!define CallPS `!insertmacro CallPS`
 
-Section Unload ;{{{1
+Section           ;{{{1
+	Call Init
+	${CallPS} Pre +
+	${CallPS} PreExec +
+	Call Execute
+	${CallPS} Post -
 	Call Unload
 SectionEnd
 
 Function .onInstFailed ;{{{1
 	; If Abort is called
 	Call Unload
-FunctionEnd
-
-Function Unload   ;{{{1
-		${RunSegment} Registry Unload
-		${RunSegment} SplashScreen Unload
-		${RunSegment} Core Unload
 FunctionEnd ;}}}1
 
 ; This file has been optimised for use in Vim with folding.
