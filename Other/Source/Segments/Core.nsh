@@ -34,7 +34,9 @@ ${SegmentInit}
 	${EndIf}
 
 	${GetBaseName} $EXEFILE $BaseName
-	StrCpy $LauncherFile $EXEDIR\App\AppInfo\Launcher\$BaseName.ini
+	InitPluginsDir
+	CopyFiles /SILENT $EXEDIR\App\AppInfo\Launcher\$BaseName.ini $PLUGINSDIR\launcher.ini
+	StrCpy $LauncherFile $PLUGINSDIR\launcher.ini
 
 	${GetParameters} $0
 	${IfThen} $0				 != "" ${|} ${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutableWhenParameters	${|}
@@ -57,7 +59,17 @@ ${SegmentInit}
 	${EndIf}
 !macroend
 
+${SegmentPreExecPrimary}
+	WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher PluginsDir $PLUGINSDIR
+!macroend
+
 ${SegmentUnload}
+	Delete $PLUGINSDIR\launcher.ini
+	ReadINIStr $0 $DataDirectory\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher PluginsDir
+	${If}    $0 != ""
+	${AndIf} $0 != $PLUGINSDIR
+		RMDir /r $0
+	${EndIf}
 	Delete $DataDirectory\PortableApps.comLauncherRuntimeData.ini
 	System::Free 0
 !macroend
