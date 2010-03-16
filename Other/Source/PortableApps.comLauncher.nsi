@@ -232,6 +232,7 @@ Function PreExec          ;{{{1
 FunctionEnd
 
 Function PreExecPrimary   ;{{{1
+	${RunSegment} Core
 	${RunSegment} SplashScreen
 FunctionEnd
 
