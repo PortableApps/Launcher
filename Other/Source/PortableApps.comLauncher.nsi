@@ -110,6 +110,7 @@ ${!echo} "Loading language strings..."
 !macroend
 !define IncludeLang "!insertmacro IncludeLang"
 ${IncludeLang} English
+${IncludeLang} Dutch
 ${IncludeLang} French
 ${IncludeLang} German
 ${IncludeLang} Italian
