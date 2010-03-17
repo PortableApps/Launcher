@@ -5,6 +5,7 @@ ${Segment.onInit}
 	${Switch} $0
 		${Case} 1033 ; English
 		${Case} 1036 ; French
+		${Case} 1043 ; Dutch
 		${Case} 1031 ; German
 		${Case} 1040 ; Italian
 		${Case} 1041 ; Japanese
