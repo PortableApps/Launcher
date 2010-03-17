@@ -39,7 +39,7 @@ ${SegmentPostPrimary}
 			${If} $2 == $3   ; letters
 				${DebugMsg} "Renaming directory $1 to $0"
 				Rename $1 $0 ; same volume, rename OK
-			${Else}
+			${ElseIf} ${FileExists} $1
 				${DebugMsg} "Copying $1\*.* to $0\*.*"
 				RMDir /R $0
 				CreateDirectory $0

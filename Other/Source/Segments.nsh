@@ -40,16 +40,16 @@
 !define SegmentFile "!insertmacro SegmentFile"
 
 ; Run an action {{{1
-!macro RunSegment Segment Hook
-	!ifmacrondef ${Segment}_${Hook}
-		!warning "Segment ${Segment}, hook ${Hook} was called but does not exist!"
+!macro RunSegment Segment
+	!ifmacrondef ${Segment}_${__FUNCTION__}
+		!warning "Segment ${Segment}, hook ${__FUNCTION__} was called but does not exist!"
 	!else
 	${!IfDebug}
 		!ifdef DEBUG_SEGWRAP
 			${DebugMsg} "About to execute segment"
 		!endif
 	!endif
-	!insertmacro ${Segment}_${Hook}
+	!insertmacro ${Segment}_${__FUNCTION__}
 	${!IfDebug}
 		!ifdef DEBUG_SEGWRAP
 			${DebugMsg} "Finished executing segment"
