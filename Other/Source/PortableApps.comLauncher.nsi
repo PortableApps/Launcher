@@ -50,8 +50,21 @@ ${!echo} "Specifying program details and setting options..."
 	!define VER 1.0.0.0
 	!warning "Unable to get version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value 1.0.0.0 instead."
 !endif
+
+!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "AppID=" AppID
+!ifndef AppID
+	!define AppID PortableApps.comLauncher
+	!warning "Unable to get AppID from appinfo.ini; it should have a line AppID=AppNamePortable in it. Used value PortableApps.comLauncher instead."
+!endif
+
+!ifdef PACKAGE
+	!define ROOT "${PACKAGE}"
+!else
+	!define ROOT ..\..
+!else
+
 Name "PortableApps.com Launcher"
-OutFile ..\..\PortableApps.comLauncher.exe
+OutFile ${ROOT}\${AppID}.exe
 Caption "PortableApps.com Launcher"
 VIProductVersion ${VER}
 VIAddVersionKey ProductName "PortableApps.com Launcher"
@@ -63,7 +76,7 @@ VIAddVersionKey FileVersion ${VER}
 VIAddVersionKey ProductVersion ${VER}
 VIAddVersionKey InternalName "PortableApps.com Launcher"
 VIAddVersionKey LegalTrademarks "PortableApps.com is a Trademark of Rare Ideas, LLC."
-VIAddVersionKey OriginalFilename PortableApps.comLauncher.exe
+VIAddVersionKey OriginalFilename ${AppID}.exe
 !undef VER
 
 ;=== Runtime Switches {{{1
@@ -100,7 +113,7 @@ ${!echo} "Including required files..."
 !include SetEnvironmentVariable.nsh
 
 ;=== Program Icon {{{1
-Icon ..\..\App\AppInfo\appicon.ico
+Icon ${ROOT}\App\AppInfo\appicon.ico
 
 ;=== Languages {{{1
 ${!echo} "Loading language strings..."
@@ -184,6 +197,7 @@ ${!echo} "Loading segments..."
 !verbose 4
 
 Function .onInit          ;{{{1
+	${RunSegment} PortableApps.comLauncherCustom
 	${RunSegment} Core
 	${RunSegment} Temp
 	${RunSegment} LauncherLanguage
@@ -191,6 +205,7 @@ Function .onInit          ;{{{1
 FunctionEnd
 
 Function Init             ;{{{1
+	${RunSegment} PortableApps.comLauncherCustom
 	${RunSegment} Core
 	${RunSegment} DriveLetter
 	${RunSegment} Variables
@@ -205,6 +220,7 @@ Function Init             ;{{{1
 FunctionEnd
 
 Function Pre              ;{{{1
+	${RunSegment} PortableApps.comLauncherCustom
 	${RunSegment} RunLocally
 	${RunSegment} Temp
 	${RunSegment} Environment
@@ -212,6 +228,7 @@ Function Pre              ;{{{1
 FunctionEnd
 
 Function PrePrimary       ;{{{1
+	${RunSegment} PortableApps.comLauncherCustom
 	${RunSegment} Settings
 	${RunSegment} DriveLetter
 	${RunSegment} FileWrite
@@ -224,20 +241,24 @@ Function PrePrimary       ;{{{1
 FunctionEnd
 
 Function PreSecondary     ;{{{1
+	${RunSegment} PortableApps.comLauncherCustom
 	;${RunSegment} *
 FunctionEnd
 
 Function PreExec          ;{{{1
+	${RunSegment} PortableApps.comLauncherCustom
 	${RunSegment} RefreshShellIcons
 	${RunSegment} WorkingDirectory
 FunctionEnd
 
 Function PreExecPrimary   ;{{{1
+	${RunSegment} PortableApps.comLauncherCustom
 	${RunSegment} Core
 	${RunSegment} SplashScreen
 FunctionEnd
 
 Function PreExecSecondary ;{{{1
+	${RunSegment} PortableApps.comLauncherCustom
 	;${RunSegment} *
 FunctionEnd
 
@@ -297,20 +318,24 @@ Function PostPrimary      ;{{{1
 	${RunSegment} FilesMove
 	${RunSegment} DirectoriesCleanup
 	${RunSegment} RunLocally
+	${RunSegment} PortableApps.comLauncherCustom
 FunctionEnd
 
 Function PostSecondary    ;{{{1
 	;${RunSegment} *
+	${RunSegment} PortableApps.comLauncherCustom
 FunctionEnd
 
 Function Post             ;{{{1
 	${RunSegment} RefreshShellIcons
+	${RunSegment} PortableApps.comLauncherCustom
 FunctionEnd
 
 Function Unload           ;{{{1
-		${RunSegment} Registry
-		${RunSegment} SplashScreen
-		${RunSegment} Core
+	${RunSegment} Registry
+	${RunSegment} SplashScreen
+	${RunSegment} Core
+	${RunSegment} PortableApps.comLauncherCustom
 FunctionEnd
 
 ; Call a segment-calling function with primary/secondary variants as well {{{1

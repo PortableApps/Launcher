@@ -42,7 +42,9 @@
 ; Run an action {{{1
 !macro RunSegment Segment
 	!ifmacrondef ${Segment}_${__FUNCTION__}
+		!if ${Segment} != PortableApps.comLauncherCustom
 		!warning "Segment ${Segment}, hook ${__FUNCTION__} was called but does not exist!"
+		!endif
 	!else
 	${!IfDebug}
 		!ifdef DEBUG_SEGWRAP
@@ -94,3 +96,6 @@
 /* End this bit */
 ; Include the segments {{{1
 !include Segments\*.nsh
+!ifdef PACKAGE
+	!include /nonfatal ${PACKAGE}\Other\Source\PortableApps.comLauncherCustom.nsh
+!endif
