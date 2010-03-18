@@ -117,9 +117,14 @@ Icon ${ROOT}\App\AppInfo\appicon.ico
 
 ;=== Languages {{{1
 ${!echo} "Loading language strings..."
+!ifdef NSIS_UNICODE
+	!define LANG_DIR Languages\U
+!else
+	!define LANG_DIR Languages\A
+!endif
 !macro IncludeLang _LANG
 	LoadLanguageFile "${NSISDIR}\Contrib\Language files\${_LANG}.nlf"
-	!insertmacro LANGFILE_INCLUDE_WITHDEFAULT Languages\${_LANG}.nsh Languages\English.nsh
+	!insertmacro LANGFILE_INCLUDE_WITHDEFAULT ${LANG_DIR}\${_LANG}.nsh ${LANG_DIR}\English.nsh
 !macroend
 !define IncludeLang "!insertmacro IncludeLang"
 ${IncludeLang} English
@@ -129,6 +134,7 @@ ${IncludeLang} German
 ${IncludeLang} Italian
 ${IncludeLang} Japanese
 ${IncludeLang} SimpChinese
+!undef LANG_DIR
 
 ;=== Variables {{{1
 ${!echo} "Initialising variables and macros..."
