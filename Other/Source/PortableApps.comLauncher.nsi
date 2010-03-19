@@ -61,7 +61,7 @@ ${!echo} "Specifying program details and setting options..."
 	!define ROOT "${PACKAGE}"
 !else
 	!define ROOT ..\..
-!else
+!endif
 
 Name "PortableApps.com Launcher"
 OutFile ${ROOT}\${AppID}.exe
@@ -147,26 +147,28 @@ Var ProgramExecutable
 Var Status
 
 ; Macro: check if in debug mode for the current section {{{1
-!macro !IfDebug
+!macro !getdebug
+	!ifdef DEBUG
+		!undef DEBUG
+	!endif
 	!ifdef DEBUG_ALL
-		!define _!IfDebug_DEBUG
+		!define DEBUG
 	!else
 		!ifdef Segment
 			!ifdef DEBUG_SEGMENT_${Segment}
-				!define _!IfDebug_DEBUG
+				!define DEBUG
 			!endif
 		!else ifdef DEBUG_GLOBAL
-			!define _!IfDebug_DEBUG
+			!define DEBUG
 		!endif
 	!endif
-	!ifdef _!IfDebug_DEBUG
-		!undef _!IfDebug_DEBUG
 !macroend
-!define !IfDebug "!insertmacro !IfDebug"
+!define !getdebug "!insertmacro !getdebug"
 
 ; Macro: print a debug message {{{1
 !macro DebugMsg _MSG
-	${!IfDebug}
+	${!getdebug}
+	!ifdef DEBUG
 		!ifdef Segment
 			!define _DebugMsg_Seg "$\n$\nSegment: ${Segment}$\nHook: ${__FUNCTION__}"
 		!else
@@ -269,7 +271,8 @@ Function PreExecSecondary ;{{{1
 FunctionEnd
 
 Function Execute          ;{{{1
-	${!IfDebug}
+	${!getdebug}
+	!ifdef DEBUG
 		${If} $SecondaryLaunch != true
 			${DebugMsg} "About to execute the following string and wait till it's done: $ExecString"
 		${Else}

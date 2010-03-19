@@ -43,20 +43,17 @@
 !macro RunSegment Segment
 	!ifmacrondef ${Segment}_${__FUNCTION__}
 		!if ${Segment} != PortableApps.comLauncherCustom
-		!warning "Segment ${Segment}, hook ${__FUNCTION__} was called but does not exist!"
+			!warning "Segment ${Segment}, hook ${__FUNCTION__} was called but does not exist!"
 		!endif
 	!else
-	${!IfDebug}
-		!ifdef DEBUG_SEGWRAP
+		${!getdebug}
+		!ifdef DEBUG && DEBUG_SEGWRAP
 			${DebugMsg} "About to execute segment"
 		!endif
-	!endif
-	!insertmacro ${Segment}_${__FUNCTION__}
-	${!IfDebug}
-		!ifdef DEBUG_SEGWRAP
+		!insertmacro ${Segment}_${__FUNCTION__}
+		!ifdef DEBUG && DEBUG_SEGWRAP
 			${DebugMsg} "Finished executing segment"
 		!endif
-	!endif
 	!endif
 !macroend
 !define RunSegment "!insertmacro RunSegment"
