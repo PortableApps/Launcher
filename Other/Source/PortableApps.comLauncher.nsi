@@ -57,6 +57,18 @@ ${!echo} "Specifying program details and setting options..."
 	!warning "Unable to get AppID from appinfo.ini; it should have a line AppID=AppNamePortable in it. Used value PortableApps.comLauncher instead."
 !endif
 
+!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "Name=" ProductName
+!ifndef ProductName
+	!define ProductName "PortableApps.com Launcher"
+	!warning "Unable to get Name from appinfo.ini; it should have a line Name=App Name Portable in it. Used value PortableApps.com Launcher instead."
+!endif
+
+!if "${ProductName}" == "PortableApps.com Launcher"
+	!define Comments ""
+!else
+	!define Comments "  This is a custom build for ${ProductName} with ProductName and icon and possibly custom code."
+!endif
+
 !ifdef PACKAGE
 	!define ROOT "${PACKAGE}"
 !else
@@ -67,8 +79,8 @@ Name "PortableApps.com Launcher"
 OutFile ${ROOT}\${AppID}.exe
 Caption "PortableApps.com Launcher"
 VIProductVersion ${VER}
-VIAddVersionKey ProductName "PortableApps.com Launcher"
-VIAddVersionKey Comments "A universal launcher for PortableApps.com applications, allowing applications to be run from a removable drive.  For additional details, visit PortableApps.com"
+VIAddVersionKey ProductName "${ProductName}"
+VIAddVersionKey Comments "A universal launcher for PortableApps.com applications, allowing applications to be run from a removable drive.${Comments}  For additional details, visit PortableApps.com"
 VIAddVersionKey CompanyName PortableApps.com
 VIAddVersionKey LegalCopyright PortableApps.com
 VIAddVersionKey FileDescription "PortableApps.com Launcher"
@@ -77,6 +89,9 @@ VIAddVersionKey ProductVersion ${VER}
 VIAddVersionKey InternalName "PortableApps.com Launcher"
 VIAddVersionKey LegalTrademarks "PortableApps.com is a Trademark of Rare Ideas, LLC."
 VIAddVersionKey OriginalFilename ${AppID}.exe
+!undef ProductName
+!undef AppID
+!undef Comments
 !undef VER
 
 ;=== Runtime Switches {{{1
