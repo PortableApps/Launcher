@@ -7,7 +7,8 @@ ${Segment.onInit}
 	${If} $0 == "\\"
 		; UNC path; may occur in the inner instance with RunAsAdmin
 		ClearErrors
-		${!IfDebug}
+		${!getdebug}
+		!ifdef DEBUG
 			StrCpy $0 $EXEDIR
 		!endif
 		ReadEnvStr $EXEDIR PAL:PackageDir

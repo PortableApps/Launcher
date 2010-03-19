@@ -32,7 +32,8 @@ ${Segment.onInit} ; {{{1
 			${DebugMsg} "Attempting to run as admin"
 			!insertmacro UAC_RunElevated
 
-			${!IfDebug}
+			${!getdebug}
+			!ifdef DEBUG
 				${Select} $0
 					${Case} 0
 						${If} $1 = 1
