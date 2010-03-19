@@ -4,7 +4,7 @@ ${LangFileString} LauncherAskCopyLocal "$AppNamePortable blijkt opgestart te zij
 ${LangFileString} LauncherNoReadOnly "$AppNamePortable kan niet vanaf een alleen-lezen locatie worden opgestart en zal nu worden afgesloten."
 ${LangFileString} LauncherPathTooLong "Het pad naar $AppNamePortable is te lang. Gelieve het pad te verkorten door het programma in een hogere map te plaatsen of door mapnamen te verkleinen."
 ${LangFileString} LauncherNoUNCSupport "$AppNamePortable kan niet worden gestart van een UNC path. Gelieve de directory binnen een stationsletter plaatsen en opnieuw proberen."
-${LangFileString} LauncherNoSpaces "$AppNamePortable kan niet worden gestart vanuit een directory die spaties bevat. Gelieve het huidige pad ($ EXEDIR) te wijziging zodat de spaties verwijderd zijn en herstart the portabele applicatie. Zie het help.html bestand voor meer informatie."
+${LangFileString} LauncherNoSpaces "$AppNamePortable kan niet worden gestart vanuit een directory die spaties bevat. Gelieve het huidige pad ($EXEDIR) te wijziging zodat de spaties verwijderd zijn en herstart the portabele applicatie. Zie het help.html bestand voor meer informatie."
 ${LangFileString} LauncherRequiresAdmin "$AppNamePortable vereist administratieve privileges om te kunnen opstarten."
 ${LangFileString} LauncherNotAdminTryAgain "Druk op Opnieuw om de authenticatie opnieuw te proberen of Annuleren om te stoppen."
 ${LangFileString} LauncherNotAdminLimitedFunctionality "Sommige functies van $AppNamePortable zullen niet werken als je bent ingelogd als Administrator."
