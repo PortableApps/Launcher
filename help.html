@@ -284,6 +284,16 @@
 <span class="ini-key">PATH=</span><span class="ini-value">%PAL:AppDir%\AppName;%PATH%</span>
 <span class="ini-key">HOME=</span><span class="ini-value">%PAL:DataDir%\settings</span>
 
+<a href="#Language" class="ini-head">[Language]</a>
+<a href="#Language:Base" class="ini-key">Base=</a><span class="ini-value">%PortableApps.comLocaleglibc%</span>
+<a href="#Language:Default" class="ini-key">Default=</a><span class="ini-value">en</span>
+<a href="#Language:CheckIfExists" class="ini-key">CheckIfExists=</a><span class="ini-value">%PAL:AppDir%\AppName\Languages\%PAL:LanguageCustom%\*.*</span>
+<a href="#Language:DefaultIfNotExists" class="ini-key">DefaultIfNotExists=</a><span class="ini-value">en</span>
+
+<a href="#LanguageStrings" class="ini-head">[LanguageStrings]</a>
+<span class="ini-key">en_US=</span><span class="ini-value">en</span>
+<span class="ini-key">zh_CN=</span><span class="ini-value">zh</span>
+
 <a href="#Service" class="ini-head">[Service<em>N</em>]</a>
 <a href="#Service:Name" class="ini-key">Name=</a><span class="ini-value">ServiceName</span>
 <a href="#Service:Path" class="ini-key">Path=</a><span class="ini-value">%PAL:AppDir%\AppName\service.exe</span>
@@ -354,7 +364,14 @@
 	<li id="DirectoriesMove"><span class="ini-head">[DirectoriesMove]</span><br />These are directories for which to manage portability. They come in the form <span class="ini-key"><em>directory</em>=</span><span class="ini-value"><em>target location</em></span>; the directory is the location of the source directory, relative to the portable data directory. The target location includes the directory you want it to go to, so %PAL:DataDir%\<em>from</em>\*.* gets copied to <em>to</em>\*.*.<br /><strong>Substitutions apply.</strong><strong>Example:</strong> <span class="ini-key">settings=</span><span class="ini-value">%APPDATA%\Pub\lisher\AppName</span></li>
 	<li id="DirectoriesCleanupIfEmpty"><span class="ini-head">[DirectoriesCleanupIfEmpty]</span><br />These are directories which get cleaned up after the application has run if they are empty. This is useful if there is a tree which will be left behind, for example, if something stores to %APPDATA%\Publisher\AppName, when AppName is saved, Publisher will still be left, empty. Remove it with a line in here.<br />The key names here are numbers.<br /><strong>Example:</strong> <span class="ini-key">1=</span><span class="ini-value">%APPDATA%\Publisher</span><span class="ini-head"></span></li>
 	<li id="DirectoriesCleanupForce"><span class="ini-head">[DirectoriesCleanupForce]</span><br />These are directories which get removed after the application has run. This is useful if there is a tree which will be left behind, for example, if something stores temporary data which can be safely deleted in %APPDATA%\AppName\Temp. Remove it with a line in here.<br />The key names here are numbers.<br /><strong>Example:</strong> <span class="ini-key">1=</span><span class="ini-value">%APPDATA%\Publisher</span><span class="ini-head"></span></li>
-	<li id="Environment"><span class="ini-head">[Environment]</span><br />Environment variables to modify, for example "PATH" or "HOME". To append or prepend to the variable place <code>%<em>(var name)</em>%</code> at the start or end of the value. <strong>Substitutions apply.</strong><br /><strong>Example:</strong> <span class="ini-key">PATH=</span><span class="ini-value">%PAL:AppDir%\AppName;%PATH%</span> (this will prepend the executable's directory to the path.)</li></li>
+	<li id="Environment"><span class="ini-head">[Environment]</span><br />Environment variables to modify, for example "PATH" or "HOME". To append or prepend to the variable place <code>%<em>(var name)</em>%</code> at the start or end of the value. <strong>Substitutions apply.</strong><br /><strong>Example:</strong> <span class="ini-key">PATH=</span><span class="ini-value">%PAL:AppDir%\AppName;%PATH%</span> (this will prepend the executable's directory to the path.)</li>
+	<li id="Language"><span class="ini-head">[Language]</span><br />This section is for constructing a custom language variable. The final output goes in the <a href="#Substitions:PAL:LanguageCustom">PAL:LanguageCustom</a> environment variable.<ul>
+		<li id="Language:Base"><span class="ini-key">Base</span><br />The base string upon which languages are based. This should contain (and probably be) one of the <a href="#Substitutions:Languages">language environment variables</a>. <strong>Substitions apply.</strong></li>
+		<li id="Language:Default"><span class="ini-key">Default</span><br />If the base value is not found in the <a href="#LanguageStrings" class="ini-head">[LanguageStrings]</a> section, it will be set to this value. If this value does not exist it will fall back to the base value. <strong>Substitions apply.</strong></li>
+		<li id="Language:CheckIfExists"><span class="ini-key">CheckIfExists</span><br />Check if this file exists. To check for a directory add "\*.*" to the end. If the file does not exist it will fall back to the <span class="ini-key">DefaultIfNotExists</span> value. <strong>Substitions apply.</strong></li>
+		<li id="Language:DefaultIfNotExists"><span class="ini-key">DefaultIfNotExists</span><br />If the file in <span class="ini-key">CheckIfExists</span> did not exist, the custom language variable will be set to this value. <strong>Substitions apply.</strong></li>
+	</ul></li>
+	<li id="LanguageStrings"><span class="ini-head">[LanguageStrings]</span><br />Values in the <a href="#Language:Base" class="ini-key">[Language] Base</a> will be looked up here and the values returned. <strong>Substitutions apply.</strong></li>
 	<li id="Service"><span class="ini-head">[Service<em>N</em>]</span><br />Services and drivers which are required or recommended by your portable application. There are various keys for each section:<ul>
 		<li id="Service:Name"><span class="ini-key">Name</span><br />The service name.</li>
 		<li id="Service:Path"><span class="ini-key">Path</span><br />The execution string of the service.</li>
@@ -390,13 +407,14 @@
 		<li id="Substitions:DOCUMENTS"><strong>%DOCUMENTS%</strong> &ndash; a local variable for copying to and from, e.g. C:\Documents and Settings\Username\My Documents on XP and 2000, C:\Users\Username\Documents on Vista.</li>
 		<li id="Substitions:TEMP"><strong>%TEMP%</strong> &ndash; the temporary directory which the application will be given. If a contained temporary directory is assigned, this will be the assigned one.</li>
 	</ul>Other local variables are available but will not have forward slash etc. versions made available by the launcher.</li>
-	<li><strong>Language variables:</strong> these variables are for language switching.  It's not highly optimised yet, and it's not as powerful as it should be eventually, but it's a start.<ul>
+	<li id="Substitutions:Languages"><strong>Language variables:</strong> these variables are for language switching. Particularly of interest is PAL:LanguageCustom.<ul>
 		<li id="Substitions:PortableApps.comLanguageCode"><strong>%PortableApps.comLanguageCode%</strong> &ndash; e.g. "en-us", "pt", "pt-br"</li>
 		<li id="Substitions:PortableApps.comLocaleCode2"><strong>%PortableApps.comLocaleCode2%</strong> &ndash; e.g. "en", "pt", "pt"</li>
 		<li id="Substitions:PortableApps.comLocaleCode3"><strong>%PortableApps.comLocaleCode3%</strong> &ndash; e.g. "eng", "por", "por"</li>
 		<li id="Substitions:PortableApps.comLocaleglibc"><strong>%PortableApps.comLocaleglibc%</strong> &ndash; e.g. "en_US", "pt", "pt_BR"</li>
 		<li id="Substitions:PortableApps.comLocaleID"><strong>%PortableApps.comLocaleID%</strong> &ndash; e.g. "1033", "2070", "1046"</li>
 		<li id="Substitions:PortableApps.comLocaleWinName"><strong>%PortableApps.comLocaleWinName%</strong> &ndash; e.g. "LANG_ENGLISH", "LANG_PORTUGUESE", "LANG_PORTUGUESEBR"</li>
+		<li id="Substitions:PAL:LanguageCustom"><strong>%PAL:LanguageCustom%</strong> &ndash; a custom variable constructed in the <a href="#Language" class="ini-key">Language</a> and <a href="#LanguageStrings" class="ini-key">LanguageStrings</a> sections.</li>
 	</ul></li>
 </ul>
 <h3>Sample INI launcher configuration</h3>
