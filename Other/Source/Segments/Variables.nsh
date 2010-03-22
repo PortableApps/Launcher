@@ -137,18 +137,7 @@ ${SegmentInit}
 	${IfNotThen} ${FileExists} $1 ${|} StrCpy $1 $0\Videos ${|}
 	${SetEnvironmentVariablesPath} PAL:VideosDir $1
 
-	ReadEnvStr $0 PortableApps.comLanguageCode
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLanguageCode en-us ${|}
-	ReadEnvStr $0 PortableApps.comLocaleCode2
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleCode2 en ${|}
-	ReadEnvStr $0 PortableApps.comLocaleCode3
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleCode3 eng ${|}
-	ReadEnvStr $0 PortableApps.comLocaleglibc
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleglibc en_US ${|}
-	ReadEnvStr $0 PortableApps.comLocaleID
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleID 1033 ${|}
-	ReadEnvStr $0 PortableApps.comLocaleWinName
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleWinName LANG_ENGLISH ${|}
+	; Language variables are in the Language segment
 
 	${SetEnvironmentVariablesPathFromEnvironmentVariable} ALLUSERSPROFILE
 	${SetEnvironmentVariablesPathFromEnvironmentVariable} USERPROFILE
