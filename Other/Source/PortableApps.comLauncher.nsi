@@ -223,7 +223,7 @@ Function .onInit          ;{{{1
 	${RunSegment} PortableApps.comLauncherCustom
 	${RunSegment} Core
 	${RunSegment} Temp
-	${RunSegment} LauncherLanguage
+	${RunSegment} Language
 	${RunSegment} RunAsAdmin
 FunctionEnd
 
@@ -232,6 +232,7 @@ Function Init             ;{{{1
 	${RunSegment} Core
 	${RunSegment} DriveLetter
 	${RunSegment} Variables
+	${RunSegment} Language
 	${RunSegment} Registry
 	${RunSegment} Java
 	${RunSegment} Mutex
