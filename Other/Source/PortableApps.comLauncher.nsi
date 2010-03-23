@@ -35,7 +35,6 @@
 ;       !define DEBUG_SEGMENT_[SegmentName]
 !include /NONFATAL PortableApps.comLauncherDebug.nsh
 
-;=== Program Details {{{1
 !verbose 3
 !macro !echo msg
 	!verbose push
@@ -44,55 +43,6 @@
 	!verbose pop
 !macroend
 !define !echo "!insertmacro !echo"
-${!echo} "Specifying program details and setting options..."
-!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" VER
-!ifndef VER
-	!define VER 1.0.0.0
-	!warning "Unable to get version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value 1.0.0.0 instead."
-!endif
-
-!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "AppID=" AppID
-!ifndef AppID
-	!define AppID PortableApps.comLauncher
-	!warning "Unable to get AppID from appinfo.ini; it should have a line AppID=AppNamePortable in it. Used value PortableApps.comLauncher instead."
-!endif
-
-!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "Name=" ProductName
-!ifndef ProductName
-	!define ProductName "PortableApps.com Launcher"
-	!warning "Unable to get Name from appinfo.ini; it should have a line Name=App Name Portable in it. Used value PortableApps.com Launcher instead."
-!endif
-
-!if "${ProductName}" == "PortableApps.com Launcher"
-	!define Comments ""
-!else
-	!define Comments "  This is a custom build for ${ProductName} with ProductName and icon and possibly custom code."
-!endif
-
-!ifdef PACKAGE
-	!define ROOT "${PACKAGE}"
-!else
-	!define ROOT ..\..
-!endif
-
-Name "PortableApps.com Launcher"
-OutFile ${ROOT}\${AppID}.exe
-Caption "PortableApps.com Launcher"
-VIProductVersion ${VER}
-VIAddVersionKey ProductName "${ProductName}"
-VIAddVersionKey Comments "A universal launcher for PortableApps.com applications, allowing applications to be run from a removable drive.${Comments}  For additional details, visit PortableApps.com"
-VIAddVersionKey CompanyName PortableApps.com
-VIAddVersionKey LegalCopyright PortableApps.com
-VIAddVersionKey FileDescription "PortableApps.com Launcher"
-VIAddVersionKey FileVersion ${VER}
-VIAddVersionKey ProductVersion ${VER}
-VIAddVersionKey InternalName "PortableApps.com Launcher"
-VIAddVersionKey LegalTrademarks "PortableApps.com is a Trademark of Rare Ideas, LLC."
-VIAddVersionKey OriginalFilename ${AppID}.exe
-!undef ProductName
-!undef AppID
-!undef Comments
-!undef VER
 
 ;=== Runtime Switches {{{1
 WindowIcon Off
@@ -126,9 +76,6 @@ ${!echo} "Including required files..."
 !include ProcFunc.nsh
 !include EmptyWorkingSet.nsh
 !include SetEnvironmentVariable.nsh
-
-;=== Program Icon {{{1
-Icon ${ROOT}\App\AppInfo\appicon.ico
 
 ;=== Languages {{{1
 ${!echo} "Loading language strings..."
@@ -215,9 +162,65 @@ Var Status
 !macroend
 !define ReadUserOverrideConfig "!insertmacro ReadUserOverrideConfig"
 
+; Load the segments {{{1
 ${!echo} "Loading segments..."
-!include Segments.nsh ;{{{1 Include all the code }}}
+!include Segments.nsh
 !verbose 4
+
+;=== Program Details {{{1
+${!echo} "Specifying program details and setting options..."
+
+!ifdef PACKAGE
+	!define ROOT "${PACKAGE}"
+!else
+	!define ROOT ..\..
+!endif
+
+!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" Version
+!ifndef Version
+	!define Version 1.0.0.0
+	!ifndef NSIS_UNICODE
+	!warning "Unable to get PortableApps.com Launcher version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value 1.0.0.0 instead."
+	!endif
+!endif
+
+!ifndef AppID
+	!searchparse /noerrors /file ${ROOT}\App\AppInfo\appinfo.ini "AppID=" AppID
+	!ifndef AppID
+		!define AppID PortableApps.comLauncher
+		!warning "Unable to get AppID from appinfo.ini; it should have a line AppID=AppNamePortable in it. Used value PortableApps.comLauncher instead."
+	!endif
+!endif
+
+!ifndef Name
+	!searchparse /noerrors /file ${ROOT}\App\AppInfo\appinfo.ini "Name=" Name
+	!ifndef Name
+		!define Name "PortableApps.com Launcher"
+		!warning "Unable to get Name from appinfo.ini; it should have a line Name=App Name Portable in it. Used value PortableApps.com Launcher instead."
+	!endif
+!endif
+
+!if "${Name}" == "PortableApps.com Launcher"
+	!define Comments ""
+!else
+	!define Comments "  This is a custom build for ${Name} with Name and icon and possibly custom code."
+!endif
+
+Name "PortableApps.com Launcher"
+OutFile ${ROOT}\${AppID}.exe
+Icon ${ROOT}\App\AppInfo\appicon.ico
+Caption "PortableApps.com Launcher"
+VIProductVersion ${Version}
+VIAddVersionKey ProductName "${Name}"
+VIAddVersionKey Comments "A universal launcher for PortableApps.com applications, allowing applications to be run from a removable drive.${Comments}  For additional details, visit PortableApps.com"
+VIAddVersionKey CompanyName PortableApps.com
+VIAddVersionKey LegalCopyright PortableApps.com
+VIAddVersionKey FileDescription "PortableApps.com Launcher"
+VIAddVersionKey FileVersion ${Version}
+VIAddVersionKey ProductVersion ${Version}
+VIAddVersionKey InternalName "PortableApps.com Launcher"
+VIAddVersionKey LegalTrademarks "PortableApps.com is a Trademark of Rare Ideas, LLC."
+VIAddVersionKey OriginalFilename ${AppID}.exe
 
 Function .onInit          ;{{{1
 	${RunSegment} PortableApps.comLauncherCustom
