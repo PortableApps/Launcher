@@ -18,12 +18,11 @@
 	!ifdef Segment${_TYPE}
 		!undef Segment${_TYPE}
 	!endif
-	!define Segment${_TYPE} "!macro ${__SEG__FILE__}_${_TYPE}"
+	!define Segment${_TYPE} "!macro ${__FILE__}_${_TYPE}"
 !macroend
 !define _CreateSegmentDef "!insertmacro _CreateSegmentDef"
 
 !macro SegmentFile
-	!searchreplace __SEG__FILE__ "${__FILE__}" .nsh ""
 	${_CreateSegmentDef} .onInit
 	${_CreateSegmentDef} Init
 	${_CreateSegmentDef} Pre
@@ -41,7 +40,7 @@
 
 ; Run an action {{{1
 !macro RunSegment Segment
-	!ifmacrondef ${Segment}_${__FUNCTION__}
+	!ifmacrondef ${Segment}.nsh_${__FUNCTION__}
 		!if ${Segment} != PortableApps.comLauncherCustom
 			!warning "Segment ${Segment}, hook ${__FUNCTION__} was called but does not exist!"
 		!endif
@@ -50,7 +49,7 @@
 		!ifdef DEBUG && DEBUG_SEGWRAP
 			${DebugMsg} "About to execute segment"
 		!endif
-		!insertmacro ${Segment}_${__FUNCTION__}
+		!insertmacro ${Segment}.nsh_${__FUNCTION__}
 		!ifdef DEBUG && DEBUG_SEGWRAP
 			${DebugMsg} "Finished executing segment"
 		!endif
