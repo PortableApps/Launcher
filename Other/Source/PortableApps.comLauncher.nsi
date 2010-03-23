@@ -178,9 +178,9 @@ ${!echo} "Specifying program details and setting options..."
 
 !searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" Version
 !ifndef Version
-	!define Version 1.0.0.0
+	!define Version 1.9.9.2
 	!ifndef NSIS_UNICODE
-	!warning "Unable to get PortableApps.com Launcher version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value 1.0.0.0 instead."
+	!warning "Unable to get PortableApps.com Launcher version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value 1.9.9.2 instead."
 	!endif
 !endif
 
