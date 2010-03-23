@@ -112,7 +112,7 @@ ${!echo} "Including required files..."
 !include WordFunc.nsh
 
 ;(NSIS Plugins) {{{2
-!include TextReplace.nsh
+!include NewTextReplace.nsh
 !ifdef NSIS_UNICODE
 	!addplugindir Plugins\U
 !else
