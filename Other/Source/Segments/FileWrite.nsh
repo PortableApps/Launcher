@@ -39,15 +39,30 @@ ${SegmentPrePrimary}
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ParseLocations} $2
 			${ParseLocations} $3
-			${ReadLauncherConfig} $4 FileWrite$R0 CaseSensitive
 			${If} $2 != $3
 			${AndIf} ${FileExists} $1
-				${If} $4 == true
-					${DebugMsg} "Finding and replacing in a file (case sensitive).$\nFile: $1$\nFind: `$2`$\nReplace: `$3`"
-					${ReplaceInFileCS} $1 $2 $3
+				${ReadLauncherConfig} $4 FileWrite$R0 CaseSensitive
+				${ReadLauncherConfig} $5 FileWrite$R0 Encoding
+				${!getdebug}
+				!ifdef DEBUG
+					${IfThen} $5 == UTF-16LE ${|} StrCpy $8 "a UTF-16LE" ${|}
+					${IfThen} $5 != UTF-16LE ${|} StrCpy $8 "an ANSI" ${|}
+					StrCpy $9 ``
+					${IfThen} $4 == true ${|} StrCpy $9 in ${|}
+				!endif
+				${DebugMsg} "Finding and replacing in $8 file (case $9sensitive).$\nFile: $1$\nFind: `$2`$\nReplace: `$3`"
+				${If} $5 == UTF-16LE
+					${If} $4 == true
+						${ReplaceInFileUTF16LECS} $1 $2 $3
+					${Else}
+						${ReplaceInFileUTF16LE} $1 $2 $3
+					${EndIf}
 				${Else}
-					${DebugMsg} "Finding and replacing in a file (case insensitive).$\nFile: $1$\nFind: `$2`$\nReplace: `$3`"
-					${ReplaceInFile} $1 $2 $3
+					${If} $4 == true
+						${ReplaceInFileCS} $1 $2 $3
+					${Else}
+						${ReplaceInFile} $1 $2 $3
+					${EndIf}
 				${EndIf}
 			${EndIf}
 		${EndIf}
