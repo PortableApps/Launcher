@@ -17,10 +17,10 @@ ${SegmentPrePrimary}
 			${If} ${FileExists} $1
 				${If} $4 == true
 					${DebugMsg} "Writing configuration to a file with ConfigWriteS.$\nFile: $1$\nEntry: `$2`$\nValue: `$3`"
-					${ConfigWriteS} $1 $2 $3 $R0
+					${ConfigWriteS} $1 $2 $3 $R9
 				${Else}
 					${DebugMsg} "Writing configuration to a file with ConfigWrite.$\nFile: $1$\nEntry: `$2`$\nValue: `$3`"
-					${ConfigWrite} $1 $2 $3 $R0
+					${ConfigWrite} $1 $2 $3 $R9
 				${EndIf}
 			${EndIf}
 		${ElseIf} $0 == INI
