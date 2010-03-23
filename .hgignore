@@ -9,6 +9,8 @@ syntax: glob
 # hg revert renames the file to *.orig but we don't want them... we reverted the changes to them, remember?
 *.orig
 
+Data/*
+
 Other/Source/PortableApps.comInstaller*
 Other/Source/PortableApps.comLauncherDebug.nsh
 
