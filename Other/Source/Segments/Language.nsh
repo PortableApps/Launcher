@@ -49,7 +49,7 @@ ${SegmentInit}
 		${If} $2 != ""
 			${ParseLocations} $2
 			${IfNot} ${FileExists} $2
-				${ReadLauncherConfig} $1 DefaultIfNotExists
+				${ReadLauncherConfig} $1 Language DefaultIfNotExists
 				${ParseLocations} $1
 				${SetEnvironmentVariable} PAL:LanguageCustom $1
 			${EndIf}
