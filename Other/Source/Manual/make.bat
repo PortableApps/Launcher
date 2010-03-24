@@ -2,7 +2,7 @@
 
 REM Command file for Sphinx documentation
 
-set SPHINXBUILD=sphinx-build
+if "%SPHINXBUILD%" == "" set SPHINXBUILD=sphinx-build
 set ALLSPHINXOPTS=-d _build/doctrees %SPHINXOPTS% .
 if NOT "%PAPER%" == "" (
 	set ALLSPHINXOPTS=-D latex_paper_size=%PAPER% %ALLSPHINXOPTS%
@@ -13,6 +13,7 @@ if "%1" == "" goto help
 if "%1" == "help" (
 	:help
 	echo.Please use `make ^<target^>` where ^<target^> is one of
+	echo.  release   to make a release version of the documentation
 	echo.  html      to make standalone HTML files
 	echo.  dirhtml   to make HTML files named index.html in directories
 	echo.  pickle    to make pickle files
@@ -26,6 +27,19 @@ if "%1" == "help" (
 	goto end
 )
 
+if "%1" == "release" ( :: clean, html, partial clean
+	:: clean
+	rmdir /q /s _build
+	rmdir /q /s ..\..\..\App\Manual
+	:: html
+	%SPHINXBUILD% -b html %ALLSPHINXOPTS% ../../../App/Manual
+	:: partial clean
+	rmdir /q /s ..\..\..\App\Manual\_sources
+	del /q ..\..\..\App\Manual\.buildinfo
+	del /q ..\..\..\App\Manual\objects.inv
+	rmdir /q /s _build
+	del /q _ext\paldocs.pyc
+)
 if "%1" == "clean" (
 	for /d %%i in (_build\*) do rmdir /q /s %%i
 	del /q /s _build\*
