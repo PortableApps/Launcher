@@ -93,9 +93,19 @@ ${SegmentFile}
 !define SetEnvironmentVariablesPathFromEnvironmentVariable "!insertmacro SetEnvironmentVariablesPathFromEnvironmentVariable"
 
 !macro ParseLocations VAR ;{{{2
-	${DebugMsg} "Before location parsing, $${VAR} = `${VAR}`"
+	${!getdebug}
+	!ifdef DEBUG
+		!ifndef _ParseLocations_Before
+			Var /GLOBAL _ParseLocations_Before
+			!define _ParseLocations_Before
+		!endif
+	!endif
+		
+	!ifdef DEBUG
+		StrCpy $_ParseLocations_Before ${VAR}
+	!endif
 	ExpandEnvStrings ${VAR} ${VAR}
-	${DebugMsg} "After location parsing, $${VAR} = `${VAR}`"
+	${DebugMsg} "Environment variable expansion on $${VAR}:$\r$\nBefore: `$_ParseLocations_Before`$\r$\nAfter: `${VAR}`"
 !macroend
 !define ParseLocations "!insertmacro ParseLocations"
 
