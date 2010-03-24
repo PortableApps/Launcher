@@ -31,15 +31,12 @@ ${SegmentPre}
 		${If} ${FileExists} $TMP\$AppIDLive
 			${SetFileAttributesDirectoryNormal} $TMP\$AppIDLive
 		${EndIf}
-	${Else}
-		StrCpy $AppDirectory $EXEDIR\App
-		StrCpy $DataDirectory $EXEDIR\Data
+
+		${SetEnvironmentVariablesPath} PAL:AppDir $AppDirectory
+		${SetEnvironmentVariablesPath} PAL:DataDir $DataDirectory
 	${EndIf}
 
 	CreateDirectory $DataDirectory
-
-	${SetEnvironmentVariablesPath} PAL:AppDir $AppDirectory
-	${SetEnvironmentVariablesPath} PAL:DataDir $DataDirectory
 !macroend
 
 ${SegmentPostPrimary}
