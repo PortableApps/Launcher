@@ -118,6 +118,12 @@ ${SegmentInit}
 	${SetEnvironmentVariable} PAL:DriveLetter $0
 	${SetEnvironmentVariable} PAL:LastDriveLetter $1
 
+	StrCpy $AppDirectory  $EXEDIR\App
+	StrCpy $DataDirectory $EXEDIR\Data
+	${SetEnvironmentVariablesPath} PAL:AppDir  $AppDirectory
+	${SetEnvironmentVariablesPath} PAL:DataDir $DataDirectory
+	; These may be changed in the RunLocally segment's Pre hook.
+
 	${GetParent} $EXEDIR $PortableAppsDirectory
 	${SetEnvironmentVariablesPath} PAL:PortableAppsDir $PortableAppsDirectory
 
