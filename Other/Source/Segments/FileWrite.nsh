@@ -39,31 +39,43 @@ ${SegmentPrePrimary}
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ParseLocations} $2
 			${ParseLocations} $3
-			${If} $2 != $3
-			${AndIf} ${FileExists} $1
+			${If} ${FileExists} $1
 				${ReadLauncherConfig} $4 FileWrite$R0 CaseSensitive
-				${ReadLauncherConfig} $5 FileWrite$R0 Encoding
-				${!getdebug}
-				!ifdef DEBUG
-					${IfThen} $5 == UTF-16LE ${|} StrCpy $8 "a UTF-16LE" ${|}
-					${IfThen} $5 != UTF-16LE ${|} StrCpy $8 "an ANSI" ${|}
-					StrCpy $9 ``
-					${IfThen} $4 == true ${|} StrCpy $9 in ${|}
-				!endif
-				${DebugMsg} "Finding and replacing in $8 file (case $9sensitive).$\nFile: $1$\nFind: `$2`$\nReplace: `$3`"
-				${If} $5 == UTF-16LE
-					${If} $4 == true
-						${ReplaceInFileUTF16LECS} $1 $2 $3
+				${If} $4 == true     ; case sensitive
+				${AndIf} $2 S!= $3   ; find != replace?
+					StrCpy $5 true
+				${ElseIf} $4 != true ; case insensitive
+				${AndIf} $2 != $3    ; find != replace?
+					StrCpy $5 true
+				${Else}              ; find == replace, so Continue
+					StrCpy $5 ""
+				${EndIf}
+				${If} $5 == true ; find != replace (as discovered above)
+					${ReadLauncherConfig} $5 FileWrite$R0 Encoding
+					${!getdebug}
+					!ifdef DEBUG
+						${IfThen} $5 == UTF-16LE ${|} StrCpy $8 "a UTF-16LE" ${|}
+						${IfThen} $5 != UTF-16LE ${|} StrCpy $8 "an ANSI" ${|}
+						StrCpy $9 ``
+						${IfThen} $4 == true ${|} StrCpy $9 in ${|}
+					!endif
+					${DebugMsg} "Finding and replacing in $8 file (case $9sensitive).$\nFile: $1$\nFind: `$2`$\nReplace: `$3`"
+					${If} $5 == UTF-16LE
+						${If} $4 == true
+							${ReplaceInFileUTF16LECS} $1 $2 $3
+						${Else}
+							${ReplaceInFileUTF16LE} $1 $2 $3
+						${EndIf}
 					${Else}
-						${ReplaceInFileUTF16LE} $1 $2 $3
-					${EndIf}
-				${Else}
-					${If} $4 == true
-						${ReplaceInFileCS} $1 $2 $3
-					${Else}
-						${ReplaceInFile} $1 $2 $3
+						${If} $4 == true
+							${ReplaceInFileCS} $1 $2 $3
+						${Else}
+							${ReplaceInFile} $1 $2 $3
+						${EndIf}
 					${EndIf}
 				${EndIf}
+			;${Else}
+				;${DebugMsg} File didn't exist
 			${EndIf}
 		${EndIf}
 		IntOp $R0 $R0 + 1
