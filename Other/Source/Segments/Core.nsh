@@ -20,6 +20,8 @@ ${Segment.onInit}
 	${Else}
 		${SetEnvironmentVariable} PAL:PackageDir $EXEDIR
 	${EndIf}
+	${GetBaseName} $EXEFILE $BaseName
+	StrCpy $LauncherFile $EXEDIR\App\AppInfo\Launcher\$BaseName.ini
 !macroend
 
 ${SegmentInit}
@@ -34,7 +36,6 @@ ${SegmentInit}
 		Abort
 	${EndIf}
 
-	${GetBaseName} $EXEFILE $BaseName
 	InitPluginsDir
 	CopyFiles /SILENT $EXEDIR\App\AppInfo\Launcher\$BaseName.ini $PLUGINSDIR\launcher.ini
 	StrCpy $LauncherFile $PLUGINSDIR\launcher.ini
