@@ -39,6 +39,7 @@ if "%1" == "release" ( :: clean, html, partial clean
 	del /q ..\..\..\App\Manual\objects.inv
 	rmdir /q /s _build
 	del /q _ext\paldocs.pyc
+	goto end
 )
 if "%1" == "clean" (
 	for /d %%i in (_build\*) do rmdir /q /s %%i
