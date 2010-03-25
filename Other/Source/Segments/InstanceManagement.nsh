@@ -3,21 +3,6 @@ ${SegmentFile}
 !macro _InstanceManagement_AbortIfRunning
 	${If} $SecondaryLaunch != true
 	${AndIf} ${ProcessExists} $0
-		${ReadLauncherConfig} $AppName Launch AppName
-		${If} $AppName == ""
-			; Calculate the application name - non-portable version
-			StrCpy $0 $AppNamePortable "" -9
-			${If} $0 == " Portable"
-				StrCpy $AppName $AppNamePortable -9
-			${Else}
-				StrCpy $1 $AppNamePortable "" -18
-				${If} $0 == ", Portable Edition"
-					StrCpy $AppName $AppNamePortable -18
-				${Else}
-					StrCpy $AppName $AppNamePortable
-				${EndIf}
-			${EndIf}
-		${EndIf}
 		MessageBox MB_OK|MB_ICONSTOP `$(LauncherAlreadyRunning)`
 		Abort
 	${EndIf}
