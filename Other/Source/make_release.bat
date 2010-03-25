@@ -7,23 +7,33 @@
 	set ROOT=%cd%
 	set PYTHONPATH=F:\PortableApps\pymodules\Sphinx-0.6.5;F:\PortableApps\pymodules\docutils;F:\PortableApps\pymodules\docutils\extras;F:\PortableApps\pymodules\Jinja2-2.3.1;F:\PortableApps\pymodules\Pygments-1.3.1
 	set SPHINXBUILD=F:\PortableApps\Python25\python.exe F:\PortableApps\pymodules\Sphinx-0.6.5\sphinx-build.py
-	set makensis=%ROOT%:\PortableApps\UnicodeNSISPortable\App\NSIS\makensis.exe
-	set PAI=%ROOT%:\PortableApps\PortableApps.comInstallerU\PortableApps.comInstallerU.exe
+	set makensis=%ROOT%PortableApps\UnicodeNSISPortable\App\NSIS\makensis.exe
+	set PAI=%ROOT%PortableApps\PortableApps.comInstallerU\PortableApps.comInstallerU.exe
+	set ALLSPHINXOPTS=-d _build/doctrees %SPHINXOPTS% .
 
-:: Build the manual
+echo Building the PortableApps.com Launcher Manual...
 	cd "%PAL%\Other\Source\Manual"
-	make.bat release
-	cd ..
+	:: clean
+		if exist _build rmdir /q /s _build
+		if exist "%PAL%\App\Manual" rmdir /q /s "%PAL\App\Manual"
+	:: html
+		%SPHINXBUILD% -b html %ALLSPHINXOPTS% ../../../App/Manual
+	:: partial clean
+		rmdir /q /s "%PAL%\App\Manual\_sources"
+		del /q "%PAL%\App\Manual\.buildinfo"
+		del /q "%PAL%\App\Manual\objects.inv"
+		rmdir /q /s _build
+		del /q _ext\paldocs.pyc
 
-:: Build PALG
+echo Building the PortableApps.com Launcher Generator...
 	"%makensis%" "%PAL%\Other\Source\GeneratorWizard.nsi"
 
-:: Build PAL
+echo Building the PortableApps.com Launcher...
 	"%PAL%\PortableApps.comLauncherGenerator.exe" "%PAL%"
 
-:: Build installer
+echo Building the PortableApps.com Launcher installer...
 	"%PAI%" "%PAL%"
 
-:: End
-	:: go back where we started
+:: go back where we started
 	cd %PAL%\Other\Source
+	echo Done!
