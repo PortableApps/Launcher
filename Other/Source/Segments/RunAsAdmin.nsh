@@ -26,6 +26,7 @@ Var RunningAsAdmin
 ${Segment.onInit} ; {{{1
 	; Run as admin if needed {{{2
 	${ReadLauncherConfig} $RunAsAdmin Launch RunAsAdmin
+	${DebugMsg} "[Launch]:RunAsAdmin value is $RunAsAdmin"
 	${If} $RunAsAdmin == force
 	${OrIf} $RunAsAdmin == try
 		Elevate: ; Attempt to elevate to admin {{{2
