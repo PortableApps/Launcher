@@ -18,7 +18,7 @@ ${Segment.onInit}
 
 ${SegmentInit}
 	ReadEnvStr $0 PortableApps.comLanguageCode
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLanguageCode en-us ${|}
+	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLanguageCode en ${|}
 	ReadEnvStr $0 PortableApps.comLocaleCode2
 	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleCode2 en ${|}
 	ReadEnvStr $0 PortableApps.comLocaleCode3
