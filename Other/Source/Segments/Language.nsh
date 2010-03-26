@@ -29,6 +29,12 @@ ${SegmentInit}
 	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleID 1033 ${|}
 	ReadEnvStr $0 PortableApps.comLocaleWinName
 	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleWinName LANG_ENGLISH ${|}
+	ReadEnvStr $0 PortableApps.comLocaleName
+	${If} $0 == ""
+		ReadEnvStr $0 PortableApps.comLocaleWinName
+		StrCpy $0 $0 "" 5
+		${SetEnvironmentVariable} PortableApps.comLocaleName $0
+	${EndIf}
 
 	${ReadLauncherConfig} $0 Language Base
 	${If} $0 != ""
