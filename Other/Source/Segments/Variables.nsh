@@ -138,20 +138,32 @@ ${SegmentInit}
 	${SetEnvironmentVariablesPath} PAL:PortableAppsDir $PortableAppsDirectory
 
 	ReadEnvStr $0 PortableApps.comDocuments
-	${IfNotThen} ${FileExists} $0 ${|} StrCpy $0 $CurrentDrive\Documents ${|}
-	${SetEnvironmentVariablesPath} PAL:DocumentsDir $0
+	${If} $0 == ""
+	${OrIfNot} ${FileExists} $0
+		StrCpy $0 $CurrentDrive\Documents
+	${EndIf}
+	${SetEnvironmentVariablesPath} PortableApps.comDocuments $0
 
 	ReadEnvStr $1 PortableApps.comPictures
-	${IfNotThen} ${FileExists} $1 ${|} StrCpy $1 $0\Pictures ${|}
-	${SetEnvironmentVariablesPath} PAL:PicturesDir $1
+	${If} $1 == ""
+	${OrIfNot} ${FileExists} $1
+		StrCpy $1 $0\Pictures
+	${EndIf}
+	${SetEnvironmentVariablesPath} PortableApps.comPictures $1
 
 	ReadEnvStr $1 PortableApps.comMusic
-	${IfNotThen} ${FileExists} $1 ${|} StrCpy $1 $0\Music ${|}
-	${SetEnvironmentVariablesPath} PAL:MusicDir $1
+	${If} $1 == ""
+	${OrIfNot} ${FileExists} $1
+		StrCpy $1 $0\Music
+	${EndIf}
+	${SetEnvironmentVariablesPath} PortableApps.comMusic $1
 
 	ReadEnvStr $1 PortableApps.comVideos
-	${IfNotThen} ${FileExists} $1 ${|} StrCpy $1 $0\Videos ${|}
-	${SetEnvironmentVariablesPath} PAL:VideosDir $1
+	${If} $1 == ""
+	${OrIfNot} ${FileExists} $1
+		StrCpy $1 $0\Videos
+	${EndIf}
+	${SetEnvironmentVariablesPath} PortableApps.comVideos $1
 
 	; Language variables are in the Language segment
 
