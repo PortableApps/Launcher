@@ -20,22 +20,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-;=== Debugging {{{1
-; If you want to debug this, create PortableApps.comLauncherDebug.nsh.
-; It should then have lines like these:
-; · Debug everything
-;     !define DEBUG_ALL
-;   · This leaves out the "about to execute segment" and "finished executing
-;     segment" messages unless you put this line in:
-;       !define DEBUG_SEGWRAP
-; · Debug just certain portions
-;   · Debug outside any segments
-;       !define DEBUG_GLOBAL
-;   · Debug a given segment or segments
-;       !define DEBUG_SEGMENT_[SegmentName]
-!include /NONFATAL PortableApps.comLauncherDebug.nsh
-
 !verbose 3
+
+!ifndef PACKAGE
+	!define PACKAGE ..\..
+!endif
+
 !macro !echo msg
 	!verbose push
 	!verbose 4
@@ -165,16 +155,24 @@ Var Status
 ; Load the segments {{{1
 ${!echo} "Loading segments..."
 !include Segments.nsh
-!verbose 4
+
+;=== Debugging {{{1
+; If you want to debug this, create PortableApps.comLauncherDebug.nsh in the
+; package's Other\Source directory. It should then have lines like these:
+; · Debug everything
+;     !define DEBUG_ALL
+;   · This leaves out the "about to execute segment" and "finished executing
+;     segment" messages unless you put this line in:
+;       !define DEBUG_SEGWRAP
+; · Debug just certain portions
+;   · Debug outside any segments
+;       !define DEBUG_GLOBAL
+;   · Debug a given segment or segments
+;       !define DEBUG_SEGMENT_[SegmentName]
+!include /NONFATAL "${PACKAGE}\Other\Source\PortableApps.comLauncherDebug.nsh"
 
 ;=== Program Details {{{1
 ${!echo} "Specifying program details and setting options..."
-
-!ifdef PACKAGE
-	!define ROOT "${PACKAGE}"
-!else
-	!define ROOT ..\..
-!endif
 
 !searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" Version
 !ifndef Version
@@ -185,7 +183,7 @@ ${!echo} "Specifying program details and setting options..."
 !endif
 
 !ifndef AppID
-	!searchparse /noerrors /file ${ROOT}\App\AppInfo\appinfo.ini "AppID=" AppID
+	!searchparse /noerrors /file ${PACKAGE}\App\AppInfo\appinfo.ini "AppID=" AppID
 	!ifndef AppID
 		!define AppID PortableApps.comLauncher
 		!warning "Unable to get AppID from appinfo.ini; it should have a line AppID=AppNamePortable in it. Used value PortableApps.comLauncher instead."
@@ -193,7 +191,7 @@ ${!echo} "Specifying program details and setting options..."
 !endif
 
 !ifndef Name
-	!searchparse /noerrors /file ${ROOT}\App\AppInfo\appinfo.ini "Name=" Name
+	!searchparse /noerrors /file ${PACKAGE}\App\AppInfo\appinfo.ini "Name=" Name
 	!ifndef Name
 		!define Name "PortableApps.com Launcher"
 		!warning "Unable to get Name from appinfo.ini; it should have a line Name=App Name Portable in it. Used value PortableApps.com Launcher instead."
@@ -207,8 +205,8 @@ ${!echo} "Specifying program details and setting options..."
 !endif
 
 Name "PortableApps.com Launcher"
-OutFile "${ROOT}\${AppID}.exe"
-Icon "${ROOT}\App\AppInfo\appicon.ico"
+OutFile "${PACKAGE}\${AppID}.exe"
+Icon "${PACKAGE}\App\AppInfo\appicon.ico"
 Caption "PortableApps.com Launcher"
 VIProductVersion ${Version}
 VIAddVersionKey ProductName "${Name}"
@@ -221,6 +219,8 @@ VIAddVersionKey ProductVersion ${Version}
 VIAddVersionKey InternalName "PortableApps.com Launcher"
 VIAddVersionKey LegalTrademarks "PortableApps.com is a Trademark of Rare Ideas, LLC."
 VIAddVersionKey OriginalFilename ${AppID}.exe
+
+!verbose 4
 
 Function .onInit          ;{{{1
 	${RunSegment} PortableApps.comLauncherCustom
