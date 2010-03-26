@@ -1,7 +1,7 @@
 /*
 _____________________________________________________________________________
 
-                      Process Functions Header v2.1
+                      Process Functions Header v2.2
 _____________________________________________________________________________
 
  2008-2010 Erik Pilsits aka wraithdu
@@ -176,6 +176,12 @@ ${Execute} "[command]" "[working_dir]" $var
 !define SYNCHRONIZE 0x00100000
 
 !define WAIT_TIMEOUT 0x00000102
+
+!ifdef NSIS_UNICODE
+	!define _PROCFUNC_WSTRING "&w260"
+!else
+	!define _PROCFUNC_WSTRING "&w520"
+!endif
 
 !macro ProcessExists
 	!error "ProcessExists has been renamed to GetProcessPID"
@@ -378,7 +384,7 @@ ${Execute} "[command]" "[working_dir]" $var
 			${EndIf}
 	${EndSelect}
 	
-	System::Call '*(&l4,i,i,i,i,i,i,i,i,&w520)i .r2' ; $2 = PROCESSENTRY32W structure
+	System::Call '*(&l4,i,i,i,i,i,i,i,i,${_PROCFUNC_WSTRING})i .r2' ; $2 = PROCESSENTRY32W structure
 	; take system process snapshot in $3
 	System::Call 'kernel32::CreateToolhelp32Snapshot(i 2, i 0)i .r3'
 	${Unless} $3 = -1
@@ -388,7 +394,7 @@ ${Execute} "[command]" "[working_dir]" $var
 				${Select} $1
 					${Case3} 0 2 4
 						; get process name in $5
-						System::Call '*$2(i,i,i,i,i,i,i,i,i,&w520 .r5)'
+						System::Call '*$2(i,i,i,i,i,i,i,i,i,${_PROCFUNC_WSTRING} .r5)'
 					${Case4} 1 3 5 6
 						; get process PID in $5
 						System::Call '*$2(i,i,i .r5)'
@@ -420,7 +426,7 @@ ${Execute} "[command]" "[working_dir]" $var
 						${Case} 6
 							; return base name
 							Pop $5
-							System::Call '*$2(i,i,i,i,i,i,i,i,i,&w520 .s)'
+							System::Call '*$2(i,i,i,i,i,i,i,i,i,${_PROCFUNC_WSTRING} .s)'
 					${EndSelect}
 					${Break}
 				${EndIf}
@@ -490,7 +496,7 @@ ${Execute} "[command]" "[working_dir]" $var
 	StrCpy $6 1 ; initialize loop
 	StrCpy $7 0 ; initialize timeout counter
 	
-	System::Call '*(&l4,i,i,i,i,i,i,i,i,&w520)i .r2' ; $2 = PROCESSENTRY32W structure
+	System::Call '*(&l4,i,i,i,i,i,i,i,i,${_PROCFUNC_WSTRING})i .r2' ; $2 = PROCESSENTRY32W structure
 	${DoWhile} $6 = 1 ; processwait loop
 		; take system process snapshot in $3
 		System::Call 'kernel32::CreateToolhelp32Snapshot(i 2, i 0)i .r3'
@@ -499,7 +505,7 @@ ${Execute} "[command]" "[working_dir]" $var
 			${Unless} $4 = 0
 				${Do}
 					; get process name in $5
-					System::Call '*$2(i,i,i,i,i,i,i,i,i,&w520 .r5)'
+					System::Call '*$2(i,i,i,i,i,i,i,i,i,${_PROCFUNC_WSTRING} .r5)'
 					${If} $5 == $0
 						; exists, return pid
 						System::Call '*$2(i,i,i .s)'; process pid to stack ; process pid
@@ -697,14 +703,14 @@ ${Execute} "[command]" "[working_dir]" $var
 	
 	StrCpy $_LOGICLIB_TEMP 0
 	
-	System::Call '*(&l4,i,i,i,i,i,i,i,i,&w520)i .r2' ; $2 = PROCESSENTRY32W structure
+	System::Call '*(&l4,i,i,i,i,i,i,i,i,${_PROCFUNC_WSTRING})i .r2' ; $2 = PROCESSENTRY32W structure
 	; take system process snapshot in $3
 	System::Call 'kernel32::CreateToolhelp32Snapshot(i 2, i 0)i .r3'
 	IntCmp $3 -1 done
 		System::Call 'kernel32::Process32FirstW(i r3, i r2)i .r4'
 		IntCmp $4 0 endloop
 			loop:
-				System::Call '*$2(i,i,i,i,i,i,i,i,i,&w520 .r5)'
+				System::Call '*$2(i,i,i,i,i,i,i,i,i,${_PROCFUNC_WSTRING} .r5)'
 				StrCmp $5 $0 0 next_process
 					StrCpy $_LOGICLIB_TEMP 1
 					Goto endloop
