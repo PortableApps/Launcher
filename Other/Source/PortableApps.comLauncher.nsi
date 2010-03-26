@@ -342,6 +342,7 @@ Function PostPrimary      ;{{{1
 	${RunSegment} RegistryValueBackupDelete
 	${RunSegment} RegistryKeys
 	${RunSegment} RegistryCleanup
+	${RunSegment} Qt
 	${RunSegment} DirectoriesMove
 	${RunSegment} FilesMove
 	${RunSegment} DirectoriesCleanup
