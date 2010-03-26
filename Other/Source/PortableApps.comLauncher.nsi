@@ -207,8 +207,8 @@ ${!echo} "Specifying program details and setting options..."
 !endif
 
 Name "PortableApps.com Launcher"
-OutFile ${ROOT}\${AppID}.exe
-Icon ${ROOT}\App\AppInfo\appicon.ico
+OutFile "${ROOT}\${AppID}.exe"
+Icon "${ROOT}\App\AppInfo\appicon.ico"
 Caption "PortableApps.com Launcher"
 VIProductVersion ${Version}
 VIAddVersionKey ProductName "${Name}"

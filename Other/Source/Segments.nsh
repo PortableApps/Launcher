@@ -93,5 +93,5 @@
 ; Include the segments {{{1
 !include Segments\*.nsh
 !ifdef PACKAGE
-	!include /nonfatal ${PACKAGE}\Other\Source\PortableApps.comLauncherCustom.nsh
+	!include /nonfatal "${PACKAGE}\Other\Source\PortableApps.comLauncherCustom.nsh"
 !endif
