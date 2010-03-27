@@ -46,7 +46,7 @@ ${Segment.onInit} ; {{{1
 						${Else}
 							StrCpy $R9 "Given 'changed credentials' status code but unknown values ($$2=$2, $$3=$3)"
 						${EndIf}
-					${Case} 1233
+					${Case} 1223
 						StrCpy $R9 "Failed to elevate to admin (cancelled)."
 					${Case} 1062
 						StrCpy $R9 "Failed to elevate to admin (Windows logon service was unavailable)."
@@ -75,7 +75,7 @@ ${Segment.onInit} ; {{{1
 					${EndIf}
 					; If we're still here, we'll fall through as there's no ${Break}
 				; Explicitly failed to get admin {{{3
-				${CaseUACCodeAlert} 1233 \
+				${CaseUACCodeAlert} 1223 \
 					"$(LauncherRequiresAdmin)" \
 					"$(LauncherNotAdminLimitedFunctionality)"
 				; Windows logon service unavailable {{{3
