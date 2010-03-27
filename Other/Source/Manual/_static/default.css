@@ -14,7 +14,7 @@ input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;
 input,textarea,select{*font-size:100%;}
 legend{color:#000;}
 table{font-size:inherit;font:100%;}
-pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%;}
+pre,code,kbd,samp,tt{font-family:Courier New,Courier,monospace;*font-size:108%;line-height:100%;}
 
 body {
 	margin: 20px;
@@ -257,7 +257,6 @@ table.docutils { border-collapse:collapse; }
 
 /*** code blocks ***/
 .literal { white-space:nowrap; }
-.literal { /*color:#600b0b;*/ font-weight: bold; background-color: #e6e8ea; }
 h1 .literal, h2 .literal, h3 .literal, h4 .literal, h5 .literal, h6 .literal { color: inherit; }
 pre { font-size:small; background:#fee8e8; border:1px solid #f09090; border-width:1px 0; margin: 1em 0; padding: .3em .4em; overflow: auto; line-height: 1.3em;}
 dt .literal, table .literal { background:none; }
