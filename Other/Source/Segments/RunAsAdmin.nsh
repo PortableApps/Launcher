@@ -84,7 +84,7 @@ ${Segment.onInit} ; {{{1
 					"$(LauncherNotAdminLimitedFunctionality)"
 				; Other error, not sure what {{{3
 				${CaseUACCodeAlert} "" \
-					"$(LauncherAdminError)$\r$\n$(LauncherNotAdminLimitedFunctionality)" \
+					"$(LauncherAdminError)$\r$\n$(LauncherRequiresAdmin)" \
 					"$(LauncherAdminError)$\r$\n$(LauncherNotAdminLimitedFunctionality)"
 			${EndSwitch}
 
