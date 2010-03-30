@@ -31,7 +31,15 @@ General
       :term:`PortableApps.com` for various products including the
       :term:`PortableApps.com Launcher`. `NSIS Portable
       <http://portableapps.com/apps/development/nsis_portable>`_ is available
-      as an official release from PortableApps.com.
+      as an official release from PortableApps.com. :term:`Unicode NSIS` is now
+      the preferred build of NSIS for usage at PortableApps.com.
+
+   Unicode NSIS
+      A Unicode build of :term:`NSIS`, available from `scratchpaper.com
+      <http://scratchpaper.com>`. It is now recommended that you build the
+      PortableApps.com Launcher with Unicode NSIS. `Unicode NSIS Portable
+      <http://portableapps.com/node/21879>` is available as a :term:`Development
+      Test` release at PortableApps.com.
 
    Environment variable
       An environment variable is a dynamic system variable. The
