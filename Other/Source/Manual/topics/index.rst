@@ -11,6 +11,6 @@ to know, and useful information about techniques:
 
    install
    splashscreen
+   registry
    java
-   segments
-   debug
+   qt

@@ -162,6 +162,7 @@ htmlhelp_basename = 'palmanual'
 
 rst_epilog = """
 .. |envsub| replace:: :ref:`ref-envsub` apply.
+.. |inikeyint| replace:: Key names are consecutive integers, starting at 1 (i.e. ``1``, ``2``, ``3``, etc.)
 """
 
 # -- Options for LaTeX output --------------------------------------------------

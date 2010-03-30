@@ -10,6 +10,7 @@ Table of Contents
    intro/index
    topics/index
    ref/index
+   advanced/index
    glossary
 
 You may also find the :ref:`genindex` useful.

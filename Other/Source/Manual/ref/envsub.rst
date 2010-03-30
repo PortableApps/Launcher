@@ -17,6 +17,67 @@ For the purposes of this page, the portable application in question is
 installed to ``X:\PortableApps\AppNamePortable`` and last ran from the drive
 ``W:``.
 
+These values can be used in any values marked "|envsub|". Other environment
+variables can also be used, but any directory variables will not have the
+alternative forms provided for these specific variables.
+
+.. _ref-envsub-drive:
+
+Drive variables
+===============
+
+These are a few variables for drive letter updating. In Live mode, these are the
+location of the portable device from which the application was run, *not* the
+application or data directory if :ini-key:`[LiveMode]:CopyApp` is set.
+
+Note that you cannot guarrantee the case that this variable will be in. It may
+be lower or upper case.
+
+.. env:: PAL:Drive
+
+PAL:Drive
+---------
+
+The drive letter including a colon from which the portable application is
+running.
+  
+**Example:** ``X:``
+
+.. env:: PAL:LastDrive
+
+PAL:LastDrive
+-------------
+
+The drive letter including a colon from which the portable application ran last.
+
+**Example:** ``W:``
+
+.. env:: PAL:DriveLetter
+
+PAL:DriveLetter
+---------------
+
+The drive letter from which the portable application is running, without a
+colon. Useful with :ini-section:`[FileWriteN]` find and replace where the colon
+is not included in the path, e.g.  ``file:////%PAL:DriveLetter%/`` for
+``file:////X/`` or even ``%PAL:DriveLetter%\:/`` for ``X\:/``.
+
+**Example:** ``X``
+
+.. env:: PAL:LastDriveLetter
+
+PAL:LastDriveLetter
+-------------------
+
+The drive letter from which the portable application ran last. Useful with
+:ini-section:`[FileWriteN]` find and replace where the colon is not included in
+the path, e.g.  ``file:////%PAL:LastDriveLetter%/`` for ``file:////X/`` or even
+``%PAL:LastDriveLetter%\:/`` for ``X\:/``.
+
+**Example:** ``W``
+
+.. _ref-envsub-directory:
+
 Directory variables
 ===================
 
@@ -26,6 +87,8 @@ example, when dealing directly with Windows paths must be separated by a
 backslash (``\``), while with various other applications, for example
 applications ported from Linux, a forward slash (``/``) is often needed, or
 even a double backslash (``\\``), or something else.
+
+.. _ref-envsub-java.util.prefs:
 
 One complex example is with Java applications that use ``java.util.prefs`` to
 store their settings; ``java.util.prefs`` stores settings in the registry, but
@@ -60,10 +123,174 @@ Now on to the environment variables themselves.
 PAL:AppDir
 ----------
 
-:env:`PAL:AppDir` is set to the App directory which contains the
+:env:`!PAL:AppDir` is set to the App directory which contains the
 application.
 
 When Live mode is not enabled, this will be
 ``X:\PortableApps\AppNamePortable\App`` and when Live mode is enabled it will
 be ``%TEMP%\AppNamePortableLive\App`` unless :ini-key:`[LiveMode]:CopyApp` is
 set to ``false``.
+
+.. env:: PAL:DataDir
+
+PAL:DataDir
+-----------
+
+:env:`!PAL:DataDir` is set to the Data directory which contains the
+portable application's data.
+
+When Live mode is not enabled, this will be
+``X:\PortableApps\AppNamePortable\Data`` and when Live mode is enabled it will
+be ``%TEMP%\AppNamePortableLive\App`` unless :ini-key:`[LiveMode]:CopyApp` is
+set to ``false``.
+
+
+.. env:: JAVA_HOME
+
+JAVA_HOME
+---------
+
+:env:`!JAVA_HOME` is set to the location of Java when found, not including
+"bin". This will be the Java Portable directory, e.g.
+``X:\PortableApps\CommonFiles\Java``, or some local installation, e.g.
+``C:\Program Files\Java``.
+
+This variable will only be available with :ini-key:`[Activate]:Java` set to
+``find`` or ``require``, but if it is ``find``, it may not exist (for
+``require`` the launcher will abort if Java is not found).
+
+.. env:: PortableApps.comDocuments
+
+PortableApps.comDocuments
+-------------------------
+
+The PortableApps.com Documents directory, normally ``X:\Documents``. There is no
+guarrantee that this directory will exist.
+
+.. env:: PortableApps.comPictures
+
+PortableApps.comPictures
+------------------------
+
+The PortableApps.com Pictures directory, normally ``X:\Documents\Pictures``. There is no
+guarrantee that this directory will exist.
+
+.. env:: PortableApps.comMusic
+
+PortableApps.comMusic
+---------------------
+
+The PortableApps.com Music directory, normally ``X:\Documents\Music``. There is no
+guarrantee that this directory will exist.
+
+.. env:: PortableApps.comVideos
+
+PortableApps.comVideos
+----------------------
+
+The PortableApps.com Videos directory, normally ``X:\Documents\Videos``. There is no
+guarrantee that this directory will exist.
+
+.. env:: PAL:PortableAppsDir
+
+PAL:PortableAppsDir
+-------------------
+
+The PortableApps.com applications directory, normally ``X:\PortableApps``. This
+is the parent directory of the portable application package.
+
+.. env:: USERPROFILE
+
+USERPROFILE
+-----------
+
+A local variable for copying to and from, e.g. ``C:\Documents and
+Settings\Username`` on XP and 2000, ``C:\Users\Username`` on Vista.
+
+.. env:: ALLUSERSPROFILE
+
+ALLUSERSPROFILE
+---------------
+
+A local variable for copying to and from, e.g. ``C:\Documents and Settings\All
+Users`` on XP and 2000, ``C:\ProgramData`` on Vista.
+
+.. env:: LOCALAPPDATA
+
+LOCALAPPDATA
+------------
+
+A local variable for copying to and from, e.g. ``C:\Documents and
+Settings\Username\Local Settings\Application Data`` on XP and 2000,
+``C:\Users\Username\AppData\Local`` on Vista.
+
+.. env:: APPDATA
+
+APPDATA
+-------
+
+A local variable for copying to and from, e.g. ``C:\Documents and
+Settings\Username\Application Data`` on XP and 2000,
+``C:\Users\Username\AppData\Roaming`` on Vista.
+
+.. env:: DOCUMENTS
+
+DOCUMENTS
+---------
+
+A local variable for copying to and from, e.g. ``C:\Documents and
+Settings\Username\My Documents`` on XP and 2000, ``C:\Users\Username\Documents``
+on Vista.
+
+.. env:: TEMP
+
+TEMP
+----
+
+The temporary directory which the application will be given. If a contained
+temporary directory is assigned, this will be the assigned one.
+
+
+.. _ref-envsub-language:
+
+Language variables
+==================
+
+These variables are for language switching. Particularly of interest is
+%PAL:LanguageCustom%.
+
+.. env:: PortableApps.comLanguageCode
+
+* **PortableApps.comLanguageCode** -- e.g. "en", "pt", "pt-br"
+
+.. env:: PortableApps.comLocaleCode2
+
+* **PortableApps.comLocaleCode2** -- e.g. "en", "pt", "pt"
+
+.. env:: PortableApps.comLocaleCode3
+
+* **PortableApps.comLocaleCode3** -- e.g. "eng", "por", "por"
+
+.. env:: PortableApps.comLocaleglibc
+
+* **PortableApps.comLocaleglibc** -- e.g. "en_US", "pt", "pt_BR"
+
+.. env:: PortableApps.comLocaleID
+
+* **PortableApps.comLocaleID** -- e.g. "1033", "2070", "1046"
+
+.. env:: PortableApps.comLocaleWinName
+
+* **PortableApps.comLocaleWinName** -- e.g. "LANG_ENGLISH", "LANG_PORTUGUESE",
+  "LANG_PORTUGUESEBR"
+
+.. env:: PortableApps.comLocaleName
+
+* **PortableApps.comLocaleName** -- e.g. "English", "Portuguese", "PortugueseBR"
+  (note: these will be upper case until implemented in the PortableApps.com
+  Platform)
+
+.. env:: PAL:LanguageCustom
+
+* **PAL:LanguageCustom** -- a custom variable constructed in the
+  :ini-section:`[Language]` and :ini-section:`[LanguageStrings]` sections.
