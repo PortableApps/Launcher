@@ -85,7 +85,6 @@ ${SegmentPreExecPrimary}
 !macroend
 
 ${SegmentUnload}
-	FileClose $_FEIP_FileHandle
 	Delete $PLUGINSDIR\launcher.ini
 	ReadINIStr $0 $DataDirectory\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher PluginsDir
 	${If}    $0 != ""
