@@ -7,9 +7,6 @@ You can find specific things by looking in the :ref:`index <genindex>`, the
 :ref:`complete table of contents <contents>`, the :ref:`glossary <glossary>`,
 and by searching.
 
-**This documentation is far from complete. For the moment, you should probably
-refer to help.html instead.**
-
 Contents:
 
 Starting using the PortableApps.com Launcher
@@ -24,6 +21,9 @@ Starting using the PortableApps.com Launcher
 * **How to handle:**
   :ref:`topics-java` |
   :ref:`topics-qt`
+
+* **Examples:**
+  :ref:`intro-examples-7-zip`
 
 Advanced topics
 ---------------

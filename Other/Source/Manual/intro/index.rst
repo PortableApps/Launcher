@@ -11,3 +11,4 @@ to help you get started making things portable quickly.
 
    overview
    ask
+   examples/index

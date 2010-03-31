@@ -65,6 +65,8 @@ Within the ``[Details]`` section:
 
 **Name** is the name of your app as it appears in the PortableApps.com Menu
 
+.. _ref-paf-appinfo-appid:
+
 **AppID** is the globally unique id for the application. Apps released by
 PortableApps.com or directly by the publisher of the regular version of the
 software will generally just be the name without spaces. Apps released by other
