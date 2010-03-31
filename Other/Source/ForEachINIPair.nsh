@@ -26,6 +26,7 @@ Var _FEIP_Char
 
 	${IfNot} ${Errors} ; right section
 		${Do}
+			ClearErrors
 			FileRead $_FEIP_FileHandle $_FEIP_Line
 
 			StrCpy $_FEIP_LineLength $_FEIP_Line 1
