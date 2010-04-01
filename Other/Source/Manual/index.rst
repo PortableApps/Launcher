@@ -20,10 +20,19 @@ Starting using the PortableApps.com Launcher
   :ref:`ref-paf`
 * **How to handle:**
   :ref:`topics-java` |
-  :ref:`topics-qt`
-
+  :ref:`topics-qt` |
+  :ref:`topics-registry` |
+  :ref:`topics-games`
 * **Examples:**
   :ref:`intro-examples-7-zip`
+
+General
+-------
+
+* **Topics:**
+  :ref:`intro-index` |
+  :ref:`topics-index` |
+  :ref:`ref`
 
 Advanced topics
 ---------------

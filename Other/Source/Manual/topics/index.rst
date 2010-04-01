@@ -14,3 +14,4 @@ to know, and useful information about techniques:
    registry
    java
    qt
+   games

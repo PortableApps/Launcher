@@ -17,8 +17,6 @@ launcher.ini
    language
    services
 
-.. TODO: FilesMove onwards
-
 .. admonition:: What is launcher.ini?
 
    The PortableApps.com Launcher is a universal launcher; it can make almost
