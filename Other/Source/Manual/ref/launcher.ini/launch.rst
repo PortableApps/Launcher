@@ -247,10 +247,10 @@ Use this value with extreme caution. No-one likes a splash screen staying on top
 of their screen for a minute and a half, stopping them from seeing what they
 were doing underneath.
 
-.. ini-key:: [Launch]:LaunchAfterSplashScreen
+.. ini-key:: [Launch]:LaunchAppAfterSplash
 
-LaunchAfterSplashScreen
------------------------
+LaunchAppAfterSplash
+--------------------
 
 | Values: ``true`` / ``false``
 | Default: ``false``
