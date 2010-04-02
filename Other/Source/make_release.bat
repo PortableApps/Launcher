@@ -19,7 +19,6 @@ echo Building the PortableApps.com Launcher Manual...
 	:: html
 		%SPHINXBUILD% -b html %ALLSPHINXOPTS% ../../../App/Manual
 	:: partial clean
-		rmdir /q /s "%PAL%\App\Manual\_sources"
 		del /q "%PAL%\App\Manual\.buildinfo"
 		del /q "%PAL%\App\Manual\objects.inv"
 		rmdir /q /s _build

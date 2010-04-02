@@ -34,7 +34,6 @@ if "%1" == "release" ( :: clean, html, partial clean
 	:: html
 	%SPHINXBUILD% -b html %ALLSPHINXOPTS% ../../../App/Manual
 	:: partial clean
-	rmdir /q /s ..\..\..\App\Manual\_sources
 	del /q ..\..\..\App\Manual\.buildinfo
 	del /q ..\..\..\App\Manual\objects.inv
 	rmdir /q /s _build
