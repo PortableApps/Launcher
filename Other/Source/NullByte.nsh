@@ -1,7 +1,7 @@
 /*
 _____________________________________________________________________________
 
-                      NullByte.nhs v0.2
+                      NullByte.nhs v0.3
 _____________________________________________________________________________
 
  2010 Mark Sikkema aka gringoloco
@@ -10,10 +10,15 @@ _____________________________________________________________________________
 _____________________________________________________________________________
 ;=== instructions
 
-${CreateHandle} [HANDLE_OUT]			;creates a handle to a buffer
-${FreeHandle} [HANDLE_IN]			;frees the buffer
-${WriteNullString} [HANDLE_IN] "[STRING_IN]"	;writes the string to the buffer and replaces all delimiters with a null byte
-${ReadNullString} [HANDLE_IN] "[STRING_OUT]"	;reads the string from the buffer and replaces all null bytes with the delimiters
+${CreateBuffer} [HANDLE_OUT] [length (in chars)]	;creates a handle of the given length (in TCHARS, WCHARS for NSISu) to a buffer
+${FreeBuffer} [HANDLE_IN]				;frees the buffer
+${WriteNullString} [HANDLE_IN] "[STRING_IN]"		;writes the string to the buffer and replaces all delimiters with a null byte
+${ReadNullString} [HANDLE_IN] "[STRING_OUT]"		;reads the string from the buffer and replaces all null bytes with the delimiters
+
+There is also a LogicLib-style way of reading null-separated strings:
+  ${ForEachValueInNullSeparatedString} [HANDLE] [STRING_OUT]
+  ${NextValueInNullSeparatedString}
+
 BTW: You are able to re-write to the same buffer again and again, without the need to re-create it
 _____________________________________________________________________________
 ;=== example script
@@ -29,7 +34,7 @@ VAR STRING
 Section "Main"
 StrCpy $STRING "test1${\0}test2${\0}test3"
 
-${CreateHandle} $HANDLE
+${CreateBuffer} $HANDLE ${NSIS_MAX_STRLEN}
 
 ${WriteNullString} $HANDLE "$STRING"
 
@@ -47,14 +52,14 @@ ${ReadNullString} $HANDLE $9
 Messagebox MB_OK "Reversed the string:$\n$9$\nand wrote the buffer to the registry, please check...$\nHKCU\Software\Test$\nPress OK to delete the key."
 DeleteRegKey HKCU "Software\Test"
 
-${FreeHandle} $HANDLE
+${FreeBuffer} $HANDLE
 SectionEnd
 
 */
 ;_____________________________________________________________________________
 ;=== defines & includes
 
-!ifndef CreateHandle
+!ifndef CreateBuffer
 !ifndef LOGICLIB
 	!include LogicLib.nsh
 !endif
@@ -64,19 +69,19 @@ SectionEnd
 !ifndef NSIS_CHAR_SIZE
 	!define NSIS_CHAR_SIZE 1
 !endif
-!define CreateHandle '!insertmacro "CreateHandle"'
-!define FreeHandle '!insertmacro "FreeHandle"'
-!define WriteNullString '!insertmacro "WriteNullString"'
-!define ReadNullString '!insertmacro "ReadNullString"'
+!define CreateBuffer '!insertmacro CreateBuffer'
+!define FreeBuffer '!insertmacro FreeBuffer'
+!define WriteNullString '!insertmacro WriteNullString'
+!define ReadNullString '!insertmacro ReadNullString'
 ;_____________________________________________________________________________
 ;=== macros
 
-!macro CreateHandle HANDLE
-System::Call /NOUNLOAD "*(&t${NSIS_MAX_STRLEN}) i.s"
+!macro CreateBuffer HANDLE LENGTH
+System::Call /NOUNLOAD "*(&t${LENGTH}) i.s"
 Pop ${HANDLE}
 !macroend
 
-!macro FreeHandle HANDLE
+!macro FreeBuffer HANDLE
 System::Free /NOUNLOAD ${HANDLE}
 !macroend
 
@@ -141,13 +146,13 @@ Var _NB_StrLen
 	${Do}
 		System::Call /NOUNLOAD "*$_NB_Index(&t${NSIS_MAX_STRLEN} .s)"	;read first/next string
 		Pop ${STRING}
-		${IfThen} ${STRING} == "" ${|} ${Break} ${|}		;found double null, no more strings
+		${IfThen} ${STRING} == "" ${|} ${Break} ${|}			;found double null, no more strings
 		StrLen $_NB_StrLen ${STRING}
 !macroend
 
 !macro NextValueInNullSeparatedString
 		IntOp $_NB_StrLen $_NB_StrLen * ${NSIS_CHAR_SIZE}	;unicode nsis compatible
-		IntOp $_NB_Index $_NB_Index + $_NB_StrLen			;go to end of (separated) string
+		IntOp $_NB_Index $_NB_Index + $_NB_StrLen		;go to end of (separated) string
 		IntOp $_NB_Index $_NB_Index + ${NSIS_CHAR_SIZE}		;skip the null byte
 	${Loop}
 !macroend

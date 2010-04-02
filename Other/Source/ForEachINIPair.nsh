@@ -1,12 +1,11 @@
 !include NullByte.nsh
 
 Var _FEIP_Buffer
-Var _FEIP_CharNum
 Var _FEIP_Char
+Var _FEIP_CharNum
 
 ; At points I reuse variables as temporary variables:
 ; {VALUE}       = line contents
-; {KEY}         = GetPrivateProfileSection buffer length
 ; _FEIP_CharNum = first char (in the quoted
 ; _FEIP_Char    = last char   string check)
 
@@ -16,22 +15,17 @@ Var _FEIP_Char
 	!endif
 	!define _ForEachINIPair_Open
 
-	${CreateHandle} $_FEIP_Buffer
-	System::Call "kernel32::GetPrivateProfileSection(t'${SECTION}',i$_FEIP_Buffer,i${NSIS_MAX_STRLEN},t'$LauncherFile')i.s"
-	Pop ${KEY}
-	IntOp $_FEIP_Char 2 * ${NSIS_CHAR_SIZE}
-	IntOp ${KEY} ${KEY} + $_FEIP_Char
-
-	; Just to make sure
-	${If} ${KEY} = ${NSIS_MAX_STRLEN}
-		MessageBox MB_ICONSTOP "$LauncherFile section ${SECTION} is too long to read!  Please contact Chris Morgan to explain your situation and ask for help."
-	${EndIf}
+	!ifndef _ForEachINIPair_BufferOpen
+	${CreateBuffer} $_FEIP_Buffer 32768
+	!define _ForEachINIPair_BufferOpen
+	!endif
+	System::Call "kernel32::GetPrivateProfileSection(t'${SECTION}',i$_FEIP_Buffer,i32768,t'$LauncherFile')"
 
 	${ForEachValueInNullSeparatedString} $_FEIP_Buffer ${VALUE}
-		; GetPrivateProfileSection guarrantees there will be an = on each line
 		StrCpy $_FEIP_CharNum 0
 		${Do}
 			StrCpy $_FEIP_Char ${VALUE} 1 $_FEIP_CharNum
+			${IfThen} $_FEIP_Char == ''  ${|} ${ExitDo} ${|}
 			${IfThen} $_FEIP_Char == '=' ${|} ${ExitDo} ${|}
 			IntOp $_FEIP_CharNum $_FEIP_CharNum + 1
 		${Loop}
@@ -59,7 +53,7 @@ Var _FEIP_Char
 	!endif
 	!undef _ForEachINIPair_Open
 	${NextValueInNullSeparatedString}
-	${FreeHandle} $_FEIP_Buffer
+	;${FreeBuffer} $_FEIP_Buffer
 !macroend
 
 !define ForEachINIPair '!insertmacro ForEachINIPair'
