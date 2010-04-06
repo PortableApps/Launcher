@@ -27,6 +27,12 @@ hives supported by the PortableApps.com Launcher:
 The official format for hives is the four-letter abbreviation (``HKLM`` or
 ``HKCU``) instead of the long name.
 
+**A note on HKEY_USERS (HKU)**: programs like Regshot use the full path to
+HKEY_CURRENT_USER, which includes the user ID. This means that anything like
+``HKU\S-?-?-??-?????????-?????????-?????????-????`` (each ``?`` is a number)
+should be used as ``HKCU``. There is also ``HKU\.DEFAULT`` which is the same as
+far as portability is concerned.
+
 Keys and values to ignore
 =========================
 
@@ -37,12 +43,17 @@ an application portable or when testing an application.
 
 These keys may be in either HKCU or HKLM.
 
-* ``Software\Microsoft\Windows\ShellNoRoam\MUICache``
 * ``SessionInformation\ProgramCount``
-* ``SOFTWARE\Microsoft\DirectDraw\MostRecentApplication``
-* ``SOFTWARE\Microsoft\Cryptography\RNG\Seed``
-* ``SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy``
-* ``SYSTEM\ControlSet001\Control\DeviceClasses``
+* ``Software\Microsoft\Cryptography\RNG\Seed``
+* ``Software\Microsoft\DirectDraw\MostRecentApplication``
+* ``Software\Microsoft\DirectInput\MostRecentApplication``
+* ``Software\Microsoft\SchedulingAgent``
+* ``Software\Microsoft\Windows\CurrentVersion\Group Policy``
+* ``Software\Microsoft\Windows\ShellNoRoam\MUICache``
+* ``System\ControlSet001`` (equivalent to ``System\CurrentControlSet``)
+* ``System\CurrentControlSet\Control\DeviceClasses``
+* ``System\CurrentControlSet\Services\SharedAccess``
+* ``System\CurrentControlSet\Services\swmidi``
 
 Specific registry keys
 ======================
