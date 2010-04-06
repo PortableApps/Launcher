@@ -4,6 +4,7 @@ ${Segment.onInit}
 	ReadEnvStr $0 PortableApps.comLocaleID
 	${Switch} $0
 		${Case} 1033 ; English
+		${Case} 1026 ; Bulgarian
 		${Case} 1036 ; French
 		${Case} 1043 ; Dutch
 		${Case} 1031 ; German
