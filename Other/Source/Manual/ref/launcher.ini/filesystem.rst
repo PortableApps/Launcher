@@ -12,6 +12,10 @@ portable data directory (AppNamePortable\\Data).
 The *target directory* is the full path to the directory the file is copied to
 during the program execution. Do not include the file name. |envsub|
 
+If the target directory already exists at the start of the process, it will be
+backed up (to *target directory*\ \\\ *file name*-BackupBy\ *AppID*) and
+restored at the end.
+
 Wildcards are not yet supported.
 
 **Example:** ``settings\file.txt=%PAL:AppDir%\AppName``
@@ -30,6 +34,9 @@ portable data directory (AppNamePortable\\Data).
 The *target location* includes the directory you want it to go to, so
 ``%PAL:DataDir%\[directory]\*.*`` gets copied to ``[target location]\*.*``.
 |envsub|
+
+If the target directory already exists at the start of the process, it will be
+backed up (to *target location*-BackupBy\ *AppID*) and restored at the end.
 
 Wildcards are not yet supported.
 
