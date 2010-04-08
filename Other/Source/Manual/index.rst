@@ -17,6 +17,7 @@ Starting using the PortableApps.com Launcher
   :ref:`topics-install`
 * **Reference:**
   :ref:`ref-launcher.ini` |
+  :ref:`ref-envsub` |
   :ref:`ref-paf`
 * **How to handle:**
   :ref:`topics-java` |
