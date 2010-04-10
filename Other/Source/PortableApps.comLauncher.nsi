@@ -83,6 +83,7 @@ ${IncludeLang} English
 ${IncludeLang} Bulgarian
 ${IncludeLang} Dutch
 ${IncludeLang} French
+${IncludeLang} Galician
 ${IncludeLang} German
 ${IncludeLang} Italian
 ${IncludeLang} Japanese

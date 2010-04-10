@@ -7,6 +7,7 @@ ${Segment.onInit}
 		${Case} 1026 ; Bulgarian
 		${Case} 1036 ; French
 		${Case} 1043 ; Dutch
+		${Case} 1110 ; Galician
 		${Case} 1031 ; German
 		${Case} 1040 ; Italian
 		${Case} 1041 ; Japanese
