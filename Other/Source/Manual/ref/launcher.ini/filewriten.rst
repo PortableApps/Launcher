@@ -62,7 +62,7 @@ quotes.
 Section
 -------
 
-| Mandatory for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``ConfigWrite``.
+| Mandatory for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``INI``.
 
 ----
 
@@ -73,7 +73,7 @@ The INI section to write the value to.
 Key
 ---
 
-| Mandatory for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``ConfigWrite``.
+| Mandatory for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``INI``.
 
 ----
 
@@ -96,7 +96,7 @@ The value which will be written to the file. If dealing with :ini-key:`Type <[Fi
 Find
 ----
 
-| Mandatory for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``ConfigWrite``.
+| Mandatory for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``Replace``.
 | |envsub|
 
 ----
