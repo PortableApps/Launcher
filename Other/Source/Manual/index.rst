@@ -23,6 +23,7 @@ Starting using the PortableApps.com Launcher
   :ref:`topics-java` |
   :ref:`topics-qt` |
   :ref:`topics-registry` |
+  :ref:`topics-languages` |
   :ref:`topics-games`
 * **Examples:**
   :ref:`intro-examples-7-zip`

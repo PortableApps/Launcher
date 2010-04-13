@@ -10,6 +10,9 @@ developer and manipulate values in the way specified to produce the environment
 variable :env:`%PAL:LanguageCustom% <PAL:LanguageCustom>` in the end which can
 be used in any values in the rest of the file marked "|envsub|".
 
+Details on how this is constructed are available in the document
+:ref:`topics-languages-custom`.
+
 .. ini-key:: [Language]:Base
 
 Base
