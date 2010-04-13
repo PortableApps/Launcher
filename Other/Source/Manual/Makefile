@@ -11,7 +11,7 @@ PAPEROPT_a4     = -D latex_paper_size=a4
 PAPEROPT_letter = -D latex_paper_size=letter
 ALLSPHINXOPTS   = -d _build/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
-.PHONY: help clean html dirhtml pickle json htmlhelp qthelp latex changes linkcheck doctest
+.PHONY: help release clean html dirhtml pickle json htmlhelp qthelp latex changes linkcheck doctest
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -25,6 +25,18 @@ help:
 	@echo "  changes   to make an overview of all changed/added/deprecated items"
 	@echo "  linkcheck to check all external links for integrity"
 	@echo "  doctest   to run all doctests embedded in the documentation (if enabled)"
+
+release:
+	@# clean
+	-rm -rf _build
+	-rm -rf ../../../App/Manual
+	@# html
+	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) ../../../App/Manual
+	@# partial clean
+	-rm ../../../App/Manual/.buildinfo
+	-rm ../../../App/Manual/objects.inv
+	-rm -rf _build
+	-rm _ext/paldocs.pyc
 
 clean:
 	-rm -rf ../../../App/Manual/*

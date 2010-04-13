@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo "Building the PortableApps.com Launcher Manual..."
+	cd Manual
+	make release
+	cd ..
+
+echo "Building the PortableApps.com Launcher Generator..."
+	makensisu GeneratorWizard.nsi
+
+echo "Building the PortableApps.com Launcher..."
+	cd ../..
+	chmod +x PortableApps.comLauncherGenerator.exe
+	PortableApps.comLauncherGenerator.exe "`winepath -w $PWD`"
+
+echo "Building the PortableApps.com Launcher installer..."
+	paiu $PWD
+
+# go back where we started
+cd Other/Source
+echo "Done!"
