@@ -222,7 +222,7 @@ VIAddVersionKey FileVersion ${Version}
 VIAddVersionKey ProductVersion ${Version}
 VIAddVersionKey InternalName "PortableApps.com Launcher"
 VIAddVersionKey LegalTrademarks "PortableApps.com is a Trademark of Rare Ideas, LLC."
-VIAddVersionKey OriginalFilename ${AppID}.exe
+VIAddVersionKey OriginalFilename "${AppID}.exe"
 
 !verbose 4
 
