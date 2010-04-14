@@ -352,6 +352,8 @@ NoSpacesInPath
 | Default: ``false``
 | Optional.
 
+----
+
 If the application will not function if you try to run it in a directory with
 spaces in the path, you can set this to true to provide a useful error message
 to the user in this situation.
