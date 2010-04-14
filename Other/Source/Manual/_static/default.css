@@ -209,7 +209,7 @@ a:link, a:visited { color:#b31616; font-weight: bold; }
 .sphinxsidebar h3 a:link, .sphinxsidebar h3 a:visited { font-weight: bold; }
 a:hover { color:#f00; text-decoration: underline; }
 h2 a, h3 a, h4 a { text-decoration:none !important; }
-a.reference em { font-style: normal; font-weight: bold; }
+/*a.reference em { font-style: normal; font-weight: bold; }*/
 
 /*** basic styles ***/
 dd { margin-left:15px; }
@@ -296,6 +296,32 @@ div#contents ul ul li { margin-top: 0.3em;}
 .footer:hover a:link, .footer:hover a:visited, .header:hover a:link, .header:hover a:visited { color:#d0d0d0; }
 .footer:hover a:hover, .header:hover a:hover { color:#fff; }
 #global-nav { float: right; margin-top: 8px; }
+
+/*** line blocks (lines starting with |; used for details like "Optional", values) ***/
+.line-block {
+	/*background-color: #e6e8ea;*/
+  background-image: -moz-linear-gradient(top, #e6e8ea, #f6f8fa); /* FF3.6 */
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #e6e8ea),color-stop(1, #f6f8fa)); /* Saf4+, Chrome */
+            filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#e6e8ea', EndColorStr='#f6f8fa'); /* IE6,IE7 */
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#e6e8ea', EndColorStr='#f6f8fa')"; /* IE8 */		  
+	padding: 0.6em 20px 0.3em 25px;
+	margin: -0.6em -20px 0 -25px; /* -0.6 instead of -0.4 because of h2's font-size: 1.5em */
+}
+
+/*** highlighting ***/
+.highlight {
+	background-color: #ff0;
+     -moz-border-radius: 4px 2px; /* FF1+ */
+  -webkit-border-radius: 4px 2px; /* Saf3+, Chrome */
+          border-radius: 4px 2px; /* Opera 10.5, IE 9 */
+     -moz-box-shadow: 0px 0px 6px #330; /* FF3.5+ */
+  -webkit-box-shadow: 0px 0px 6px #330; /* Saf3.0+, Chrome */
+          box-shadow: 0px 0px 6px #330; /* Opera 10.5, IE 9.0 */		  
+  background-image: -moz-linear-gradient(top, #ffff00, #bbbb00); /* FF3.6 */
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ffff00),color-stop(1, #bbbb00)); /* Saf4+, Chrome */
+            filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffff00', EndColorStr='#bbbb00'); /* IE6,IE7 */
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffff00', EndColorStr='#bbbb00')"; /* IE8 */		  
+}
 
 /*** Page overrides ***/
 #page-index h2 {
