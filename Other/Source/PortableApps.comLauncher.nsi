@@ -176,11 +176,13 @@ ${!echo} "Loading segments..."
 ;=== Program Details {{{1
 ${!echo} "Specifying program details and setting options..."
 
-!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" Version
 !ifndef Version
-	!define Version 1.9.9.3
-	!ifndef NSIS_UNICODE
-	!warning "Unable to get PortableApps.com Launcher version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value 1.9.9.3 instead."
+	!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" Version
+	!ifndef Version
+		!define Version 1.9.9.3
+		!ifndef NSIS_UNICODE
+		!warning "Unable to get PortableApps.com Launcher version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value 1.9.9.3 instead."
+		!endif
 	!endif
 !endif
 
@@ -220,7 +222,7 @@ VIAddVersionKey FileVersion ${Version}
 VIAddVersionKey ProductVersion ${Version}
 VIAddVersionKey InternalName "PortableApps.com Launcher"
 VIAddVersionKey LegalTrademarks "PortableApps.com is a Trademark of Rare Ideas, LLC."
-VIAddVersionKey OriginalFilename ${AppID}.exe
+VIAddVersionKey OriginalFilename "${AppID}.exe"
 
 !verbose 4
 
