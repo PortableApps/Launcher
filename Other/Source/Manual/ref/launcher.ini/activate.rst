@@ -14,6 +14,8 @@ Registry
 | Default: ``false``
 | Optional.
 
+----
+
 If the base application uses the registry, set this to true. **You MUST set this to true if you wish the registry sections to be parsed.** Otherwise they will not be read at all.
 
 .. ini-key:: [Activate]:Java
@@ -24,6 +26,8 @@ Java
 | Values: none, ``find`` or ``require``
 | Default: none
 | Optional.
+
+----
 
 If the application can use Java but does not depend on its being available, set this to ``find``, and a Java Runtime Environment (JRE) will be found if available, and the environment variable %JAVA_HOME% will become available for use.
 

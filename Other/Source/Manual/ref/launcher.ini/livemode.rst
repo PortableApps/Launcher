@@ -23,6 +23,8 @@ CopyApp
 | Default: ``true``
 | Optional.
 
+----
+
 When run in Live mode, does the application need to be run from a writable
 location? If yes, specify ``true``.
 
@@ -32,6 +34,8 @@ CopyData
 --------
 
 | Obsolete.
+
+----
 
 This option has been removed due to issues with the :env:`%PAL:DataDir%
 <PAL:DataDir>` replacement variable in file moving. Data will now always be

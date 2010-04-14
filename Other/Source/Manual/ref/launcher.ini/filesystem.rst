@@ -47,9 +47,11 @@ Wildcards are not yet supported.
 [DirectoriesCleanupIfEmpty]
 ===========================
 
-| |inikeyint|
-| |envsub|
-| Wildcards are not supported.
+|inikeyint|
+
+|envsub|
+
+Wildcards are not supported.
 
 ----
 
@@ -66,9 +68,11 @@ line in here.
 [DirectoriesCleanupForce]
 =========================
 
-| |inikeyint|
-| |envsub|
-| Wildcards are not supported.
+|inikeyint|
+
+|envsub|
+
+Wildcards are not supported.
 
 ----
 
