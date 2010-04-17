@@ -99,7 +99,6 @@ Var MissingFileOrPath
 Var AppNamePortable
 Var AppName
 Var ProgramExecutable
-Var Status
 
 ; Macro: check if in debug mode for the current section {{{1
 !macro !getdebug
@@ -390,8 +389,9 @@ FunctionEnd
 
 Section           ;{{{1
 	Call Init
-	ReadINIStr $Status $EXEDIR\Data\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher Status
-	${If} $Status != running
+	ReadINIStr $R9 $EXEDIR\Data\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher Status
+	${If} $R9 != running
+	${OrIf} $SecondaryLaunch == true
 		${CallPS} Pre +
 		${CallPS} PreExec +
 		WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher Status running
