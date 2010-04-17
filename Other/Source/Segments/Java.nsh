@@ -44,7 +44,7 @@ ${SegmentInit}
 				;=== Java Portable is missing
 				StrCpy $MissingFileOrPath Java
 				MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
-				Abort
+				Quit
 			${EndIf}
 			${IfThen} $ProgramExecutable == java.exe ${|} StrCpy $UsingJavaExecutable true ${|}
 			${IfThen} $ProgramExecutable == javaw.exe ${|} StrCpy $UsingJavaExecutable true ${|}

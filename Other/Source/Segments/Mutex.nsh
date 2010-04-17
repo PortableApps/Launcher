@@ -10,7 +10,7 @@ ${SegmentInit}
 		${ReadLauncherConfig} $0 Launch SinglePortableAppInstance
 		${If} $0 == true
 			${DebugMsg} "Launcher already running and [Launch]->SingleInstance=true: aborting."
-			Abort
+			Quit
 		${EndIf}
 		${DebugMsg} "Launcher already running: secondary launch."
 		StrCpy $SecondaryLaunch true
