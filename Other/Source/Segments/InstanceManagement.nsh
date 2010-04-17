@@ -1,10 +1,10 @@
 ${SegmentFile}
 
-!macro _InstanceManagement_AbortIfRunning
+!macro _InstanceManagement_QuitIfRunning
 	${If} $SecondaryLaunch != true
 	${AndIf} ${ProcessExists} $0
 		MessageBox MB_OK|MB_ICONSTOP `$(LauncherAlreadyRunning)`
-		Abort
+		Quit
 	${EndIf}
 !macroend
 
@@ -15,7 +15,7 @@ ${SegmentInit}
 		;=== Program executable not where expected
 		StrCpy $MissingFileOrPath App\$ProgramExecutable
 		MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
-		Abort
+		Quit
 	${EndIf}
 
 	;=== Check if application already running
@@ -23,13 +23,13 @@ ${SegmentInit}
 	${If} $0 != false
 	${AndIfNot} $UsingJavaExecutable == true
 		${GetFileName} $ProgramExecutable $0
-		!insertmacro _InstanceManagement_AbortIfRunning
+		!insertmacro _InstanceManagement_QuitIfRunning
 	${EndIf}
 
 	ClearErrors
 	${ReadLauncherConfig} $0 Launch CloseEXE
 	${IfNot} ${Errors}
-		!insertmacro _InstanceManagement_AbortIfRunning
+		!insertmacro _InstanceManagement_QuitIfRunning
 	${EndIf}
 
 	;=== Wait for program?

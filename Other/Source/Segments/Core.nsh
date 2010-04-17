@@ -14,7 +14,7 @@ ${Segment.onInit}
 		ReadEnvStr $EXEDIR PAL:PackageDir
 		${If} ${Errors}
 			MessageBox MB_OK|MB_ICONSTOP "$(LauncherNoUNCSupport)"
-			Abort
+			Quit
 		${EndIf}
 		${DebugMsg} "$$EXEDIR ($0) was a UNC path (due to the UAC plug-in), set $$EXEDIR to %PAL:PackageDir% which is $EXEDIR."
 	${Else}
@@ -34,7 +34,7 @@ ${Segment.onInit}
 		StrCpy $AppNamePortable "PortableApps.com Launcher"
 		StrCpy $MissingFileOrPath $EXEDIR\App\AppInfo\appinfo.ini
 		MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
-		Abort
+		Quit
 	${EndIf}
 
 	${ReadLauncherConfig} $AppName Launch AppName
@@ -68,14 +68,14 @@ ${SegmentInit}
 		;=== Launcher file missing or missing crucial details
 		StrCpy $MissingFileOrPath $LauncherFile
 		MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
-		Abort
+		Quit
 	${EndIf}
 	${ReadLauncherConfig} $0 Launch NoSpacesInPath
 	${If} $0 == true
 		${WordFind} $EXEDIR ` ` E+1 $R9
 		${IfNot} ${Errors} ; errors = space not found, no errors means space in path
 			MessageBox MB_OK|MB_ICONSTOP `$(LauncherNoSpaces)`
-			Abort
+			Quit
 		${EndIf}
 	${EndIf}
 !macroend
