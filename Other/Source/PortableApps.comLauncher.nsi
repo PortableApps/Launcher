@@ -88,6 +88,7 @@ ${IncludeLang} German
 ${IncludeLang} Italian
 ${IncludeLang} Japanese
 ${IncludeLang} SimpChinese
+${IncludeLang} Spanish
 !undef LANG_DIR
 
 ;=== Variables {{{1
