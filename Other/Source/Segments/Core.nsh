@@ -86,11 +86,13 @@ ${SegmentPreExecPrimary}
 
 ${SegmentUnload}
 	Delete $PLUGINSDIR\launcher.ini
-	ReadINIStr $0 $DataDirectory\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher PluginsDir
-	${If}    $0 != ""
-	${AndIf} $0 != $PLUGINSDIR
-		RMDir /r $0
+	${If} $SecondaryLaunch != true
+		ReadINIStr $0 $DataDirectory\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher PluginsDir
+		${If}    $0 != ""
+		${AndIf} $0 != $PLUGINSDIR
+			RMDir /r $0
+		${EndIf}
+		Delete $DataDirectory\PortableApps.comLauncherRuntimeData.ini
 	${EndIf}
-	Delete $DataDirectory\PortableApps.comLauncherRuntimeData.ini
 	System::Free 0
 !macroend
