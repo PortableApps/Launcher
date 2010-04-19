@@ -53,7 +53,7 @@ ${Segment.onInit} ; {{{1
 					${Default}
 						StrCpy $R9 "Unknown error (code $0)."
 				${EndSelect}
-				${DebugMsg} "UAC_RunElevated return values:$\n$$0=$0$\n$$1=$1$\n$$2=$2$\n$$3=$3$\n$\n$R9"
+				${DebugMsg} "UAC_RunElevated return values: $$0=$0, $$1=$1, $$2=$2, $$3=$3; $R9"
 			!endif
 
 			${Switch} $0

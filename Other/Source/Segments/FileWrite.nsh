@@ -16,10 +16,10 @@ ${SegmentPrePrimary}
 			${ReadLauncherConfig} $4 FileWrite$R0 CaseSensitive
 			${If} ${FileExists} $1
 				${If} $4 == true
-					${DebugMsg} "Writing configuration to a file with ConfigWriteS.$\nFile: $1$\nEntry: `$2`$\nValue: `$3`"
+					${DebugMsg} "Writing configuration to a file with ConfigWriteS.$\r$\nFile: $1$\r$\nEntry: `$2`$\r$\nValue: `$3`"
 					${ConfigWriteS} $1 $2 $3 $R9
 				${Else}
-					${DebugMsg} "Writing configuration to a file with ConfigWrite.$\nFile: $1$\nEntry: `$2`$\nValue: `$3`"
+					${DebugMsg} "Writing configuration to a file with ConfigWrite.$\r$\nFile: $1$\r$\nEntry: `$2`$\r$\nValue: `$3`"
 					${ConfigWrite} $1 $2 $3 $R9
 				${EndIf}
 			${EndIf}
@@ -30,7 +30,7 @@ ${SegmentPrePrimary}
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ParseLocations} $4
 			${If} ${FileExists} $1
-				${DebugMsg} "Writing INI configuration to a file.$\nFile: $1$\nSection: `$2`$\nKey: `$3`$\nValue: `$4`"
+				${DebugMsg} "Writing INI configuration to a file.$\r$\nFile: $1$\r$\nSection: `$2`$\r$\nKey: `$3`$\r$\nValue: `$4`"
 				WriteINIStr $1 $2 $3 $4
 			${EndIf}
 		${ElseIf} $0 == Replace
@@ -59,7 +59,7 @@ ${SegmentPrePrimary}
 						StrCpy $9 ``
 						${IfThen} $4 == true ${|} StrCpy $9 in ${|}
 					!endif
-					${DebugMsg} "Finding and replacing in $8 file (case $9sensitive).$\nFile: $1$\nFind: `$2`$\nReplace: `$3`"
+					${DebugMsg} "Finding and replacing in $8 file (case $9sensitive).$\r$\nFile: $1$\r$\nFind: `$2`$\r$\nReplace: `$3`"
 					${If} $5 == UTF-16LE
 						${If} $4 == true
 							${ReplaceInFileUTF16LECS} $1 $2 $3

@@ -23,7 +23,7 @@ ${SegmentPrePrimary}
 			${EndIf}
 		${Else}
 			CreateDirectory $1
-			${DebugMsg} "$DataDirectory\$0\*.* does not exist, so not copying it to $1.$\n(Note for developers: if you want default data, remember to put files in App\DefaultData\$0)"
+			${DebugMsg} "$DataDirectory\$0\*.* does not exist, so not copying it to $1.$\r$\n(Note for developers: if you want default data, remember to put files in App\DefaultData\$0)"
 		${EndIf}
 	${NextINIPair}
 !macroend

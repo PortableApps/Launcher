@@ -55,11 +55,11 @@
 		!endif
 		!ifdef _DebugMsg_OK
 			!ifdef Segment
-				!define _DebugMsg_Seg "$\n$\nSegment: ${Segment}$\nHook: ${__FUNCTION__}"
+				!define _DebugMsg_Seg "$\r$\n$\r$\nSegment: ${Segment}$\r$\nHook: ${__FUNCTION__}"
 			!else
 				!define _DebugMsg_Seg ""
 			!endif
-			MessageBox MB_OKCANCEL|MB_ICONINFORMATION "Debug message at line ${__LINE__}${_DebugMsg_Seg}$\n____________________$\n$\n${_MSG}" IDOK +2
+			MessageBox MB_OKCANCEL|MB_ICONINFORMATION "Debug message at line ${__LINE__}${_DebugMsg_Seg}$\r$\n____________________$\r$\n$\r$\n${_MSG}" IDOK +2
 				Abort
 			!undef _DebugMsg_Seg
 			!undef _DebugMsg_OK
