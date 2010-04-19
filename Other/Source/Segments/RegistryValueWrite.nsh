@@ -31,7 +31,7 @@ ${SegmentPrePrimary}
 
 			${ParseLocations} $1
 
-			${DebugMsg} "Writing '$1' (type '$4') to key '$2', value '$3'$\n(Short form: $2\$3=$4:$1)"
+			${DebugMsg} "Writing '$1' (type '$4') to key '$2', value '$3' (Short form: $2\$3=$4:$1)"
 			; key item value type return
 			${registry::Write} $2 $3 $1 $4 $R9
 		${NextINIPair}
