@@ -62,6 +62,10 @@ Here is the order in which things happen.
 **Note:** normally you will want to use only one of
 :ini-key:`[Language]:Default` and :ini-key:`[Language]:DefaultIfNotExists`.
 
+Here is a diagram of how it works:
+
+.. image:: languages-custom.png
+
 Other ways
 ----------
 
