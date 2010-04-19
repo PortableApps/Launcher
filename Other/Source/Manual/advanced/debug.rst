@@ -42,6 +42,23 @@ Here is a list of the debug flags available. See above for how to enable them.
    Show debug messages to announce when a :ref:`segment <advanced-segments>` is
    about to be executed and when it has finished.
 
+``DEBUG_OUTPUT`` (values: ``file``, ``messagebox``, nothing)
+
+   By default debugging will write its output to a file ``Data\debug.log`` in
+   the portable application package and show a message box which pauses
+   execution and allows you to terminate execution. If you want it to only log
+   to a file, set this to ``file``, like this::
+   
+      !define DEBUG_OUTPUT file
+
+   If you want to only show the message boxes, set this to ``messagebox``, like
+   this::
+
+      !define DEBUG_OUTPUT messagebox
+
+   Any other value will cause debugging messages to not be shown. If you want
+   both, leave this value out.
+
 To debug only certain :ref:`segments <advanced-segments>`, there are more flags:
 
 ``DEBUG_GLOBAL``
