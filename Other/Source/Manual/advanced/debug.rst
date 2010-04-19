@@ -21,7 +21,11 @@ turn on debugging.
 
 Remember to remove the debug file when doing release builds, or else people will
 end up with a build with debugging enabled, which is unlikely to be what you
-wanted. 
+wanted.
+
+Debug messages will be output to the screen in message boxes and to a file
+``Data\debug.log`` in your package unless otherwise specified by
+``DEBUG_OUTPUT`` below.
 
 .. _advanced-debug-flags:
 
