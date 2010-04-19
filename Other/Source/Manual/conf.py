@@ -15,7 +15,13 @@ import sys, os
 from ConfigParser import RawConfigParser
 
 appinfo = RawConfigParser()
-appinfo.read(os.path.abspath(os.path.dirname(__file__) + r'\..\..\..\App\AppInfo\appinfo.ini'))
+appinfo.read(os.path.abspath(os.path.dirname(__file__)
+    + os.path.sep + '..'
+    + os.path.sep + '..'
+    + os.path.sep + '..'
+    + os.path.sep + 'App'
+    + os.path.sep + 'AppInfo'
+    + os.path.sep + 'appinfo.ini'))
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
