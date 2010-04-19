@@ -21,18 +21,52 @@
 !macro DebugMsg _MSG
 	${!getdebug}
 	!ifdef DEBUG
-		!ifdef Segment
-			!define _DebugMsg_Seg "$\n$\nSegment: ${Segment}$\nHook: ${__FUNCTION__}"
-		!else
-			!define _DebugMsg_Seg ""
+
+		; Logging to file {{{2
+		!ifndef DEBUG_OUTPUT
+			!define _DebugMsg_OK
+		!else if ${DEBUG_OUTPUT} == file
+			!define _DebugMsg_OK
 		!endif
-		; ${__FILE__} is useless, always PortableApps.comLauncher.nsi
-		MessageBox MB_OKCANCEL|MB_ICONINFORMATION "Debug message at line ${__LINE__}${_DebugMsg_Seg}$\n____________________$\n$\n${_MSG}" IDOK +2
-			Abort
-		!undef _DebugMsg_Seg
+		!ifdef _DebugMsg_OK
+			!ifdef Segment
+				!define _DebugMsg_Seg "${Segment}/${__FUNCTION__}"
+			!else
+				!define _DebugMsg_Seg "Global"
+			!endif
+			!ifndef _DebugMsg_FileOpened
+				Delete $EXEDIR\Data\debug.log
+				Var /GLOBAL _DebugMsg_File
+				!define _DebugMsg_FileOpened
+			!endif
+			FileOpen  $_DebugMsg_File $EXEDIR\Data\debug.log a
+			FileSeek  $_DebugMsg_File 0 END
+			FileWrite $_DebugMsg_File "${_DebugMsg_Seg} (line ${__LINE__}): ${_MSG}$\r$\n$\r$\n"
+			FileClose $_DebugMsg_File
+			!undef _DebugMsg_Seg
+			!undef _DebugMsg_OK
+		!endif ;}}}
+
+		; Logging to display: message box {{{2
+		!ifndef DEBUG_OUTPUT
+			!define _DebugMsg_OK
+		!else if ${DEBUG_OUTPUT} == messagebox
+			!define _DebugMsg_OK
+		!endif
+		!ifdef _DebugMsg_OK
+			!ifdef Segment
+				!define _DebugMsg_Seg "$\n$\nSegment: ${Segment}$\nHook: ${__FUNCTION__}"
+			!else
+				!define _DebugMsg_Seg ""
+			!endif
+			MessageBox MB_OKCANCEL|MB_ICONINFORMATION "Debug message at line ${__LINE__}${_DebugMsg_Seg}$\n____________________$\n$\n${_MSG}" IDOK +2
+				Abort
+			!undef _DebugMsg_Seg
+			!undef _DebugMsg_OK
+		!endif ;}}}
 	!endif
 !macroend
-!define DebugMsg "!insertmacro DebugMsg"
+!define DebugMsg "!insertmacro DebugMsg" ; }}}
 
 ; If you want to debug this, create PortableApps.comLauncherDebug.nsh in the
 ; package's Other\Source directory. It should then have lines like these:
