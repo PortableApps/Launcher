@@ -40,7 +40,9 @@
 
 ; Run an action {{{1
 !macro RunSegment Segment
-	!ifmacrondef ${Segment}.nsh_${__FUNCTION__}
+	!ifdef _DisableHook_${Segment}_${__FUNCTION__}
+		!echo "Segment ${Segment}, hook ${__FUNCTION__} has been disabled by PortableApps.comLauncherCustom.nsh."
+	!else ifmacrondef ${Segment}.nsh_${__FUNCTION__}
 		!if ${Segment} != PortableApps.comLauncherCustom
 			!warning "Segment ${Segment}, hook ${__FUNCTION__} was called but does not exist!"
 		!endif
@@ -92,4 +94,27 @@
 /* End this bit */
 ; Include the segments {{{1
 !include Segments\*.nsh
+
+; Customisation file {{{1
+!macro DisableHook Segment Hook
+	!define _DisableHook_${Segment}_${Hook}
+!macroend
+!define DisableHook "!insertmacro DisableHook"
+
+!macro DisableSegment Segment
+	${DisableHook} ${Segment} .onInit
+	${DisableHook} ${Segment} Init
+	${DisableHook} ${Segment} Pre
+	${DisableHook} ${Segment} PrePrimary
+	${DisableHook} ${Segment} PreSecondary
+	${DisableHook} ${Segment} PreExec
+	${DisableHook} ${Segment} PreExecPrimary
+	${DisableHook} ${Segment} PreExecSecondary
+	${DisableHook} ${Segment} Post
+	${DisableHook} ${Segment} PostPrimary
+	${DisableHook} ${Segment} PostSecondary
+	${DisableHook} ${Segment} Unload
+!macroend
+!define DisableSegment "!insertmacro DisableSegment"
+
 !include /nonfatal "${PACKAGE}\Other\Source\PortableApps.comLauncherCustom.nsh"
