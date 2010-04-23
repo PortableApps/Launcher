@@ -246,6 +246,16 @@ Function PreExecSecondary ;{{{1
 FunctionEnd
 
 Function Execute          ;{{{1
+	; Users can override this function in PortableApps.comLauncherCustom.nsh
+	; like this (see Segments.nsh for the OverrideExecute define):
+	;
+	;   ${OverrideExecute}
+	;       [code to replace this function]
+	;   !macroend
+
+	!ifmacrodef OverrideExecuteFunction
+		!insertmacro OverrideExecuteFunction
+	!else
 	${!getdebug}
 	!ifdef DEBUG
 		${If} $SecondaryLaunch != true
@@ -290,6 +300,7 @@ Function Execute          ;{{{1
 			${DebugMsg} "All instances are finished."
 		${EndIf}
 	${EndIf}
+	!endif
 FunctionEnd
 
 Function PostPrimary      ;{{{1
