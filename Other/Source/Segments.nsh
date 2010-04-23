@@ -117,4 +117,6 @@
 !macroend
 !define DisableSegment "!insertmacro DisableSegment"
 
+!define OverrideExecute "!macro OverrideExecuteFunction"
+
 !include /nonfatal "${PACKAGE}\Other\Source\PortableApps.comLauncherCustom.nsh"
