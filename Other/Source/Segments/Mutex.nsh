@@ -14,6 +14,7 @@ ${SegmentInit}
 		${EndIf}
 		${DebugMsg} "Launcher already running: secondary launch."
 		StrCpy $SecondaryLaunch true
+		StrCpy $WaitForProgram false
 		StrCpy $DisableSplashScreen true
 	${EndIf}
 !macroend

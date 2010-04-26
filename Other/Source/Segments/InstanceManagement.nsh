@@ -35,9 +35,5 @@ ${SegmentInit}
 	;=== Wait for program?
 	; This should only EVER be used if there's no cleanup needed.
 	; TODO: automatically work something out about this
-	${ReadLauncherConfig} $0 Launch WaitForProgram
-	${If} $0 == false
-		${DebugMsg} "WaitForProgram is set to false: SecondaryLaunch set to true."
-		StrCpy $SecondaryLaunch true
-	${EndIf}
+	${ReadLauncherConfig} $WaitForProgram Launch WaitForProgram
 !macroend
