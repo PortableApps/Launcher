@@ -100,6 +100,7 @@ Var MissingFileOrPath
 Var AppNamePortable
 Var AppName
 Var ProgramExecutable
+Var WaitForProgram
 
 ; Macro: read a value from the launcher configuration file {{{1
 !macro ReadLauncherConfig _OUTPUT _SECTION _VALUE
@@ -259,7 +260,7 @@ Function Execute          ;{{{1
 	!else
 	${!getdebug}
 	!ifdef DEBUG
-		${If} $SecondaryLaunch != true
+		${If} $WaitForProgram != false
 			${DebugMsg} "About to execute the following string and wait till it's done: $ExecString"
 		${Else}
 			${DebugMsg} "About to execute the following string and finish: $ExecString"
@@ -271,14 +272,14 @@ Function Execute          ;{{{1
 		; TODO: do this without a plug-in or at least some way it won't wait with secondary
 		ExecDos::exec $ExecString
 		Pop $0
-	${ElseIf} $SecondaryLaunch != true
+	${ElseIf} $WaitForProgram != false
 		ExecWait $ExecString
 	${Else}
 		Exec $ExecString
 	${EndIf}
 	${DebugMsg} "$ExecString has finished."
 
-	${If} $SecondaryLaunch != true
+	${If} $WaitForProgram != false
 		; Wait till it's done
 		${ReadLauncherConfig} $0 Launch WaitForOtherInstances
 		${If} $0 != false
@@ -358,12 +359,16 @@ Section           ;{{{1
 	${OrIf} $SecondaryLaunch == true
 		${CallPS} Pre +
 		${CallPS} PreExec +
-		WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher Status running
+		${If} $WaitForProgram != false
+			WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher Status running
+		${EndIf}
 		; File gets deleted in segment Core, hook Unload, so it'll only be "running"
 		; in case of power-outage, disk removal while running or something like that.
 		Call Execute
 	${EndIf}
-	${CallPS} Post -
+	${If} $WaitForProgram != false
+		${CallPS} Post -
+	${EndIf}
 	Call Unload
 SectionEnd
 
