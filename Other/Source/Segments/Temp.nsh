@@ -44,6 +44,7 @@ ${SegmentPre}
 
 ${SegmentPostPrimary}
 	${If} $UsesContainedTempDirectory != false
+	${AndIf} $TempDirectory != "" ; may occur if status = running
 		${DebugMsg} "Removing contained temporary directory $TempDirectory."
 		RMDir /r $TempDirectory
 	${EndIf}
