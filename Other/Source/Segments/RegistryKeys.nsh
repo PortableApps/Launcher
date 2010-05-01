@@ -15,15 +15,14 @@ ${SegmentPrePrimary}
 			${EndIf}
 
 			${If} ${FileExists} $DataDirectory\settings\$0.reg
-				SetErrors
+				StrCpy $R9 1 ; 1 = didn't import, 0 = success
 				${DebugMsg} "Loading $DataDirectory\settings\$0.reg into the registry."
 				${If} ${FileExists} $WINDIR\system32\reg.exe
 					nsExec::Exec `"$WINDIR\system32\reg.exe" import "$DataDirectory\settings\$0.reg"`
 					Pop $R9
-					${IfThen} $R9 = 0 ${|} ClearErrors ${|}
 				${EndIf}
 
-				${If} ${Errors}
+				${If} $R9 != 0 ; Failed with reg.exe (with it an error code of 0 is success)
 					${registry::RestoreKey} $DataDirectory\settings\$0.reg $R9
 					${If} $R9 != 0
 						WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0 true
