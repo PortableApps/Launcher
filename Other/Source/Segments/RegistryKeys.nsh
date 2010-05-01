@@ -18,7 +18,7 @@ ${SegmentPrePrimary}
 				StrCpy $R9 1 ; 1 = didn't import, 0 = success
 				${DebugMsg} "Loading $DataDirectory\settings\$0.reg into the registry."
 				${If} ${FileExists} $WINDIR\system32\reg.exe
-					nsExec::Exec `"$WINDIR\system32\reg.exe" import "$DataDirectory\settings\$0.reg"`
+					ExecDos::Exec `"$WINDIR\system32\reg.exe" import "$DataDirectory\settings\$0.reg"` "" ""
 					Pop $R9
 				${EndIf}
 
