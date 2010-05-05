@@ -55,9 +55,12 @@ ${Segment.onInit}
 !macroend
 
 ${SegmentInit}
-	InitPluginsDir
-	CopyFiles /SILENT $EXEDIR\App\AppInfo\Launcher\$BaseName.ini $PLUGINSDIR\launcher.ini
-	StrCpy $LauncherFile $PLUGINSDIR\launcher.ini
+	StrCpy $LauncherFile $EXEDIR\App\AppInfo\Launcher\$BaseName.ini
+	${If} ${FileExists} $LauncherFile
+		InitPluginsDir
+		CopyFiles /SILENT $LauncherFile $PLUGINSDIR\launcher.ini
+		StrCpy $LauncherFile $PLUGINSDIR\launcher.ini
+	${EndIf}
 
 	${GetParameters} $0
 	${IfThen} $0				 != "" ${|} ${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutableWhenParameters	${|}
