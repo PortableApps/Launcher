@@ -102,3 +102,12 @@
 	!verbose pop
 !macroend
 !define SetEnvironmentVariable "!insertmacro SetEnvironmentVariable"
+
+!macro SetEnvironmentVariableDefault NAME VALUE
+	Push $0
+	ReadEnvStr $0 "${NAME}"
+	StrCmp $0 "" "" +2
+	${SetEnvironmentVariable} "${NAME}" "${VALUE}"
+	Pop $0
+!macroend
+!define SetEnvironmentVariableDefault "!insertmacro SetEnvironmentVariableDefault"
