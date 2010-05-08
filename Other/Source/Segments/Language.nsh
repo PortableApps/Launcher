@@ -21,25 +21,29 @@ ${Segment.onInit}
 !macroend
 
 ${SegmentInit}
-	ReadEnvStr $0 PortableApps.comLanguageCode
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLanguageCode en ${|}
-	ReadEnvStr $0 PortableApps.comLocaleCode2
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleCode2 en ${|}
-	ReadEnvStr $0 PortableApps.comLocaleCode3
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleCode3 eng ${|}
-	ReadEnvStr $0 PortableApps.comLocaleglibc
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleglibc en_US ${|}
-	ReadEnvStr $0 PortableApps.comLocaleID
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleID 1033 ${|}
-	ReadEnvStr $0 PortableApps.comLocaleWinName
-	${IfThen} $0 == "" ${|} ${SetEnvironmentVariable} PortableApps.comLocaleWinName LANG_ENGLISH ${|}
+	; Set the default values
+	${SetEnvironmentVariableDefault} PortableApps.comLanguageCode en
+	${SetEnvironmentVariableDefault} PortableApps.comLocaleCode2 en
+	${SetEnvironmentVariableDefault} PortableApps.comLocaleCode3 eng
+	${SetEnvironmentVariableDefault} PortableApps.comLocaleglibc en_US
+	${SetEnvironmentVariableDefault} PortableApps.comLocaleID 1033
+	${SetEnvironmentVariableDefault} PortableApps.comLocaleWinName LANG_ENGLISH
+
+	; LocaleName: added in Platform 2.0 Beta 5.
+	; It's a mixed-case variant of LocaleWinName minus the LANG_.
+	; If it's not set (1.6 - 2.0b4) it's worked out from that.
+	; There's then no need for a table to fix the case, all operations I can
+	; think of are case-insensitive.
+
 	ReadEnvStr $0 PortableApps.comLocaleName
 	${If} $0 == ""
 		ReadEnvStr $0 PortableApps.comLocaleWinName
-		StrCpy $0 $0 "" 5
+		StrCpy $0 $0 "" 5 ; Chop off the LANG_
 		${SetEnvironmentVariable} PortableApps.comLocaleName $0
 	${EndIf}
 
+	; See topics/langauges in the Manual for an explanation of this code and a
+	; diagram to illustrate how it works.
 	${ReadLauncherConfig} $0 Language Base
 	${If} $0 != ""
 		${ParseLocations} $0
