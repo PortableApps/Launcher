@@ -27,7 +27,7 @@ ${SegmentPrePrimary}
 			${DebugMsg} "Copying $0 to $1"
 			${IfNot} ${FileExists} $4
 				CreateDirectory $4
-				WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData.ini FilesMove RemoveIfEmpty:$4 true
+				WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FilesMove RemoveIfEmpty:$4 true
 			${EndIf}
 			${GetRoot} $0 $2 ; compare
 			${GetRoot} $1 $3 ; drive
@@ -59,7 +59,7 @@ ${SegmentPostPrimary}
 		${DebugMsg} "Removing portable settings file $1 from run location."
 		Delete $1
 
-		ReadINIStr $2 $DataDirectory\PortableApps.comLauncherRuntimeData.ini FilesMove RemoveIfEmpty:$4
+		ReadINIStr $2 $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FilesMove RemoveIfEmpty:$4
 		${If} $2 == true
 			RMDir $4
 		${EndIf}

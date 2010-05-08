@@ -25,7 +25,7 @@ ${SegmentPrePrimary}
 				${If} $R9 != 0 ; Failed with reg.exe (with it an error code of 0 is success)
 					${registry::RestoreKey} $DataDirectory\settings\$0.reg $R9
 					${If} $R9 != 0
-						WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0 true
+						WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FailedRegistryKeys $0 true
 						${DebugMsg} "Failed to load $DataDirectory\settings\$0.reg into the registry."
 					${EndIf}
 				${EndIf}
@@ -39,7 +39,7 @@ ${SegmentPostPrimary}
 		${ForEachINIPair} RegistryKeys $0 $1
 			${ValidateRegistryKey} $1
 			ClearErrors
-			ReadINIStr $R9 $DataDirectory\PortableApps.comLauncherRuntimeData.ini FailedRegistryKeys $0
+			ReadINIStr $R9 $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FailedRegistryKeys $0
 			${If} ${Errors} ; didn't fail
 			${AndIf} $RunLocally != true
 				${DebugMsg} "Saving registry key $1 to $DataDirectory\settings\$0.reg."

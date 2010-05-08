@@ -354,13 +354,13 @@ FunctionEnd
 
 Section           ;{{{1
 	Call Init
-	ReadINIStr $R9 $EXEDIR\Data\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher Status
+	ReadINIStr $R9 $EXEDIR\Data\PortableApps.comLauncherRuntimeData-$BaseName.ini PortableApps.comLauncher Status
 	${If} $R9 != running
 	${OrIf} $SecondaryLaunch == true
 		${CallPS} Pre +
 		${CallPS} PreExec +
 		${If} $WaitForProgram != false
-			WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData.ini PortableApps.comLauncher Status running
+			WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini PortableApps.comLauncher Status running
 		${EndIf}
 		; File gets deleted in segment Core, hook Unload, so it'll only be "running"
 		; in case of power-outage, disk removal while running or something like that.
