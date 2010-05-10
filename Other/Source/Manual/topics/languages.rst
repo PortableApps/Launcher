@@ -66,6 +66,11 @@ Here is a diagram of how it works:
 
 .. image:: languages-custom.png
 
+When the portable application is not launched from the PortableApps.com
+Platform, to maintain the user's language setting, the custom language should
+be read from a file with the aid of the :ini-section:`[LanguageFile]` section,
+if this is possible.
+
 Other ways
 ----------
 
