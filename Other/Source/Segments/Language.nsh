@@ -51,7 +51,7 @@ ${SegmentInit}
 	; PAL:LanguageCustom, otherwise we look to read it from a config file first
 	; (user-specified).
 	${If} $9 == pap-missing
-		; TODO: registry, cutting bits out of the text read.
+		; TODO: registry.
 
 		; This code is taken largely from FileWrite segment as it shares the
 		; format and a lot of the method.
