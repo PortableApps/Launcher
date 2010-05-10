@@ -88,10 +88,25 @@ ${SegmentInit}
 			${EndIf}
 			${If} $8 != ""
 				; We found a language value. Now we can set PAL:LanguageCustom
-				${SetEnvironmentVariable} PAL:LanguageCustom $8
 
-				; As far as this language switching is concerned, the
-				; PortableApps.com Platform is no longer missing.
+				; First, though, see if we want to cut anything off at the
+				; right. This is useful for e.g. a </config> XML tag, or
+				; closing quotation marks, or something similar.
+				ClearErrors
+				${ReadLauncherConfig} $0 LanguageFile TrimRight
+				${IfNot} ${Errors}
+					; See if it ends with this string.
+					StrLen $1 $0
+					StrCpy $2 $8 "" -$1
+					${If} $2 == $0       ; yes, it does,
+						StrCpy $8 $8 -$1 ; so cut it off
+					${EndIf}
+				${EndIf}
+
+				; Now we're all done, let's set the environment variable and
+				; say we're done. As far as language switching is conerned,
+				; the PortableApps.com Platform is no longer missing.
+				${SetEnvironmentVariable} PAL:LanguageCustom $8
 				StrCpy $9 ""
 			${EndIf}
 		${EndIf}

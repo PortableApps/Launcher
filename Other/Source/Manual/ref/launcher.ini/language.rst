@@ -136,8 +136,8 @@ id="something">'``; note that you **must** include any leading whitespace
 which will be in the file, and if there is any leading or trailing whitespace
 you must quote the string with single (``'``) or double (``"``) quotes.
 
-Currently there is a shortcoming in this in that you cannot remove text from
-the end of the value. This will be ammended shortly.
+If you need to cut something off the end such as a quotation mark or a closing
+XML tag, see :ini-key:`[LanguageFile]:TrimRight`.
 
 .. ini-key:: [LanguageFile]:Section
 
@@ -175,3 +175,18 @@ CaseSensitive
 
 Case sensitive searches are somewhat faster than case-insensitive searches. If
 you can do a case-sensitive ConfigRead, do.
+
+.. ini-key:: [LanguageFile]:TrimRight
+
+TrimRight
+---------
+
+| Optional.
+
+----
+
+If you need to remove something from the right of a line which you have read,
+for example if you want to get rid of a file extension, a quotation mark, a
+closing XML tag or similar, put the text in here and if it is at the end of
+the string it will be removed. Remember the rule about whitespace and
+quotation marks.
