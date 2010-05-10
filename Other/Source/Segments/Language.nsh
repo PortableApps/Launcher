@@ -21,6 +21,10 @@ ${Segment.onInit}
 !macroend
 
 ${SegmentInit}
+	; Detect to see if the language code is coming from the PortableApps.com Platform.
+	ReadEnvStr $0 PortableApps.comLanguageCode
+	${IfThen} $0 == "" ${|} StrCpy $9 pap-missing ${|}
+
 	; Set the default values
 	${SetEnvironmentVariableDefault} PortableApps.comLanguageCode en
 	${SetEnvironmentVariableDefault} PortableApps.comLocaleCode2 en
@@ -42,30 +46,86 @@ ${SegmentInit}
 		${SetEnvironmentVariable} PortableApps.comLocaleName $0
 	${EndIf}
 
-	; See topics/langauges in the Manual for an explanation of this code and a
-	; diagram to illustrate how it works.
-	${ReadLauncherConfig} $0 Language Base
-	${If} $0 != ""
-		${ParseLocations} $0
+	; Now we can consider what to do next: was this launched from the
+	; PortableApps.com Platform? If yes, then we go ahead with making
+	; PAL:LanguageCustom, otherwise we look to read it from a config file first
+	; (user-specified).
+	${If} $9 == pap-missing
+		; TODO: registry, cutting bits out of the text read.
+
+		; This code is taken largely from FileWrite segment as it shares the
+		; format and a lot of the method.
 		ClearErrors
-		${ReadLauncherConfig} $1 LanguageStrings $0
-		${If} ${Errors}
-			ClearErrors
-			${ReadLauncherConfig} $1 Language Default
-			${IfNot} ${Errors}
-				${ParseLocations} $1
-			${Else}
-				StrCpy $1 $0
+		${ReadLauncherConfig} $0 LanguageFile Type
+		${ReadLauncherConfig} $1 LanguageFile File
+		${ParseLocations} $1
+		${IfNot} ${Errors}
+		${AndIf} ${FileExists} $1
+			; The custom language is read into $8
+			StrCpy $8 ""
+			${If} $0 == ConfigRead
+				${ReadLauncherConfig} $2 LanguageFile Entry
+				${IfNot} ${Errors}
+					${ParseLocations} $3
+					${ReadLauncherConfig} $4 LanguageFile CaseSensitive
+					${If} ${FileExists} $1
+						${If} $4 == true
+							${DebugMsg} "Reading the language from $1, entry `$2`, with ConfigReadS."
+							${ConfigReadS} $1 $2 $8
+						${Else}
+							${DebugMsg} "Reading the language from $1, entry `$2`, with ConfigRead."
+							${ConfigRead} $1 $2 $8
+						${EndIf}
+					${EndIf}
+				${EndIf}
+			${ElseIf} $0 == INI
+				${ReadLauncherConfig} $2 LanguageFile Section
+				${ReadLauncherConfig} $3 LanguageFile Key
+				${IfNot} ${Errors}
+					${DebugMsg} "Reading the language from $1, section `$2`, key `$3`, with ReadINIStr."
+					ReadINIStr $8 $1 $2 $3
+				${EndIf}
+			${EndIf}
+			${If} $8 != ""
+				; We found a language value. Now we can set PAL:LanguageCustom
+				${SetEnvironmentVariable} PAL:LanguageCustom $8
+
+				; As far as this language switching is concerned, the
+				; PortableApps.com Platform is no longer missing.
+				StrCpy $9 ""
 			${EndIf}
 		${EndIf}
-		${SetEnvironmentVariable} PAL:LanguageCustom $1
-		${ReadLauncherConfig} $2 Language CheckIfExists
-		${If} $2 != ""
-			${ParseLocations} $2
-			${IfNot} ${FileExists} $2
-				${ReadLauncherConfig} $1 Language DefaultIfNotExists
-				${ParseLocations} $1
-				${SetEnvironmentVariable} PAL:LanguageCustom $1
+	${EndIf}
+
+	; If PAL:LanguageCustom is set above when the PortableApps.com Platform is
+	; missing, the value is altered so that this section won't execute, as
+	; it's not missing for all we care now.
+	${If} $9 == pap-missing
+		; See topics/langauges in the Manual for an explanation of this code
+		; and a diagram to illustrate how it works.
+		${ReadLauncherConfig} $0 Language Base
+		${If} $0 != ""
+			${ParseLocations} $0
+			ClearErrors
+			${ReadLauncherConfig} $1 LanguageStrings $0
+			${If} ${Errors}
+				ClearErrors
+				${ReadLauncherConfig} $1 Language Default
+				${IfNot} ${Errors}
+					${ParseLocations} $1
+				${Else}
+					StrCpy $1 $0
+				${EndIf}
+			${EndIf}
+			${SetEnvironmentVariable} PAL:LanguageCustom $1
+			${ReadLauncherConfig} $2 Language CheckIfExists
+			${If} $2 != ""
+				${ParseLocations} $2
+				${IfNot} ${FileExists} $2
+					${ReadLauncherConfig} $1 Language DefaultIfNotExists
+					${ParseLocations} $1
+					${SetEnvironmentVariable} PAL:LanguageCustom $1
+				${EndIf}
 			${EndIf}
 		${EndIf}
 	${EndIf}
