@@ -10,6 +10,10 @@ Data\\settings\\\ *file name*.reg. If you wish to have drive letters updated
 inside this, look at :ini-section:`[FileWrite]` with :ini-key:`Type
 <[FileWrite]:Type>`\ =\ ``Replace``.
 
+If you do not wish to save the data of the registry key to a file but only
+want to keep it safe and throw away any changes, set the "file name" to -, so
+you end up with ``-=registry key location``
+
 **Example:** ``appname_portable=HKCU\Software\AppName``
 
 .. ini-section:: [RegistryValueWrite]
