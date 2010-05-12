@@ -84,8 +84,6 @@ the values returned after environment variable parsing.
 [LanguageFile]
 ==============
 
-.. ini-key:: [LanguageFile]:Type
-
 For reading the custom language variable from a file for when the portable
 application is not launched from the PortableApps.com Platform. The values
 which must be set depend on the :ini-key:`Type <[LanguageFile]:Type>`
