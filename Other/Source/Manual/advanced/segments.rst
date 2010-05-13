@@ -115,6 +115,37 @@ a segment. This is the general structure for a segment:
    Such macros and functions as these should come above the variable
    definitions, immediately after the ``${SegmentFile}`` line.
 
+.. _advanced-segments-disable:
+
+Disabling hooks and segments and overriding the execute step
+------------------------------------------------------------
+
+If you ever need to disable a segment or hook, you can do so. In general though
+if you can possibly avoid doing it you should; you can very easily break the
+PortableApps.com Launcher by disabling certain things. In general I would
+recommend that you :ref:`ask <ask>` before doing it to see if there is a better
+way.
+
+All of these changes apply to :ref:`PortableApps.comLauncherCustom.nsh
+<advanced-segments-custom>`.
+
+* Disable inbuilt segment-hooks::
+
+     ${DisableHook} Segment Hook
+
+* Disable all hooks in an inbuilt segment::
+
+     ${DisableSegment} Segment
+
+* To override the Execute function completely, do this::
+
+     ${OverrideExecute}
+         ...
+     !macroend
+
+  You would be well advised to take a look at the Execute function in
+  PortableApps.comLauncher.nsi before doing this.
+
 .. _advanced-segments-list:
 
 List of core segments
