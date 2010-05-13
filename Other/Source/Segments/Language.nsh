@@ -116,7 +116,7 @@ ${SegmentInit}
 	; missing, we won't use the [Language] section. If that bit above failed to
 	; get a value, we'll get here even if the Platform isn't running.
 	ClearErrors
-	ReadEnvStr PAL:LanguageCustom
+	ReadEnvStr $8 PAL:LanguageCustom
 	${If} ${Errors}
 		; See topics/langauges in the Manual for an explanation of this code
 		; and a diagram to illustrate how it works.
