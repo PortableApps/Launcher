@@ -47,7 +47,6 @@ Here is a list of the debug flags available. See above for how to enable them.
    about to be executed and when it has finished.
 
 ``DEBUG_OUTPUT`` (values: ``file``, ``messagebox``, nothing)
-
    By default debugging will write its output to a file ``Data\debug.log`` in
    the portable application package and show a message box which pauses
    execution and allows you to terminate execution. If you want it to only log
