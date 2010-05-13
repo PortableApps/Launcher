@@ -23,7 +23,10 @@ ${Segment.onInit}
 ${SegmentInit}
 	; Detect to see if the language code is coming from the PortableApps.com Platform.
 	ReadEnvStr $0 PortableApps.comLanguageCode
-	${IfThen} $0 == "" ${|} StrCpy $9 pap-missing ${|}
+	${If} $0 == ""
+		${DebugMsg} "PortableApps.com Platform language variables are missing."
+		StrCpy $9 pap-missing
+	${EndIf}
 
 	; Set the default values
 	${SetEnvironmentVariableDefault} PortableApps.comLanguageCode en
@@ -38,7 +41,6 @@ ${SegmentInit}
 	; If it's not set (1.6 - 2.0b4) it's worked out from that.
 	; There's then no need for a table to fix the case, all operations I can
 	; think of are case-insensitive.
-
 	ReadEnvStr $0 PortableApps.comLocaleName
 	${If} $0 == ""
 		ReadEnvStr $0 PortableApps.comLocaleWinName
@@ -103,19 +105,19 @@ ${SegmentInit}
 					${EndIf}
 				${EndIf}
 
-				; Now we're all done, let's set the environment variable and
-				; say we're done. As far as language switching is conerned,
-				; the PortableApps.com Platform is no longer missing.
+				; Now we're all done, let's set the environment variable.
+				${DebugMsg} "Setting PAL:LanguageCustom to $8 based on the [LanguageFile] section."
 				${SetEnvironmentVariable} PAL:LanguageCustom $8
-				StrCpy $9 ""
 			${EndIf}
 		${EndIf}
 	${EndIf}
 
 	; If PAL:LanguageCustom is set above when the PortableApps.com Platform is
-	; missing, the value is altered so that this section won't execute, as
-	; it's not missing for all we care now.
-	${If} $9 == pap-missing
+	; missing, we won't use the [Language] section. If that bit above failed to
+	; get a value, we'll get here even if the Platform isn't running.
+	ClearErrors
+	ReadEnvStr PAL:LanguageCustom
+	${If} ${Errors}
 		; See topics/langauges in the Manual for an explanation of this code
 		; and a diagram to illustrate how it works.
 		${ReadLauncherConfig} $0 Language Base
@@ -139,6 +141,7 @@ ${SegmentInit}
 				${IfNot} ${FileExists} $2
 					${ReadLauncherConfig} $1 Language DefaultIfNotExists
 					${ParseLocations} $1
+					${DebugMsg} "Setting PAL:LanguageCustom to $1 based on the [Language] section."
 					${SetEnvironmentVariable} PAL:LanguageCustom $1
 				${EndIf}
 			${EndIf}
