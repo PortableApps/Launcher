@@ -41,19 +41,35 @@ which can be safely ignored when making a portable application. This section
 will gradually grow with lists of such values which you can ignore when making
 an application portable or when testing an application.
 
-These keys may be in either HKCU or HKLM.
+These keys are in HKCU:
 
 * ``SessionInformation\ProgramCount``
 * ``Software\Microsoft\Cryptography\RNG\Seed``
 * ``Software\Microsoft\DirectDraw\MostRecentApplication``
 * ``Software\Microsoft\DirectInput\MostRecentApplication``
 * ``Software\Microsoft\SchedulingAgent``
+* ``Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\LastVisitedMRU``
+* ``Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\LastVisitedMRU``
+* ``Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSaveMRU``
+* ``Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts``
+* ``Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist``
+* ``Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist``
 * ``Software\Microsoft\Windows\CurrentVersion\Group Policy``
+* ``Software\Microsoft\Windows\ShellNoRoam\BagMRU``
+* ``Software\Microsoft\Windows\ShellNoRoam\Bags``
 * ``Software\Microsoft\Windows\ShellNoRoam\MUICache``
+
+These keys are in HKLM:
+
+* ``Software\Microsoft\Windows\CurrentVersion\Reliability``
 * ``System\ControlSet001`` (equivalent to ``System\CurrentControlSet``)
 * ``System\CurrentControlSet\Control\DeviceClasses``
+* ``System\CurrentControlSet\Services\*\Enum``
 * ``System\CurrentControlSet\Services\SharedAccess``
 * ``System\CurrentControlSet\Services\swmidi``
+
+If you come up with more keys that can be ignored, please :ref:`contact Chris
+Morgan <ask>`.
 
 Specific registry keys
 ======================
