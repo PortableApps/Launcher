@@ -1,6 +1,12 @@
 ${SegmentFile}
 
 ${SegmentPostPrimary}
+	; The Qt plugin cache and a few other things leave keys inside
+	; HKCU\Software\Trolltech\OrganizationDefaults\*\X:\...\dirname which need
+	; to be cleared up. They're useless, they've got just values like foo.dll
+	; with a version number in them, but they need removing. Due to the
+	; directory-recursive key nature of them, we can just scrap the package
+	; directory for each and then prune the tree as far up as it's empty.
 	StrCpy $R0 1
 	${Do}
 		ClearErrors
@@ -15,5 +21,6 @@ ${SegmentPostPrimary}
 
 		IntOp $R0 $R0 + 1
 	${Loop}
-	${IfThen} $R0 > 1 ${|} StrCpy $UsesRegistry true ${|}
+	; We don't need to set $UsesRegistry to true, the registry plug-in hasn't
+	; been used and unloading it is what UsesRegistry is for.
 !macroend
