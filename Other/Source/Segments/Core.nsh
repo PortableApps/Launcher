@@ -5,12 +5,16 @@ Var LauncherFile
 ${Segment.onInit}
 	StrCpy $0 $EXEDIR 2
 	${If} $0 == "\\"
-		; UNC path; may occur in the inner instance with RunAsAdmin
-		ClearErrors
+		; UNC path; may occur in the inner instance with RunAsAdmin?
+		; I'm not sure if this is actually true or whether it was some other
+		; issue, but I'm leaving the code in until I can be sure.
+
+		; Store the value of $EXEDIR for debug builds for the message.
 		${!getdebug}
 		!ifdef DEBUG
 			StrCpy $0 $EXEDIR
 		!endif
+		ClearErrors
 		ReadEnvStr $EXEDIR PAL:PackageDir
 		${If} ${Errors}
 			MessageBox MB_OK|MB_ICONSTOP "$(LauncherNoUNCSupport)"
@@ -55,6 +59,8 @@ ${Segment.onInit}
 !macroend
 
 ${SegmentInit}
+	; Copy the launcher INI file to $PLUGINSDIR so that it doesn't go splurk if
+	; the disk is pulled out and can clean up.
 	StrCpy $LauncherFile $EXEDIR\App\AppInfo\Launcher\$BaseName.ini
 	${If} ${FileExists} $LauncherFile
 		InitPluginsDir
@@ -62,17 +68,23 @@ ${SegmentInit}
 		StrCpy $LauncherFile $PLUGINSDIR\launcher.ini
 	${EndIf}
 
+	; If there are command line arguments, we use
+	; [Launch]:ProgramExecutableWhenParameters if it exists, falling back to
+	; the normal [Launch]ProgramExecutable if it's not set or if there aren't
+	; arguments.
 	${GetParameters} $0
 	${IfThen} $0				 != "" ${|} ${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutableWhenParameters	${|}
 	ClearErrors
 	${IfThen} $ProgramExecutable == "" ${|} ${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutable				${|}
 
 	${If} ${Errors}
-		;=== Launcher file missing or missing crucial details
+		; Launcher file missing or missing crucial details (what am I to launch?)
 		StrCpy $MissingFileOrPath $LauncherFile
 		MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
 		Quit
 	${EndIf}
+
+	; Is it allowable to have spaces in the path?
 	${ReadLauncherConfig} $0 Launch NoSpacesInPath
 	${If} $0 == true
 		${WordFind} $EXEDIR ` ` E+1 $R9
@@ -84,10 +96,13 @@ ${SegmentInit}
 !macroend
 
 ${SegmentPreExecPrimary}
+	; Save the $PLUGINSDIR so that in case of crash it can still be cleaned up next time
 	WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini PortableApps.comLauncher PluginsDir $PLUGINSDIR
 !macroend
 
 ${SegmentUnload}
+	; Clear up $PLUGINSDIR, the runtime data which says we're running, and the
+	; $PLUGINSDIR from before the hypothetical power failure.
 	Delete $PLUGINSDIR\launcher.ini
 	${If} $SecondaryLaunch != true
 		ReadINIStr $0 $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini PortableApps.comLauncher PluginsDir
@@ -97,5 +112,6 @@ ${SegmentUnload}
 		${EndIf}
 		Delete $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini
 	${EndIf}
+	; Unload the system plug-in (if it's still there?)
 	System::Free 0
 !macroend

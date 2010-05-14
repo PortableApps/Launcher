@@ -1,5 +1,6 @@
 ${SegmentFile}
 
+; A simple macro to avoid code duplication
 !macro _InstanceManagement_QuitIfRunning
 	${If} $SecondaryLaunch != true
 	${AndIf} ${ProcessExists} $0
@@ -9,7 +10,8 @@ ${SegmentFile}
 !macroend
 
 ${SegmentInit}
-	;=== Check that it exists
+	; Check that what we're going to execute exists (it'd be a pretty poor
+	; party if it didn't)
 	${IfNot} ${FileExists} $EXEDIR\App\$ProgramExecutable
 	${AndIfNot} $UsingJavaExecutable == true
 		;=== Program executable not where expected
@@ -18,7 +20,7 @@ ${SegmentInit}
 		Quit
 	${EndIf}
 
-	;=== Check if application already running
+	; Check if the application (portable or not) is already running
 	${ReadLauncherConfig} $0 Launch SingleAppInstance
 	${If} $0 != false
 	${AndIfNot} $UsingJavaExecutable == true
@@ -26,14 +28,15 @@ ${SegmentInit}
 		!insertmacro _InstanceManagement_QuitIfRunning
 	${EndIf}
 
+	; Check to make sure the value in [Launch]:CloseEXE isn't running
 	ClearErrors
 	${ReadLauncherConfig} $0 Launch CloseEXE
 	${IfNot} ${Errors}
 		!insertmacro _InstanceManagement_QuitIfRunning
 	${EndIf}
 
-	;=== Wait for program?
-	; This should only EVER be used if there's no cleanup needed.
-	; TODO: automatically work something out about this
+	; Will we need to wait for the program?  This should only EVER be used if
+	; there's no cleanup needed.  In the (very distant) future it might be
+	; possible to automatically calculate this value.
 	${ReadLauncherConfig} $WaitForProgram Launch WaitForProgram
 !macroend

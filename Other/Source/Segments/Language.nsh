@@ -1,6 +1,7 @@
 ${SegmentFile}
 
 ${Segment.onInit}
+	; Try to autoselect the launcher language for message boxes
 	ReadEnvStr $0 PortableApps.comLocaleID
 	${Switch} $0
 		${Case} 1033 ; English

@@ -93,17 +93,21 @@ ${SegmentFile}
 !define SetEnvironmentVariablesPathFromEnvironmentVariable "!insertmacro SetEnvironmentVariablesPathFromEnvironmentVariable"
 
 !macro ParseLocations VAR ;{{{2
+	; Expands environment variables on a variable and provides a debug message
+	; about it.
+
+	; If we're a debug build, set up a variable for the "before" state so that
+	; we can put the debug message in one message not two.
 	${!getdebug}
 	!ifdef DEBUG
 		!ifndef _ParseLocations_Before
 			Var /GLOBAL _ParseLocations_Before
 			!define _ParseLocations_Before
 		!endif
-	!endif
-		
-	!ifdef DEBUG
 		StrCpy $_ParseLocations_Before ${VAR}
 	!endif
+
+	; Expand the environment variables and print the debug message
 	ExpandEnvStrings ${VAR} ${VAR}
 	${DebugMsg} "Environment variable expansion on $${VAR}:$\r$\nBefore: `$_ParseLocations_Before`$\r$\nAfter: `${VAR}`"
 !macroend
