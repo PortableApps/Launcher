@@ -17,12 +17,16 @@ ${SegmentPrePrimary}
 	${ForEachINIPair} FilesMove $0 $1
 		!insertmacro _FilesMove_Start
 
-		;=== Backup data from a local installation
+		; Backup data from a local installation
 		${IfNot} ${FileExists} $1-BackupBy$AppID
 		${AndIf} ${FileExists} $1
 			${DebugMsg} "Backing up $1 to $1-BackupBy$AppID"
 			Rename $1 $1-BackupBy$AppID
 		${EndIf}
+
+		; If portable data exists move/copy it to the target directory.  If the
+		; target directory doesn't exist, note down for the end to remove it
+		; again if it's empty.
 		${If} ${FileExists} $0
 			${DebugMsg} "Copying $0 to $1"
 			${IfNot} ${FileExists} $4
@@ -44,6 +48,7 @@ ${SegmentPostPrimary}
 	${ForEachINIPair} FilesMove $0 $1
 		!insertmacro _FilesMove_Start
 
+		; If not in Live mode, copy the data back to the Data directory.
 		${If} $RunLocally != true
 			${DebugMsg} "Copying file from $1 to $0"
 			${GetRoot} $0 $2 ; compare
@@ -56,14 +61,18 @@ ${SegmentPostPrimary}
 				CopyFiles /SILENT $1 $0
 			${EndIf}
 		${EndIf}
+		; And then remove it from the runtime location
 		${DebugMsg} "Removing portable settings file $1 from run location."
 		Delete $1
 
+		; If the local directory we put it in didn't exist before, delete it if
+		; it's empty.
 		ReadINIStr $2 $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FilesMove RemoveIfEmpty:$4
 		${If} $2 == true
 			RMDir $4
 		${EndIf}
 
+		; And move that backup of any local data from earlier if it exists.
 		${If} ${FileExists} $1-BackupBy$AppID
 			${DebugMsg} "Moving local settings file from $1-BackupBy$AppID to $1"
 			Rename $1-BackupBy$AppID $1

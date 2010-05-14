@@ -4,6 +4,11 @@ Var ExecString
 
 ${SegmentPre}
 	${DebugMsg} "Constructing execution string"
+
+	; If ProgramExecutable was java.exe or javaw.exe and
+	; [Activate]:Java=require, we want to run Java from elsewhere (portable
+	; CommonFiles or a local installation), not something in the current
+	; directory tree.
 	${If} $UsingJavaExecutable != true
 		StrCpy $ExecString `"$AppDirectory\$ProgramExecutable"`
 	${Else}
@@ -11,7 +16,7 @@ ${SegmentPre}
 	${EndIf}
 	${DebugMsg} "Execution string is $ExecString"
 
-	;=== Get any default parameters
+	; Get command line arguments from the launcher INI file.
 	ClearErrors
 	${ReadLauncherConfig} $0 Launch CommandLineArguments
 	${IfNot} ${Errors}
@@ -20,11 +25,13 @@ ${SegmentPre}
 		StrCpy $ExecString "$ExecString $0"
 	${EndIf}
 
-	;=== Get any passed parameters
+	; Get any user-passed command line arguments
 	${GetParameters} $0
 	${If} $0 != ""
 		${DebugMsg} "Parameters were passed ($0).  Adding them to execution string."
 		ClearErrors
+		; If there is a single file name as an argument and we will change the
+		; working directory, it's helpful to make relative paths absolute.
 		${ReadLauncherConfig} $1 Launch WorkingDirectory
 		${If} ${Errors}
 			StrCpy $ExecString "$ExecString $0"
@@ -42,7 +49,7 @@ ${SegmentPre}
 		${EndIf}
 	${EndIf}
 
-	;=== Get additional parameters from user INI file
+	; Get additional parameters from user INI file
 	${ReadUserOverrideConfig} $0 AdditionalParameters
 	${If} $0 != ""
 		${DebugMsg} "The user has specified additional command line arguments ($0).  Adding them to execution string after parsing."
