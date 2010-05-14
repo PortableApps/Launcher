@@ -104,10 +104,11 @@
 !define SetEnvironmentVariable "!insertmacro SetEnvironmentVariable"
 
 !macro SetEnvironmentVariableDefault NAME VALUE
-	Push $0
-	ReadEnvStr $0 "${NAME}"
-	StrCmp $0 "" "" +2
+	!insertmacro _LOGICLIB_TEMP ; convenient variable
+	Push $_LOGICLIB_TEMP
+	ReadEnvStr $_LOGICLIB_TEMP "${NAME}"
+	StrCmp $_LOGICLIB_TEMP "" "" +2
 	${SetEnvironmentVariable} "${NAME}" "${VALUE}"
-	Pop $0
+	Pop $_LOGICLIB_TEMP
 !macroend
 !define SetEnvironmentVariableDefault "!insertmacro SetEnvironmentVariableDefault"
