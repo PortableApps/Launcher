@@ -38,5 +38,10 @@ ${SegmentInit}
 	; Will we need to wait for the program?  This should only EVER be used if
 	; there's no cleanup needed.  In the (very distant) future it might be
 	; possible to automatically calculate this value.
-	${ReadLauncherConfig} $WaitForProgram Launch WaitForProgram
+	;
+	; WaitForProgram may have already been set to false in Mutex; we don't want
+	; to mess that up, so check if it's already set.
+	${If} $WaitForProgram == ""
+		${ReadLauncherConfig} $WaitForProgram Launch WaitForProgram
+	${EndIf}
 !macroend
