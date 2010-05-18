@@ -16,6 +16,14 @@ echo "Building the PortableApps.com Launcher..."
 echo "Building the PortableApps.com Launcher installer..."
 	paiu $PWD
 
-# go back where we started
-cd Other/Source
+echo "Uploading the installer..."
+	export make_release_py="$PWD/Other/Source/make_release.py"
+	cd ..
+	echo -n 'Please enter your SourceForge username: (default: chriswombat) '
+	read sfusername
+	if [ "$sfusername" = "" ]; then
+		export sfusername=chriswombat
+	fi
+	$make_release_py | sftp $sfusername,portableapps@frs.sourceforge.net
+
 echo "Done!"
