@@ -1,0 +1,23 @@
+${SegmentFile}
+
+Var LastDrive
+Var CurrentDrive
+
+; NOTE: (Last|Current)Drive refer to $EXEDIR, even with Live mode
+; TODO: make it (Last|Current)(App|Data)?Drive
+
+${SegmentInit}
+	; Load the last drive letter and get the current drive letter.  If
+	; LastDrive is not set, we set it to CurrentDrive, then any [FileWrite]
+	; with Type=Replace will skip last->current replacement as they'll be the
+	; same.
+	ReadINIStr $LastDrive $EXEDIR\Data\settings\$AppIDSettings.ini $AppIDSettings LastDrive
+	${GetRoot} $EXEDIR $CurrentDrive
+	${IfThen} $LastDrive == "" ${|} StrCpy $LastDrive $CurrentDrive ${|}
+	${DebugMsg} "Current drive is $CurrentDrive, last drive is $LastDrive"
+!macroend
+
+${SegmentPrePrimary}
+	; Past the possible abort stage so it's safe to say we've run from this drive.
+	WriteINIStr $DataDirectory\settings\$AppIDSettings.ini $AppIDSettings LastDrive $CurrentDrive
+!macroend
