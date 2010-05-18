@@ -133,9 +133,9 @@ ${!echo} "Specifying program details and setting options..."
 !ifndef Version
 	!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" Version
 	!ifndef Version
-		!define Version 1.9.9.4
+		!define Version 1.9.99.1
 		!ifndef NSIS_UNICODE
-		!warning "Unable to get PortableApps.com Launcher version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value 1.9.9.4 instead."
+		!warning "Unable to get PortableApps.com Launcher version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value ${Version} instead."
 		!endif
 	!endif
 !endif
@@ -144,7 +144,7 @@ ${!echo} "Specifying program details and setting options..."
 	!searchparse /noerrors /file ${PACKAGE}\App\AppInfo\appinfo.ini "AppID=" AppID
 	!ifndef AppID
 		!define AppID PortableApps.comLauncher
-		!warning "Unable to get AppID from appinfo.ini; it should have a line AppID=AppNamePortable in it. Used value PortableApps.comLauncher instead."
+		!warning "Unable to get AppID from appinfo.ini; it should have a line AppID=AppNamePortable in it. Used value ${AppID} instead."
 	!endif
 !endif
 
@@ -152,7 +152,7 @@ ${!echo} "Specifying program details and setting options..."
 	!searchparse /noerrors /file ${PACKAGE}\App\AppInfo\appinfo.ini "Name=" Name
 	!ifndef Name
 		!define Name "PortableApps.com Launcher"
-		!warning "Unable to get Name from appinfo.ini; it should have a line Name=App Name Portable in it. Used value PortableApps.com Launcher instead."
+		!warning "Unable to get Name from appinfo.ini; it should have a line Name=App Name Portable in it. Used value ${Name} instead."
 	!endif
 !endif
 
