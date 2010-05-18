@@ -5,10 +5,8 @@ ${SegmentPrePrimary}
 		${ForEachINIPair} RegistryKeys $0 $1
 			;=== Backup the registry
 			${ValidateRegistryKey} $1
-			${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 $R9
-			${If} $R9 != 0
-				${registry::KeyExists} $1 $R9
-				${If} $R9 != -1
+			${IfNot} ${RegistryKeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1
+				${If} ${RegistryKeyExists} $1
 					${DebugMsg} "Backing up registry key $1 to HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1"
 					${registry::MoveKey} $1 HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 $R9
 				${EndIf}
@@ -56,8 +54,7 @@ ${SegmentPostPrimary}
 
 			${DebugMsg} "Deleting registry key $1."
 			${registry::DeleteKey} $1 $R9
-			${registry::KeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 $R9
-			${If} $R9 != -1
+			${If} ${RegistryKeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1
 				${DebugMsg} "Moving registry key HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 to $1."
 				${registry::MoveKey} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 $1 $R9
 				${Do}
