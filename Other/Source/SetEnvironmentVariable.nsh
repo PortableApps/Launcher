@@ -94,6 +94,7 @@
 		!define VAR s
 	!endif
 	!verbose pop
+	${DebugMsg} "Setting environment variable ${_VAR} to ${_VAL} (internal representations: ${VAR}, ${VAL})"
 	System::Call Kernel32::SetEnvironmentVariable(t${VAR},t${VAL})
 	!verbose push
 	!verbose 3
@@ -104,11 +105,13 @@
 !define SetEnvironmentVariable "!insertmacro SetEnvironmentVariable"
 
 !macro SetEnvironmentVariableDefault NAME VALUE
-	!insertmacro _LOGICLIB_TEMP ; convenient variable
-	Push $_LOGICLIB_TEMP
-	ReadEnvStr $_LOGICLIB_TEMP "${NAME}"
-	StrCmp $_LOGICLIB_TEMP "" "" +2
-	${SetEnvironmentVariable} "${NAME}" "${VALUE}"
-	Pop $_LOGICLIB_TEMP
+	Push $R9
+	ReadEnvStr $R9 "${NAME}"
+	${If} $R9 == ""
+		Pop $R9
+		${SetEnvironmentVariable} "${NAME}" "${VALUE}"
+	${Else}
+		Pop $R9
+	${EndIf}
 !macroend
 !define SetEnvironmentVariableDefault "!insertmacro SetEnvironmentVariableDefault"
