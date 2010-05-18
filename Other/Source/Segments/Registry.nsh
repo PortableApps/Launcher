@@ -54,3 +54,10 @@ ${SegmentUnload}
 	Pop $1
 	Exch $0
 !macroend
+
+!macro _LL_RegistryKeyExists _a _b _t _f
+	!insertmacro _LOGICLIB_TEMP
+	${registry::KeyExists} `${_b}` $_LOGICLIB_TEMP
+	!insertmacro _= $_LOGICLIB_TEMP 0 `${_t}` `${_f}`
+!macroend
+!define RegistryKeyExists `"" LL_RegistryKeyExists`
