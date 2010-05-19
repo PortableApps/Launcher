@@ -183,27 +183,41 @@ Section Main
 	DetailPrint "Generating launcher..."
 	SetDetailsPrint none
 	
-	ClearErrors
+	Delete "$EXEDIR\Data\PortableApps.comLauncherGeneratorLog.txt"
+
 	!ifdef CustomIconAndName
 		!define _ $PACKAGE
 	!else
 		!define _ $EXEDIR
 	!endif
-	ReadINIStr $Name ${_}\App\AppInfo\appinfo.ini Details Name
-	ReadINIStr $AppID ${_}\App\AppInfo\appinfo.ini Details AppID
-	ReadINIStr $1 $EXEDIR\App\AppInfo\appinfo.ini Version PackageVersion
-
-	${If} ${Errors}
+	${IfNot} ${FileExists} "${_}\App\AppInfo\appinfo.ini"
 		StrCpy $ERROROCCURED true
-		${WriteErrorToLog} "[Details]:Name [Details]:AppID or [Version]:PackageVersion not found in appinfo.ini files"
+		${WriteErrorToLog} "${_}\App\AppInfo\appinfo.ini doesn't exist!"
+	${Else}
+		ClearErrors
+		ReadINIStr $Name "${_}\App\AppInfo\appinfo.ini" Details Name
+		ReadINIStr $AppID "${_}\App\AppInfo\appinfo.ini" Details AppID
+		ReadINIStr $1 "$EXEDIR\App\AppInfo\appinfo.ini" Version PackageVersion
+
+		${If} ${Errors}
+			StrCpy $ERROROCCURED true
+			${WriteErrorToLog} "[Details]:Name [Details]:AppID or [Version]:PackageVersion not found in appinfo.ini files"
+		${Else}
+			;Delete existing installer if there is one
+			Delete "$PACKAGE\$AppID.exe"
+			${If} ${FileExists} "$PACKAGE\$AppID.exe"
+				StrCpy $ERROROCCURED true
+				${WriteErrorToLog} "Unable to delete $PACKAGE\AppID.exe, is it running?"
+			${EndIf}
+		${EndIf}
 	${EndIf}
 
-	;Delete existing installer if there is one
-	Delete "$PACKAGE\$AppID.exe"
-	
-	ExecDos::exec `"$NSIS" /O"$EXEDIR\Data\PortableApps.comLauncherGeneratorLog.txt" /DPACKAGE="$PACKAGE" /DName="$Name" /DAppID="$AppID" /DVersion="$1" "$EXEDIR\Other\Source\PortableApps.comLauncher.nsi"` "" ""
+	${If} $ERROROCCURED != true
+		ExecDos::exec `"$NSIS" /O"$EXEDIR\Data\PortableApps.comLauncherGeneratorLog.txt" /DPACKAGE="$PACKAGE" /DName="$Name" /DAppID="$AppID" /DVersion="$1" "$EXEDIR\Other\Source\PortableApps.comLauncher.nsi"` "" ""
+	${EndIf}
 
 	SetDetailsPrint ListOnly
+
 	DetailPrint " "
 	DetailPrint "Processing complete."
 	${If} ${FileExists} $PACKAGE\$AppID.exe
