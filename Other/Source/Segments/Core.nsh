@@ -103,6 +103,7 @@ ${SegmentPreExecPrimary}
 ${SegmentUnload}
 	; Clear up $PLUGINSDIR, the runtime data which says we're running, and the
 	; $PLUGINSDIR from before the hypothetical power failure.
+	FileClose $_FEIP_FileHandle
 	Delete $PLUGINSDIR\launcher.ini
 	${If} $SecondaryLaunch != true
 		ReadINIStr $0 $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini PortableApps.comLauncher PluginsDir
