@@ -38,6 +38,11 @@ The *target location* includes the directory you want it to go to, so
 If the target directory already exists at the start of the process, it will be
 backed up (to *target location*-BackupBy\ *AppID*) and restored at the end.
 
+If you do not wish to save the data but only want to keep a local version safe
+and throw away any changes, set the source directory to ``-``, so you end up
+with ``-=[target location]``. If you don't wish to back up local data, you can
+use :ini-section:`[DirectoriesCleanupForce]`.
+
 Wildcards are not yet supported.
 
 **Example:** ``settings=%APPDATA%\Pub\lisher\AppName``
@@ -80,5 +85,8 @@ These are directories which get removed after the application has run. This is
 useful if there is a tree which will be left behind, for example, if something
 stores temporary data which can be safely deleted in ``%APPDATA%\AppName\Temp``.
 Remove it with a line in here.
+
+If you need to back up the local directory so that it will not be ruined, you
+can use :ini-section:`[DirectoriesMove]` with a key name of ``-``.
 
 **Example:** ``1=%APPDATA%\Publisher``

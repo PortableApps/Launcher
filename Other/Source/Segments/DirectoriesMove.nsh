@@ -1,9 +1,13 @@
 ${SegmentFile}
 
+!macro _DirectoriesMove_Start
+	${IfThen} $0 != - ${|} StrCpy $0 $DataDirectory\$0 ${|}
+	${ParseLocations} $1
+!macroend
+
 ${SegmentPrePrimary}
 	${ForEachINIPair} DirectoriesMove $0 $1
-		StrCpy $0 $DataDirectory\$0
-		${ParseLocations} $1
+		!insertmacro _DirectoriesMove_Start
 
 		; Backup data from a local installation
 		${If} ${FileExists} $1
@@ -11,8 +15,12 @@ ${SegmentPrePrimary}
 			Rename $1 $1-BackupBy$AppID
 		${EndIf}
 
+		; If the key is -, don't move/copy to the target directory.
 		; If portable data exists move/copy it to the target directory.
-		${If} ${FileExists} $0\*.*
+		${If} $0 == -
+			CreateDirectory $1
+			${DebugMsg} "DirectoriesMove key -, so only creating the directory $1 (no file copy)."
+		${ElseIf} ${FileExists} $0\*.*
 			${GetRoot} $0 $2 ; compare
 			${GetRoot} $1 $3 ; drive
 			${If} $2 == $3   ; letters
@@ -33,11 +41,13 @@ ${SegmentPrePrimary}
 
 ${SegmentPostPrimary}
 	${ForEachINIPair} DirectoriesMove $0 $1
-		StrCpy $0 $DataDirectory\$0
-		${ParseLocations} $1
+		!insertmacro _DirectoriesMove_Start
 
-		; If not in Live mode, copy the data back to the Data directory.
-		${If} $RunLocally != true
+		; If the key is "-", don't copy it back
+		; Also if not in Live mode, copy the data back to the Data directory.
+		${If} $0 == -
+			${DebugMsg} "DirectoriesMove key -, so not keeping data from $1."
+		${ElseIf} $RunLocally != true
 			${GetRoot} $0 $2 ; compare
 			${GetRoot} $1 $3 ; drive
 			${If} $2 == $3   ; letters
