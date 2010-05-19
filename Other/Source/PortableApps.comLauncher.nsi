@@ -116,7 +116,8 @@ Var WaitForProgram
 !define ReadLauncherConfigWithDefault "!insertmacro ReadLauncherConfigWithDefault"
 
 !macro ReadUserOverrideConfig _OUTPUT _VALUE
-	ReadINIStr ${_OUTPUT} $EXEDIR\$BaseName.ini $BaseName ${_VALUE}
+	;ReadINIStr ${_OUTPUT} $EXEDIR\$BaseName.ini $BaseName ${_VALUE}
+	${ConfigRead} $EXEDIR\$BaseName.ini ${_VALUE}= ${_OUTPUT}
 !macroend
 !define ReadUserOverrideConfig "!insertmacro ReadUserOverrideConfig"
 
