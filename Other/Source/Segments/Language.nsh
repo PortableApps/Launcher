@@ -4,18 +4,9 @@ ${Segment.onInit}
 	; Try to autoselect the launcher language for message boxes
 	ReadEnvStr $0 PortableApps.comLocaleID
 	${Switch} $0
-		${Case} 1033 ; English
-		${Case} 1026 ; Bulgarian
-		${Case} 1036 ; French
-		${Case} 1030 ; Danish
-		${Case} 1043 ; Dutch
-		${Case} 1110 ; Galician
-		${Case} 1031 ; German
-		${Case} 1040 ; Italian
-		${Case} 1041 ; Japanese
-		${Case} 2052 ; SimpChinese
-		${Case} 1060 ; Slovenian
-		${Case} 1034 ; Spanish
+		; Specifies Case statements for all languages the Launcher is in.
+		; See ../Languages.nsi for those languages.
+		!insertmacro LanguageCases
 			${DebugMsg} "Setting language code to $0"
 			StrCpy $LANGUAGE $0
 			${Break}
