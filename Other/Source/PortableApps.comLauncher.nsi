@@ -69,29 +69,7 @@ ${!echo} "Including required files..."
 
 ;=== Languages {{{1
 ${!echo} "Loading language strings..."
-!ifdef NSIS_UNICODE
-	!define LANG_DIR Languages\U
-!else
-	!define LANG_DIR Languages\A
-!endif
-!macro IncludeLang _LANG
-	LoadLanguageFile "${NSISDIR}\Contrib\Language files\${_LANG}.nlf"
-	!insertmacro LANGFILE_INCLUDE_WITHDEFAULT ${LANG_DIR}\${_LANG}.nsh ${LANG_DIR}\English.nsh
-!macroend
-!define IncludeLang "!insertmacro IncludeLang"
-${IncludeLang} English
-${IncludeLang} Bulgarian
-${IncludeLang} Danish
-${IncludeLang} Dutch
-${IncludeLang} French
-${IncludeLang} Galician
-${IncludeLang} German
-${IncludeLang} Italian
-${IncludeLang} Japanese
-${IncludeLang} SimpChinese
-${IncludeLang} Slovenian
-${IncludeLang} Spanish
-!undef LANG_DIR
+!include Languages.nsh
 
 ;=== Variables {{{1
 ${!echo} "Initialising variables and macros..."
