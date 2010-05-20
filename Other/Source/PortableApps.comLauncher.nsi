@@ -89,6 +89,7 @@ ${IncludeLang} German
 ${IncludeLang} Italian
 ${IncludeLang} Japanese
 ${IncludeLang} SimpChinese
+${IncludeLang} Slovenian
 ${IncludeLang} Spanish
 !undef LANG_DIR
 

@@ -14,6 +14,7 @@ ${Segment.onInit}
 		${Case} 1040 ; Italian
 		${Case} 1041 ; Japanese
 		${Case} 2052 ; SimpChinese
+		${Case} 1060 ; Slovenian
 		${Case} 1034 ; Spanish
 			${DebugMsg} "Setting language code to $0"
 			StrCpy $LANGUAGE $0
