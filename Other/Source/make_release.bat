@@ -1,3 +1,7 @@
+:: This file doesn't do everything. It's missing the ability to update the
+:: version number, tag the release and upload the file. Run make_release, a
+:: bash script, instead (which requires you to run it on Linux).
+
 @echo off
 :: Initialise the environment
 	:: These values are as they are for Chris Morgan.
