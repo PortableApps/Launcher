@@ -15,19 +15,21 @@ ${SegmentPrePrimary}
 			${If} $0 == -
 				${DebugMsg} "File name -, not data to import."
 			${ElseIf} ${FileExists} $DataDirectory\settings\$0.reg
-				StrCpy $R9 1 ; 1 = didn't import, 0 = success
 				${DebugMsg} "Loading $DataDirectory\settings\$0.reg into the registry."
-				${If} ${FileExists} $WINDIR\system32\reg.exe
-					ExecDos::Exec `"$WINDIR\system32\reg.exe" import "$DataDirectory\settings\$0.reg"` "" ""
-					Pop $R9
-				${EndIf}
-
-				${If} $R9 != 0 ; Failed with reg.exe (with it an error code of 0 is success)
-					${registry::RestoreKey} $DataDirectory\settings\$0.reg $R9
-					${If} $R9 != 0
-						WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FailedRegistryKeys $0 true
-						${DebugMsg} "Failed to load $DataDirectory\settings\$0.reg into the registry."
-					${EndIf}
+				${registry::RestoreKey} $DataDirectory\settings\$0.reg $R9
+				${If} $R9 != 0 ; -1 = failure (probably HKLM without admin), 0 = success
+					WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FailedRegistryKeys $0 true
+					${!getdebug}
+					!ifdef DEBUG
+						StrCpy $R9 $1 4
+						${If} $R9 == HKLM
+						${AndIf} $RunAsAdmin != force
+							StrCpy $R9 " Note for developers: to always be able to write to HKLM, you will need to set [Launch]:RunAsAdmin to force."
+						${Else}
+							StrCpy $R9 ""
+						${EndIf}
+					!endif
+					${DebugMsg} "Failed to load $DataDirectory\settings\$0.reg into the registry.$R9"
 				${EndIf}
 			${Else}
 				${DebugMsg} "File $DataDirectory\settings\$0.reg doesn't exist, not loaded into the registry."
