@@ -67,7 +67,7 @@ Var _FEIP_Char
 				${If} $_FEIP_CharNum == $_FEIP_Char
 					${If} $_FEIP_Char == "'"
 					${OrIf} $_FEIP_Char == '"'
-						StrCpy ${VALUE} ${VALUE} -2 1
+						StrCpy ${VALUE} ${VALUE} -1 1
 					${EndIf}
 				${EndIf}
 !macroend
