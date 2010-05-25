@@ -7,6 +7,7 @@ Here are some fully worked examples for the PortableApps.com Launcher.
 
 .. toctree::
 
+   scribus
    7-zip
 
 *More worked examples will be written some time. For the moment you can look at

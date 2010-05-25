@@ -26,6 +26,7 @@ Starting using the PortableApps.com Launcher
   :ref:`topics-languages` |
   :ref:`topics-games`
 * **Examples:**
+  :ref:`intro-examples-scribus` |
   :ref:`intro-examples-7-zip`
 
 General
