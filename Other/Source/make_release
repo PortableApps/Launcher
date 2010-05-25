@@ -74,8 +74,8 @@ if [[ $VERSION =~ $regex ]]; then
 	XXXX=$XXXX1.$XXXX2.$XXXX3.$XXXX4
 	echo "$VERSION translates to $XXXX"
 else
-	echo "Sorry, I don't understand $VERSION as a version number string."
-	exit
+	echo "Sorry, I don't understand $VERSION as a version number string." >&2
+	exit 1
 fi
 sed -i "s/DisplayVersion=.*/DisplayVersion=$VERSION/" ../../App/AppInfo/appinfo.ini
 sed -i "s/PackageVersion=.*/PackageVersion=$XXXX/" ../../App/AppInfo/appinfo.ini
@@ -95,14 +95,26 @@ echo "Building the PortableApps.com Launcher Manual..."
 	cd ..
 
 echo "Building the PortableApps.com Launcher Generator..."
+	rm ../../PortableApps.comLauncherGenerator.exe
 	makensisu GeneratorWizard.nsi
+	if ! [ -e ../../PortableApps.comLauncherGenerator.exe ]; then
+		echo "PortableApps.comLauncherGenerator.exe was not built!" >&2
+		exit 1
+	fi
 
 echo "Building the PortableApps.com Launcher installer..."
 	cd ../..
+	installer_filename="PortableApps.comLauncher_`echo $VERSION | sed "s/ /_/g"`.paf.exe"
+	rm ../$installer_filename
 	paiu $PWD
+	cd ..
+
+	if ! [ -e $installer_filename ]; then
+		echo "Installer $installer_filename was not built!" >&2
+		exit 1
+	fi
 
 echo "Uploading the installer..."
-	cd ..
 	if [ "$sfusername" = "" ]; then
 		sfusername=chriswombat
 	fi
@@ -113,8 +125,6 @@ echo "Uploading the installer..."
 	else
 		parent_directory="PortableApps.com Launcher"
 	fi
-
-	installer_filename="PortableApps.comLauncher_`echo $VERSION | sed "s/ /_/g"`.paf.exe"
 
 	echo "cd \"/home/pfs/project/p/po/portableapps/$parent_directory\"
 -mkdir \"$directory\"
