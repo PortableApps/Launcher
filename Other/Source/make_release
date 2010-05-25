@@ -97,12 +97,8 @@ echo "Building the PortableApps.com Launcher Manual..."
 echo "Building the PortableApps.com Launcher Generator..."
 	makensisu GeneratorWizard.nsi
 
-echo "Building the PortableApps.com Launcher..."
-	cd ../..
-	chmod +x PortableApps.comLauncherGenerator.exe
-	PortableApps.comLauncherGenerator.exe "`winepath -w $PWD`"
-
 echo "Building the PortableApps.com Launcher installer..."
+	cd ../..
 	paiu $PWD
 
 echo "Uploading the installer..."
