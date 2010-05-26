@@ -23,6 +23,7 @@ ${IncludeLang} Galician
 ${IncludeLang} German
 ${IncludeLang} Italian
 ${IncludeLang} Japanese
+${IncludeLang} Polish
 ${IncludeLang} SimpChinese
 ${IncludeLang} Slovenian
 ${IncludeLang} Spanish
