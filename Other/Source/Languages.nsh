@@ -27,6 +27,7 @@ ${IncludeLang} Polish
 ${IncludeLang} SimpChinese
 ${IncludeLang} Slovenian
 ${IncludeLang} Spanish
+${IncludeLang} TradChinese
 !undef LANG_DIR
 
 ; Use the Case statements formed above.
