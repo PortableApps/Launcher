@@ -24,6 +24,7 @@ ${IncludeLang} German
 ${IncludeLang} Italian
 ${IncludeLang} Japanese
 ${IncludeLang} Polish
+${IncludeLang} Portuguese
 ${IncludeLang} SimpChinese
 ${IncludeLang} Slovenian
 ${IncludeLang} Spanish
