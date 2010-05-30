@@ -21,6 +21,14 @@ ${SegmentPrePrimary}
 			CreateDirectory $1
 			${DebugMsg} "DirectoriesMove key -, so only creating the directory $1 (no file copy)."
 		${ElseIf} ${FileExists} $0\*.*
+			; See if the parent local directory exists. If not, create it and
+			; note down to delete it at the end if it's empty.
+			${GetParent} $1 $4
+			${IfNot} ${FileExists} $4
+				CreateDirectory $4
+				WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini DirectoriesMove RemoveIfEmpty:$4 true
+			${EndIf}
+
 			${GetRoot} $0 $2 ; compare
 			${GetRoot} $1 $3 ; drive
 			${If} $2 == $3   ; letters
@@ -63,6 +71,14 @@ ${SegmentPostPrimary}
 		; And then remove it from the runtime location
 		${DebugMsg} "Removing portable settings directory from run location ($1)."
 		RMDir /R $1
+
+		; If the parent directory we put the directory in locally didn't exist
+		; before, delete it if it's empty.
+		${GetParent} $1 $4
+		ReadINIStr $5 $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini DirectoriesMove RemoveIfEmpty:$4
+		${If} $5 == true
+			RMDir $4
+		${EndIf}
 
 		; And move that backup of any local data from earlier if it exists.
 		${If} ${FileExists} $1-BackupBy$AppID
