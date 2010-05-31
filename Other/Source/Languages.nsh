@@ -29,6 +29,7 @@ ${IncludeLang} PortugueseBR
 ${IncludeLang} SimpChinese
 ${IncludeLang} Slovenian
 ${IncludeLang} Spanish
+${IncludeLang} Swedish
 ${IncludeLang} TradChinese
 !undef LANG_DIR
 
