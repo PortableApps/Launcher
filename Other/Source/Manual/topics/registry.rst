@@ -7,6 +7,69 @@ Dealing with the registry
 Many applications store their data in the registry; when making such an
 application portable this data must be preserved.
 
+Making registry keys portable
+=============================
+
+With the PortableApps.com Launcher it's easy to make a registry key that an
+application uses portable.
+
+First of all, when using any of the registry sections in your launcher
+configuration file, you must set :ini-key:`[Activate]:Registry` to ``true``,
+or else they **will not work**. If something doesn't seem to be working, check
+that value first. You probably didn't set it.
+
+When you have an application that uses a key like
+``HKEY_CURRENT_USER\Software\AppName``, you can make that portable with a line
+in the :ini-section:`[RegistryKeys]` section like this:
+
+.. code-block:: ini
+
+   [RegistryKeys]
+   appname=HKCU\Software\AppName
+
+The ``appname`` refers to the filename (without the ``.reg`` extension) where it
+will be saved, inside the ``Data\settings`` directory of your package. This
+means that you can update drive letters and things like that inside
+``%PAL:DataDir%\settings\appname.reg``.
+
+If the registry key exists when the launcher comes to load the portable data, it
+will be backed up, and restored at the end, so that no data is lost.
+
+.. _topics-registry-cleanupifempty:
+
+If the registry key you are wishing to save and make portable is deeper, like
+``HKCU\Software\Publisher\AppName``, then you need to make sure that the
+"Publisher" key is also deleted if it is empty, and not left behind. This also
+uses the :ini-section:`[RegistryCleanupIfEmpty]` section.
+
+.. code-block:: ini
+
+   [RegistryKeys]
+   appname=HKCU\Software\Publisher\AppName
+
+   [RegistryCleanupIfEmpty]
+   1=HKCU\Software\Publisher
+
+This also applies for more complex subtrees. (Try to think of more useful file
+names that "appname1" and "appname2" for your own applications.) In the example
+below, note that order is important. If the key numbers of the
+:ini-section:`[RegistryCleanupIfEmpty]` values were the other way round, it
+would try to delete ``HKCU\Software\Publisher`` first, and find that it wasn't
+empty (because it would have ``Type`` in it) and so it wouldn't be cleaned up.
+
+.. code-block:: ini
+
+   [RegistryKeys]
+   appname1=HKCU\Software\Publisher\Type\AppName
+   appname2=HKCU\Software\Publisher\AppNameConfig
+
+   [RegistryCleanupIfEmpty]
+   1=HKCU\Software\Publisher\Type
+   2=HKCU\Software\Publisher
+
+Read the :ref:`launcher.ini registry reference <ref-launcher.ini-registry>` and
+the rest of this document for more information.
+
 Hives
 =====
 
@@ -69,7 +132,7 @@ These keys are in HKLM:
 * ``System\CurrentControlSet\Services\swmidi``
 
 If you come up with more keys that can be ignored, please :ref:`contact Chris
-Morgan <ask>`.
+Morgan <help>`.
 
 Specific registry keys
 ======================

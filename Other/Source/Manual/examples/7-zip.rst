@@ -1,4 +1,4 @@
-.. _intro-examples-7-zip:
+.. _examples-7-zip:
 
 Worked Example: 7-Zip
 =====================

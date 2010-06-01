@@ -123,7 +123,7 @@ Disabling hooks and segments and overriding the execute step
 If you ever need to disable a segment or hook, you can do so. In general though
 if you can possibly avoid doing it you should; you can very easily break the
 PortableApps.com Launcher by disabling certain things. In general I would
-recommend that you :ref:`ask <ask>` before doing it to see if there is a better
+recommend that you :ref:`ask <help>` before doing it to see if there is a better
 way.
 
 All of these changes apply to :ref:`PortableApps.comLauncherCustom.nsh

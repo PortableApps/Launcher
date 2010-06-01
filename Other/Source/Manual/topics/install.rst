@@ -30,4 +30,4 @@ Portable <Unicode NSIS>`. Install it in a sibling directory to the
 PortableApps.com Launcher directory. Then you can run the PortableApps.com
 Launcher Generator and select the portable app directory which you wish to use
 the PortableApps.com Launcher in. It will compile the launcher. If you run into
-trouble with it, you can :ref:`ask for help <ask>`.
+trouble with it, you can :ref:`ask for help <help>`.

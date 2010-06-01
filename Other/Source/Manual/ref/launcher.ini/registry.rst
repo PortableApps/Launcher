@@ -1,3 +1,5 @@
+.. _ref-launcher.ini-registry:
+
 .. ini-section:: [RegistryKeys]
 
 [RegistryKeys]
@@ -13,6 +15,9 @@ inside this, look at :ini-section:`[FileWrite]` with :ini-key:`Type
 If you do not wish to save the data of the registry key to a file but only
 want to keep it safe and throw away any changes, set the "file name" to ``-``,
 so you end up with ``-=registry key location``.
+
+Some more description of how this works and what it can be used to do is
+available in :ref:`Dealing with the registry <topics-registry>`.
 
 **Example:** ``appname_portable=HKCU\Software\AppName``
 
@@ -44,6 +49,9 @@ they are empty. This is useful if there is a tree which will be left behind, for
 example, if something stores to HKEY_CURRENT_USER\\Software\\Publisher\\AppName,
 when AppName is saved, Publisher will still be left, empty. Remove it with a
 line in here.
+
+Some more description of how this works and what it can be used to do is
+available in :ref:`Dealing with the registry <topics-registry-cleanupifempty>`.
 
 **Example:** ``1=HKCU\Software\Publisher``
 

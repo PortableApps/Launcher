@@ -10,5 +10,3 @@ to help you get started making things portable quickly.
    :maxdepth: 2
 
    overview
-   ask
-   examples/index

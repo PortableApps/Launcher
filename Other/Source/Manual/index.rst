@@ -26,8 +26,8 @@ Starting using the PortableApps.com Launcher
   :ref:`topics-languages` |
   :ref:`topics-games`
 * **Examples:**
-  :ref:`intro-examples-scribus` |
-  :ref:`intro-examples-7-zip`
+  :ref:`examples-scribus` |
+  :ref:`examples-7-zip`
 
 General
 -------
@@ -36,6 +36,9 @@ General
   :ref:`intro-index` |
   :ref:`topics-index` |
   :ref:`ref`
+* **Fixing things:**
+  :ref:`troubleshooting` |
+  :ref:`help`
 
 Advanced topics
 ---------------
@@ -48,5 +51,6 @@ Advanced topics
 Help!
 -----
 
-If you can't work out what to do in a situation or otherwise need help, see the
-page :ref:`ask`.
+If you can't work out what to do in a situation or otherwise need help, try
+going through :ref:`troubleshooting` first. If that doesn't help you, then try
+:ref:`help`.
