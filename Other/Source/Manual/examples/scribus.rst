@@ -1,4 +1,4 @@
-.. _intro-examples-scribus:
+.. _examples-scribus:
 
 Worked Example: Scribus
 =======================

@@ -12,6 +12,7 @@ to know, and useful information about techniques:
    install
    splashscreen
    registry
+   files-and-directories
    languages
    java
    qt

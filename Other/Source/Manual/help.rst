@@ -1,7 +1,13 @@
-.. _ask:
+.. index:: Getting help
+
+.. _help:
 
 Getting help
 ============
+
+If something isn't working for you, please first of all refer to
+:ref:`troubleshooting`. There is a list there which should resolve the most
+common problems and save you time and help you learn more.
 
 If you need help with the PortableApps.com Launcher, there are a few ways you
 can get help:
