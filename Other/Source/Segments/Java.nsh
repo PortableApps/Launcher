@@ -27,10 +27,12 @@ ${SegmentInit}
 			ReadRegStr $JavaDirectory HKLM "Software\JavaSoft\Java Runtime Environment\$0" JavaHome
 			${If} ${Errors}
 			${OrIfNot} ${FileExists} $JavaDirectory\bin\java.exe
+			${AndIfNot} ${FileExists} $JavaDirectory\bin\javaw.exe
 				ClearErrors
 				ReadEnvStr $JavaDirectory JAVA_HOME
 				${If} ${Errors}
 				${OrIfNot} ${FileExists} $JavaDirectory\bin\java.exe
+				${AndIfNot} ${FileExists} $JavaDirectory\bin\javaw.exe
 					ClearErrors
 					SearchPath $JavaDirectory java.exe
 					${IfNot} ${Errors}
@@ -39,6 +41,7 @@ ${SegmentInit}
 					${Else}
 						StrCpy $JavaDirectory $WINDIR\Java
 						${IfNot} ${FileExists} $JavaDirectory\bin\java.exe
+						${AndIfNot} ${FileExists} $JavaDirectory\bin\javaw.exe
 							StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\Java
 							${DebugMsg} "Unable to find Java installation."
 						${EndIf}
@@ -58,6 +61,12 @@ ${SegmentInit}
 			${EndIf}
 			${IfThen} $ProgramExecutable == java.exe ${|} StrCpy $UsingJavaExecutable true ${|}
 			${IfThen} $ProgramExecutable == javaw.exe ${|} StrCpy $UsingJavaExecutable true ${|}
+			${IfNot} ${FileExists} $JavaDirectory\bin\$ProgramExecutable
+				;=== The required Java binary (java.exe or javaw.exe) is missing.
+				StrCpy $MissingFileOrPath $JavaDirectory\bin\$ProgramExecutable
+				MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
+				Quit
+			${EndIf}
 		${EndIf}
 
 		; Now set %JAVA_HOME% to the path (still may not exist)
