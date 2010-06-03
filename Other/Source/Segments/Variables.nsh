@@ -38,37 +38,37 @@ ${SegmentFile}
 	;=== Make the java.util.prefs path
 	; Based on the forwardslashes path, s/[^a-z:]/\/&/g
 	StrCpy $R3 ""
-	StrLen $R7 $R7
+	StrLen $R7 $R2
 	IntOp $R7 $R7 - 1 ; base 0
 	${For} $R8 0 $R7
-		StrCpy $R9 $R7 1 $R8
-		${If}   $R9 == a
-		${OrIf} $R9 == b
-		${OrIf} $R9 == c
-		${OrIf} $R9 == d
-		${OrIf} $R9 == e
-		${OrIf} $R9 == f
-		${OrIf} $R9 == g
-		${OrIf} $R9 == h
-		${OrIf} $R9 == i
-		${OrIf} $R9 == j
-		${OrIf} $R9 == k
-		${OrIf} $R9 == l
-		${OrIf} $R9 == m
-		${OrIf} $R9 == n
-		${OrIf} $R9 == o
-		${OrIf} $R9 == p
-		${OrIf} $R9 == q
-		${OrIf} $R9 == r
-		${OrIf} $R9 == s
-		${OrIf} $R9 == t
-		${OrIf} $R9 == u
-		${OrIf} $R9 == v
-		${OrIf} $R9 == w
-		${OrIf} $R9 == x
-		${OrIf} $R9 == y
-		${OrIf} $R9 == z
-		${OrIf} $R9 == :
+		StrCpy $R9 $R2 1 $R8
+		${If}   $R9 S== a
+		${OrIf} $R9 S== b
+		${OrIf} $R9 S== c
+		${OrIf} $R9 S== d
+		${OrIf} $R9 S== e
+		${OrIf} $R9 S== f
+		${OrIf} $R9 S== g
+		${OrIf} $R9 S== h
+		${OrIf} $R9 S== i
+		${OrIf} $R9 S== j
+		${OrIf} $R9 S== k
+		${OrIf} $R9 S== l
+		${OrIf} $R9 S== m
+		${OrIf} $R9 S== n
+		${OrIf} $R9 S== o
+		${OrIf} $R9 S== p
+		${OrIf} $R9 S== q
+		${OrIf} $R9 S== r
+		${OrIf} $R9 S== s
+		${OrIf} $R9 S== t
+		${OrIf} $R9 S== u
+		${OrIf} $R9 S== v
+		${OrIf} $R9 S== w
+		${OrIf} $R9 S== x
+		${OrIf} $R9 S== y
+		${OrIf} $R9 S== z
+		${OrIf} $R9 S== :
 			StrCpy $R3 $R3$R9
 		${Else}
 			StrCpy $R3 $R3/$R9
