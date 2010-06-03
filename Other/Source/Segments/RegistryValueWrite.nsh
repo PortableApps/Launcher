@@ -3,6 +3,11 @@ ${SegmentFile}
 ${SegmentPrePrimary}
 	${If} $UsesRegistry == true
 		${ForEachINIPair} RegistryValueWrite $0 $1
+			; $0 = path\value
+			; $1 = type:string or string, then string
+			; $2 = path
+			; $3 = value
+			; $4 = type (default REG_SZ)
 			${ValidateRegistryKey} $0
 			StrCpy $2 $0 "" -1
 			${If} $2 == "\"
@@ -31,9 +36,20 @@ ${SegmentPrePrimary}
 
 			${ParseLocations} $1
 
+			; TODO: I'm not quite certain yet if this is not working, and if it
+			; isn't working, whether it's due to not working on a value which
+			; already exists, or because it's busy doing something and needs a
+			; short Sleep before continuing.
+
+			; If we need to delete it first: 
+			;${registry::DeleteValue} $2 $3 $R9 ; path, value, return
+			;${DebugMsg} "Deleted value $3 from path $2 (return code $R9)"
+
+			; If we need to sleep:
+			;Sleep 50
+
 			${DebugMsg} "Writing '$1' (type '$4') to key '$2', value '$3' (Short form: $2\$3=$4:$1)"
-			; key item value type return
-			${registry::Write} $2 $3 $1 $4 $R9
+			${registry::Write} $2 $3 $1 $4 $R9 ; path, value, string, type, return
 		${NextINIPair}
 	${EndIf}
 !macroend
