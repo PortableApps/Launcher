@@ -61,7 +61,6 @@ ${SegmentInit}
 			${If} $0 == ConfigRead
 				${ReadLauncherConfig} $2 LanguageFile Entry
 				${IfNot} ${Errors}
-					${ParseLocations} $3
 					${ReadLauncherConfig} $4 LanguageFile CaseSensitive
 					${If} ${FileExists} $1
 						${If} $4 == true
@@ -81,7 +80,9 @@ ${SegmentInit}
 					ReadINIStr $8 $1 $2 $3
 				${EndIf}
 			${EndIf}
-			${If} $8 != ""
+			${If} $8 == ""
+				${DebugMsg} "Unable to read language from file."
+			${Else}
 				; We found a language value. Now we can set PAL:LanguageCustom
 
 				; First, though, see if we want to cut anything off at the
