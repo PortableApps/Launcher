@@ -158,4 +158,4 @@ use null bytes all over the place.
 
 This value is only needed with the :ini-key:`Type <[FileWriteN]:Type>`
 ``Replace``; ``ConfigWrite`` and ``INI`` automatically detect the encoding of
-the file (this requires that the file start with the UTF-16LE BOM, ``0xFEFF``).
+the file (this requires that the file start with the UTF-16LE BOM, ``U+FFFE``).
