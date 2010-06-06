@@ -142,20 +142,25 @@ replacement for drive letters.
 Encoding
 --------
 
-| Values: ``ANSI`` / ``UTF-16LE``
-| Default: ``ANSI``
+| Values: auto / ``ANSI`` / ``UTF-16LE``
+| Default: auto
 | Applies to :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``Replace``.
 | Optional.
 
 ----
 
-If you need to find and replace in a Unicode (UTF-16LE) file, set the encoding
-here as UTF-16LE; otherwise don't include this value.
+If you need to find and replace in a Unicode (UTF-16LE) file, but it is missing
+the byte-order mark (BOM), set the encoding here as ``UTF-16LE``; if a file for
+some reason has the UTF-16LE BOM, ``U+FFFE``, at the start of the file, but
+isn't really UTF16-LE, set this to ``ANSI``. Otherwise, omit this value and the
+encoding will be automatically detected by checking for the BOM.
 
-For UTF-8 files, leave this value out. The default isn't really ``ANSI``, it's
-just "normal", which includes ANSI, UTF-8 and really anything which doesn't put
+For UTF-8 files, leave this value out. The value ``ANSI`` isn't really ANSI,
+it's just "normal", which includes ANSI, UTF-8 and really anything which doesn't
 use null bytes all over the place.
 
-This value is only needed with the :ini-key:`Type <[FileWriteN]:Type>`
-``Replace``; ``ConfigWrite`` and ``INI`` automatically detect the encoding of
+This value only works with the :ini-key:`Type <[FileWriteN]:Type>`
+``Replace``; ``INI`` automatically detect the encoding of
 the file (this requires that the file start with the UTF-16LE BOM, ``U+FFFE``).
+
+Currently ``ConfigWrite`` does not support Unicode files at all.
