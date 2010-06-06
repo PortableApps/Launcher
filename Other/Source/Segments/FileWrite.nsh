@@ -52,6 +52,21 @@ ${SegmentPrePrimary}
 				${EndIf}
 				${If} $5 == true ; find != replace (as discovered above)
 					${ReadLauncherConfig} $5 FileWrite$R0 Encoding
+					${If} $5 == ""
+						FileOpen $9 $1 r
+						!ifdef NSIS_UNICODE
+							FileReadWord $9 $5
+						!else
+							; This version would work for either, but
+							; FileReadWord is neater for NSISu.
+							FileReadByte $9 $5
+							FileReadByte $9 $6
+							IntOp $5 $5 << 8
+							IntOp $5 $5 + $6
+						!endif
+						${IfThen} $5 = 0xFFFE ${|} StrCpy $5 UTF-16LE ${|}
+						FileClose $9
+					${EndIf}
 					${!getdebug}
 					!ifdef DEBUG
 						${IfThen} $5 == UTF-16LE ${|} StrCpy $8 "a UTF-16LE" ${|}
