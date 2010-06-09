@@ -56,11 +56,7 @@ ${!echo} "Including required files..."
 
 ;(NSIS Plugins) {{{2
 !include NewTextReplace.nsh
-!ifdef NSIS_UNICODE
-	!addplugindir Plugins\U
-!else
-	!addplugindir Plugins\A
-!endif
+!addplugindir Plugins
 
 ;(Custom) {{{2
 !include ReplaceInFileWithTextReplace.nsh
@@ -117,9 +113,7 @@ ${!echo} "Specifying program details and setting options..."
 	!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" Version
 	!ifndef Version
 		!define Version 1.9.90.2
-		!ifndef NSIS_UNICODE
 		!warning "Unable to get PortableApps.com Launcher version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value ${Version} instead."
-		!endif
 	!endif
 !endif
 
