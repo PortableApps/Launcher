@@ -88,24 +88,6 @@ Here is a table of language variables and the values they are given. (All the
 variables in this table have ``PortableApps.com`` prefixed to them, see
 :ref:`ref-envsub-language` for the full names.)
 
-I (Chris) am also not certain at the moment about whether LocaleName will be using
-the PortableApps.com Platform locale filenames or the LocaleWinName version
-converted to mixed case. Normally these will be the same, but there are a few
-exceptions:
-
-* SerbianLatin (Platform) vs. Serbian (LocaleWinName)
-* PortugueseBrazilian (Platform) vs. PortugueseBR (LocaleWinName)
-* ChineseTraditional (Platform) vs. TradChinese (LocaleWinName)
-* ChineseSimplified (Platform) vs. SimpChinese (LocaleWinName)
-
-With the transition to Unicode I suspect Serbian may split into Serbian and
-SerbianLatin for the two scripts, Cyrillic and Latin.
-
-At the moment, I think that the LocaleWinName variant is the one which will be
-being used, but I am not certain. For simplicity of generation of the table, as
-the mixed case variants of LocaleWinName do not exist in the files yet, I have
-shown the Platform's names in the LocaleName table.
-
 **Note:** :env:`PortableApps.comLocaleName` will be in uppercase for users of
 the PortableApps.com Platform 2.0 Beta 4 and earlier. If this matters, you may
 need to use the :ini-section:`[LanguageStrings]` section.
@@ -124,6 +106,15 @@ need to use the :ini-section:`[LanguageStrings]` section.
      "tl".
    
    All these bugs have been reported.
+   
+   The table is currently slightly modified as well to make the LocaleName
+   correct (script works from file names as the string doesn't yet exist inside
+   the file):
+   
+   * SerbianLatin        -> Serbian
+   * PortugueseBrazilian -> PortugueseBR
+   * ChineseTraditional  -> TradChinese
+   * ChineseSimplified   -> SimpChinese
 
 ==================== ============ =========== =========== =========== ======== =========================
 LocaleName           LanguageCode LocaleCode2 LocaleCode3 Localeglibc LocaleID LocaleWinName            
@@ -135,8 +126,8 @@ Basque               eu           eu          eus         eu          1069     L
 Belarussian          be           be          bel         be          1059     LANG_BELARUSSIAN         
 Bulgarian            bg           bg          bul         bg          1026     LANG_BULGARIAN           
 Catalan              ca           ca          cat         ca          1027     LANG_CATALAN             
-ChineseSimplified    zh-cn        zh          zho         zh_CN       2052     LANG_SIMPCHINESE         
-ChineseTraditional   zh-tw        zh          zho         zh_TW       1028     LANG_TRADCHINESE         
+SimpChinese          zh-cn        zh          zho         zh_CN       2052     LANG_SIMPCHINESE         
+TradChinese          zh-tw        zh          zho         zh_TW       1028     LANG_TRADCHINESE         
 Croatian             hr           hr          hrv         hr          1050     LANG_CROATIAN            
 Czech                cs           cs          ces         cs          1029     LANG_CZECH               
 Danish               da           da          dan         da          1030     LANG_DANISH              
@@ -165,10 +156,10 @@ Malay                ms           ms          msa         ms          1086     L
 Norwegian            no           no          nor         nb          1044     LANG_NORWEGIAN           
 Polish               pl           pl          pol         pl          1045     LANG_POLISH              
 Portuguese           pt           pt          por         pt          2070     LANG_PORTUGUESE          
-PortugueseBrazilian  pt-br        pt          por         pt_BR       1046     LANG_PORTUGUESEBR        
+PortugueseBR         pt-br        pt          por         pt_BR       1046     LANG_PORTUGUESEBR        
 Romanian             ro           ro          ron         ro          1048     LANG_ROMANIAN            
 Russian              ru           ru          rus         ru          1049     LANG_RUSSIAN             
-SerbianLatin         sr           sr          srp         sr          2074     LANG_SERBIAN             
+Serbian              sr           sr          srp         sr          2074     LANG_SERBIAN             
 Slovak               sk           sk          slk         sk          1051     LANG_SLOVAK              
 Slovenian            sl           sl          slv         sl          1060     LANG_SLOVENIAN           
 Spanish              es           es          spa         es          1034     LANG_SPANISH             
