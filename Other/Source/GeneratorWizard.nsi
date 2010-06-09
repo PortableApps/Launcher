@@ -21,6 +21,9 @@
 
 !define CustomIconAndName
 
+;=== Require at least Unicode NSIS 2.46
+!include RequireLatestNSIS.nsh
+
 ;=== Program Details
 Name "PortableApps.com Launcher Generator"
 OutFile ..\..\PortableApps.comLauncherGenerator.exe
