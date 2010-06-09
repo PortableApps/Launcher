@@ -1,4 +1,4 @@
-;Copyright (C) 2006-2009 John T. Haller
+﻿;Copyright (C) 2006-2009 John T. Haller
 
 ;Website: http://PortableApps.com/Installer
 
@@ -61,7 +61,7 @@ SetDatablockOptimize On
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP header.bmp
 
-BrandingText "PortableApps.com - Your Digital Life, Anywhere�"
+BrandingText "PortableApps.com - Your Digital Life, Anywhere®"
 InstallButtonText "Go >" 
 ShowInstDetails show
 SubCaption 3 " | Generating Launcher"
