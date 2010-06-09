@@ -259,6 +259,8 @@ Language variables
 These variables are for language switching. Particularly of interest is
 %PAL:LanguageCustom%.
 
+A full table of all the values is available in :ref:`topics-languages-values`.
+
 .. env:: PortableApps.comLanguageCode
 
 * **PortableApps.comLanguageCode** -- e.g. "en", "pt", "pt-br"
