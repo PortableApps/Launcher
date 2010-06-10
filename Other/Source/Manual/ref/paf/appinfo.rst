@@ -14,7 +14,7 @@ following:
 
    [Format]
    Type=PortableApps.comFormat
-   Version=1.0
+   Version=2.0
 
    [Details]
    Name=AppName Portable
@@ -58,7 +58,7 @@ Within the ``[Format]`` section:
 **Type** is the type of configuration file this is (only PortableApps.comFormat
 is valid at this time).
 
-**Version** is the version of this format the file is in (currently 1.0).
+**Version** is the version of this format the file is in (currently 2.0).
 
 Within the ``[Details]`` section:
 ---------------------------------
@@ -85,11 +85,10 @@ you are repackaging an app written by someone else, they should also be listed.
 
 **Category** is the category that the application falls into within the
 PortableApps.com Platform. Valid entries are: Accessibility, Development,
-Education, Games, Graphics & Pictures, Internet, Music & Video, Office,
-Operating Systems or Utilities. Only these \*exact* entries are supported and
-should be used regardless of the default language of the base app (even if this
-is a German application, it should still use the English translation of the
-category).
+Education, Games, Graphics & Pictures, Internet, Music & Video, Office, Security
+or Utilities. Only these \*exact* entries are supported and should be used
+regardless of the default language of the base app (even if this is a German
+application, it should still use the English translation of the category).
 
 **Description** is a brief description of what the application is. Maximum of
 512 characters.
@@ -98,13 +97,14 @@ category).
 multilingual, it should be specified as Multilingual. The language string must
 be in a specific format. The following strings are available: Afrikaans,
 Albanian, Arabic, Basque, Belarusian, Bosnian, Breton, Bulgarian, Catalan,
-Croatian, Czech, Danish, Dutch, English, Estonian, Farsi, Finnish, French,
-Galician, German, Greek, Hebrew, Hungarian, Icelandic, Indonesian, Irish,
-Italian, Japanese, Korean, Kurdish, Latvian, Lithuanian, Luxembourgish,
-Macedonian, Malay, Mongolian, Norwegian, NorwegianNynorsk, Polish, Portuguese,
-PortugueseBR, Romanian, Russian, Serbian, SerbianLatin, SimpChinese, Slovak,
-Slovenian, Spanish, SpanishInternational, Swedish, Thai, TradChinese, Turkish,
-Ukranian, Uzbek, Welsh.
+Cibemba, Croatian, Czech, Danish, Dutch, Efik, English, Estonian, Farsi,
+Finnish, French, Galician, Georgian, German, Greek, Hebrew, Hungarian,
+Icelandic, Igbo, Indonesian, Irish, Italian, Japanese, Khmer, Korean, Kurdish,
+Latvian, Lithuanian, Luxembourgish, Macedonian, Malagasy, Malay, Mongolian,
+Norwegian, NorwegianNynorsk, Pashto, Polish, Portuguese, PortugueseBR, Romanian,
+Russian, Serbian, SerbianLatin, SimpChinese, Slovak, Slovenian, Spanish,
+SpanishInternational, Swahili, Swedish, Thai, TradChinese, Turkish, Ukranian,
+Uzbek, Valencian, Vietnamese, Welsh, Yoruba.
 
 **Trademarks** (optional) is any trademark notifications that should appear. For
 example, HappyApp is a trademark of Acme, Inc.
@@ -145,8 +145,8 @@ format with no other characters and must be incremented with each public
 release.
 
 **DisplayVersion** is the user-friendly version that is generally used to
-describe the version. So, a released app may have a DisplayVersion of 2.4
-Revision 2 but a PackageVersion of 2.4.0.2.
+describe the version. So, a released app may have a DisplayVersion of ``2.4
+Revision 2`` but a PackageVersion of ``2.4.0.2``.
 
 Within the optional ``[SpecialPaths]`` section:
 -----------------------------------------------
@@ -161,8 +161,8 @@ Within the optional ``[Dependencies]`` section:
 -----------------------------------------------
 
 **UsesJava** (optional) specifies whether the portable app makes use of `Java
-Portable`_. If needed, this value should be set to true. If not needed, it should
-be omitted or set to false.
+Portable`_. If needed, this value should be set to true. If not needed, it
+should be omitted or set to false.
 
 **UsesDotNetVersion** (optional) specifies which minimum version of the .NET
 framework the application requires. If needed, this value should be set to the

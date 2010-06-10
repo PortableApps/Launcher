@@ -6,6 +6,10 @@
 An ongoing discussion about PortableApps.com Format and the PortableApps.com
 Installer is taking place in the Development Forum.
 
+*2010-06-03: 2.0: Added OptionalSectionInstalledWhenSilent, 128px PNG icons, 11
+languages, full Unicode support, Operating System category removed, Security
+category added.*
+
 *2010-02-26: a few minor spelling and grammar fixes.*
 
 *2009-11-19: 1.0: Added Dependencies, general cleanup.*

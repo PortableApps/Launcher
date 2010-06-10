@@ -3,7 +3,7 @@
 PortableApps.com Format™ Specification
 ======================================
 
-.. rubric:: 1.0 (2009-11-24)
+.. rubric:: 2.0 (2010-06-03)
 
 PortableApps.com Format is a simple specification that governs the file and
 directory layout as well as operating behavior of portable apps. File are

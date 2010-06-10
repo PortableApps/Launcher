@@ -6,11 +6,15 @@
 Within the ``AppNamePortable\App\AppInfo`` directory, the icons used by the
 PortableApps.com Installer and within the PortableApps.com Menu are located. The
 icons are included in ICO and PNG format. The main icon is called
-``appicon.ico``, ``appicon_16.png`` and ``appicon_32.png``. If the application
-also uses multiple icons (as detailed above), these additional icons are named
-as ``appicon1.ico`` (``appicon1_16.png`` and ``appicon1_32.png``),
-``appicon2.ico``, etc. The numbers correspond to Start1, Start2, etc within the
-Control section.
+``appicon.ico``, ``appicon_16.png``, ``appicon_32.png`` and
+``appicon_128.png``\*. If the application also uses multiple icons (as detailed
+above), these additional icons are named as ``appicon1.ico``
+(``appicon1_16.png`` and ``appicon1_32.png``), ``appicon2.ico``, etc. The
+numbers correspond to Start1, Start2, etc within the Control section.
+
+*\* Note that the 128px variant is optional and not required by the installer to
+compile. However, publishers are encouraged to include this high-resolution icon
+for upcoming features in the platform.*
 
 The PNG icons are 16x16 and 32x32 respectively and are in True Color format with
 alpha transparency.
