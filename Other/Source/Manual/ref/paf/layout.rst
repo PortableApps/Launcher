@@ -9,15 +9,15 @@ AppNamePortable which contains three directories: App, Data and Other.
 ::
 
    AppNamePortable
-   * App
-     * AppInfo
-     * AppName
-     * DefaultData
-   * Data
-   * Other
-     * Help
-       * Images
-     * Source
+   + App
+     + AppInfo
+     + AppName
+     + DefaultData
+   + Data
+   + Other
+     + Help
+       + Images
+     + Source
 
 **AppNamePortable**: contains the main application launcher, typically named
 ``AppNamePortable.exe`` and the main help file ``help.html``. No other files are

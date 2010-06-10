@@ -38,6 +38,7 @@ installer.ini should be created from scratch using only the features needed.**
    OptionalSectionSelectedInstallType=Multilingual
    OptionalSectionNotSelectedInstallType=English
    OptionalSectionPreSelectedIfNonEnglishInstall=true
+   OptionalSectionInstalledWhenSilent=true
    OptionalDirectory1=
    OptionalFile1=
 
@@ -75,35 +76,42 @@ installer.ini should be created from scratch using only the features needed.**
    BRETON=true
    BULGARIAN=true
    CATALAN=true
+   CIBEMBA=true
    CROATIAN=true
    CZECH=true
    DANISH=true
    DUTCH=true
+   EFIK=true
    ESPERANTO=true
    ESTONIAN=true
    FARSI=true
    FINNISH=true
    FRENCH=true
    GALICIAN=true
+   GEORGIAN=true
    GERMAN=true
    GREEK=true
    HEBREW=true
    HUNGARIAN=true
    ICELANDIC=true
+   IGBO=true
    INDONESIAN=true
    IRISH=true
    ITALIAN=true
    JAPANESE=true
+   KHMER=true
    KOREAN=true
    KURDISH=true
    LATVIAN=true
    LITHUANIAN=true
    LUXEMBOURGISH=true
    MACEDONIAN=true
+   MALAGASY=true
    MALAY=true
    MONGOLIAN=true
    NORWEGIAN=true
    NORWEGIANNYNORSK=true
+   PASHTO=true
    POLISH=true
    PORTUGUESE=true
    PORTUGUESEBR=true
@@ -116,13 +124,17 @@ installer.ini should be created from scratch using only the features needed.**
    SLOVENIAN=true
    SPANISH=true
    SPANISHINTERNATIONAL=true
+   SWAHILI=true
    SWEDISH=true
    THAI=true
    TRADCHINESE=true
    TURKISH=true
    UKRAINIAN=true
    UZBEK=true
+   VALENCIAN=true
+   VIETNAMESE=true
    WELSH=true
+   YORUBA=true
 
    [DirectoriesToPreserve]
    PreserveDirectory1=
@@ -167,8 +179,8 @@ Within the optional ``[MainDirectories]`` section:
 --------------------------------------------------
 
 **RemoveAppDirectory, RemoveDataDirectory and RemoveOtherDirectory** (optional)
-allow you to specify whether these directories will be removed or preserved
-when upgrading by installing a new version of your app over an existing one. By
+allow you to specify whether these directories will be removed or preserved when
+upgrading by installing a new version of your app over an existing one. By
 default, the App and Other directories are removed and the Data directory is
 preserved. If you wish to use these defaults, this section of installer.ini
 should be omitted. (Note that you can preserve specific directories and files
@@ -214,6 +226,11 @@ default.
 the optional section is selected by default if the user selected to run the
 installer in a language other than English. The default is true. This entry
 should be omitted if you are happy with the default.
+
+**OptionalSectionInstalledWhenSilent** (optional) specifies whether or not the
+optional section is installed when the installer is running in silent mode when
+launched from the platform's app installer. This entry defaults to true when the
+optional components are not additional languages.
 
 **OptionalDirectory1** allows you to specify which directories are a part of the
 optional section of the installer. OptionalDirectory1 and higher are available
@@ -275,8 +292,8 @@ This section is used to download and optionally extract files from the internet.
 normally in the form http://example.com/path/filename
 
 **DownloadName** is the name that will be displayed while the file is
-downloaded.  This must be a valid DOS name and should not include special
-characters like :, ", \, etc.
+downloaded. This must be a valid DOS name and should not include special
+characters like :, ", \\, etc.
 
 **DownloadFilename** is the name of the file that will be used while it is
 worked with locally. This should normally be the same as the filename from the
@@ -294,15 +311,15 @@ This entry is not to be used with the extraction entries that follow.
 added to the files contained within the installer. The entry should be a number
 only and be in KB
 
-**Extract1To** and Extract1File are used for simple extraction of files from ZIP
-files only. The Extract#To entries should specify the relative path to where the
-files will go within the installed portable app (typically App\AppName). The
+**Extract1To** and **Extract1File** are used for simple extraction of files from
+ZIP files only. The Extract#To entries should specify the relative path to where
+the files will go within the installed portable app (typically App\AppName). The
 Extract#File is used to specify the name of the file to extract. No wildcards
 are permitted. Up to 10 entries in the form Extract1To/Extract1File,
 Extract2To/Extract2File may be made. Extract#To supports the use of ``<ROOT>``
 to indicate the app's root directory.
 
-**AdvancedExtract1To** and AdvancedExtract1Filter are used for more advanced
+**AdvancedExtract1To** and **AdvancedExtract1Filter** are used for more advanced
 extraction from ZIP files as well as many installer EXEs. The AdvancedExtract#To
 entries should specify the relative path to where the files will go within the
 installed portable app (typically App\AppName). The AdvancedExtract#Filter
@@ -318,10 +335,10 @@ directory.
 within an archive. The DoubleExtractFilename should be set to the name of the
 archive inside the archive. For example, if you are downloading a file called
 setup.exe which contains a file data.zip that has the files needed within it,
-DoubleExtractFilename would be set to data.zip. The DoubleExtract#To and
-DoubleExtract#Filter are performed on the extracted archive and are in the same
+DoubleExtractFilename would be set to data.zip. The **DoubleExtract#To** and
+**DoubleExtract#Filter** are performed on the extracted archive and are in the same
 format as AdvancedExtract1To and AdvancedExtract1Filter above. Up to 10 entries
-may be used. DoubleExtract#To supports the use of <ROOT> to indicate the app's
+may be used. DoubleExtract#To supports the use of ``<ROOT>`` to indicate the app's
 root directory.
 
 Within the optional ``[Languages]`` section:
