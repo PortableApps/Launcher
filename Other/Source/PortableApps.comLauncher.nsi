@@ -112,7 +112,7 @@ ${!echo} "Specifying program details and setting options..."
 !ifndef Version
 	!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" Version
 	!ifndef Version
-		!define Version 1.9.90.2
+		!define Version 2.0.0.0
 		!warning "Unable to get PortableApps.com Launcher version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value ${Version} instead."
 	!endif
 !endif
