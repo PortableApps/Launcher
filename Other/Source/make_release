@@ -77,9 +77,9 @@ else
 	echo "Sorry, I don't understand $VERSION as a version number string." >&2
 	exit 1
 fi
-sed -i "s/DisplayVersion=\S*/DisplayVersion=$VERSION/" ../../App/AppInfo/appinfo.ini
-sed -i "s/PackageVersion=\S*/PackageVersion=$XXXX/" ../../App/AppInfo/appinfo.ini
-sed -i "s/!define Version \S*/!define Version $XXXX/" PortableApps.comLauncher.nsi
+sed -i "s/DisplayVersion=[^\r]*/DisplayVersion=$VERSION/" ../../App/AppInfo/appinfo.ini
+sed -i "s/PackageVersion=[^\r]*/PackageVersion=$XXXX/" ../../App/AppInfo/appinfo.ini
+sed -i "s/!define Version [^\r]*/!define Version $XXXX/" PortableApps.comLauncher.nsi
 hgtag=$VERSION
 hgtag=`echo $hgtag | sed "s/Alpha/alpha/"`
 hgtag=`echo $hgtag | sed "s/Beta/beta/"`
@@ -106,7 +106,7 @@ echo "Building the PortableApps.com Launcher installer..."
 	cd ../..
 	installer_filename="PortableApps.comLauncher_`echo $VERSION | sed "s/ /_/g"`.paf.exe"
 	rm ../$installer_filename
-	paiu $PWD
+	pai $PWD
 	cd ..
 
 	if ! [ -e $installer_filename ]; then
