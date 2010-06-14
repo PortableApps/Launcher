@@ -162,6 +162,7 @@ Function .onInit          ;{{{1
 	${RunSegment} Core
 	${RunSegment} Temp
 	${RunSegment} Language
+	${RunSegment} OperatingSystem
 	${RunSegment} RunAsAdmin
 FunctionEnd
 
