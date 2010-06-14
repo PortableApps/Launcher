@@ -97,6 +97,43 @@ unless it is only a single file given (which will be automatically corrected).
 
 **Example:** ``%PAL:AppDir%\AppName``
 
+.. ini-key:: [Launch]:MinOS
+
+MinOS
+-----
+
+| Values: none / ``2000`` / ``XP`` / ``2003`` / ``Vista`` / ``2008`` / ``7`` / ``2008 R2``
+| Default: none
+| Optional.
+
+If the application requires a certain operating system to run, specify the
+version here. The values provided above are in order of how they will be
+considered, so if for example you use the value ``Vista``, it will tell the user
+that it won't run on their operating system when they run it on Windows 2000,
+Windows XP or Windows Server 2003.
+
+There is no special value for Wine in Linux or Mac OS X; if it works, it works,
+if it doesn't, it doesn't.
+
+.. ini-key:: [Launch]:MaxOS
+
+MaxOS
+-----
+
+| Values: none / ``2000`` / ``XP`` / ``2003`` / ``Vista`` / ``2008`` / ``7`` / ``2008 R2``
+| Default: none
+| Optional.
+
+If the application does not run above a certain version of Windows, specify that
+version here. Be cautious in doing this as often support will be improved in a
+later version of an application. The values provided above are in order of how
+they will be considered, so if for example you use the value ``Vista``, it will
+tell the user that it won't run on their operating system when they run it on
+Windows Server 2008, Windows 7 and Windows Server 2008 R2.
+
+There is no special value for Wine in Linux or Mac OS X; if it works, it works,
+if it doesn't, it doesn't.
+
 .. ini-key:: [Launch]:RunAsAdmin
 
 RunAsAdmin
