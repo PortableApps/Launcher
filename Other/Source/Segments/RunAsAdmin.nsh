@@ -21,10 +21,26 @@ Var RunAsAdmin
 !macroend
 !define CaseUACCodeAlert "!insertmacro CaseUACCodeAlert"
 
+!macro RunAsAdmin_OSOverride OS
+	${If} ${IsWin${OS}}
+		ClearErrors
+		${ReadLauncherConfig} $0 Launch RunAsAdmin${OS}
+		${IfNotThen} ${Errors} ${|} StrCpy $RunAsAdmin $0 ${|}
+	${EndIf}
+!macroend
 
 ${Segment.onInit} ; {{{1
 	; Run as admin if needed {{{2
 	${ReadLauncherConfig} $RunAsAdmin Launch RunAsAdmin
+
+	!insertmacro RunAsAdmin_OSOverride 2000
+	!insertmacro RunAsAdmin_OSOverride XP
+	!insertmacro RunAsAdmin_OSOverride 2003
+	!insertmacro RunAsAdmin_OSOverride Vista
+	!insertmacro RunAsAdmin_OSOverride 2008
+	!insertmacro RunAsAdmin_OSOverride 7
+	!insertmacro RunAsAdmin_OSOverride 2008R2
+
 	${If} $RunAsAdmin == force
 	${OrIf} $RunAsAdmin == try
 		${DebugMsg} "[Launch]:RunAsAdmin value is $RunAsAdmin"
