@@ -121,13 +121,6 @@ Var PortableAppsDirectory
 ; Segments {{{1
 ${SegmentInit}
 	;=== Initialise variables
-	StrCpy $0 $CurrentDrive 1
-	StrCpy $1 $LastDrive 1
-	${SetEnvironmentVariable} PAL:Drive $CurrentDrive
-	${SetEnvironmentVariable} PAL:LastDrive $LastDrive
-	${SetEnvironmentVariable} PAL:DriveLetter $0
-	${SetEnvironmentVariable} PAL:LastDriveLetter $1
-
 	StrCpy $AppDirectory  $EXEDIR\App
 	StrCpy $DataDirectory $EXEDIR\Data
 	${SetEnvironmentVariablesPath} PAL:AppDir  $AppDirectory
