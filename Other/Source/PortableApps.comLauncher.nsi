@@ -65,6 +65,7 @@ ${!echo} "Including required files..."
 !include ProcFunc.nsh
 !include EmptyWorkingSet.nsh
 !include SetEnvironmentVariable.nsh
+!include CheckForPlatformSplashDisable.nsh
 
 ;=== Languages {{{1
 ${!echo} "Loading language strings..."
