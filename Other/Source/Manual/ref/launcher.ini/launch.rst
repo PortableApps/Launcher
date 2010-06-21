@@ -97,6 +97,43 @@ unless it is only a single file given (which will be automatically corrected).
 
 **Example:** ``%PAL:AppDir%\AppName``
 
+.. ini-key:: [Launch]:MinOS
+
+MinOS
+-----
+
+| Values: none / ``2000`` / ``XP`` / ``2003`` / ``Vista`` / ``2008`` / ``7`` / ``2008 R2``
+| Default: none
+| Optional.
+
+If the application requires a certain operating system to run, specify the
+version here. The values provided above are in order of how they will be
+considered, so if for example you use the value ``Vista``, it will tell the user
+that it won't run on their operating system when they run it on Windows 2000,
+Windows XP or Windows Server 2003.
+
+There is no special value for Wine in Linux or Mac OS X; if it works, it works,
+if it doesn't, it doesn't.
+
+.. ini-key:: [Launch]:MaxOS
+
+MaxOS
+-----
+
+| Values: none / ``2000`` / ``XP`` / ``2003`` / ``Vista`` / ``2008`` / ``7`` / ``2008 R2``
+| Default: none
+| Optional.
+
+If the application does not run above a certain version of Windows, specify that
+version here. Be cautious in doing this as often support will be improved in a
+later version of an application. The values provided above are in order of how
+they will be considered, so if for example you use the value ``Vista``, it will
+tell the user that it won't run on their operating system when they run it on
+Windows Server 2008, Windows 7 and Windows Server 2008 R2.
+
+There is no special value for Wine in Linux or Mac OS X; if it works, it works,
+if it doesn't, it doesn't.
+
 .. ini-key:: [Launch]:RunAsAdmin
 
 RunAsAdmin
@@ -140,6 +177,116 @@ situation the recommended path of action is to contact the author of the
 original program and request that they modify their application to store its
 settings in HKEY_CURRENT_USER instead, which is probably where the settings
 should be.
+
+You can override this value for specific operating systems with one or more of
+the values below. Sometimes an application may require administrative privileges
+on Vista and onwards but not on 2000, XP and 2003 (that is the usual division).
+In such a situation, you should probably set this to ``force`` and use values
+for 2000, XP and 2003, ``none``, for future compatibility. On Linux or Mac with
+Wine, the user will always be reported as running as the administrator, and so
+you don't need a special case for it.
+
+.. ini-key:: [Launch]:RunAsAdmin2000
+
+RunAsAdmin2000
+--------------
+
+| Values: ``force`` / ``try`` / none
+| Default: none
+| Optional.
+
+----
+
+If the application needs or can benefit from administrative privileges on
+Windows 2000, you can use this value to override :ini-key:`[Launch]:RunAsAdmin`.
+
+.. ini-key:: [Launch]:RunAsAdminXP
+
+RunAsAdminXP
+--------------
+
+| Values: ``force`` / ``try`` / none
+| Default: none
+| Optional.
+
+----
+
+If the application needs or can benefit from administrative privileges on
+Windows XP, you can use this value to override :ini-key:`[Launch]:RunAsAdmin`.
+
+.. ini-key:: [Launch]:RunAsAdmin2003
+
+RunAsAdmin2003
+--------------
+
+| Values: ``force`` / ``try`` / none
+| Default: none
+| Optional.
+
+----
+
+If the application needs or can benefit from administrative privileges on
+Windows Server 2003, you can use this value to override
+:ini-key:`[Launch]:RunAsAdmin`.
+
+.. ini-key:: [Launch]:RunAsAdminVista
+
+RunAsAdminVista
+---------------
+
+| Values: ``force`` / ``try`` / none
+| Default: none
+| Optional.
+
+----
+
+If the application needs or can benefit from administrative privileges on
+Windows Vista, you can use this value to override
+:ini-key:`[Launch]:RunAsAdmin`.
+
+.. ini-key:: [Launch]:RunAsAdmin2008
+
+RunAsAdmin2008
+--------------
+
+| Values: ``force`` / ``try`` / none
+| Default: none
+| Optional.
+
+----
+
+If the application needs or can benefit from administrative privileges on
+Windows Server 2008, you can use this value to override
+:ini-key:`[Launch]:RunAsAdmin`.
+
+.. ini-key:: [Launch]:RunAsAdmin7
+
+RunAsAdmin7
+-----------
+
+| Values: ``force`` / ``try`` / none
+| Default: none
+| Optional.
+
+----
+
+If the application needs or can benefit from administrative privileges on
+Windows 7, you can use this value to override :ini-key:`[Launch]:RunAsAdmin`.
+
+.. ini-key:: [Launch]:RunAsAdmin2008R2
+
+RunAsAdmin2008R2
+----------------
+
+| Values: ``force`` / ``try`` / none
+| Default: none
+| Optional.
+
+----
+
+If the application needs or can benefit from administrative privileges on
+Windows Server 2008 R2, you can use this value to override
+:ini-key:`[Launch]:RunAsAdmin`.
 
 .. ini-key:: [Launch]:CleanTemp
 
