@@ -3,7 +3,6 @@ ${SegmentFile}
 !include UAC.nsh
 
 Var RunAsAdmin
-Var RunningAsAdmin
 
 ; Macro for producing the right message box based on the error code {{{1
 !macro CaseUACCodeAlert CODE FORCEMESSAGE TRYMESSAGE
@@ -22,10 +21,26 @@ Var RunningAsAdmin
 !macroend
 !define CaseUACCodeAlert "!insertmacro CaseUACCodeAlert"
 
+!macro RunAsAdmin_OSOverride OS
+	${If} ${IsWin${OS}}
+		ClearErrors
+		${ReadLauncherConfig} $0 Launch RunAsAdmin${OS}
+		${IfNotThen} ${Errors} ${|} StrCpy $RunAsAdmin $0 ${|}
+	${EndIf}
+!macroend
 
 ${Segment.onInit} ; {{{1
 	; Run as admin if needed {{{2
 	${ReadLauncherConfig} $RunAsAdmin Launch RunAsAdmin
+
+	!insertmacro RunAsAdmin_OSOverride 2000
+	!insertmacro RunAsAdmin_OSOverride XP
+	!insertmacro RunAsAdmin_OSOverride 2003
+	!insertmacro RunAsAdmin_OSOverride Vista
+	!insertmacro RunAsAdmin_OSOverride 2008
+	!insertmacro RunAsAdmin_OSOverride 7
+	!insertmacro RunAsAdmin_OSOverride 2008R2
+
 	${If} $RunAsAdmin == force
 	${OrIf} $RunAsAdmin == try
 		${DebugMsg} "[Launch]:RunAsAdmin value is $RunAsAdmin"
@@ -61,7 +76,6 @@ ${Segment.onInit} ; {{{1
 				${Case} 0
 					${IfThen} $1 = 1 ${|} Quit ${|} ; This is the user-level process and the admin-level process has finished successfully.
 					${If} $3 <> 0 ; This is the admin-level process: great!
-						StrCpy $RunningAsAdmin true
 						${Break}
 					${EndIf}
 					${If} $1 = 3 ; RunAs completed successfully, but with a non-admin user
