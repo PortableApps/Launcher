@@ -34,11 +34,7 @@
 		Pop $R0
 		StrCmp $R0 PortableApps.com "" _CFPSDStackEnd
 
-		!ifdef NSIS_UNICODE
-		FindProc $R0 PortableApps.comPlatform.exe
-		!else
-		FindProcDLL::FindProc PortableAppsPlatform.exe ; Onto $R0
-		!endif
+		FindProc $R0 PortableAppsPlatform.exe
 		IntCmp $R0 1 "" _CFPSDStackEnd _CFPSDStackEnd
 
 		StrCpy $0 true
