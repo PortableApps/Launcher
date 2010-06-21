@@ -15,6 +15,13 @@ ${SegmentInit}
 	${GetRoot} $EXEDIR $CurrentDrive
 	${IfThen} $LastDrive == "" ${|} StrCpy $LastDrive $CurrentDrive ${|}
 	${DebugMsg} "Current drive is $CurrentDrive, last drive is $LastDrive"
+
+	StrCpy $0 $CurrentDrive 1
+	StrCpy $1 $LastDrive 1
+	${SetEnvironmentVariable} PAL:Drive $CurrentDrive
+	${SetEnvironmentVariable} PAL:LastDrive $LastDrive
+	${SetEnvironmentVariable} PAL:DriveLetter $0
+	${SetEnvironmentVariable} PAL:LastDriveLetter $1
 !macroend
 
 ${SegmentPrePrimary}
