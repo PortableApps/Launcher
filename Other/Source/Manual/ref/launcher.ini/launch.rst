@@ -106,6 +106,10 @@ MinOS
 | Default: none
 | Optional.
 
+.. versionadded:: 2.1
+
+----
+
 If the application requires a certain operating system to run, specify the
 version here. The values provided above are in order of how they will be
 considered, so if for example you use the value ``Vista``, it will tell the user
@@ -123,6 +127,10 @@ MaxOS
 | Values: none / ``2000`` / ``XP`` / ``2003`` / ``Vista`` / ``2008`` / ``7`` / ``2008 R2``
 | Default: none
 | Optional.
+
+.. versionadded:: 2.1
+
+----
 
 If the application does not run above a certain version of Windows, specify that
 version here. Be cautious in doing this as often support will be improved in a
@@ -195,6 +203,8 @@ RunAsAdmin2000
 | Default: none
 | Optional.
 
+.. versionadded:: 2.1
+
 ----
 
 If the application needs or can benefit from administrative privileges on
@@ -209,6 +219,8 @@ RunAsAdminXP
 | Default: none
 | Optional.
 
+.. versionadded:: 2.1
+
 ----
 
 If the application needs or can benefit from administrative privileges on
@@ -222,6 +234,8 @@ RunAsAdmin2003
 | Values: ``force`` / ``try`` / none
 | Default: none
 | Optional.
+
+.. versionadded:: 2.1
 
 ----
 
@@ -238,6 +252,8 @@ RunAsAdminVista
 | Default: none
 | Optional.
 
+.. versionadded:: 2.1
+
 ----
 
 If the application needs or can benefit from administrative privileges on
@@ -252,6 +268,8 @@ RunAsAdmin2008
 | Values: ``force`` / ``try`` / none
 | Default: none
 | Optional.
+
+.. versionadded:: 2.1
 
 ----
 
@@ -268,6 +286,8 @@ RunAsAdmin7
 | Default: none
 | Optional.
 
+.. versionadded:: 2.1
+
 ----
 
 If the application needs or can benefit from administrative privileges on
@@ -281,6 +301,8 @@ RunAsAdmin2008R2
 | Values: ``force`` / ``try`` / none
 | Default: none
 | Optional.
+
+.. versionadded:: 2.1
 
 ----
 
