@@ -164,4 +164,20 @@ is with the
 :ini-section:`[RegistryCleanupForce]` and
 :ini-section:`[RegistryValueBackupDelete]` sections.
 
+Detecting changes
+=================
+
+.. This should probably go in a document on making portable apps and just have a
+   reference to it from here.
+
+In making a portable app, unless you know exactly what it's going to be
+changing, you should monitor things like the registry, to see what keys you may
+need to deal with. The most popular tool in the PortableApps.com community for
+doing this is Regshot_.
+
+.. TODO: check if this is the right link to include; at the time of writing this
+   I didn't have an internet connection.
+
+.. _Regshot: http://sourceforge.net/projects/regshot
+
 *This document is not complete*
