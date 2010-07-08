@@ -314,6 +314,11 @@ div#contents ul ul li { margin-top: 0.3em;}
 	margin: -0.6em -20px 0 -25px; /* -0.6 instead of -0.4 because of h2's font-size: 1.5em */
 }
 
+/*** "version added" and "version modified" lines ***/
+.versionmodified {
+	font-style: italic;
+}
+
 /*** highlighting ***/
 .highlight {
 	background-color: #ff0;
