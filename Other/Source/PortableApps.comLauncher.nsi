@@ -200,6 +200,7 @@ Function PrePrimary       ;{{{1
 	${RunSegment} FileWrite
 	${RunSegment} FilesMove
 	${RunSegment} DirectoriesMove
+	${RunSegment} RegisterDLL
 	${RunSegment} RegistryKeys
 	${RunSegment} RegistryValueBackupDelete
 	${RunSegment} RegistryValueWrite
@@ -292,6 +293,7 @@ Function PostPrimary      ;{{{1
 	${RunSegment} RegistryValueBackupDelete
 	${RunSegment} RegistryKeys
 	${RunSegment} RegistryCleanup
+	${RunSegment} RegisterDLL
 	${RunSegment} Qt
 	${RunSegment} DirectoriesMove
 	${RunSegment} FilesMove
