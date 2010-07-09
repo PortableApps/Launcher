@@ -26,7 +26,7 @@ ${SegmentFile}
 	${EndSelect}
 
 	${If} $1 == bad-os
-		MessageBox MB_OK|MB_ICONSTOP|MB_TOPMOST|MB_SETFOREGROUND "$(LauncherIncompatibleOS)"
+		MessageBox MB_OK|MB_ICONSTOP|MB_TOPMOST|MB_SETFOREGROUND "$(LauncherIncompatible${Value})"
 		Quit
 	${EndIf}
 !macroend
