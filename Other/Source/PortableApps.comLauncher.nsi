@@ -171,6 +171,7 @@ Function Init             ;{{{1
 	${RunSegment} PortableApps.comLauncherCustom
 	${RunSegment} Core
 	${RunSegment} DriveLetter
+	${RunSegment} DirectoryMoving
 	${RunSegment} Variables
 	${RunSegment} Language
 	${RunSegment} Registry
@@ -195,6 +196,7 @@ Function PrePrimary       ;{{{1
 	${RunSegment} PortableApps.comLauncherCustom
 	${RunSegment} Settings
 	${RunSegment} DriveLetter
+	${RunSegment} DirectoryMoving
 	${RunSegment} FileWrite
 	${RunSegment} FilesMove
 	${RunSegment} DirectoriesMove
