@@ -15,14 +15,14 @@ ${Segment.onInit}
 			StrCpy $0 $EXEDIR
 		!endif
 		ClearErrors
-		ReadEnvStr $EXEDIR PAL:PackageDir
+		ReadEnvStr $EXEDIR _PAL:EXEDIR
 		${If} ${Errors}
 			MessageBox MB_OK|MB_ICONSTOP "$(LauncherNoUNCSupport)"
 			Quit
 		${EndIf}
-		${DebugMsg} "$$EXEDIR ($0) was a UNC path (due to the UAC plug-in), set $$EXEDIR to %PAL:PackageDir% which is $EXEDIR."
+		${DebugMsg} "$$EXEDIR ($0) was a UNC path (due to the UAC plug-in), set $$EXEDIR to %_PAL:EXEDIR% which is $EXEDIR."
 	${Else}
-		${SetEnvironmentVariable} PAL:PackageDir $EXEDIR
+		${SetEnvironmentVariable} _PAL:EXEDIR $EXEDIR
 	${EndIf}
 
 	; These may be needed with RunAsAdmin so they can't go in Init.
