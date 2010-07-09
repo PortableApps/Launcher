@@ -14,8 +14,8 @@ in making applications portable, a number of extra environment variables are
 provided. This document is primarily here to describe those values.
 
 For the purposes of this page, the portable application in question is
-installed to ``X:\PortableApps\AppNamePortable`` and last ran from the drive
-``W:``.
+installed to ``X:\PortableApps\AppNamePortable`` and last ran from the path
+``W:\Apps\AppNamePortable`` (the use of a different path is explained below).
 
 These values can be used in any values marked "|envsub|". Other environment
 variables can also be used, but any directory variables will not have the
@@ -250,6 +250,44 @@ TEMP
 The temporary directory which the application will be given. If a contained
 temporary directory is assigned, this will be the assigned one.
 
+.. _ref-envsub-partial-directory:
+
+Partial directory variables
+===========================
+
+For dealing with :ref:`moving packages <moving-package-directory>`, it's often
+handy to be able to update a path without including the drive letter.  Like the
+:ref:`directory variables above <ref-envsub-directory>`, these variables get the
+additional environment variables generated for them in different forms.
+
+As with :ref:`drive variables <ref-envsub-drive>`, the case of these variables
+cannot be guarranteed. They may be lower or upper case.
+
+.. env:: PAL:PackagePartialDir
+
+PAL:PackagePartialDir
+---------------------
+
+The path, minus the drive letter and colon, from which the portable application
+is running.
+
+**Example:** ``\PortableApps\AppNamePortable``
+
+.. env:: PAL:LastPackagePartialDir
+
+PAL:LastPackagePartialDir
+-------------------------
+
+The path, minus the drive letter and colon, from which the portable application
+ran last.
+
+The first time a portable app is run, this will be the same as
+:env:`PAL:PackagePartialDir` above. Thus in its normal use case as part of the
+:ini-key:`Find <[FileWriteN]:Find>` value in a :ini-section:`[FileWriteN]`
+section, it will be the same as the :ini-key:`Replace <[FileWriteN]:Replace>`
+value and result in the replacement being skipped.
+
+**Example:** ``\Apps\AppNamePortable``
 
 .. _ref-envsub-language:
 

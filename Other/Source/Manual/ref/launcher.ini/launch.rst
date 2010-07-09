@@ -512,6 +512,42 @@ HideCommandLineWindow
 If the application produces a command line window which you wish to hide (common
 in some open source games), you can set this to true to hide it.
 
+.. _moving-package-directory:
+
+.. TODO: later the label moving-package-directory should be moved to something
+   in topics or somewhere else, covering the general stuff more.
+
+.. ini-key:: [Launch]:DirectoryMoveOK
+
+DirectoryMoveOK
+---------------
+
+| Values: ``yes`` / ``warn`` / ``no``
+| Default: ``warn``
+| Optional.
+
+.. versionadded:: 2.1
+
+----
+
+All portable apps should be designed to cope with changing drive letters (e.g.
+moving from ``X:\PortableApps\AppNamePortable`` to
+``Y:\PortableApps\AppNamePortable``), but with some portable apps it's not
+practical to support moving the directory the package is stored in (e.g. moving
+from ``C:\Users\User\Desktop\AppNamePortable`` to
+``X:\PortableApps\AppNamePortable``).
+
+If you have developed the package well, directory moves will either not matter
+or be compensated for with :ini-section:`[FileWriteN]` sections using things
+like the :env:`%PAL:LastPackagePartialDir% <PAL:LastPackagePartialDir>` and
+:env:`%PAL:PackagePartialDir% <PAL:PackagePartialDir>` environment variables.
+
+When many people make portable apps, they don't consider what will happen when a
+user moves the directory, and so it may or may not work. Also historically it
+was not considered important at all and so no effort was normally put into
+making it work - it was unsupported behaviour. This is why the default is
+``warn``.
+
 .. ini-key:: [Launch]:NoSpacesInPath
 
 NoSpacesInPath
