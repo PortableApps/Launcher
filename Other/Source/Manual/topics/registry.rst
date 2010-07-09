@@ -153,6 +153,14 @@ registry keys.
 Keys in this key are from Qt applications. See :ref:`topics-qt` for details on
 what to do about them.
 
+``HKLM\Software\Classes\CLSID\XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX``
+--------------------------------------------------------------------
+
+(Where ``X`` is a hexadecimal digit.)
+
+These are DLL servers and need registering. See
+:ini-section:`[RegisterDLL]` for details on what to do.
+
 General handling of registry keys
 =================================
 
@@ -163,6 +171,8 @@ is with the
 :ini-section:`[RegistryCleanupIfEmpty]`,
 :ini-section:`[RegistryCleanupForce]` and
 :ini-section:`[RegistryValueBackupDelete]` sections.
+
+.. _topics-registry-detecting-changes:
 
 Detecting changes
 =================

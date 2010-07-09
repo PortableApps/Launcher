@@ -15,6 +15,7 @@ launcher.ini
    filewriten
    filesystem
    language
+   registerdll
    services
 
 .. admonition:: What is launcher.ini?
