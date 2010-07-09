@@ -13,8 +13,8 @@ something like ``C:\Users\user\AppData\Roaming\Temp``. To make this more useful
 in making applications portable, a number of extra environment variables are
 provided. This document is primarily here to describe those values.
 
-For the purposes of this page, the portable application in question is
-installed to ``X:\PortableApps\AppNamePortable`` and last ran from the path
+For the purposes of this page, the portable app in question is installed to
+``X:\PortableApps\AppNamePortable`` and last ran from the path
 ``W:\Apps\AppNamePortable`` (the use of a different path is explained below).
 
 These values can be used in any values marked "|envsub|". Other environment
@@ -38,9 +38,8 @@ be lower or upper case.
 PAL:Drive
 ---------
 
-The drive letter including a colon from which the portable application is
-running.
-  
+The drive letter including a colon from which the portable app is running.
+
 **Example:** ``X:``
 
 .. env:: PAL:LastDrive
@@ -48,7 +47,7 @@ running.
 PAL:LastDrive
 -------------
 
-The drive letter including a colon from which the portable application ran last.
+The drive letter including a colon from which the portable app ran last.
 
 **Example:** ``W:``
 
@@ -57,10 +56,10 @@ The drive letter including a colon from which the portable application ran last.
 PAL:DriveLetter
 ---------------
 
-The drive letter from which the portable application is running, without a
-colon. Useful with :ini-section:`[FileWriteN]` find and replace where the colon
-is not included in the path, e.g.  ``file:////%PAL:DriveLetter%/`` for
-``file:////X/`` or even ``%PAL:DriveLetter%\:/`` for ``X\:/``.
+The drive letter from which the portable app is running, without a colon. Useful
+with :ini-section:`[FileWriteN]` find and replace where the colon is not
+included in the path, e.g.  ``file:////%PAL:DriveLetter%/`` for ``file:////X/``
+or even ``%PAL:DriveLetter%\:/`` for ``X\:/``.
 
 **Example:** ``X``
 
@@ -69,7 +68,7 @@ is not included in the path, e.g.  ``file:////%PAL:DriveLetter%/`` for
 PAL:LastDriveLetter
 -------------------
 
-The drive letter from which the portable application ran last. Useful with
+The drive letter from which the portable app ran last. Useful with
 :ini-section:`[FileWriteN]` find and replace where the colon is not included in
 the path, e.g.  ``file:////%PAL:LastDriveLetter%/`` for ``file:////X/`` or even
 ``%PAL:LastDriveLetter%\:/`` for ``X\:/``.
@@ -123,8 +122,7 @@ Now on to the environment variables themselves.
 PAL:AppDir
 ----------
 
-:env:`!PAL:AppDir` is set to the App directory which contains the
-application.
+The path to the App directory which contains the portable app.
 
 When Live mode is not enabled, this will be
 ``X:\PortableApps\AppNamePortable\App`` and when Live mode is enabled it will
@@ -136,27 +134,24 @@ set to ``false``.
 PAL:DataDir
 -----------
 
-:env:`!PAL:DataDir` is set to the Data directory which contains the
-portable application's data.
+The path to the Data directory which contains the portable app's data.
 
 When Live mode is not enabled, this will be
 ``X:\PortableApps\AppNamePortable\Data`` and when Live mode is enabled it will
-be ``%TEMP%\AppNamePortableLive\App`` unless :ini-key:`[LiveMode]:CopyApp` is
-set to ``false``.
-
+be ``%TEMP%\AppNamePortableLive\Data``.
 
 .. env:: JAVA_HOME
 
 JAVA_HOME
 ---------
 
-:env:`!JAVA_HOME` is set to the location of Java when found, not including
-"bin". This will be the Java Portable directory, e.g.
-``X:\PortableApps\CommonFiles\Java``, or some local installation, e.g.
-``C:\Program Files\Java``.
+When Java is found, this is set to the location where it was found, not
+including the "bin" directory or a filename like "javaw.exe". This will be the
+Java Portable directory, e.g.  ``X:\PortableApps\CommonFiles\Java``, or some
+local installation, e.g.  ``C:\Program Files\Java``.
 
-This variable will only be available with :ini-key:`[Activate]:Java` set to
-``find`` or ``require``, but if it is ``find``, it may not exist (for
+This variable is only available with :ini-key:`[Activate]:Java` set to ``find``
+or ``require``, but if it is ``find``, the path it is set to may not exist (for
 ``require`` the launcher will abort if Java is not found).
 
 .. env:: PortableApps.comDocuments
@@ -196,8 +191,8 @@ guarrantee that this directory will exist.
 PAL:PortableAppsDir
 -------------------
 
-The PortableApps.com applications directory, normally ``X:\PortableApps``. This
-is the parent directory of the portable application package.
+The PortableApps.com PortableApps directory, normally ``X:\PortableApps``. To be
+exact, this is the parent directory of the portable app package.
 
 .. env:: USERPROFILE
 
@@ -268,8 +263,8 @@ cannot be guarranteed. They may be lower or upper case.
 PAL:PackagePartialDir
 ---------------------
 
-The path, minus the drive letter and colon, from which the portable application
-is running.
+The path, minus the drive letter and colon, from which the portable app is
+running.
 
 **Example:** ``\PortableApps\AppNamePortable``
 
@@ -278,8 +273,8 @@ is running.
 PAL:LastPackagePartialDir
 -------------------------
 
-The path, minus the drive letter and colon, from which the portable application
-ran last.
+The path, minus the drive letter and colon, from which the portable app ran
+last.
 
 The first time a portable app is run, this will be the same as
 :env:`PAL:PackagePartialDir` above. Thus in its normal use case as part of the
