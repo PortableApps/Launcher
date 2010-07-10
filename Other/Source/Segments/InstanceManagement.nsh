@@ -1,5 +1,7 @@
 ${SegmentFile}
 
+Var SecondaryLaunch
+
 ; A simple macro to avoid code duplication
 !macro _InstanceManagement_QuitIfRunning
 	${If} $SecondaryLaunch != true
@@ -10,6 +12,24 @@ ${SegmentFile}
 !macroend
 
 ${SegmentInit}
+	; First check if the launcher is already running with a mutex
+	System::Call 'kernel32::CreateMutex(i0,i0,t"PortableApps.comLauncher$AppID-$BaseName")?e'
+	Pop $0
+
+	${IfNot} $0 = 0 ; It's already running
+		; Is a second portable instance disallowed?
+		${ReadLauncherConfig} $0 Launch SinglePortableAppInstance
+		${If} $0 == true
+			${DebugMsg} "Launcher already running and [Launch]:SinglePortableAppInstance=true: aborting."
+			Quit
+		${EndIf}
+		; Set it up for a secondary launch.
+		${DebugMsg} "Launcher already running: secondary launch."
+		StrCpy $SecondaryLaunch true
+		StrCpy $WaitForProgram false
+		StrCpy $DisableSplashScreen true
+	${EndIf}
+
 	; Check that what we're going to execute exists (it'd be a pretty poor
 	; party if it didn't)
 	${IfNot} ${FileExists} $EXEDIR\App\$ProgramExecutable
@@ -36,11 +56,11 @@ ${SegmentInit}
 	${EndIf}
 
 	; Will we need to wait for the program?  This should only EVER be used if
-	; there's no cleanup needed.  In the (very distant) future it might be
-	; possible to automatically calculate this value.
+	; there's no cleanup needed.  In the future I plan on automatically
+	; calculating this value in another tool which will serve as the Generator.
 	;
-	; WaitForProgram may have already been set to false in Mutex; we don't want
-	; to mess that up, so check if it's already set.
+	; WaitForProgram may have already been set to false by the mutex check
+	; above; we don't want to mess that up, so check if it's already set.
 	${If} $WaitForProgram == ""
 		${ReadLauncherConfig} $WaitForProgram Launch WaitForProgram
 	${EndIf}

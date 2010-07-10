@@ -176,7 +176,6 @@ Function Init             ;{{{1
 	${RunSegment} Language
 	${RunSegment} Registry
 	${RunSegment} Java
-	${RunSegment} Mutex
 	${RunSegment} RunLocally
 	${RunSegment} Temp
 	${RunSegment} InstanceManagement
