@@ -1,7 +1,9 @@
+.. index:: Making things portable; Qt applications
+
 .. _topics-qt:
 
-Qt applications
-===============
+Making Qt applications portable
+===============================
 
 Applications which have been written with the Qt framework have certain
 behaviours which affect portability and which must be dealt with. The main thing

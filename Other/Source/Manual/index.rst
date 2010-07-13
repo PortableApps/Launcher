@@ -13,21 +13,22 @@ Starting using the PortableApps.com Launcher
 --------------------------------------------
 
 * **Getting started:**
-  :ref:`intro-overview` |
-  :ref:`topics-install`
+  :ref:`overview` |
+  :ref:`install-launcher` |
+  :ref:`release-checklist`
 * **Reference:**
   :ref:`ref-launcher.ini` |
   :ref:`ref-envsub` |
-  :ref:`ref-paf`
+  :ref:`paf`
 * **How to handle:**
-  :ref:`topics-java` |
-  :ref:`topics-qt` |
+  :ref:`Java apps <topics-java>` |
+  :ref:`Qt apps <topics-qt>` |
   :ref:`topics-registry` |
   :ref:`topics-languages` |
-  :ref:`topics-games`
+  :ref:`Games <topics-games>`
 * **Examples:**
-  :ref:`examples-scribus` |
-  :ref:`examples-7-zip`
+  :ref:`Scribus <examples-scribus>` |
+  :ref:`7-Zip <examples-7-zip>`
 
 General
 -------
@@ -44,9 +45,10 @@ Advanced topics
 ---------------
 
 * **Advanced:**
-  :ref:`advanced-compile` |
-  :ref:`advanced-segments-custom` |
-  :ref:`advanced-debug`
+  :ref:`advanced-custom` |
+  :ref:`advanced-segments` |
+  :ref:`Development builds <advanced-development>` |
+  :ref:`Debugging <advanced-debug>`
 
 Help!
 -----
@@ -54,3 +56,8 @@ Help!
 If you can't work out what to do in a situation or otherwise need help, try
 going through :ref:`troubleshooting` first. If that doesn't help you, then try
 :ref:`help`.
+
+Release notes
+-------------
+
+Release notes for releases are available in :ref:`releases-index`.

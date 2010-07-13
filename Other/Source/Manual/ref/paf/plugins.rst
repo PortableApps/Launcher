@@ -1,4 +1,4 @@
-.. _ref-paf-plugins:
+.. _paf-plugins:
 
 6. Plugin Installers
 ====================

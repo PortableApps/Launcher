@@ -64,9 +64,13 @@ If you need to pass any command line arguments to :ini-key:`ProgramExecutable
 <[Launch]:ProgramExecutable>` to make it run or make it portable, specify them
 here. Remember that if your program is running from a path with spaces, you may
 need to put double quotation marks around the value, e.g. ``-d
-"%PAL:DataDir%\settings"``. If you do so, you should put *single* quotation
-marks around the whole string, like this: :ini-key:`CommandLineArguments
-<[Launch]:CommandLineArguments>`\ ``='-d "%PAL:DataDir%\settings"'``.
+"%PAL:DataDir%\settings"``. If you do so, you should put single or double
+quotation marks around the whole string, like this:
+:ini-key:`CommandLineArguments <[Launch]:CommandLineArguments>`\ ``='-d
+"%PAL:DataDir%\settings"'``.
+
+Concerning the significance of quoting strings and how it will be interpreted,
+refer to :ref:`INI keys <ini-keys>`.
 
 For Java applications, you will almost always need to specify parameters here.
 See :ref:`topics-java` for more information.

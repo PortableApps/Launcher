@@ -1,4 +1,4 @@
-.. _ref-paf-portability:
+.. _paf-portability:
 
 5. Host PC Modifications & Portability
 ======================================

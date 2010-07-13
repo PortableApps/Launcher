@@ -1,4 +1,4 @@
-.. _ref-paf-icons:
+.. _paf-icons:
 
 3. Icons
 ========

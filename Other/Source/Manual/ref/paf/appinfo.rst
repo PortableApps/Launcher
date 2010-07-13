@@ -1,4 +1,4 @@
-.. _ref-paf-appinfo:
+.. _paf-appinfo:
 
 2. AppInfo.ini (App Configuration)
 ==================================
@@ -7,7 +7,7 @@ The portable app makes available its configuration information to the
 PortableApps.com Platform by way of the ``AppInfo`` details. Within the
 ``AppNamePortable\App`` directory, an ``AppInfo`` directory contains an
 ``appinfo.ini`` file as well as any icons used within the menu (explained in
-:ref:`Section 3 <ref-paf-icons>`). The ``appinfo.ini`` file consists of the
+:ref:`Section 3 <paf-icons>`). The ``appinfo.ini`` file consists of the
 following:
 
 .. code-block:: ini
@@ -65,7 +65,7 @@ Within the ``[Details]`` section:
 
 **Name** is the name of your app as it appears in the PortableApps.com Menu
 
-.. _ref-paf-appinfo-appid:
+.. _paf-appinfo-appid:
 
 **AppID** is the globally unique id for the application. Apps released by
 PortableApps.com or directly by the publisher of the regular version of the
@@ -172,6 +172,8 @@ needed, this value should be omitted.
 *Please note that PortableApps.com does not currently accept .NET-based apps for
 inclusion in our application listings. Most PCs "in the wild" do not have .NET
 available, so portable apps that require .NET will not function on them.*
+
+.. _paf-appinfo-control:
 
 Within the ``[Control]`` section:
 ---------------------------------

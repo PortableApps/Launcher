@@ -1,3 +1,5 @@
+.. index:: Registry, Making things portable; registry
+
 .. _topics-registry:
 
 =========================

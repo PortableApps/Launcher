@@ -9,7 +9,6 @@ to know, and useful information about techniques:
 .. toctree::
    :maxdepth: 1
 
-   install
    splashscreen
    registry
    files-and-directories
@@ -17,3 +16,4 @@ to know, and useful information about techniques:
    java
    qt
    games
+   checklist

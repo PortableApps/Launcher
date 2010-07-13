@@ -1,3 +1,5 @@
+.. index:: Splash screens
+
 .. _splash-screen:
 
 Splash screens

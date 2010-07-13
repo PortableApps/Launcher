@@ -1,4 +1,4 @@
-.. _intro-overview:
+.. _overview:
 
 Overview
 ========
@@ -10,12 +10,14 @@ directory of a portable application package called ``AppNamePortable.ini``,
 where *AppNamePortable* is the base name of the launcher executable.
 
 Currently this manual is more of a reference manual than a how-to-do-things
-manual. The most useful sections are the :ref:`launcher.ini reference
+manual. To start with, read about :ref:`install-launcher` and
+:ref:`using-launcher-generator`.
+
+The most useful sections are the :ref:`launcher.ini reference
 <ref-launcher.ini>`, covering all the options available for configuring the
-PortableApps.com Launcher without :ref:`writing custom code
-<advanced-segments-custom>`, and the :ref:`topics-index` sections, covering
-things like :ref:`topics-install`, :ref:`topics-registry` and
-:ref:`topics-java` (not an exhaustive list).
+PortableApps.com Launcher without :ref:`writing custom code <advanced-custom>`,
+and the :ref:`topics-index` sections, covering things like
+:ref:`topics-registry` and :ref:`topics-java` (not an exhaustive list).
 
 (This document is far from complete at the moment. You should probably look at
 the start page to see a more general overview of what's available.)

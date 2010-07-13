@@ -12,7 +12,9 @@ Table of Contents
    topics/index
    ref/index
    advanced/index
+   ini
    troubleshooting
+   releases/index
    help
    glossary
 

@@ -1,3 +1,5 @@
+.. index:: Advanced
+
 .. _advanced-index:
 
 Advanced usage of the PortableApps.com Launcher
@@ -9,6 +11,7 @@ of things like its code structure, debugging and how to compile it.
 .. toctree::
    :maxdepth: 1
 
-   compile
+   custom
    segments
    debug
+   development

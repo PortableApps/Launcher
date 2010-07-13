@@ -1,3 +1,5 @@
+.. index:: Reference
+
 .. _ref:
 
 Reference

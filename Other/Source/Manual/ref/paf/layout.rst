@@ -1,4 +1,4 @@
-.. _ref-paf-layout:
+.. _paf-layout:
 
 1. Directory and File Layout
 ============================
@@ -25,8 +25,8 @@ present in this directory by default.
 
 **App**: contains all the binary and other files that make up the application
 itself, usually within a directory called ``AppName``. The other directory
-called ``AppInfo`` (discussed in :ref:`section 2 <ref-paf-appinfo>`) contains
-the configuration details for the PortableApps.com Platform as well as the icons
+called ``AppInfo`` (discussed in :ref:`section 2 <paf-appinfo>`) contains the
+configuration details for the PortableApps.com Platform as well as the icons
 used within the menu. It may also contain the launcher.ini configuration file
 used for the PortableApps.com Launcher. The third directory, ``DefaultData`` is
 usually used as a container for the default files to be placed within the
