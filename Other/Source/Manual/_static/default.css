@@ -40,6 +40,7 @@ h1 {
 	letter-spacing: -2px;
 	font-size: 2.2em;
 	padding-bottom: 5px;
+	line-height: 100%;
 }
 h2 {
 	border-top: 1px solid silver;
@@ -209,7 +210,7 @@ a:link, a:visited { color:#b31616; font-weight: bold; }
 .sphinxsidebar h3 a:link, .sphinxsidebar h3 a:visited { font-weight: bold; }
 a:hover { color:#f00; text-decoration: underline; }
 h2 a, h3 a, h4 a { text-decoration:none !important; }
-/*a.reference em { font-style: normal; font-weight: bold; }*/
+a.reference.internal em { font-style: normal; font-weight: bold; }
 
 /*** basic styles ***/
 dd { margin-left:15px; }
@@ -255,18 +256,35 @@ table.docutils td, table.docutils th { border-bottom:1px solid #dfdfdf; padding:
 table.docutils thead th { border-bottom:1px solid #000000; text-align:left; font-weight: bold; white-space: nowrap; background: url(help_background_header.png) center top; }
 table.docutils thead th p { margin: 0; padding: 0; }
 table.docutils { border-collapse:collapse;
-	/* Make the sidebar line "fade out" if they overlap. Shadow repeated 10 times to make it stronger. */
-	  -moz-box-shadow: white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px;
-	-opera-box-shadow: white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px;
-	       box-shadow: white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px;
+	/* Make the sidebar line "fade out" if they overlap. Shadow repeated 5 times to make it stronger. */
+	  -moz-box-shadow: white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px;
+	-opera-box-shadow: white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px;
+	       box-shadow: white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px;
 }
 
 /*** code blocks ***/
 .literal { white-space:nowrap; }
 h1 .literal, h2 .literal, h3 .literal, h4 .literal, h5 .literal, h6 .literal { color: inherit; }
-pre { font-size:small; background:#fee8e8; border:1px solid #f09090; border-width:1px 0; margin: 1em 0; padding: .3em .4em; overflow: auto; line-height: 1.3em;}
+pre { font-size:small; background:#feecec; border:1px solid #f09090; border-width:1px 0; margin: 1em 0; padding: .3em .4em; overflow: auto; line-height: 1.3em;}
 dt .literal, table .literal { background:none; }
 .page a.reference tt.literal { border-bottom: 1px #600b0b dotted; }
+
+/*** INI formatting ***/
+/* This could be done as a special Pygments style, I think */
+.highlight-ini .k { /* section */
+	color: #007020; /* default */
+	font-weight: bold; /* default */
+}
+.highlight-ini .na { /* key */
+	color: #4080CC; /* changed from #4070A0 */
+	font-weight: bold; /* added */
+}
+.highlight-ini .o { /* = */
+	color: #4070A0; /* default */
+}
+.highlight-ini .s { /* value */
+	color: #000000; /* changed from #4070A0 */
+}
  
 /*** notes & admonitions ***/
 .note, .admonition { padding:.8em 1em .8em; margin: 1em 0; border:1px solid #b31616; }
@@ -317,21 +335,6 @@ div#contents ul ul li { margin-top: 0.3em;}
 /*** "version added" and "version modified" lines ***/
 .versionmodified {
 	font-style: italic;
-}
-
-/*** highlighting ***/
-.highlight {
-	background-color: #ff0;
-     -moz-border-radius: 4px 2px; /* FF1+ */
-  -webkit-border-radius: 4px 2px; /* Saf3+, Chrome */
-          border-radius: 4px 2px; /* Opera 10.5, IE 9 */
-     -moz-box-shadow: 0px 0px 6px #330; /* FF3.5+ */
-  -webkit-box-shadow: 0px 0px 6px #330; /* Saf3.0+, Chrome */
-          box-shadow: 0px 0px 6px #330; /* Opera 10.5, IE 9.0 */		  
-  background-image: -moz-linear-gradient(top, #ffff00, #bbbb00); /* FF3.6 */
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ffff00),color-stop(1, #bbbb00)); /* Saf4+, Chrome */
-            filter:  progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffff00', EndColorStr='#bbbb00'); /* IE6,IE7 */
-        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffff00', EndColorStr='#bbbb00')"; /* IE8 */		  
 }
 
 /*** Page overrides ***/
