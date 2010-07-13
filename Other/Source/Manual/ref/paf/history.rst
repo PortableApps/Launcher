@@ -1,4 +1,4 @@
-.. _ref-paf-history:
+.. _paf-history:
 
 7. PortableApps.com Format Version History and Discussion
 =========================================================

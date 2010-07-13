@@ -1,8 +1,10 @@
+.. index:: Java, Making things portable; Java applications
+
 .. _topics-java:
 
-=================
-Java applications
-=================
+=================================
+Making Java applications portable
+=================================
 
 There are many different languages and frameworks which applications can be
 written in, and they all have different ways of doing things. This document

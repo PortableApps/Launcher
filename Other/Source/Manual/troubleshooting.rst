@@ -15,6 +15,9 @@ Check your launcher configuration
    reread the documentation for the section or key to make sure that you're
    not doing something wrong by mistake.
 
+Other issues
+   Go through the :ref:`release-checklist`.
+
 Registry
 ========
 

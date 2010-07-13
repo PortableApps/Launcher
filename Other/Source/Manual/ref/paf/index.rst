@@ -1,4 +1,4 @@
-.. _ref-paf:
+.. _paf:
 
 PortableApps.com Format™ Specification
 ======================================

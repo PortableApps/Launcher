@@ -61,90 +61,15 @@ Here is a list of the hooks which can be executed:
 
 .. _`NSIS documentation`: http://nsis.sourceforge.net/Docs/Chapter4.html#4.7.2.1.2
 
-.. _advanced-segments-custom:
-
-Writing a custom segment
-------------------------
-
-If there is something which you need to do in a launcher which is not possible
-in the PortableApps.com Launcher, you can write :term:`NSIS` code for it
-yourself but still use the general framework and power of the PortableApps.com
-Launcher by writing a custom segment.
-
-To write a custom segment for your application, create a file
-``PortableApps.comLauncherCustom.nsh`` in the ``Other\Source`` directory of your
-application package. You can look at other segments for guidance on how to write
-a segment. This is the general structure for a segment:
-
-::
-
-   ${SegmentFile}
-
-   Var [variables]
-
-   ${Segment[hook]}
-      ...
-   !macroend
-
-   ${Segment[hook]}
-      ...
-   !macroend
-
-   ...
-
-1. The first line of the file is ``${SegmentFile}``.
-
-2. Next comes any variables which may be required. Normally no variables will be
-   required but some segments need variables.
-
-2. After this comes the hooks. Each hook is implemented like this:
-
-   ::
-
-      ${Segment[hook]}
-         [segment contents]
-      !macroend
-
-   A list of available hooks is available :ref:`above
-   <advanced-segments-hooks>`.
-
-3. A segment can use custom macros and Functions if it is desired, but they
-   should be clearly identified as part of the segment. The general convention
-   is to prefix a segment-specific macro or function with *_segment name_* so
-   that the macro "Start" in the segment FilesMove became ``_FilesMove_Start``.
-   Such macros and functions as these should come above the variable
-   definitions, immediately after the ``${SegmentFile}`` line.
-
 .. _advanced-segments-disable:
 
-Disabling hooks and segments and overriding the execute step
-------------------------------------------------------------
+Customisations
+--------------
 
 If you ever need to disable a segment or hook, you can do so. In general though
 if you can possibly avoid doing it you should; you can very easily break the
-PortableApps.com Launcher by disabling certain things. In general I would
-recommend that you :ref:`ask <help>` before doing it to see if there is a better
-way.
-
-All of these changes apply to :ref:`PortableApps.comLauncherCustom.nsh
-<advanced-segments-custom>`.
-
-* Disable inbuilt segment-hooks::
-
-     ${DisableHook} Segment Hook
-
-* Disable all hooks in an inbuilt segment::
-
-     ${DisableSegment} Segment
-
-* To override the Execute function completely, do this::
-
-     ${OverrideExecute}
-         ...
-     !macroend
-
-  You would be well advised to take a look at the Execute function in
-  PortableApps.comLauncher.nsi before doing this.
+PortableApps.com Launcher by disabling certain things. See
+:ref:`advanced-custom-segment` for details.
 
 .. _advanced-segments-list:
 
@@ -153,32 +78,42 @@ List of core segments
 
 Here is the current list of segments included in the PortableApps.com Launcher:
 
-* Core
-* DirectoriesCleanup
-* DirectoriesMove
-* DriveLetter
-* Environment
-* ExecString
-* FileWrite
-* FilesMove
-* InstanceManagement
-* Java
-* LauncherLanguage
-* Mutex
-* Qt
-* RefreshShellIcons
-* Registry
-* RegistryCleanup
-* RegistryKeys
-* RegistryValueBackupDelete
-* RegistryValueWrite
-* RunAsAdmin
-* RunLocally
-* Services
-* Settings
-* SplashScreen
-* Temp
-* Variables
-* WorkingDirectory
-
-*Descriptions of what each segment does is coming*
+* **Core:** various core functionality
+* **DirectoriesCleanup:** :ini-section:`[DirectoriesCleanupIfEmpty]` and
+  :ini-section:`[DirectoriesCleanupForce]`
+* **DirectoriesMove:** :ini-section:`[DirectoriesMove]`
+* **DirectoryMoving:** coping with moving the portable app package --
+  :ini-key:`[Launch]:DirectoryMoveOK`
+* **DriveLetter:** :ref:`ref-envsub-drive`
+* **Environment:** :ini-section:`[Environment]`
+* **ExecString:** constructing the string for execution
+* **FileWrite:** :ini-section:`[FileWriteN]`
+* **FilesMove:** :ini-section:`[FilesMove]`
+* **InstanceManagement:** managing multiple instances of portable apps
+* **Java:** :ref:`guess <topics-java>`
+* **Language:** launcher language selection for message boxes and language
+  switching (see :ref:`topics-languages`)
+* **OperatingSystem:** :ini-key:`[Launch]:MinOS` and :ini-key:`[Launch]:MaxOS`
+* **Qt:** :ini-section:`[QtKeysCleanup]` (see also :ref:`topics-qt`)
+* **RefreshShellIcons:** :ini-key:`[Launch]:RefreshShellIcons`
+* **RegisterDLL:** :ini-section:`[RegisterDLL]`
+* **Registry:** :ini-key:`[Activate]:Registry` and helper utilities for
+  other Registry segments. See also :ref:`topics-registry` for this and the
+  other Registry segments listed here.
+* **RegistryCleanup:** :ini-section:`[RegistryCleanupIfEmpty]` and
+  :ini-section:`[RegistryCleanupForce]`
+* **RegistryKeys:** :ini-section:`[RegistryKeys]`
+* **RegistryValueBackupDelete:** :ini-section:`[RegistryValueBackupDelete]`
+* **RegistryValueWrite:** :ini-section:`[RegistryValueWrite]`
+* **RunAsAdmin:** :ini-key:`[Launch]:RunAsAdmin` et al.
+* **RunLocally:** live mode support (mainly a user feature, but slightly
+  configurable with :ini-section:`[LiveMode]`)
+* **Services:** services (currently not functional and disabled)
+* **Settings:** Management of ``Data\settings`` and copying default data from
+  ``App\DefaultData`` to the ``Data`` directory
+* **SplashScreen:** :ref:`splash-screen`
+* **Temp:** management of the TEMP directory (mainly controlled by
+  :ini-key:`[Launch]:CleanTemp`)
+* **Variables:** internal functions for providing environment variables and most
+  of the :ref:`ref-envsub-directory`
+* **WorkingDirectory:** :ini-key:`[Launch]:WorkingDirectory`

@@ -1,0 +1,52 @@
+.. index:: Release notes; 2.1
+
+.. _releases-2.1:
+
+================================================================
+PortableApps.com Launcher 2.1 release notes -- UNDER DEVELOPMENT
+================================================================
+
+The next version of the PortableApps.com Launcher is coming now! With `various
+new features`_ and improved documentation, this release makes it easier than
+ever to make portable apps.
+
+.. _`various new features`: `New features`_
+
+New features
+============
+
+Better support for varying operating systems
+--------------------------------------------
+
+This release introduces operating system compatibility detection, supporting a
+minimum OS required to run, with :ini-key:`[Launch]:MinOS`, and a maximum
+supported OS, with :ini-key:`[Launch]:MaxOS`.
+
+This is handy in particular for apps which don't support Windows 2000; the
+PortableApps.com Launcher itself doesn't support Windows 95, 98 or Me (due to
+its being Unicode), but it does support Windows 2000, and some apps, like Google
+Chrome or the GIMP, don't work on Windows 2000. Rather than failing silently,
+it's more helpful to warn the user -- so a line ``MinOS=2000`` is very helpful
+for the user.
+ 
+There are also some more values added to supplement
+:ini-key:`[Launch]:RunAsAdmin`, to provide operating system dependant privilege
+requirement. This may be useful in particular for some apps which before Vista
+didn't need administrative privileges, but for Vista and later need
+administrative privileges due to the tightened security and UAC subsystem.
+
+These added values are
+:ini-key:`[Launch]:RunAsAdmin2000`,
+:ini-key:`[Launch]:RunAsAdminXP`,
+:ini-key:`[Launch]:RunAsAdmin2003`,
+:ini-key:`[Launch]:RunAsAdminVista`,
+:ini-key:`[Launch]:RunAsAdmin2008`,
+:ini-key:`[Launch]:RunAsAdmin7` and
+:ini-key:`[Launch]:RunAsAdmin2008R2`.
+
+DLL server registration
+-----------------------
+
+Some apps register DLL servers (keyword: DllRegisterServer); this leaves data in
+the registry. To take care of this, a new INI section has been added,
+:ini-section:`[RegisterDLL]`, to take care of this.

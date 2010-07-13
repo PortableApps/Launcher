@@ -3,8 +3,8 @@
 Worked Example: 7-Zip
 =====================
 
-The :ref:`AppID <ref-paf-appinfo-appid>` of 7-Zip is ``7-ZipPortable``, and so
-the launcher executable is named ``7-ZipPortable.exe`` and the launcher
+The :ref:`AppID <paf-appinfo-appid>` of 7-Zip is ``7-ZipPortable``, and so the
+launcher executable is named ``7-ZipPortable.exe`` and the launcher
 configuration file is in ``App\AppInfo\Launcher\7-ZipPortable.ini``.
 
 The main 7-Zip executable to be launched is ``7zFM.exe``, and it lives in

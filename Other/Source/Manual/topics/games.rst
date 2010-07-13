@@ -1,7 +1,9 @@
+.. index:: Games, Making things portable; games
+
 .. _topics-games:
 
-Games
-=====
+Making games portable
+=====================
 
 Here are some tips concerning making games portable.
 

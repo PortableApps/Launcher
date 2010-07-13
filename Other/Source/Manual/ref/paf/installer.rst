@@ -1,4 +1,4 @@
-.. _ref-paf-installer:
+.. _paf-installer:
 
 4. PortableApps.com Installer (and installer.ini)
 =================================================
@@ -396,6 +396,8 @@ An **End User License Agreement (EULA)** or other licensing file can be
 displayed in the PortableApps.com Installer by including an EULA.txt or EULA.rtf
 file in the Other\Source directory. The PortableApps.com Installer will
 automatically locate it and configure it for use.
+
+.. _paf-installer-custom:
 
 **Custom Code** may be included with your installer by including a file called
 PortableApps.comInstallerCustom.nsh within the Other\Source directory. This file

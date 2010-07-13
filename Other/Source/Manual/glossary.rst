@@ -19,40 +19,48 @@ General
       The format in which PortableApps.com releases must be, providing a common
       arrangement for all PortableApps.com applications so that data can be
       backed up easily and the PortableApps.com Platform can easily find
-      application details. See :ref:`ref-paf` for details.
+      application details. See :ref:`paf` for details.
 
    PortableApps.com Launcher
       A universal launcher for running portable applications without needing to
-      write code (this is what this documentation is for)
+      write code (this is what this documentation is for). It's configured by an
+      :term:`INI` file.
+
+   INI
+      A plain-text data storage technique used primarily in Microsoft Windows
+      for storing configuration. Used extensively by PortableApps.com. See
+      :ref:`ini` for a discussion of the format along with details of how to use
+      it.
 
    NSIS
-      `Nullsoft Scriptable Installer System <http://nsis.sourceforge.net>`_. A
-      programming language generally used for installers but used at
-      :term:`PortableApps.com` for various products including the
-      :term:`PortableApps.com Launcher`. `NSIS Portable
-      <http://portableapps.com/apps/development/nsis_portable>`_ is available
-      as an official release from PortableApps.com. :term:`Unicode NSIS` is now
-      the preferred build of NSIS for usage at PortableApps.com.
+      `Nullsoft Scriptable Installer System`_. A programming language generally
+      used for installers but used at PortableApps.com for various products
+      including the PortableApps.com Launcher. :term:`Unicode NSIS` is a Unicode
+      branch of NSIS and is the preferred build of NSIS for usage at
+      PortableApps.com. `NSIS Portable`_ is available as an official release
+      from PortableApps.com, in ANSI and Unicode builds.
 
    Unicode NSIS
-      A Unicode build of :term:`NSIS`, available from `scratchpaper.com
-      <http://scratchpaper.com>`. It is now recommended that you build the
-      PortableApps.com Launcher with Unicode NSIS. `Unicode NSIS Portable
-      <http://portableapps.com/node/21879>` is available as a :term:`Development
-      Test` release at PortableApps.com.
+      A Unicode branch of :term:`NSIS`, available from scratchpaper.com_; a
+      portable edition is available as `NSIS Portable`_ (Unicode). All new
+      PortableApps.com projects use Unicode NSIS instead of ANSI NSIS builds.
 
    Environment variable
-      An environment variable is a dynamic system variable. The
-      :term:`PortableApps.com Launcher` utilises environment variables to aid
-      string replacement. See :ref:`ref-envsub` for details on the use in
-      launcher.ini values and :ini-section:`[Environment]` for a section
-      in launcher.ini which can be used to set environment variables.
+      An environment variable is a dynamic system variable. The PortableApps.com
+      Launcher utilises environment variables to aid string replacement. See
+      :ref:`ref-envsub` for details on the use in launcher.ini values and
+      :ini-section:`[Environment]` for a section in launcher.ini which can be
+      used to set environment variables.
 
    Splash screen
       An image which appears on the user's screen while an application is
       starting, generally to give an indication that something is happening.
-      See :ref:`splash-screen` for more details on their use in
-      PortableApps.com applications.
+      See :ref:`splash-screen` for more details on their use in PortableApps.com
+      applications.
+
+.. _`Nullsoft Scriptable Installer System`: http://nsis.sourceforge.net
+.. _`NSIS Portable`: http://portableapps.com/apps/development/nsis_portable
+.. _scratchpaper.com: http://scratchpaper.com
 
 Releases
 --------

@@ -1,3 +1,5 @@
+.. index:: Environment variable substitutions
+
 .. _ref-envsub:
 
 ================================

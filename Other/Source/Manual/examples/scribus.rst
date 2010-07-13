@@ -3,7 +3,7 @@
 Worked Example: Scribus
 =======================
 
-The :ref:`AppID <ref-paf-appinfo-appid>` of Scribus is ``ScribusPortable``,
+The :ref:`AppID <paf-appinfo-appid>` of Scribus is ``ScribusPortable``,
 and so the launcher executable is named ``ScribusPortable.exe`` and the
 launcher configuration file is in
 ``App\AppInfo\Launcher\ScribusPortable.ini``.
