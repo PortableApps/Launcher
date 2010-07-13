@@ -1,6 +1,6 @@
 ${SegmentFile}
 
-${SegmentPrePrimary}
+${SegmentInit}
 	; Check for settings
 	${IfNot} ${FileExists} $DataDirectory\settings
 		${DebugMsg} "$DataDirectory\settings does not exist. Creating it."

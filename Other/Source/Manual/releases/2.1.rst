@@ -75,3 +75,13 @@ Neither of these changes is backwards-incompatible as the Generator will upgrade
 the paths when you first run it. Developers who are using the :ref:`development
 version of the PortableApps.com Launcher <hg>` will need to :ref:`recompile the
 Generator <compile-pal-generator>`.
+
+DefaultData now more flexible
+-----------------------------
+
+A change in the time when DefaultData is processed means that you can now use
+the DefaultData to override Launcher settings so that you can do things like
+provide a last used drive letter for first run, which formerly didn't work. A
+full explanation of how to use this will come soon, but for the moment just take
+a look at Data\\settings\\\ *AppNamePortable*\ Settings.ini after you've run an
+app (all values in it are optional).

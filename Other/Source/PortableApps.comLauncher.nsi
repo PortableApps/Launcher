@@ -170,6 +170,7 @@ FunctionEnd
 Function Init             ;{{{1
 	${RunSegment} Custom
 	${RunSegment} Core
+	${RunSegment} Settings
 	${RunSegment} DriveLetter
 	${RunSegment} DirectoryMoving
 	${RunSegment} Variables
@@ -193,7 +194,6 @@ FunctionEnd
 
 Function PrePrimary       ;{{{1
 	${RunSegment} Custom
-	${RunSegment} Settings
 	${RunSegment} DriveLetter
 	${RunSegment} DirectoryMoving
 	${RunSegment} FileWrite
