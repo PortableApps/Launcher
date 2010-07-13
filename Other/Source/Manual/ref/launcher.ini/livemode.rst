@@ -3,12 +3,8 @@
 [LiveMode]
 ==========
 
-This document covers all the launcher.ini values in the
-:ini-section:`![LiveMode]` section.
-
-The :ini-section:`![LiveMode]` section provides details regarding how the
-portable application should function when in Live mode, when in a read-only
-directory.
+The ``[LiveMode]`` section provides details regarding how the portable
+application should function when in Live mode, when in a read-only directory.
 
 As specified here, certain things are copied to the local hard drive, and then
 the application is run, and any things copied locally are deleted. This is

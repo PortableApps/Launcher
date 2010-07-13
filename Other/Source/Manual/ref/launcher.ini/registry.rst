@@ -5,12 +5,12 @@
 [RegistryKeys]
 ==============
 
-:ini-section:`![RegistryKeys]` deals with registry keys for which to manage
+``[RegistryKeys]`` deals with registry keys for which to manage
 portability. They come in the form ``file name=registry key location``; the
 *file name* is the location of the place where it is saved, which is in
 Data\\settings\\\ *file name*.reg. If you wish to have drive letters updated
-inside this, look at :ini-section:`[FileWrite]` with :ini-key:`Type
-<[FileWrite]:Type>`\ =\ ``Replace``.
+inside this, look at :ini-section:`[FileWriteN]` with :ini-key:`Type
+<[FileWriteN]:Type>`\ =\ ``Replace``.
 
 If you do not wish to save the data of the registry key to a file but only
 want to keep it safe and throw away any changes, set the "file name" to ``-``,
