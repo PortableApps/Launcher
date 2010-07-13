@@ -3,9 +3,9 @@
 [Launch]
 ========
 
-This document covers all the launcher.ini values in the :ini-section:`![Launch]` section.
-
-The :ini-section:`![Launch]` section provides details regarding the launching of the application and surrounding details.
+The ``[Launch]`` section provides details regarding the launching of the
+application and surrounding details. It's also the "general" section for things
+which aren't big enough to warrant their own section.
 
 .. ini-key:: [Launch]:AppName
 
@@ -46,7 +46,7 @@ There is a special case for Java applications; after specifying
 executable in the Java Runtime Environment.
 
 **Example:** inside the portable application package, the executable to run is
-at App\AppName\AppName.exe, so, after removing the App,
+at ``App\AppName\AppName.exe``, so, after removing the ``App\``,
 :ini-key:`ProgramExecutable <[Launch]:ProgramExecutable>`\
 ``=AppName\AppName.exe``
 
@@ -328,11 +328,11 @@ CleanTemp
 Many applications leave things in the user's "temporary" directory (called TEMP)
 and don't clean them up. When not set (thus when set to ``true``), this value
 assigns a contained TEMP directory to the application (in the format
-%TEMP%\AppNamePortableTemp) which is removed after the application is closed,
-thus not leaving anything behind.
+``%TEMP%\AppNamePortableTemp``) which is removed after the application is
+closed, thus not leaving anything behind.
 
 If :ini-key:`WaitForProgram <[Launch]:WaitForProgram>` is set to ``false``, this
-will still work, placing TEMP in Data\temp, but this may slow down some
+will still work, placing TEMP in ``Data\temp``, but this may slow down some
 applications and may also clutter up the device while running. In this case the
 directory will not be deleted upon program completion, but rather the next time
 the application is started.
@@ -481,9 +481,9 @@ WaitForEXE\ *N*
 
 If the program that you run is a launcher program which launches another
 executable, and you need to wait for that as well as (or instead of) the
-original program, specify its file name here, as :ini-key:`!WaitForEXE1`\ =\
-``whatever.exe``.  If you need more than one, use :ini-key:`!WaitForEXE2`,
-:ini-key:`!WaitForEXE3`, etc.
+original program, specify its file name here, as ``WaitForEXE1``\ =\
+``whatever.exe``.  If you need more than one, use ``WaitForEXE2``,
+``WaitForEXE3``, etc.
 
 .. ini-key:: [Launch]:RefreshShellIcons
 
