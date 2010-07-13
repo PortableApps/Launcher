@@ -170,6 +170,15 @@ FunctionEnd
 	StrCpy $ERROROCCURED "true"
 !macroend
 
+!macro UpdatePath Source Target
+	${If} ${FileExists} "$PACKAGE\${Source}"
+		DetailPrint "${Source} -> ${Target}"
+		SetDetailsPrint none
+		Rename "$PACKAGE\${Source}" "$PACKAGE\${Target}"
+		SetDetailsPrint lastused
+	${EndIf}
+!macroend
+
 Section Main
 	${IfNot} ${FileExists} $NSIS
 		StrCpy $ERROROCCURED true
@@ -183,6 +192,17 @@ Section Main
 	DetailPrint " "
 	RealProgress::SetProgress /NOUNLOAD 0
 	RealProgress::GradualProgress /NOUNLOAD 1 20 90 "Processing complete."
+
+	; Check if any upgrade needs to be done from 2.0 to 2.1
+	${If}   ${FileExists} $PACKAGE\Other\Source\PortableApps.comLauncherCustom.nsh
+	${OrIf} ${FileExists} $PACKAGE\Other\Source\PortableApps.comLauncherDebug.nsh
+		DetailPrint "Upgrading from 2.0 to 2.1..."
+		!insertmacro UpdatePath Other\Source\PortableApps.comLauncherCustom.nsh App\AppInfo\Launcher\Custom.nsh
+		!insertmacro UpdatePath Other\Source\PortableApps.comLauncherDebug.nsh  App\AppInfo\Launcher\Debug.nsh
+		DetailPrint " "
+	${EndIf}
+
+
 	DetailPrint "Generating launcher..."
 	SetDetailsPrint none
 	
@@ -210,12 +230,13 @@ Section Main
 			Delete "$PACKAGE\$AppID.exe"
 			${If} ${FileExists} "$PACKAGE\$AppID.exe"
 				StrCpy $ERROROCCURED true
-				${WriteErrorToLog} "Unable to delete $PACKAGE\AppID.exe, is it running?"
+				${WriteErrorToLog} "Unable to delete $PACKAGE\$AppID.exe, is it running?"
 			${EndIf}
 		${EndIf}
 	${EndIf}
 
 	${If} $ERROROCCURED != true
+		; Build the thing
 		ExecDos::exec `"$NSIS" /O"$EXEDIR\Data\PortableApps.comLauncherGeneratorLog.txt" /DPACKAGE="$PACKAGE" /DName="$Name" /DAppID="$AppID" /DVersion="$1" "$EXEDIR\Other\Source\PortableApps.comLauncher.nsi"` "" ""
 	${EndIf}
 

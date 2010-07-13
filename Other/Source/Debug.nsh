@@ -72,8 +72,8 @@
 !macroend
 !define DebugMsg "!insertmacro DebugMsg" ; }}}
 
-; If you want to debug this, create PortableApps.comLauncherDebug.nsh in the
-; package's Other\Source directory. It should then have lines like these:
+; If you want to debug this, create Debug.nsh in the package's
+; App\AppInfo\Launcher directory. It should then have lines like these:
 ; · Debug everything
 ;     !define DEBUG_ALL
 ;   · This leaves out the "about to execute segment" and "finished executing
@@ -84,4 +84,4 @@
 ;       !define DEBUG_GLOBAL
 ;   · Debug a given segment or segments
 ;       !define DEBUG_SEGMENT_[SegmentName]
-!include /NONFATAL "${PACKAGE}\Other\Source\PortableApps.comLauncherDebug.nsh"
+!include /NONFATAL "${PACKAGE}\App\AppInfo\Launcher\Debug.nsh"

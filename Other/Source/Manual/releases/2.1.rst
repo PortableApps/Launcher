@@ -7,10 +7,11 @@ PortableApps.com Launcher 2.1 release notes -- UNDER DEVELOPMENT
 ================================================================
 
 The next version of the PortableApps.com Launcher is coming now! With `various
-new features`_ and improved documentation, this release makes it easier than
-ever to make portable apps.
+new features`_, `some changes`_ and improved documentation, this release makes
+it easier than ever to make portable apps.
 
 .. _`various new features`: `New features`_
+.. _`some changes`: `Changes`_
 
 New features
 ============
@@ -50,3 +51,27 @@ DLL server registration
 Some apps register DLL servers (keyword: DllRegisterServer); this leaves data in
 the registry. To take care of this, a new INI section has been added,
 :ini-section:`[RegisterDLL]`, to take care of this.
+
+Changes
+=======
+
+Advanced paths changed
+----------------------
+
+For :ref:`custom code <advanced-custom>` the path has now changed from
+``Other\Source\PortableApps.comLauncherCustom.nsh`` to
+``App\AppInfo\Launcher\Custom.nsh``. Although the Generator will still need to
+be run again to compile any changes, this keeps files related to the
+PortableApps.com Launcher together, and makes it clearer that there is custom
+code involved.
+
+The path to the :ref:`debugging file <advanced-debug>` has now changed from
+``Other\Source\PortableApps.comLauncherDebug.nsh`` to
+``App\AppInfo\Launcher\Debug.nsh``. Although the Generator will still need to be
+run again to compile any changes, this keeps files related to the
+PortableApps.com Launcher together.
+
+Neither of these changes is backwards-incompatible as the Generator will upgrade
+the paths when you first run it. Developers who are using the :ref:`development
+version of the PortableApps.com Launcher <hg>` will need to :ref:`recompile the
+Generator <compile-pal-generator>`.

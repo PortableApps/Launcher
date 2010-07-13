@@ -229,7 +229,7 @@ Function PreExecSecondary ;{{{1
 FunctionEnd
 
 Function Execute          ;{{{1
-	; Users can override this function in PortableApps.comLauncherCustom.nsh
+	; Users can override this function in Custom.nsh
 	; like this (see Segments.nsh for the OverrideExecute define):
 	;
 	;   ${OverrideExecute}
