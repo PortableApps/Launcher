@@ -43,7 +43,7 @@
 	!ifdef _DisableHook_${Segment}_${__FUNCTION__}
 		!echo "Segment ${Segment}, hook ${__FUNCTION__} has been disabled by Custom.nsh."
 	!else ifmacrondef ${Segment}.nsh_${__FUNCTION__}
-		!if ${Segment} != PortableApps.comLauncherCustom
+		!if ${Segment} != Custom
 			!warning "Segment ${Segment}, hook ${__FUNCTION__} was called but does not exist!"
 		!endif
 	!else

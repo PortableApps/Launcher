@@ -159,7 +159,7 @@ VIAddVersionKey OriginalFilename "${AppID}.exe"
 !verbose 4
 
 Function .onInit          ;{{{1
-	${RunSegment} PortableApps.comLauncherCustom
+	${RunSegment} Custom
 	${RunSegment} Core
 	${RunSegment} Temp
 	${RunSegment} Language
@@ -168,7 +168,7 @@ Function .onInit          ;{{{1
 FunctionEnd
 
 Function Init             ;{{{1
-	${RunSegment} PortableApps.comLauncherCustom
+	${RunSegment} Custom
 	${RunSegment} Core
 	${RunSegment} DriveLetter
 	${RunSegment} DirectoryMoving
@@ -184,7 +184,7 @@ Function Init             ;{{{1
 FunctionEnd
 
 Function Pre              ;{{{1
-	${RunSegment} PortableApps.comLauncherCustom
+	${RunSegment} Custom
 	${RunSegment} RunLocally
 	${RunSegment} Temp
 	${RunSegment} Environment
@@ -192,7 +192,7 @@ Function Pre              ;{{{1
 FunctionEnd
 
 Function PrePrimary       ;{{{1
-	${RunSegment} PortableApps.comLauncherCustom
+	${RunSegment} Custom
 	${RunSegment} Settings
 	${RunSegment} DriveLetter
 	${RunSegment} DirectoryMoving
@@ -207,24 +207,24 @@ Function PrePrimary       ;{{{1
 FunctionEnd
 
 Function PreSecondary     ;{{{1
-	${RunSegment} PortableApps.comLauncherCustom
+	${RunSegment} Custom
 	;${RunSegment} *
 FunctionEnd
 
 Function PreExec          ;{{{1
-	${RunSegment} PortableApps.comLauncherCustom
+	${RunSegment} Custom
 	${RunSegment} RefreshShellIcons
 	${RunSegment} WorkingDirectory
 FunctionEnd
 
 Function PreExecPrimary   ;{{{1
-	${RunSegment} PortableApps.comLauncherCustom
+	${RunSegment} Custom
 	${RunSegment} Core
 	${RunSegment} SplashScreen
 FunctionEnd
 
 Function PreExecSecondary ;{{{1
-	${RunSegment} PortableApps.comLauncherCustom
+	${RunSegment} Custom
 	;${RunSegment} *
 FunctionEnd
 
@@ -298,24 +298,24 @@ Function PostPrimary      ;{{{1
 	${RunSegment} FilesMove
 	${RunSegment} DirectoriesCleanup
 	${RunSegment} RunLocally
-	${RunSegment} PortableApps.comLauncherCustom
+	${RunSegment} Custom
 FunctionEnd
 
 Function PostSecondary    ;{{{1
 	;${RunSegment} *
-	${RunSegment} PortableApps.comLauncherCustom
+	${RunSegment} Custom
 FunctionEnd
 
 Function Post             ;{{{1
 	${RunSegment} RefreshShellIcons
-	${RunSegment} PortableApps.comLauncherCustom
+	${RunSegment} Custom
 FunctionEnd
 
 Function Unload           ;{{{1
 	${RunSegment} Registry
 	${RunSegment} SplashScreen
 	${RunSegment} Core
-	${RunSegment} PortableApps.comLauncherCustom
+	${RunSegment} Custom
 FunctionEnd
 
 ; Call a segment-calling function with primary/secondary variants as well {{{1
