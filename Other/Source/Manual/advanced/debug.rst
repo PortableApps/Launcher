@@ -12,7 +12,7 @@ details on that process.
 
 Once you have a compile environment set up for the PortableApps.com Launcher,
 you can recompile it with debugging flags turned on. All debug flags go in the
-`PortableApps.comLauncherDebug.nsh`_ file. This file should contain :ref:`debug flags
+`Debug.nsh`_ file. This file should contain :ref:`debug flags
 <advanced-debug-flags>` as listed below, like this::
 
    !define DEBUG_ALL
@@ -30,20 +30,20 @@ Debug messages will be output to the screen in message boxes and to a file
 
 .. _advanced-debug-file:
 
-``PortableApps.comLauncherDebug.nsh``
-=====================================
+``Debug.nsh``
+=============
 
 All modifications to the PortableApps.com Launcher involving debugging go in a
-file ``PortableApps.comLauncherDebug.nsh`` in the ``Other\Source`` directory of
-a package.
+file ``Debug.nsh`` in the ``App\AppInfo\Launcher`` directory of a package.
 
 **Note:** I am considering relocating this to ``App\AppInfo\Launcher\Debug.nsh``
 before the release of 2.1. In a later release I plan on integrating it into the
 user interface of a utility which will do all that the Generator does and more,
 and then where it is won't matter so much.
 
-.. TODO versionchanged:: 2.1
+.. versionchanged:: 2.1
    previously this file was ``Other\Source\PortableApps.comLauncherDebug.nsh``.
+   The Generator will move this file to the new location if it exists.
 
 .. _advanced-debug-flags:
 

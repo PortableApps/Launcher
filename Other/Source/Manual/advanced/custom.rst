@@ -1,4 +1,4 @@
-.. index:: Custom code, PortableApps.comLauncherCustom.nsh
+.. index:: Custom code
 
 .. _advanced-custom:
 
@@ -23,20 +23,17 @@ fails, you can `disable hooks and segments`_.
 
 .. _advanced-custom-file:
 
-``PortableApps.comLauncherCustom.nsh``
-======================================
+``Custom.nsh``
+==============
 
 All modifications to the PortableApps.com Launcher which do not involve
 :ref:`debugging <advanced-debug>` go in a file
-``PortableApps.comLauncherCustom.nsh`` in the ``Other\Source`` directory of a
+``Custom.nsh`` in the ``Other\Source`` directory of a
 package.
 
-**Note:** I plan on changing this to ``App\AppInfo\Launcher\Custom.nsh`` before
-the release of 2.1. The Generator will be able to move the file to the new
-location.
-
-.. TODO versionchanged:: 2.1
+.. versionchanged:: 2.1
    previously this file was ``Other\Source\PortableApps.comLauncherCustom.nsh``.
+   The Generator will move this file to the new location if it exists.
 
 .. _advanced-custom-segment:
 
@@ -49,7 +46,7 @@ yourself but still use the general framework and power of the PortableApps.com
 Launcher by writing a custom segment.
 
 To write a custom segment for your application, use the
-`PortableApps.comLauncherCustom.nsh`_ file mentioned above.  You can look at
+`Custom.nsh`_ file mentioned above.  You can look at
 :ref:`other segments <advanced-segments>` for guidance on how to write a
 segment. This is the general structure for a segment:
 
@@ -100,7 +97,7 @@ PortableApps.com Launcher by disabling certain things. In general I would
 recommend that you :ref:`ask <help>` before doing it to see if there is a better
 way.
 
-All of these changes apply to `PortableApps.comLauncherCustom.nsh`_.
+All of these changes apply to `Custom.nsh`_.
 
 To disable an inbuilt hook in a segment::
 
@@ -120,7 +117,7 @@ it if you can as it will make the app not behave like most apps. Try
 :ref:`asking for help <help>` before you do it, as there may be a better way.
 
 To override the Execute function completely, put into
-`PortableApps.comLauncherCustom.nsh`_ code like this::
+`Custom.nsh`_ code like this::
 
      ${OverrideExecute}
          ...

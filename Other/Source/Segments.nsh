@@ -41,7 +41,7 @@
 ; Run an action {{{1
 !macro RunSegment Segment
 	!ifdef _DisableHook_${Segment}_${__FUNCTION__}
-		!echo "Segment ${Segment}, hook ${__FUNCTION__} has been disabled by PortableApps.comLauncherCustom.nsh."
+		!echo "Segment ${Segment}, hook ${__FUNCTION__} has been disabled by Custom.nsh."
 	!else ifmacrondef ${Segment}.nsh_${__FUNCTION__}
 		!if ${Segment} != PortableApps.comLauncherCustom
 			!warning "Segment ${Segment}, hook ${__FUNCTION__} was called but does not exist!"
@@ -119,4 +119,4 @@
 
 !define OverrideExecute "!macro OverrideExecuteFunction"
 
-!include /nonfatal "${PACKAGE}\Other\Source\PortableApps.comLauncherCustom.nsh"
+!include /nonfatal "${PACKAGE}\App\AppInfo\Launcher\Custom.nsh"
