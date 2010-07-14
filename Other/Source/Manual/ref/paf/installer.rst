@@ -235,12 +235,12 @@ optional components are not additional languages.
 **OptionalDirectory1** allows you to specify which directories are a part of the
 optional section of the installer. OptionalDirectory1 and higher are available
 for use. The path should be relative. So if you want the directory
-App\AppName\locales part of the optional section of the installer, you'd set
+App\\AppName\\locales part of the optional section of the installer, you'd set
 ``OptionalDirectory1=App\AppName\locales`` in this section.
 
 **OptionalFile1** allows you to specify which specific files are a part of the
 optional section of the installer. OptionalFile1 and higher are available for
-use. The path should be relative. So if you want the files App\AppName\*.lang
+use. The path should be relative. So if you want the files App\\AppName\\*.lang
 part of the optional section of the installer, you'd set
 ``OptionalFile1=App\AppName\*.lang`` in this section.
 
@@ -259,7 +259,7 @@ be set to true.
 
 **CopyFromRegPath** is used when the path to the local files is indicated within
 a key in the registry. Generally, this will be in the form of
-HKLM\Software\AppName.
+HKLM\\Software\\AppName.
 
 **CopyFromRegKey** is used in conjunction with ``CopyFromRegPath``. It indicates
 the Key within the registry path above that should be used.
@@ -267,10 +267,10 @@ the Key within the registry path above that should be used.
 **CopyFromRegRemoveDirectories** is used to indicate the number of directories
 to strip from the Key read in to arrive at the directory that should be copied.
 If the Key indicates a path to a file rather than a directory, it should be
-increased by one. For example, if the Key generally points to C:\Program
-Files\AppName\bin\AppName.exe and you wish to copy all the files in C:\Program
-Files\AppName, it would be set to 2: one to remove the file name AppName.exe and
-one to remove the 'bin' directory from the path.
+increased by one. For example, if the Key generally points to C:\\Program
+Files\\AppName\\bin\\AppName.exe and you wish to copy all the files in
+C:\\Program Files\\AppName, it would be set to 2: one to remove the file name
+AppName.exe and one to remove the 'bin' directory from the path.
 
 **CopyFromDirectory** is used to indicate the local directory to copy into the
 portable app. If used in conjunction with the registry entries above, it will be
@@ -313,19 +313,19 @@ only and be in KB
 
 **Extract1To** and **Extract1File** are used for simple extraction of files from
 ZIP files only. The Extract#To entries should specify the relative path to where
-the files will go within the installed portable app (typically App\AppName). The
-Extract#File is used to specify the name of the file to extract. No wildcards
-are permitted. Up to 10 entries in the form Extract1To/Extract1File,
+the files will go within the installed portable app (typically App\\AppName).
+The Extract#File is used to specify the name of the file to extract. No
+wildcards are permitted. Up to 10 entries in the form Extract1To/Extract1File,
 Extract2To/Extract2File may be made. Extract#To supports the use of ``<ROOT>``
 to indicate the app's root directory.
 
 **AdvancedExtract1To** and **AdvancedExtract1Filter** are used for more advanced
 extraction from ZIP files as well as many installer EXEs. The AdvancedExtract#To
 entries should specify the relative path to where the files will go within the
-installed portable app (typically App\AppName). The AdvancedExtract#Filter
+installed portable app (typically App\\AppName). The AdvancedExtract#Filter
 entries are used to specify a filter for the files to be extracted and are in
 the same format used by 7-zip. Some examples include *.txt for all text files, *
-for all files, *a* for files that contain the letter a, Src\*.cpp for all cpp
+for all files, *a* for files that contain the letter a, Src\\*.cpp for all cpp
 files within the src directory, etc. ** can be used to indicate all files in the
 archive recursively (including sub-directories). Up to 10 entries can be made.
 AdvancedExtract#To supports the use of ``<ROOT>`` to indicate the app's root
@@ -356,7 +356,7 @@ This section specifies directories that will be preserved even if a given
 directory (App, Data, Other) is set to be removed on an upgrade. Up to 10
 entries in the form of PreserveDirectory1, PreserveDirectory2, etc are
 available. Each should be in the relative paths within the app. If you wish to
-preserve the directory App\AppName\plugins, it would be entered as
+preserve the directory App\\AppName\\plugins, it would be entered as
 ``PreserveDirectory1=App\AppName\plugins`` within this section. If no
 directories need preserving, this section should be omitted.
 
@@ -367,7 +367,7 @@ This section specifies directories that will be removed even if a given
 directory (App, Data, Other) is set not to be removed on an upgrade. Up to 10
 entries in the form of RemoveDirectory1, RemoveDirectory2, etc are available.
 Each should be in the relative paths within the app. If you wish to remove the
-directory App\AppName\locales, it would be entered as
+directory App\\AppName\\locales, it would be entered as
 ``RemoveDirectory1=App\AppName\locales`` within this section. If no directories
 need removing, this section should be omitted.
 
@@ -378,7 +378,7 @@ This section specifies files that will be preserved even if a given directory
 (App, Data, Other) is set to be removed on an upgrade. Up to 10 entries in the
 form of PreserveFile1, PreserveFile2, etc are available. Each should be in the
 relative paths within the app. If you wish to preserve the files
-App\AppName\*.hlp, it would be entered as ``PreserveFile1=App\AppName\*.hlp``
+App\\AppName\\*.hlp, it would be entered as ``PreserveFile1=App\AppName\*.hlp``
 within this section. If no files need preserving, this section should be
 omitted.
 
@@ -389,26 +389,26 @@ This section specifies files that will be removed even if a given directory
 (App, Data, Other) is set not to be removed on an upgrade. Up to 10 entries in
 the form of RemoveFile1, RemoveFile2, etc are available. Each should be in the
 relative paths within the app. If you wish to remove the files
-App\AppName\*.lang, it would be entered as ``RemoveFile1=App\AppName\*.lang``
+App\\AppName\\*.lang, it would be entered as ``RemoveFile1=App\AppName\*.lang``
 within this section. If no files need removing, this section should be omitted.
 
 An **End User License Agreement (EULA)** or other licensing file can be
 displayed in the PortableApps.com Installer by including an EULA.txt or EULA.rtf
-file in the Other\Source directory. The PortableApps.com Installer will
+file in the Other\\Source directory. The PortableApps.com Installer will
 automatically locate it and configure it for use.
 
 .. _paf-installer-custom:
 
 **Custom Code** may be included with your installer by including a file called
-PortableApps.comInstallerCustom.nsh within the Other\Source directory. This file
-is coded in NSIS and can include 3 macros: CustomCodePreInstall (which is run
-before installation), CustomCodePostInstall (which is run after installation)
-and CustomCodeOptionalCleanup (which is run at the beginning of installation if
-the optional section of an installer is not selected, intended for use in app
-upgrades when the existing app may have had the optional section included). In
-addition to the standard NSIS functions, the following NSIS features are
-available: ConfigRead, ConfigReadS, ConfigWrite, ConfigWriteS, GetParent,
-GetRoot, VersionCompare and the LogicLib features of NSIS.
+PortableApps.comInstallerCustom.nsh within the Other\\Source directory. This
+file is coded in NSIS and can include 3 macros: CustomCodePreInstall (which is
+run before installation), CustomCodePostInstall (which is run after
+installation) and CustomCodeOptionalCleanup (which is run at the beginning of
+installation if the optional section of an installer is not selected, intended
+for use in app upgrades when the existing app may have had the optional section
+included). In addition to the standard NSIS functions, the following NSIS
+features are available: ConfigRead, ConfigReadS, ConfigWrite, ConfigWriteS,
+GetParent, GetRoot, VersionCompare and the LogicLib features of NSIS.
 
 The PortableApps.com Installer code itself should not be altered directly within
 the confines of it being a PortableApps.com Installer. As always, the source
