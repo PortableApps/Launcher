@@ -15,7 +15,8 @@ Starting using the PortableApps.com Launcher
 * **Getting started:**
   :ref:`overview` |
   :ref:`install-launcher` |
-  :ref:`release-checklist`
+  :ref:`release-checklist` |
+  :ref:`features`
 * **Reference:**
   :ref:`ref-launcher.ini` |
   :ref:`ref-envsub` |
