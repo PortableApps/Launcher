@@ -199,6 +199,7 @@ ol ol {
 	font-size: 1.5em;
 	padding-bottom: 3px;
 	clear: both;
+	margin-bottom: 0.4em;
 }
 
 
@@ -320,6 +321,26 @@ div#contents ul ul li { margin-top: 0.3em;}
 .footer:hover a:link, .footer:hover a:visited, .header:hover a:link, .header:hover a:visited { color:#d0d0d0; }
 .footer:hover a:hover, .header:hover a:hover { color:#fff; }
 #global-nav { float: right; margin-top: 8px; }
+
+/*** footnotes ***/
+.footnote-reference {
+	vertical-align: super;
+	font-size: 70%;
+	line-height: 0;
+}
+
+table.docutils.footnote {
+	font-size: 85%;
+	  -moz-box-shadow: none;
+	-opera-box-shadow: none;
+	       box-shadow: none;
+	margin: 0;
+}
+
+table.docutils.footnote td {
+	border: 0;
+	padding: 2px;
+}
 
 /*** line blocks (lines starting with |; used for details like "Optional", values) ***/
 .line-block {
