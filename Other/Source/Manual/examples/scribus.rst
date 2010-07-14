@@ -55,10 +55,10 @@ configured correctly for Scribus Portable:
    PATH=%PAL:AppDir%\Ghostscript;%PATH%
    HOME=%PAL:DataDir%
 
-To outline what this actually does: it inserts the App\Ghostscript directory
+To outline what this actually does: it inserts the App\\Ghostscript directory
 into the start of the environment variable PATH, sets the environment variable
 HOME to the Data directory, updates drive letters in
-Data\.scribus\scribus13.rc, then runs ``App\Scribus\Scribus.exe``. Without
+Data\\.scribus\\scribus13.rc, then runs ``App\Scribus\Scribus.exe``. Without
 waiting for it (this is because there is nothing which needs tidying up
 afterwards), the launcher quits.
 

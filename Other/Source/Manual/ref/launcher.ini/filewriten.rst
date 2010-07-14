@@ -3,7 +3,8 @@
 [FileWrite\ *N*]
 ================
 
-For writing data to files. The values which must be set depend on the :ini-key:`Type <[FileWriteN]:Type>` specified below.
+For writing data to files. The values which must be set depend on the
+:ini-key:`Type <[FileWriteN]:Type>` specified below.
 
 .. ini-key:: [FileWriteN]:Type
 
@@ -89,7 +90,10 @@ Value
 
 ----
 
-The value which will be written to the file. If dealing with :ini-key:`Type <[FileWriteN]:Type>`\ =` ``ConfigWrite``, you should remember with things like XML files that you will normally need to close the tag, for example ``%PAL:DataDir%\settings</config>``.
+The value which will be written to the file. If dealing with :ini-key:`Type
+<[FileWriteN]:Type>`\ =` ``ConfigWrite``, you should remember with things like
+XML files that you will normally need to close the tag, for example
+``%PAL:DataDir%\settings</config>``.
 
 .. ini-key:: [FileWriteN]:Find
 

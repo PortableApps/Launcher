@@ -10,9 +10,9 @@ configuration file is in ``App\AppInfo\Launcher\7-ZipPortable.ini``.
 The main 7-Zip executable to be launched is ``7zFM.exe``, and it lives in
 ``App\7-Zip``.
 
-7-Zip stores its settings in the registry, in HKEY_CURRENT_USER\Software\7-Zip.
-In previous releases of 7-Zip Portable, it has stored this in
-Data\settings\7zip_portable.reg (this is represented as
+7-Zip stores its settings in the registry, in
+``HKEY_CURRENT_USER\Software\7-Zip``.  In previous releases of 7-Zip Portable,
+it has stored this in Data\settings\7zip_portable.reg (this is represented as
 :ini-section:`[RegistryKeys]`\ ``:7zip_portable=HKCU\Software\7-Zip``).
 
 Paths saved in this 7zip_portable.reg file are normal paths with a
