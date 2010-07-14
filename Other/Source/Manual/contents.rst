@@ -8,6 +8,7 @@ Table of Contents
 
    index
    intro/index
+   features/index
    examples/index
    topics/index
    ref/index
