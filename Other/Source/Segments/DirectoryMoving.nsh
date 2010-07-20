@@ -43,11 +43,10 @@ ${SegmentInit}
 			; But still continue. This should be caught in development (it
 			; should never happen, anyway).
 		${EndIf}
-
-		${SetEnvironmentVariablesPath} PAL:PackagePartialDir $CurrentDirectory
-		${SetEnvironmentVariablesPath} PAL:LastPackagePartialDir $LastDirectory
 	${EndIf}
-	Quit
+
+	${SetEnvironmentVariablesPath} PAL:PackagePartialDir $CurrentDirectory
+	${SetEnvironmentVariablesPath} PAL:LastPackagePartialDir $LastDirectory
 !macroend
 
 ${SegmentPrePrimary}
