@@ -73,7 +73,7 @@ ${SegmentPrePrimary}
 						${IfThen} $5 == UTF-16LE ${|} StrCpy $8 "a UTF-16LE" ${|}
 						${IfThen} $5 != UTF-16LE ${|} StrCpy $8 "an ANSI" ${|}
 						StrCpy $9 ``
-						${IfThen} $4 == true ${|} StrCpy $9 in ${|}
+						${IfThen} $4 != true ${|} StrCpy $9 in ${|}
 					!endif
 					${DebugMsg} "Finding and replacing in $8 file (case $9sensitive).$\r$\nFile: $1$\r$\nFind: `$2`$\r$\nReplace: `$3`"
 					${If} $5 == UTF-16LE
