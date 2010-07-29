@@ -18,29 +18,32 @@ ${SegmentPrePrimary}
 		!insertmacro _FilesMove_Start
 
 		; Backup data from a local installation
-		${IfNot} ${FileExists} $1-BackupBy$AppID
-		${AndIf} ${FileExists} $1
-			${DebugMsg} "Backing up $1 to $1-BackupBy$AppID"
-			Rename $1 $1-BackupBy$AppID
-		${EndIf}
+		${ForEachFile} $4 $2 $1
+			${IfNot} ${FileExists} $4\$2.BackupBy$AppID 
+				${DebugMsg} "Backing up $4\$2 to $4\$2.BackupBy$AppID"
+				Rename $4\$2 $4\$2.BackupBy$AppID
+			${EndIf}
+		${NextFile}
 
+		; See if the parent local directory exists. If not, create it and
+		; note down to delete it at the end if it's empty.
+		${IfNot} ${FileExists} $4
+			CreateDirectory $4
+			WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FilesMove RemoveIfEmpty:$4 true
+		${EndIf}
 		; If portable data exists move/copy it to the target directory.  If the
 		; target directory doesn't exist, note down for the end to remove it
 		; again if it's empty.
-		${If} ${FileExists} $0
-			${DebugMsg} "Copying $0 to $1"
-			${IfNot} ${FileExists} $4
-				CreateDirectory $4
-				WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FilesMove RemoveIfEmpty:$4 true
-			${EndIf}
-			${GetRoot} $0 $2 ; compare
-			${GetRoot} $1 $3 ; drive
-			${If} $2 == $3   ; letters
-				Rename $0 $1 ; same volume, rename OK
+		${ForEachFile} $3 $2 $0
+			${DebugMsg} "Copying $3\$2 to $4\$2"
+			${GetRoot} $0 $5 ; compare
+			${GetRoot} $4 $6 ; drive
+			${If} $5 == $6   ; letters
+				Rename $3\$2 $4\$2 ; same volume, rename OK
 			${Else}
-				CopyFiles /SILENT $0 $1
+				CopyFiles /SILENT $3\$2 $4\$2
 			${EndIf}
-		${EndIf}
+		${NextFile}
 	${NextINIPair}
 !macroend
 
@@ -49,21 +52,24 @@ ${SegmentPostPrimary}
 		!insertmacro _FilesMove_Start
 
 		; If not in Live mode, copy the data back to the Data directory.
-		${If} $RunLocally != true
-			${DebugMsg} "Copying file from $1 to $0"
-			${GetRoot} $0 $2 ; compare
-			${GetRoot} $1 $3 ; drive
-			${If} $2 == $3   ; letters
-				Rename $1 $0 ; same volume, rename OK
-			${ElseIf} ${FileExists} $1
-				Delete $0
-				;${GetParent} $0 $0
-				CopyFiles /SILENT $1 $0
+		${GetParent} $0 $3
+		${ForEachFile} $4 $2 $1
+			${If} $RunLocally != true
+				${GetRoot} $0 $5 ; compare
+				${GetRoot} $1 $6 ; drive
+				${If} $5 == $6   ; letters
+					${DebugMsg} "Renaming file from $4\$2 to $3\$2"
+					Rename $4\$2 $3\$2 ; same volume, rename OK
+				${Else}
+					${DebugMsg} "Copying file from $4\$2 to $3\$2"
+					Delete $3\$2
+					CopyFiles /SILENT $4\$2 $3\$2
+				${EndIf}
 			${EndIf}
-		${EndIf}
-		; And then remove it from the runtime location
-		${DebugMsg} "Removing portable settings file $1 from run location."
-		Delete $1
+			; And then remove it from the runtime location
+			${DebugMsg} "Removing portable settings file $4\$2 from run location."
+			Delete $4\$2
+		${NextFile}
 
 		; If the local directory we put it in didn't exist before, delete it if
 		; it's empty.
@@ -73,9 +79,11 @@ ${SegmentPostPrimary}
 		${EndIf}
 
 		; And move that backup of any local data from earlier if it exists.
-		${If} ${FileExists} $1-BackupBy$AppID
-			${DebugMsg} "Moving local settings file from $1-BackupBy$AppID to $1"
-			Rename $1-BackupBy$AppID $1
-		${EndIf}
+		StrLen $3 .BackupBy$AppID
+		${ForEachFile} $4 $2 $1.BackupBy$AppID
+			StrCpy $1 $2 -$3
+			${DebugMsg} "Moving local settings file from $4\$2 to $4\$1"
+			Rename $4\$2 $4\$1
+		${NextFile}
 	${NextINIPair}
 !macroend

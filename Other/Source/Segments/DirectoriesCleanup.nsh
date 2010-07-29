@@ -8,8 +8,10 @@ ${SegmentPostPrimary}
 			${ReadLauncherConfig} $1 DirectoriesCleanupIfEmpty $R0
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ParseLocations} $1
-			${DebugMsg} "Cleaning up $1 if it is empty."
-			RMDir $1
+			${ForEachDirectory} $2 $3 $1
+				${DebugMsg} "Cleaning up $2\$3 if it is empty."
+				RMDir $2\$3
+			${NextDirectory}
 			IntOp $R0 $R0 + 1
 		${Loop}
 
@@ -20,8 +22,10 @@ ${SegmentPostPrimary}
 			${ReadLauncherConfig} $1 DirectoriesCleanupForce $R0
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ParseLocations} $1
-			${DebugMsg} "Removing directory $1."
-			RMDir /r $1
+			${ForEachDirectory} $2 $3 $1
+				${DebugMsg} "Removing directory $2\$3."
+				RMDir /r $2\$3
+			${NextDirectory}
 			IntOp $R0 $R0 + 1
 		${Loop}
 !macroend
