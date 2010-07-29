@@ -61,6 +61,7 @@ ${!echo} "Including required files..."
 ;(Custom) {{{2
 !include ReplaceInFileWithTextReplace.nsh
 !include ForEachINIPair.nsh
+!include ForEachPath.nsh
 !include SetFileAttributesDirectoryNormal.nsh
 !include ProcFunc.nsh
 !include EmptyWorkingSet.nsh

@@ -39,7 +39,9 @@ ${SegmentPrePrimary}
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ParseLocations} $2
 			${ParseLocations} $3
-			${If} ${FileExists} $1
+			StrCpy $7 $1 ; copy for input to avoid potential confusion/mess
+			${ForEachFile} $1 $4 $7
+				StrCpy $1 $1\$4
 				${ReadLauncherConfig} $4 FileWrite$R0 CaseSensitive
 				${If} $4 == true     ; case sensitive
 				${AndIf} $2 S!= $3   ; find != replace?
@@ -90,9 +92,10 @@ ${SegmentPrePrimary}
 						${EndIf}
 					${EndIf}
 				${EndIf}
-			;${Else}
+			${NextDirectory}
+			;${If} ${Errors}
 				;${DebugMsg} File didn't exist
-			${EndIf}
+			;${EndIf}
 		${EndIf}
 		IntOp $R0 $R0 + 1
 	${Loop}
