@@ -235,9 +235,21 @@ Section Main
 		${EndIf}
 	${EndIf}
 
+	${If} ${FileExists} "${_}\App\AppInfo\Launcher\$AppID.ini"
+		; If not, never mind.  It'll complain when the user tries to run it if they haven't created it yet.
+
+		; See if we need to enable XML
+		ReadINIStr $2 "${_}\App\AppInfo\Launcher\$AppID.ini" Activate XML
+		${If} $2 == true
+			StrCpy $2 "/DXML_ENABLED"
+		${Else}
+			StrCpy $2 ""
+		${EndIf}
+	${EndIf}
+
 	${If} $ERROROCCURED != true
 		; Build the thing
-		ExecDos::exec `"$NSIS" /O"$EXEDIR\Data\PortableApps.comLauncherGeneratorLog.txt" /DPACKAGE="$PACKAGE" /DName="$Name" /DAppID="$AppID" /DVersion="$1" "$EXEDIR\Other\Source\PortableApps.comLauncher.nsi"` "" ""
+		ExecDos::exec `"$NSIS" /O"$EXEDIR\Data\PortableApps.comLauncherGeneratorLog.txt" /DPACKAGE="$PACKAGE" /DName="$Name" /DAppID="$AppID" /DVersion="$1" $2 "$EXEDIR\Other\Source\PortableApps.comLauncher.nsi"` "" ""
 	${EndIf}
 
 	SetDetailsPrint ListOnly

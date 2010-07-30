@@ -79,6 +79,27 @@ ${SegmentInit}
 					${DebugMsg} "Reading the language from $1, section `$2`, key `$3`, with ReadINIStr."
 					ReadINIStr $8 $1 $2 $3
 				${EndIf}
+!ifdef XML_ENABLED
+			${ElseIf} $0 == "XML attribute"
+				${ReadLauncherConfig} $2 LanguageFile XPath
+				${ReadLauncherConfig} $3 LanguageFile Attribute
+				${IfNot} ${Errors}
+					${If} ${FileExists} $1
+						${DebugMsg} "Reading the language from $1, XPath `$2`, Attribute `$3` with XMLReadAttrib."
+						${XMLReadAttrib} $1 $2 $3 $8
+					${EndIf}
+				${EndIf}
+			${ElseIf} $0 == "XML text"
+				${ReadLauncherConfig} $2 LanguageFile XPath
+				${If} ${FileExists} $1
+					${DebugMsg} "Reading the language from $1, XPath `$2`, with XMLReadText."
+					${XMLReadText} $1 $2 $8
+				${EndIf}
+!else
+			${ElseIf} $0 == "XML attribute"
+			${OrIf} $0 == "XML text"
+				!insertmacro XML_WarnNotActivated [LanguageFile]
+!endif
 			${EndIf}
 			${If} $8 == ""
 				${DebugMsg} "Unable to read language from file."
