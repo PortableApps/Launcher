@@ -313,6 +313,7 @@ Function Post             ;{{{1
 FunctionEnd
 
 Function Unload           ;{{{1
+	${RunSegment} XML
 	${RunSegment} Registry
 	${RunSegment} SplashScreen
 	${RunSegment} Core

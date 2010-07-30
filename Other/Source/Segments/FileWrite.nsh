@@ -33,6 +33,33 @@ ${SegmentPrePrimary}
 				${DebugMsg} "Writing INI configuration to a file.$\r$\nFile: $1$\r$\nSection: `$2`$\r$\nKey: `$3`$\r$\nValue: `$4`"
 				WriteINIStr $1 $2 $3 $4
 			${EndIf}
+!ifdef XML_ENABLED
+		${ElseIf} $0 == "XML attribute"
+			${ReadLauncherConfig} $2 FileWrite$R0 XPath
+			${ReadLauncherConfig} $3 FileWrite$R0 Attribute
+			${ReadLauncherConfig} $4 FileWrite$R0 Value
+			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
+			${ParseLocations} $4
+			${If} ${FileExists} $1
+				${DebugMsg} "Writing configuration to a file with XMLWriteAttrib.$\r$\nFile: $1$\r$\nXPath: `$2`$\r$\nAttrib: `$3`$\r$\nValue: `$4`"
+				${XMLWriteAttrib} $1 $2 $3 $4
+				${IfThen} ${Errors} ${|} ${DebugMsg} "XMLWriteAttrib XPath error" ${|}
+			${EndIf}
+		${ElseIf} $0 == "XML text"
+			${ReadLauncherConfig} $2 FileWrite$R0 XPath
+			${ReadLauncherConfig} $3 FileWrite$R0 Value
+			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
+			${ParseLocations} $3
+			${If} ${FileExists} $1
+				${DebugMsg} "Writing configuration to a file with XMLWriteText.$\r$\nFile: $1$\r$\nXPath: `$2`$\r$\n$\r$\nValue: `$3`"
+				${XMLWriteText} $1 $2 $3
+				${IfThen} ${Errors} ${|} ${DebugMsg} "XMLWriteText XPath error" ${|}
+			${EndIf}
+!else
+		${ElseIf} $0 == "XML attribute"
+		${OrIf} $0 == "XML text"
+			!insertmacro XML_WarnNotActivated [FileWrite$R0]
+!endif
 		${ElseIf} $0 == Replace
 			${ReadLauncherConfig} $2 FileWrite$R0 Find
 			${ReadLauncherConfig} $3 FileWrite$R0 Replace
