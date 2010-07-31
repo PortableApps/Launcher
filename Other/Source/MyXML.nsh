@@ -239,22 +239,23 @@
 		StrCpy $MYXML_BOM FFFE
 		System::Alloc $2
 		Pop $3
+		IntOp $2 $2 - 2
 		System::Call 'kernel32::ReadFile(i r1, i r3, i r2, t.,)'
 		FileClose $1
-		System::Call 'kernel32::WideCharToMultiByte(i ${CP_UTF8}, i 0, i r3, i r2, i 0, i 0, n, n) i .r5'
+		System::Call 'kernel32::WideCharToMultiByte(i ${CP_UTF8}, i 0, i r3, i -1, i 0, i 0, n, n) i .r5'
 		System::Alloc $5
 		Pop $4
-		System::Call 'kernel32::WideCharToMultiByte(i ${CP_UTF8}, i 0, i r3, i r2, i r4, i r5, n, n)'
+		System::Call 'kernel32::WideCharToMultiByte(i ${CP_UTF8}, i 0, i r3, i -1, i r4, i r5, n, n)'
 		FileOpen $1 $MYXML_TEMPFILENAME w
 		StrCpy $0 $MYXML_TEMPFILENAME
 		FileWriteWord $1 0xBBEF
 		FileWriteByte $1 0xBF
+		IntOp $5 $5 - 1
 		System::Call 'kernel32::WriteFile(i r1, i r4, i r5, t.,)'
 		System::Free $3
 		System::Free $4
 		MyXMLUTF16ToUTF8_close:
 		FileClose $1
-		;MyXMLUTF16ToUTF8_end:
 		Pop $5
 		Pop $4
 		Pop $3
