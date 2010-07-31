@@ -12,10 +12,10 @@ ${SegmentPrePrimary}
 			${ReadLauncherConfig} $2 FileWrite$R0 Entry
 			${ReadLauncherConfig} $3 FileWrite$R0 Value
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-			${ParseLocations} $3
-			ClearErrors
-			${ReadLauncherConfig} $4 FileWrite$R0 CaseSensitive
 			${If} ${FileExists} $1
+				${ParseLocations} $3
+				ClearErrors
+				${ReadLauncherConfig} $4 FileWrite$R0 CaseSensitive
 				${If} $4 == true
 					${DebugMsg} "Writing configuration to a file with ConfigWriteS.$\r$\nFile: $1$\r$\nEntry: `$2`$\r$\nValue: `$3`"
 					${ConfigWriteS} $1 $2 $3 $R9
@@ -32,8 +32,8 @@ ${SegmentPrePrimary}
 			${ReadLauncherConfig} $3 FileWrite$R0 Key
 			${ReadLauncherConfig} $4 FileWrite$R0 Value
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-			${ParseLocations} $4
 			${If} ${FileExists} $1
+				${ParseLocations} $4
 				${DebugMsg} "Writing INI configuration to a file.$\r$\nFile: $1$\r$\nSection: `$2`$\r$\nKey: `$3`$\r$\nValue: `$4`"
 				WriteINIStr $1 $2 $3 $4
 			${EndIf}
@@ -43,8 +43,8 @@ ${SegmentPrePrimary}
 			${ReadLauncherConfig} $3 FileWrite$R0 Attribute
 			${ReadLauncherConfig} $4 FileWrite$R0 Value
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-			${ParseLocations} $4
 			${If} ${FileExists} $1
+				${ParseLocations} $4
 				${DebugMsg} "Writing configuration to a file with XMLWriteAttrib.$\r$\nFile: $1$\r$\nXPath: `$2`$\r$\nAttrib: `$3`$\r$\nValue: `$4`"
 				${XMLWriteAttrib} $1 $2 $3 $4
 				${IfThen} ${Errors} ${|} ${DebugMsg} "XMLWriteAttrib XPath error" ${|}
@@ -53,8 +53,8 @@ ${SegmentPrePrimary}
 			${ReadLauncherConfig} $2 FileWrite$R0 XPath
 			${ReadLauncherConfig} $3 FileWrite$R0 Value
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-			${ParseLocations} $3
 			${If} ${FileExists} $1
+				${ParseLocations} $3
 				${DebugMsg} "Writing configuration to a file with XMLWriteText.$\r$\nFile: $1$\r$\nXPath: `$2`$\r$\n$\r$\nValue: `$3`"
 				${XMLWriteText} $1 $2 $3
 				${IfThen} ${Errors} ${|} ${DebugMsg} "XMLWriteText XPath error" ${|}
