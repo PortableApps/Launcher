@@ -85,6 +85,7 @@ ${SegmentInit}
 	${EndIf}
 
 	; Is it allowable to have spaces in the path?
+	ClearErrors
 	${ReadLauncherConfig} $0 Launch NoSpacesInPath
 	${If} $0 == true
 		${WordFind} $EXEDIR ` ` E+1 $R9
@@ -92,6 +93,9 @@ ${SegmentInit}
 			MessageBox MB_OK|MB_ICONSTOP `$(LauncherNoSpaces)`
 			Quit
 		${EndIf}
+	${ElseIf} $0 != false
+	${AndIfNot} ${Errors}
+		${InvalidValueError} [Launch]:NoSpacesInPath $0
 	${EndIf}
 !macroend
 

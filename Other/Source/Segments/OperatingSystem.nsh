@@ -3,6 +3,7 @@ ${SegmentFile}
 !include WinVer.nsh
 
 !macro _OperatingSystem_CheckOS Check Value
+	ClearErrors
 	${ReadLauncherConfig} $0 Launch ${Value}
 	${Select} $0
 		${Case} 2000
@@ -19,10 +20,10 @@ ${SegmentFile}
 			${IfNotThen} ${At${Check}Win7}      ${|} StrCpy $1 bad-os ${|}
 		${Case} "2008 R2"
 			${IfNotThen} ${At${Check}Win2008R2} ${|} StrCpy $1 bad-os ${|}
-		${Case} ""
-			; Do nothing for an empty string (probably value not defined)
 		${Default}
-			MessageBox MB_OK|MB_ICONSTOP "Error: [Launch]:${Value} should be 2000, XP, 2003, Vista, 2008, 7 or 2008 R2, not $1. The launcher will continue to run, but you must fix this."
+			${IfNot} ${Errors} ; If it's defined and we're here, it's a bad value
+				${InvalidValueError} [Launch]:${Value} $0
+			${EndIf}
 	${EndSelect}
 
 	${If} $1 == bad-os

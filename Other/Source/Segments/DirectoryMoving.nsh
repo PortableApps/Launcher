@@ -39,9 +39,7 @@ ${SegmentInit}
 		${ElseIf} $0 == yes
 			Nop ; It's OK, so do nothing
 		${Else}
-			MessageBox MB_OK|MB_ICONEXCLAMATION `Unknown value "$0" for [Launch]:DirectoryMoveOK, should be "yes", "no", "warn" or not set.`
-			; But still continue. This should be caught in development (it
-			; should never happen, anyway).
+			${InvalidValueError} [Launch]:DirectoryMoveOK $0
 		${EndIf}
 	${EndIf}
 

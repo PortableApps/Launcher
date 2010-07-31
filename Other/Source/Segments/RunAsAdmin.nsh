@@ -25,13 +25,24 @@ Var RunAsAdmin
 	${If} ${IsWin${OS}}
 		ClearErrors
 		${ReadLauncherConfig} $0 Launch RunAsAdmin${OS}
-		${IfNotThen} ${Errors} ${|} StrCpy $RunAsAdmin $0 ${|}
+		${If} $0 == force
+		${OrIf} $0 == try
+			StrCpy $RunAsAdmin $0
+		${ElseIfNot} ${Errors}
+			${InvalidValueError} [Launch]:RunAsAdmin${OS} $0
+		${EndIf}
 	${EndIf}
 !macroend
 
 ${Segment.onInit} ; {{{1
 	; Run as admin if needed {{{2
+	ClearErrors
 	${ReadLauncherConfig} $RunAsAdmin Launch RunAsAdmin
+	${IfNot} ${Errors}
+	${AndIf} $RunAsAdmin != force
+	${AndIf} $RunAsAdmin != try
+		${InvalidValueError} [Launch]:RunAsAdmin $RunAsAdmin
+	${EndIf}
 
 	!insertmacro RunAsAdmin_OSOverride 2000
 	!insertmacro RunAsAdmin_OSOverride XP

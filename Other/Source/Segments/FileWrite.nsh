@@ -13,14 +13,18 @@ ${SegmentPrePrimary}
 			${ReadLauncherConfig} $3 FileWrite$R0 Value
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ParseLocations} $3
+			ClearErrors
 			${ReadLauncherConfig} $4 FileWrite$R0 CaseSensitive
 			${If} ${FileExists} $1
 				${If} $4 == true
 					${DebugMsg} "Writing configuration to a file with ConfigWriteS.$\r$\nFile: $1$\r$\nEntry: `$2`$\r$\nValue: `$3`"
 					${ConfigWriteS} $1 $2 $3 $R9
-				${Else}
+				${ElseIf} $4 == false
+				${OrIf} ${Errors}
 					${DebugMsg} "Writing configuration to a file with ConfigWrite.$\r$\nFile: $1$\r$\nEntry: `$2`$\r$\nValue: `$3`"
 					${ConfigWrite} $1 $2 $3 $R9
+				${Else}
+					${InvalidValueError} [FileWrite$R0]:CaseSensitive $4
 				${EndIf}
 			${EndIf}
 		${ElseIf} $0 == INI
@@ -69,19 +73,28 @@ ${SegmentPrePrimary}
 			StrCpy $7 $1 ; copy for input to avoid potential confusion/mess
 			${ForEachFile} $1 $4 $7
 				StrCpy $1 $1\$4
+				ClearErrors
 				${ReadLauncherConfig} $4 FileWrite$R0 CaseSensitive
-				${If} $4 == true     ; case sensitive
-				${AndIf} $2 S!= $3   ; find != replace?
-					StrCpy $5 true
-				${ElseIf} $4 != true ; case insensitive
-				${AndIf} $2 != $3    ; find != replace?
-					StrCpy $5 true
-				${Else}              ; find == replace, so Continue
-					StrCpy $5 ""
+
+				StrCpy $5 skip ; $5 = "Do we need to replace?"
+				${If} $4 == true   ; case sensitive
+					${If} $2 S!= $3 ; find != replace?
+						StrCpy $5 replace
+					${EndIf}
+				${Else} ; case sensitive
+					${If} $4 != false     ; "false" is valid
+					${AndIfNot} ${Errors} ; not set is valid
+						${InvalidValueError} [FileWrite$R0]:CaseSensitive $4
+					${EndIf}
+					${If} $2 != $3 ; find != replace?
+						StrCpy $5 replace
+					${EndIf}
 				${EndIf}
-				${If} $5 == true ; find != replace (as discovered above)
+
+				${If} $5 == replace ; not skip, find != replace (as discovered above)
+					ClearErrors
 					${ReadLauncherConfig} $5 FileWrite$R0 Encoding
-					${If} $5 == ""
+					${If} ${Errors}
 						FileOpen $9 $1 r
 
 						; Using FileReadWord would end up with 0xFEFF as it
@@ -96,6 +109,9 @@ ${SegmentPrePrimary}
 
 						${IfThen} $5 = 0xFFFE ${|} StrCpy $5 UTF-16LE ${|}
 						FileClose $9
+					${ElseIf} $5 != UTF-16LE
+					${AndIf} $5 != ANSI
+						${InvalidValueError} [FileWrite$R0]:Encoding $5
 					${EndIf}
 					${!getdebug}
 					!ifdef DEBUG
@@ -123,6 +139,8 @@ ${SegmentPrePrimary}
 			;${If} ${Errors}
 				;${DebugMsg} File didn't exist
 			;${EndIf}
+		${Else}
+			${InvalidValueError} [FileWrite$R0]:Type $0
 		${EndIf}
 		IntOp $R0 $R0 + 1
 	${Loop}

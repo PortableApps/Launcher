@@ -9,24 +9,32 @@ ${SegmentInit}
 ${SegmentPre}
 	${If} $RunLocally == true
 		${DebugMsg} "Live mode enabled"
+		ClearErrors
 		${ReadLauncherConfig} $0 LiveMode CopyApp
-		${If} $0 != false
+		${If} $0 == true
+		${OrIf} ${Errors}
 			${If} $SecondaryLaunch != true
 				${DebugMsg} "Live mode: copying $EXEDIR\App to $TMP\$AppIDLive\App"
 				CreateDirectory $TMP\$AppIDLive
 				CopyFiles /SILENT $EXEDIR\App $TMP\$AppIDLive
 			${EndIf}
 			StrCpy $AppDirectory $TMP\$AppIDLive\App
+		${ElseIf} $0 != false
+			${InvalidValueError} [LiveMode]:CopyApp $0
 		${EndIf}
 		;For the time being at least, I've disabled the option of not copying Data, as it makes file moving etc. from %DataDirectory% break
+		;ClearErrors
 		;${ReadLauncherConfig} $0 LiveMode CopyData
-		;${If} $0 != false
+		;${If} $0 == true
+		;${OrIf} ${Errors}
 			${If} $SecondaryLaunch != true
 				${DebugMsg} "Live mode: copying $EXEDIR\Data to $TMP\$AppIDLive\Data"
 				CreateDirectory $TMP\$AppIDLive
 				CopyFiles /SILENT $EXEDIR\Data $TMP\$AppIDLive
 			${EndIf}
 			StrCpy $DataDirectory $TMP\$AppIDLive\Data
+		;${ElseIf} $0 != false
+		;	${InvalidValueError} [LiveMode]:CopyData $0
 		;${EndIf}
 		${If} ${FileExists} $TMP\$AppIDLive
 			${SetFileAttributesDirectoryNormal} $TMP\$AppIDLive

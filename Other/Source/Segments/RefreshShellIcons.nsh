@@ -3,7 +3,14 @@ ${SegmentFile}
 Var RefreshShellIcons
 
 ${SegmentInit}
+	ClearErrors
 	${ReadLauncherConfig} $RefreshShellIcons Launch RefreshShellIcons
+	${IfNot} ${Errors}
+	${AndIf} $RefreshShellIcons != before
+	${AndIf} $RefreshShellIcons != after
+	${AndIf} $RefreshShellIcons != both
+		${InvalidValueError} [Launch]:RefreshShellIcons $RefreshShellIcons
+	${EndIf}
 !macroend
 
 ${SegmentPreExec}
