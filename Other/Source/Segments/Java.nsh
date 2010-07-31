@@ -17,6 +17,7 @@ ${SegmentInit}
 	; If it's in none of those, give up. [Activate]:Java=require will then
 	; abort, [Activate]:Java=find will set it to the non-existent CommonFiles
 	; location. %JAVA_HOME% is then set to the location.
+	ClearErrors
 	${ReadLauncherConfig} $JavaMode Activate Java
 	${If} $JavaMode == find
 	${OrIf} $JavaMode == require
@@ -72,5 +73,7 @@ ${SegmentInit}
 		; Now set %JAVA_HOME% to the path (still may not exist)
 		${DebugMsg} "Selected Java path: $JavaDirectory"
 		${SetEnvironmentVariablesPath} JAVA_HOME $JavaDirectory
+	${ElseIfNot} ${Errors}
+		${InvalidValueError} [Activate]:Java $JavaMode
 	${EndIf}
 !macroend

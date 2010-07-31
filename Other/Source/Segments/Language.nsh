@@ -67,6 +67,10 @@ ${SegmentInit}
 							${DebugMsg} "Reading the language from $1, entry `$2`, with ConfigReadS."
 							${ConfigReadS} $1 $2 $8
 						${Else}
+							${If} $4 != false
+							${AndIfNot} ${Errors}
+								${InvalidValueError} [LanguageFile]:CaseSensitive $4
+							${EndIf}
 							${DebugMsg} "Reading the language from $1, entry `$2`, with ConfigRead."
 							${ConfigRead} $1 $2 $8
 						${EndIf}
@@ -100,7 +104,10 @@ ${SegmentInit}
 			${OrIf} $0 == "XML text"
 				!insertmacro XML_WarnNotActivated [LanguageFile]
 !endif
+			${Else}
+				${InvalidValueError} [LanguageFile]:Type $0
 			${EndIf}
+
 			${If} $8 == ""
 				${DebugMsg} "Unable to read language from file."
 			${Else}

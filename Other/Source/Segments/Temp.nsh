@@ -16,15 +16,26 @@ ${Segment.onInit}
 !macroend
 
 ${SegmentInit}
+	ClearErrors
 	${ReadLauncherConfig} $UsesContainedTempDirectory Launch CleanTemp
+	${IfNot} ${Errors}
+	${AndIf} $UsesContainedTempDirectory != true
+	${AndIf} $UsesContainedTempDirectory != false
+		${InvalidValueError} [Launch]:CleanTemp $UsesContainedTempDirectory
+	${EndIf}
 !macroend
 
 ${SegmentPre}
 	${If} $UsesContainedTempDirectory != false
+		ClearErrors
 		${ReadLauncherConfig} $0 Launch WaitForProgram
 		${If} $0 == false
 			StrCpy $TempDirectory $DataDirectory\Temp
 		${Else}
+			${IfNot} ${Errors}
+			${AndIf} $0 != true
+				${InvalidValueError} [Launch]:WaitForProgram $0
+			${EndIf}
 			StrCpy $TempDirectory $TMP\$AppIDTemp
 		${EndIf}
 		${DebugMsg} "Creating temporary directory $TempDirectory"

@@ -18,10 +18,14 @@ ${SegmentInit}
 
 	${IfNot} $0 = 0 ; It's already running
 		; Is a second portable instance disallowed?
+		ClearErrors
 		${ReadLauncherConfig} $0 Launch SinglePortableAppInstance
 		${If} $0 == true
 			${DebugMsg} "Launcher already running and [Launch]:SinglePortableAppInstance=true: aborting."
 			Quit
+		${ElseIf} $0 != false
+		${AndIfNot} ${Errors}
+			${InvalidValueError} [Launch]:SinglePortableAppInstance $0
 		${EndIf}
 		; Set it up for a secondary launch.
 		${DebugMsg} "Launcher already running: secondary launch."
@@ -41,11 +45,16 @@ ${SegmentInit}
 	${EndIf}
 
 	; Check if the application (portable or not) is already running
+	ClearErrors
 	${ReadLauncherConfig} $0 Launch SingleAppInstance
-	${If} $0 != false
-	${AndIfNot} $UsingJavaExecutable == true
-		${GetFileName} $ProgramExecutable $0
-		!insertmacro _InstanceManagement_QuitIfRunning
+	${If} $0 == true
+	${OrIf} ${Errors}
+		${IfNot} $UsingJavaExecutable == true
+			${GetFileName} $ProgramExecutable $0
+			!insertmacro _InstanceManagement_QuitIfRunning
+		${EndIf}
+	${ElseIf} $0 != false
+		${InvalidValueError} [Launch]:SingleAppInstance $0
 	${EndIf}
 
 	; Check to make sure the value in [Launch]:CloseEXE isn't running
@@ -62,6 +71,12 @@ ${SegmentInit}
 	; WaitForProgram may have already been set to false by the mutex check
 	; above; we don't want to mess that up, so check if it's already set.
 	${If} $WaitForProgram == ""
+		ClearErrors
 		${ReadLauncherConfig} $WaitForProgram Launch WaitForProgram
+		${IfNot} ${Errors}
+		${AndIf} $WaitForProgram != true
+		${AndIf} $WaitForProgram != false
+			${InvalidValueError} [Launch]:WaitForProgram $WaitForProgram
+		${EndIf}
 	${EndIf}
 !macroend

@@ -101,6 +101,11 @@ Var WaitForProgram
 !macroend
 !define ReadUserOverrideConfig "!insertmacro ReadUserOverrideConfig"
 
+!macro InvalidValueError _SECTION_KEY _VALUE
+	MessageBox MB_OK|MB_ICONSTOP "Error: invalid value '${_VALUE}' for ${_SECTION_KEY}. Please refer to the Manual for valid values."
+!macroend
+!define InvalidValueError "!insertmacro InvalidValueError"
+
 ; Load the segments {{{1
 ${!echo} "Loading segments..."
 !include Segments.nsh
@@ -249,22 +254,31 @@ Function Execute          ;{{{1
 		${EndIf}
 	!endif
 	${EmptyWorkingSet}
+	ClearErrors
 	${ReadLauncherConfig} $0 Launch HideCommandLineWindow
 	${If} $0 == true
 		; TODO: do this without a plug-in or at least some way it won't wait with secondary
 		ExecDos::exec $ExecString
 		Pop $0
-	${ElseIf} $WaitForProgram != false
-		ExecWait $ExecString
 	${Else}
-		Exec $ExecString
+		${IfNot} ${Errors}
+		${AndIf} $0 != false
+			${InvalidValueError} [Launch]:HideCommandLineWindow $0
+		${EndIf}
+		${If} $WaitForProgram != false
+			ExecWait $ExecString
+		${Else}
+			Exec $ExecString
+		${EndIf}
 	${EndIf}
 	${DebugMsg} "$ExecString has finished."
 
 	${If} $WaitForProgram != false
 		; Wait till it's done
+		ClearErrors
 		${ReadLauncherConfig} $0 Launch WaitForOtherInstances
-		${If} $0 != false
+		${If} $0 == true
+		${OrIf} ${Errors}
 			${GetFileName} $ProgramExecutable $1
 			${DebugMsg} "Waiting till any other instances of $1 and any [Launch]:WaitForEXE[N] values are finished."
 			${EmptyWorkingSet}
@@ -282,6 +296,8 @@ Function Execute          ;{{{1
 				${Loop}
 			${LoopWhile} $R9 > 0
 			${DebugMsg} "All instances are finished."
+		${ElseIf} $0 != false
+			${InvalidValueError} [Launch]:WaitForOtherInstances $0
 		${EndIf}
 	${EndIf}
 	!endif

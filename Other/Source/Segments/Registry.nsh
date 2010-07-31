@@ -5,9 +5,13 @@ ${SegmentFile}
 Var UsesRegistry
 
 ${SegmentInit}
+	ClearErrors
 	${ReadLauncherConfig} $UsesRegistry Activate Registry
 	${If} $UsesRegistry == true
 		${DebugMsg} "Registry sections enabled."
+	${ElseIf} $UsesRegistry != false
+	${AndIfNot} ${Errors}
+		${InvalidValueError} [Activate]:Registry $UsesRegistry
 	${EndIf}
 !macroend
 
