@@ -13,6 +13,8 @@ ${IncludeLang} English
 ${IncludeLang} Bulgarian
 ${IncludeLang} Danish
 ${IncludeLang} Dutch
+${IncludeLang} Estonian
+${IncludeLang} Finnish
 ${IncludeLang} French
 ${IncludeLang} Galician
 ${IncludeLang} German
@@ -26,6 +28,7 @@ ${IncludeLang} Slovenian
 ${IncludeLang} Spanish
 ${IncludeLang} Swedish
 ${IncludeLang} TradChinese
+${IncludeLang} Turkish
 
 ; Use the Case statements formed above.
 ; Used in Segments/Language.nsh
