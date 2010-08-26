@@ -304,7 +304,6 @@ Function Execute          ;{{{1
 FunctionEnd
 
 Function PostPrimary      ;{{{1
-	${RunSegment} Temp ; OK anywhere
 	${RunSegment} Services
 	${RunSegment} RegistryValueBackupDelete
 	${RunSegment} RegistryKeys
@@ -315,6 +314,7 @@ Function PostPrimary      ;{{{1
 	${RunSegment} FilesMove
 	${RunSegment} DirectoriesCleanup
 	${RunSegment} RunLocally
+	${RunSegment} Temp
 	${RunSegment} Custom
 FunctionEnd
 
