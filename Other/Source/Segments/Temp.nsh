@@ -39,7 +39,8 @@ ${SegmentPre}
 			StrCpy $TempDirectory $TMP\$AppIDTemp
 		${EndIf}
 		${DebugMsg} "Creating temporary directory $TempDirectory"
-		${If} ${FileExists} $TempDirectory
+		${If} $SecondaryLaunch != true
+		${AndIf} ${FileExists} $TempDirectory
 			RMDir /r $TempDirectory
 		${EndIf}
 		CreateDirectory $TempDirectory
