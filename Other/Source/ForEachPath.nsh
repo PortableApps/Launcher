@@ -1,10 +1,20 @@
 /***************************************************
 *** Notes ***
-- only '?' & '*' are allowed as wild-cards
-- file-extensions containing wild-cards is prohibited, as it is to difficult to safely implement and I expect it would never be needed.
-- paths containing wild-cards in the parent directory is prohibited.
-- never use wild-cards in any nsis instructions other then ${ForEachFile/Directory}, it is just not safe !
-- ${ForEachFile/Directory} sets the error-flag whenever no matching file/directory could be found.
+
+Valid wildcards:
+  ? matches a single character
+  * matches any number of characters
+
+File extensions may not containing wildcards.  If a wildcard extension is
+needed, end the path name with * and leave the extension out.
+Example: $INSTDIR\met*
+
+Paths may not contain wildcards in the parent directory.
+Example: $INSTDIR\met*\file.txt is invalid.
+
+${ForEachFile/Directory} sets the error flag if no matching file/directory
+could be found.
+
 ***************************************************/
 Var _FEP_FindHandle
 Var _FEP_Directory
@@ -12,35 +22,49 @@ Var _FEP_FoundName
 Var _FEP_Extension
 
 !macro ForEachPath TYPE FOUND_DIR FOUND_NAME SEARCH_PATH
+	!if ${TYPE} != FILES && ${TYPE} != DIRECTORIES
+		!error "Please use ForEachFile or ForEachDirectory rather than using ForEachPath directly."
+	!endif
 	!ifdef _ForEachPath_Open
 		!error "There is already a ForEachPath clause open!"
 	!endif
 	!define _ForEachPath_Open
-	${GetFileExt} `${SEARCH_PATH}` $_FEP_Extension
+	${IfNotThen} ${WildCardExists} "${SEARCH_PATH}" ${|} ${SetWildCardFlag} ${|}
+	${GetFileExt} "${SEARCH_PATH}" $_FEP_Extension
+	${GetParent} "${SEARCH_PATH}" $_FEP_Directory
 	StrCpy ${FOUND_NAME} ''
 	${Do}
 		ClearErrors
-		${If} $_FEP_FindHandle == ''
-			${GetParent} '${SEARCH_PATH}' $_FEP_Directory
-			FindFirst $_FEP_FindHandle $_FEP_FoundName '${SEARCH_PATH}'
+		${IfNot} ${WildCardFlag}
+			${If} ${FileExists} "${SEARCH_PATH}"
+				${GetFileName} "${SEARCH_PATH}" $_FEP_FoundName
+			${Else}
+				SetErrors
+			${EndIf}
 		${Else}
-			FindNext $_FEP_FindHandle $_FEP_FoundName
+			${If} $_FEP_FindHandle == ''
+				FindFirst $_FEP_FindHandle $_FEP_FoundName "${SEARCH_PATH}"
+			${Else}
+				FindNext $_FEP_FindHandle $_FEP_FoundName
+			${EndIf}
 		${EndIf}
 		StrCpy ${FOUND_DIR} $_FEP_Directory
 		${If} ${Errors}
 			${IfThen} ${FOUND_NAME} == '' ${|} SetErrors ${|}
 			${ExitDo}
 		${EndIf}
-	!if ${TYPE} == FILES
-		${IfNot} ${FileExists} $_FEP_Directory\$_FEP_FoundName\*.*
-	!else if ${TYPE} == DIRECTORIES
-		${If} ${FileExists} $_FEP_Directory\$_FEP_FoundName\*.*
+!if ${TYPE} == FILES
+		${IfNot} ${FileExists} ${FOUND_DIR}\$_FEP_FoundName\*.*
+!else if ${TYPE} == DIRECTORIES
+		${If} ${FileExists} ${FOUND_DIR}\$_FEP_FoundName\*.*
 		${AndIf} $_FEP_FoundName != .
 		${AndIf} $_FEP_FoundName != ..
-	!endif
+!endif
 			Push $0
 			${GetFileExt} $_FEP_FoundName $0
-			${If} $_FEP_Extension == $0
+			${If} $_FEP_Extension == ''
+			${AndIf} $0 != BackupBy$AppID
+			${OrIf} $_FEP_Extension == $0
 				Pop $0
 				StrCpy ${FOUND_NAME} $_FEP_FoundName
 !macroend
@@ -54,9 +78,11 @@ Var _FEP_Extension
 				Pop $0
 			${EndIf}
 		${EndIf}
-	${Loop}
-	FindClose $_FEP_FindHandle
-	StrCpy $_FEP_FindHandle ''
+	${LoopWhile} ${WildCardFlag}
+	${If} $_FEP_FindHandle <> 0
+		FindClose $_FEP_FindHandle
+		StrCpy $_FEP_FindHandle ''
+	${EndIf}
 !macroend
 
 !define ForEachFile '!insertmacro ForEachPath FILES'
@@ -64,6 +90,9 @@ Var _FEP_Extension
 
 !define ForEachDirectory '!insertmacro ForEachPath DIRECTORIES'
 !define NextDirectory '!insertmacro NextPath'
+
+!define WildCardFlag '$_FEP_FindHandle != 0'
+!define SetWildCardFlag 'StrCpy $_FEP_FindHandle 0'
 
 !macro _WildCardExists _a _b _t _f
 	!verbose push

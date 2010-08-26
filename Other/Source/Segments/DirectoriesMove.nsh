@@ -10,40 +10,45 @@ ${SegmentPrePrimary}
 		!insertmacro _DirectoriesMove_Start
 
 		; Backup data from a local installation
-		${ForEachDirectory} $4 $2 $1
-			${DebugMsg} "Backing up $4\$2 to $4\$2.BackupBy$AppID"
-			Rename $4\$2 $4\$2.BackupBy$AppID
+		${ForEachDirectory} $5 $4 $1
+			${DebugMsg} "Backing up $5\$4 to $5\$4.BackupBy$AppID"
+			Rename $5\$4 $5\$4.BackupBy$AppID
 		${NextDirectory}
 
 		; See if the parent local directory exists. If not, create it and
 		; note down to delete it at the end if it's empty.
-		${IfNot} ${FileExists} $4
-			CreateDirectory $4
-			WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini DirectoriesMove RemoveIfEmpty:$4 true
+		${IfNot} ${FileExists} $5
+			CreateDirectory $5
+			WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini DirectoriesMove RemoveIfEmpty:$5 true
 		${EndIf}
 
 		; If the key is -, don't move/copy to the target directory.
 		; If portable data exists move/copy it to the target directory.
 		${If} $0 == -
-			${IfNot} ${WildCardExists} $1 ; can not create folders with wild-cards (obviously)
+			${IfNot} ${WildCardFlag} ; can not create folders with wild-cards (obviously)
 				CreateDirectory $1
 				${DebugMsg} "DirectoriesMove key -, so only creating the directory $1 (no file copy)."
 			${EndIf}
 		${Else}
 			${ForEachDirectory} $3 $2 $0
-				${GetRoot} $0 $5 ; compare
-				${GetRoot} $1 $6 ; drive
-				${If} $5 == $6   ; letters
-					${DebugMsg} "Renaming directory $3\$2 to $4\$2"
-					Rename $3\$2 $4\$2 ; same volume, rename OK
+				${If} ${WildCardFlag}
+					StrCpy $4 $2 ;if wildcards are used then inherit the filename
 				${Else}
-					${DebugMsg} "Copying $3\$2\*.* to $4\$2\*.*"
-					CreateDirectory $4\$2
-					CopyFiles /SILENT $3\$2\*.* $4\$2
+					${GetFileName} $1 $4
+				${EndIf}
+				${GetRoot} $0 $6 ; compare
+				${GetRoot} $1 $7 ; drive
+				${If} $6 == $7   ; letters
+					${DebugMsg} "Renaming directory $3\$2 to $5\$4"
+					Rename $3\$2 $5\$4 ; same volume, rename OK
+				${Else}
+					${DebugMsg} "Copying $3\$2\*.* to $5\$4\*.*"
+					CreateDirectory $5\$4
+					CopyFiles /SILENT $3\$2\*.* $5\$4
 				${EndIf}
 			${NextDirectory}
 			${If} ${Errors}
-				${IfNot} ${WildCardExists} $1 ; can not create folders with wild-cards (obviously)
+				${IfNot} ${WildCardFlag} ; can not create folders with wild-cards (obviously)
 					; Nothing to copy, so just create the directory, ready for use.
 					CreateDirectory $1
 				${EndIf}
@@ -60,40 +65,45 @@ ${SegmentPostPrimary}
 		; If the key is "-", don't copy it back
 		; Also if not in Live mode, copy the data back to the Data directory.
 		${GetParent} $0 $3
-		${ForEachDirectory} $4 $2 $1
+		${ForEachDirectory} $5 $4 $1
+			${If} ${WildCardFlag}
+				StrCpy $2 $4 ;if wildcards are used then inherit the filename
+			${Else}
+				${GetFileName} $0 $2
+			${EndIf}
 			${If} $0 == -
 				${DebugMsg} "DirectoriesMove key -, so not keeping data from $1."
 			${ElseIf} $RunLocally != true
-				${GetRoot} $0 $5 ; compare
-				${GetRoot} $1 $6 ; drive
-				${If} $5 == $6   ; letters
-					${DebugMsg} "Renaming directory $4\$2 to $3\$2"
-					Rename $4\$2 $3\$2 ; same volume, rename OK
+				${GetRoot} $0 $6 ; compare
+				${GetRoot} $1 $7 ; drive
+				${If} $6 == $7   ; letters
+					${DebugMsg} "Renaming directory $5\$4 to $3\$2"
+					Rename $5\$4 $3\$2 ; same volume, rename OK
 				${Else}
-					${DebugMsg} "Copying $4\$2\*.* to $3\$2\*.*"
+					${DebugMsg} "Copying $5\$4\*.* to $3\$2\*.*"
 					RMDir /R $3\$2
 					CreateDirectory $3\$2
-					CopyFiles /SILENT $4\$2\*.* $3\$2
+					CopyFiles /SILENT $5\$4\*.* $3\$2
 				${EndIf}
 			${EndIf}
 			; And then remove it from the runtime location
-			${DebugMsg} "Removing portable settings directory from run location ($4\$2)."
-			RMDir /R $4\$2
+			${DebugMsg} "Removing portable settings directory from run location ($5\$4)."
+			RMDir /R $5\$4
 		${NextDirectory}
 
 		; If the parent directory we put the directory in locally didn't exist
 		; before, delete it if it's empty.
-		ReadINIStr $5 $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini DirectoriesMove RemoveIfEmpty:$4
-		${If} $5 == true
-			RMDir $4
+		ReadINIStr $6 $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini DirectoriesMove RemoveIfEmpty:$5
+		${If} $6 == true
+			RMDir $5
 		${EndIf}
 
 		; And move that backup of any local data from earlier if it exists.
 		StrLen $3 .BackupBy$AppID
-		${ForEachDirectory} $4 $2 $1.BackupBy$AppID
-			StrCpy $1 $2 -$3
-			${DebugMsg} "Moving local settings from $4\$2 to $4\$1."
-			Rename $4\$2 $4\$1
+		${ForEachDirectory} $5 $4 $1.BackupBy$AppID
+			StrCpy $1 $4 -$3
+			${DebugMsg} "Moving local settings from $5\$4 to $5\$1."
+			Rename $5\$4 $5\$1
 		${NextDirectory}
 	${NextINIPair}
 !macroend
