@@ -70,27 +70,28 @@ ${SegmentPrePrimary}
 			${IfThen} ${Errors} ${|} ${ExitDo} ${|}
 			${ParseLocations} $2
 			${ParseLocations} $3
-			StrCpy $7 $1 ; copy for input to avoid potential confusion/mess
-			${ForEachFile} $1 $4 $7
-				StrCpy $1 $1\$4
-				ClearErrors
-				${ReadLauncherConfig} $4 FileWrite$R0 CaseSensitive
 
-				StrCpy $5 skip ; $5 = "Do we need to replace?"
-				${If} $4 == true   ; case sensitive
-					${If} $2 S!= $3 ; find != replace?
-						StrCpy $5 replace
-					${EndIf}
-				${Else} ; case sensitive
-					${If} $4 != false     ; "false" is valid
-					${AndIfNot} ${Errors} ; not set is valid
-						${InvalidValueError} [FileWrite$R0]:CaseSensitive $4
-					${EndIf}
-					${If} $2 != $3 ; find != replace?
-						StrCpy $5 replace
-					${EndIf}
+			ClearErrors
+			${ReadLauncherConfig} $4 FileWrite$R0 CaseSensitive
+
+			StrCpy $5 skip ; $5 = "Do we need to replace?"
+			${If} $4 == true   ; case sensitive
+				${If} $2 S!= $3 ; find != replace?
+					StrCpy $5 replace
 				${EndIf}
+			${Else} ; case sensitive
+				${If} $4 != false     ; "false" is valid
+				${AndIfNot} ${Errors} ; not set is valid
+					${InvalidValueError} [FileWrite$R0]:CaseSensitive $4
+				${EndIf}
+				${If} $2 != $3 ; find != replace?
+					StrCpy $5 replace
+				${EndIf}
+			${EndIf}
 
+			StrCpy $7 $1 ; copy for input to avoid potential confusion/mess
+			${ForEachFile} $1 $R4 $7
+				StrCpy $1 $1\$R4
 				${If} $5 == replace ; not skip, find != replace (as discovered above)
 					ClearErrors
 					${ReadLauncherConfig} $5 FileWrite$R0 Encoding
@@ -115,12 +116,12 @@ ${SegmentPrePrimary}
 					${EndIf}
 					${!getdebug}
 					!ifdef DEBUG
-						${IfThen} $5 == UTF-16LE ${|} StrCpy $8 "a UTF-16LE" ${|}
-						${IfThen} $5 != UTF-16LE ${|} StrCpy $8 "an ANSI" ${|}
-						StrCpy $9 ``
-						${IfThen} $4 != true ${|} StrCpy $9 in ${|}
+						${IfThen} $5 == UTF-16LE ${|} StrCpy $R8 "a UTF-16LE" ${|}
+						${IfThen} $5 != UTF-16LE ${|} StrCpy $R8 "an ANSI" ${|}
+						StrCpy $R9 ``
+						${IfThen} $4 != true ${|} StrCpy $R9 in ${|}
 					!endif
-					${DebugMsg} "Finding and replacing in $8 file (case $9sensitive).$\r$\nFile: $1$\r$\nFind: `$2`$\r$\nReplace: `$3`"
+					${DebugMsg} "Finding and replacing in $R8 file (case $R9sensitive).$\r$\nFile: $1$\r$\nFind: `$2`$\r$\nReplace: `$3`"
 					${If} $5 == UTF-16LE
 						${If} $4 == true
 							${ReplaceInFileUTF16LECS} $1 $2 $3
