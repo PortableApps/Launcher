@@ -91,6 +91,7 @@ ${SegmentInit}
 					${If} ${FileExists} $1
 						${DebugMsg} "Reading the language from $1, XPath `$2`, Attribute `$3` with XMLReadAttrib."
 						${XMLReadAttrib} $1 $2 $3 $8
+;						${IfThen} ${Errors} ${|} ${DebugMsg} "XMLReadAttrib XPath error" ${|}
 					${EndIf}
 				${EndIf}
 			${ElseIf} $0 == "XML text"
@@ -98,6 +99,7 @@ ${SegmentInit}
 				${If} ${FileExists} $1
 					${DebugMsg} "Reading the language from $1, XPath `$2`, with XMLReadText."
 					${XMLReadText} $1 $2 $8
+;					${IfThen} ${Errors} ${|} ${DebugMsg} "XMLReadText XPath error" ${|}
 				${EndIf}
 !else
 			${ElseIf} $0 == "XML attribute"
