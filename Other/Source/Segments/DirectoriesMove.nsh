@@ -47,9 +47,12 @@ ${SegmentPrePrimary}
 			${If} ${Errors}
 				${IfNotThen} ${WildCardFlag} ${|} CreateDirectory $1 ${|}
 				; Nothing to copy, so just create the directory, ready for use.
+${!getdebug}
+!ifdef DEBUG
 				StrLen $2 "$DataDirectory\"
 				StrCpy $0 $0 "" $2
 				${DebugMsg} "$DataDirectory\$0\*.* does not exist, so not copying it to $1.$\r$\n(Note for developers: if you want default data, remember to put files in App\DefaultData\$0)"
+!endif
 			${EndIf}
 		${EndIf}
 	${NextINIPair}
