@@ -19,8 +19,12 @@ Var _FEP_WildCardChild
 Var _FEP_WildCardParent
 
 !macro ForEachPath TYPE FOUND_PATH FILE_NAME SEARCH_PATH
-	!if ${TYPE} != FILES && ${TYPE} != DIRECTORIES
+	; Split into two !ifs rather than && due to a horrible NSIS bug where it
+	; reckons !if only likes 1-4 parameters when it's inside a macro...
+	!if ${TYPE} != FILES
+	!if ${TYPE} != DIRECTORIES
 		!error "Please use ForEachFile or ForEachDirectory rather than using ForEachPath directly."
+	!endif
 	!endif
 	!ifdef _ForEachPath_Open
 		!error "There is already a ForEachPath clause open!"
