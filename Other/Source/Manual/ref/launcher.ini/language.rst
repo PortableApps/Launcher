@@ -106,6 +106,12 @@ Specify the type of file reading which is to be used:
 
 * ``INI``: read a string from an INI file.
 
+Both ``ConfigRead`` and ``INI`` are Unicode-compatible. The encoding (ANSI,
+UTF-8 or UTF-16LE) will be detected automatically from the file's BOM.
+
+.. versionchanged:: 2.1
+   previously ``ConfigRead`` was not able to read from UTF-16LE files.
+
 .. ini-key:: [LanguageFile]:File
 
 File

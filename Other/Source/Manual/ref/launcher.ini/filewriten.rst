@@ -163,8 +163,9 @@ For UTF-8 files, leave this value out. The value ``ANSI`` isn't really ANSI,
 it's just "normal", which includes ANSI, UTF-8 and really anything which doesn't
 use null bytes all over the place.
 
-This value only works with the :ini-key:`Type <[FileWriteN]:Type>`
-``Replace``; ``INI`` automatically detect the encoding of
-the file (this requires that the file start with the UTF-16LE BOM, ``U+FFFE``).
+This value only works with the :ini-key:`Type <[FileWriteN]:Type>` ``Replace``;
+both ``ConfigWrite`` and ``INI`` automatically detect the encoding of the file
+(this requires that the file start with the UTF-16LE BOM, ``U+FFFE``).
 
-Currently ``ConfigWrite`` does not support Unicode files at all.
+.. versionchanged:: 2.1
+   previously ``ConfigWrite`` was not able to write to UTF-16LE files.
