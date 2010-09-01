@@ -16,4 +16,5 @@ to know, and useful information about techniques:
    java
    qt
    games
+   64-bit
    checklist
