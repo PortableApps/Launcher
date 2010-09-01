@@ -48,11 +48,11 @@ sometimes however they will be in different directories --
 It is possible that an environment variable will be needed to specify
 ``%PAL:AppDir%\AppName`` and ``%PAL:AppDir%\AppName64``, depending on the
 architecture, so that a configuration file can be updated. If this is required,
-it can be done easily with :ref:`custom code <advanced-custom>`. A variable
+it can be done easily with :ref:`custom code <custom-code>`. A variable
 ``$Bits`` is provided which contains the value ``64`` for 64-bit computers and
 ``32`` for 32-bit computers. Here is how you might use it (note that it goes in
-the :ref:`Init hook <advanced-segments-hooks>`; ``$Bits`` is set up in
-``.onInit`` and so it is ready for use)::
+the :ref:`Init hook <segments-hooks>`; ``$Bits`` is set up in ``.onInit`` and so
+it is ready for use)::
 
    ${SegmentFile}
 

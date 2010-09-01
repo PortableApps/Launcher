@@ -83,8 +83,8 @@ In :term:`NSIS`, there are two main commands for dealing with INI files;
 custom code for the PortableApps.com Installer or the PortableApps.com Launcher
 you can use these. Also in the PortableApps.com Launcher a few specialty macros
 are available; ``${ReadLauncherConfig}``, ``${ReadLauncherConfigWithDefault}``
-and ``${ReadUserOverrideConfig}``. See :ref:`advanced-custom` for details on
-using them.
+and ``${ReadUserOverrideConfig}``. See :ref:`custom-code` for details on using
+them.
 
 In general
 ----------

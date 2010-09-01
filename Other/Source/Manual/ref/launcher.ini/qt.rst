@@ -5,11 +5,9 @@
 
 |inikeyint|
 
-:ref:`Qt applications <topics-qt>` tend to leave quite a lot of a mess behind
-them which needs to be cleared up. This section deals with cleaning up keys like
-these:
-
-::
+:ref:`Qt applications <qt>` tend to leave quite a lot of a mess behind them
+which needs to be cleared up. This section deals with cleaning up keys like
+these::
 
    HKCU\Software\Trolltech\OrganizationDefaults\Qt Factory Cache 4.6\com.trolltech.Qt.QImageIOHandlerFactoryInterface:\X:\PortableApps\AppNamePortable\App\AppName
    HKCU\Software\Trolltech\OrganizationDefaults\Qt Plugin Cache 4.6.false\X:\PortableApps\AppNamePortable\App\AppName

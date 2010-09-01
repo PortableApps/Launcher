@@ -1,6 +1,6 @@
 .. index:: Custom code
 
-.. _advanced-custom:
+.. _custom-code:
 
 ===========
 Custom code
@@ -21,21 +21,20 @@ fails, you can `disable hooks and segments`_.
 
 .. _`disable hooks and segments`: `Disabling hooks and segments`_
 
-.. _advanced-custom-file:
+.. _custom-code-file:
 
 ``Custom.nsh``
 ==============
 
 All modifications to the PortableApps.com Launcher which do not involve
-:ref:`debugging <advanced-debug>` go in a file
-``Custom.nsh`` in the ``Other\Source`` directory of a
-package.
+:ref:`debugging <debug>` go in a file ``Custom.nsh`` in the ``Other\Source``
+directory of a package.
 
 .. versionchanged:: 2.1
    previously this file was ``Other\Source\PortableApps.comLauncherCustom.nsh``.
    The Generator will move this file to the new location if it exists.
 
-.. _advanced-custom-segment:
+.. _custom-code-segment:
 
 Writing a custom segment
 ========================
@@ -45,10 +44,9 @@ in the PortableApps.com Launcher, you can write :term:`NSIS` code for it
 yourself but still use the general framework and power of the PortableApps.com
 Launcher by writing a custom segment.
 
-To write a custom segment for your application, use the
-`Custom.nsh`_ file mentioned above.  You can look at
-:ref:`other segments <advanced-segments>` for guidance on how to write a
-segment. This is the general structure for a segment:
+To write a custom segment for your application, use the `Custom.nsh`_ file
+mentioned above.  You can look at :ref:`other segments <segments>` for guidance
+on how to write a segment. This is the general structure for a segment:
 
 ::
 
@@ -77,7 +75,7 @@ segment. This is the general structure for a segment:
           [segment contents]
       !macroend
 
-   A list of available hooks is available :ref:`here <advanced-segments-hooks>`.
+   A list of available hooks is available :ref:`here <segments-hooks>`.
 
 3. A segment can use custom macros and Functions if it is desired, but they
    should be clearly identified as part of the segment. The general convention
@@ -86,7 +84,7 @@ segment. This is the general structure for a segment:
    Such macros and functions as these should come above the variable
    definitions, immediately after the ``${SegmentFile}`` line.
 
-.. _advanced-custom-disable:
+.. _custom-code-disable:
 
 Disabling hooks and segments
 ============================
@@ -107,7 +105,7 @@ To disable all hooks in an inbuilt segment (in short, to disable the segment)::
 
      ${DisableSegment} Segment
 
-.. _advanced-custom-execute:
+.. _custom-code-execute:
 
 Overriding the execution step
 =============================

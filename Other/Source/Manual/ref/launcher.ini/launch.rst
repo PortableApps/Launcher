@@ -151,7 +151,7 @@ Concerning the significance of quoting strings and how it will be interpreted,
 refer to :ref:`INI keys <ini-keys>`.
 
 For Java applications, you will almost always need to specify parameters here.
-See :ref:`topics-java` for more information.
+See :ref:`java` for more information.
 
 **Example:** the application being made portable accepts a
 ``--data-directory=`` command line argument to make it portable, but it does
@@ -477,7 +477,7 @@ If you wish to specify another executable to require to be closed before the
 portable application is started than the :ini-key:`ProgramExecutable
 <[Launch]:ProgramExecutable>` entry, enter the file name in here. This is
 particularly useful with Java applications which use Launch4J. See
-:ref:`topics-java-launch4j` for details on that.
+:ref:`java-launch4j` for details on that.
 
 .. ini-key:: [Launch]:SplashTime
 

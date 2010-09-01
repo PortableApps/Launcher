@@ -1,6 +1,6 @@
 .. index:: Games, Making things portable; games
 
-.. _topics-games:
+.. _games:
 
 Making games portable
 =====================

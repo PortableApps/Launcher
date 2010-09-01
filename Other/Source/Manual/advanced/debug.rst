@@ -1,6 +1,6 @@
 .. index:: Debugging
 
-.. _advanced-debug:
+.. _debug:
 
 =======================================
 Debugging the PortableApps.com Launcher
@@ -12,8 +12,8 @@ details on that process.
 
 Once you have a compile environment set up for the PortableApps.com Launcher,
 you can recompile it with debugging flags turned on. All debug flags go in the
-`Debug.nsh`_ file. This file should contain :ref:`debug flags
-<advanced-debug-flags>` as listed below, like this::
+`Debug.nsh`_ file. This file should contain :ref:`debug flags <debug-flags>` as
+listed below, like this::
 
    !define DEBUG_ALL
 
@@ -28,7 +28,7 @@ Debug messages will be output to the screen in message boxes and to a file
 ``Data\debug.log`` in your package unless otherwise specified by
 ``DEBUG_OUTPUT`` below.
 
-.. _advanced-debug-file:
+.. _debug-file:
 
 ``Debug.nsh``
 =============
@@ -45,7 +45,7 @@ and then where it is won't matter so much.
    previously this file was ``Other\Source\PortableApps.comLauncherDebug.nsh``.
    The Generator will move this file to the new location if it exists.
 
-.. _advanced-debug-flags:
+.. _debug-flags:
 
 Debug flags
 -----------
@@ -61,7 +61,7 @@ Here is a list of the debug flags available. See above for how to enable them.
    ``DEBUG_SEGMENT_[segment name]`` flags being turned on.
 
 ``DEBUG_SEGWRAP``
-   Show debug messages to announce when a :ref:`segment <advanced-segments>` is
+   Show debug messages to announce when a :ref:`segment <segments>` is
    about to be executed and when it has finished.
 
 ``DEBUG_OUTPUT`` (values: ``file``, ``messagebox``, nothing)
@@ -80,7 +80,7 @@ Here is a list of the debug flags available. See above for how to enable them.
    Any other value will cause debugging messages to not be shown. If you want
    both, leave this value out.
 
-To debug only certain :ref:`segments <advanced-segments>`, there are more flags:
+To debug only certain :ref:`segments <segments>`, there are more flags:
 
 ``DEBUG_GLOBAL``
    Debug outside all segments.

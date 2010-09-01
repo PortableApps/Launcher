@@ -28,7 +28,7 @@ Java
 ====
 
 General issues
-   Read the :ref:`topics-java` section, your issue may be covered there.
+   Read the :ref:`java` section, your issue may be covered there.
 
 The base application says it can't find Java
    If the base application requires Java, :ini-key:`[Activate]:Java` must be

@@ -1,6 +1,6 @@
 .. index:: Advanced
 
-.. _advanced-index:
+.. _advanced:
 
 Advanced usage of the PortableApps.com Launcher
 ===============================================

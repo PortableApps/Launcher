@@ -1,6 +1,6 @@
 .. index:: Java, Making things portable; Java applications
 
-.. _topics-java:
+.. _java:
 
 =================================
 Making Java applications portable
@@ -42,7 +42,7 @@ included, to specify the Java location to use. Try putting ``-vm
 <[Launch]:CommandLineArguments>` (your :ini-key:`ProgramExecutable
 <[Launch]:ProgramExecutable>` will not be ``java.exe`` or ``javaw.exe``).
 
-.. _topics-java-launch4j:
+.. _java-launch4j:
 
 Launch4J-based applications
 ---------------------------
@@ -80,7 +80,7 @@ Java command line. Any such value can be written with the ``-D`` argument, like
 this: ``-Duser.home="%PAL:DataDir%\settings"`` (remember that quotes are
 normally a good idea for paths, just in case they include spaces).
 
-.. _topics-java-java.util.prefs:
+.. _java-java.util.prefs:
 
 ``java.util.prefs``
 ===================

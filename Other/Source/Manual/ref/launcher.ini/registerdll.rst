@@ -28,7 +28,7 @@ DLL, but may not. Thus, after inserting a line in this section, you are
 recommended to try running the program again to see if any other keys in there
 become no longer an issue due to unregistering.
 
-To identify if the DllRegisterServer/DllUnregisterServer call is needed, observe the
-key with a utility like Regshot (see :ref:`topics-registry-detecting-changes`).
+To identify if the DllRegisterServer/DllUnregisterServer call is needed, observe
+the key with a utility like Regshot (see :ref:`registry-detecting-changes`).
 
 **Example:** ``1=%PAL:AppDir%\AppName\foo.dll``

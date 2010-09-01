@@ -1,4 +1,4 @@
-.. _advanced-development:
+.. _development-builds:
 
 ================================================================
 Working with development builds of the PortableApps.com Launcher

@@ -1,6 +1,6 @@
 .. index:: Making things portable; Qt applications
 
-.. _topics-qt:
+.. _qt:
 
 Making Qt applications portable
 ===============================

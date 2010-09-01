@@ -1,4 +1,4 @@
-.. _advanced-segments:
+.. _segments:
 
 Segments
 ========
@@ -30,7 +30,7 @@ strategic partnership between the developer and... and... well, whatever's left.
 
    It's just one of those illogicalities of software developers.
 
-.. _advanced-segments-hooks:
+.. _segments-hooks:
 
 Hooks
 -----
@@ -61,7 +61,7 @@ Here is a list of the hooks which can be executed:
 
 .. _`NSIS documentation`: http://nsis.sourceforge.net/Docs/Chapter4.html#4.7.2.1.2
 
-.. _advanced-segments-disable:
+.. _segments-disable:
 
 Customisations
 --------------
@@ -69,9 +69,9 @@ Customisations
 If you ever need to disable a segment or hook, you can do so. In general though
 if you can possibly avoid doing it you should; you can very easily break the
 PortableApps.com Launcher by disabling certain things. See
-:ref:`advanced-custom-segment` for details.
+:ref:`custom-code-segment` for details.
 
-.. _advanced-segments-list:
+.. _segments-list:
 
 List of core segments
 ---------------------
@@ -90,15 +90,15 @@ Here is the current list of segments included in the PortableApps.com Launcher:
 * **FileWrite:** :ini-section:`[FileWriteN]`
 * **FilesMove:** :ini-section:`[FilesMove]`
 * **InstanceManagement:** managing multiple instances of portable apps
-* **Java:** :ref:`guess <topics-java>`
+* **Java:** :ref:`guess <java>`
 * **Language:** launcher language selection for message boxes and language
-  switching (see :ref:`topics-languages`)
+  switching (see :ref:`languages`)
 * **OperatingSystem:** :ini-key:`[Launch]:MinOS` and :ini-key:`[Launch]:MaxOS`
-* **Qt:** :ini-section:`[QtKeysCleanup]` (see also :ref:`topics-qt`)
+* **Qt:** :ini-section:`[QtKeysCleanup]` (see also :ref:`qt`)
 * **RefreshShellIcons:** :ini-key:`[Launch]:RefreshShellIcons`
 * **RegisterDLL:** :ini-section:`[RegisterDLL]`
 * **Registry:** :ini-key:`[Activate]:Registry` and helper utilities for
-  other Registry segments. See also :ref:`topics-registry` for this and the
+  other Registry segments. See also :ref:`registry` for this and the
   other Registry segments listed here.
 * **RegistryCleanup:** :ini-section:`[RegistryCleanupIfEmpty]` and
   :ini-section:`[RegistryCleanupForce]`
