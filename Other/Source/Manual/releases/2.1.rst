@@ -76,6 +76,29 @@ Along with this, to help portable app developers update paths in their packages
 as well as drive letters, two new environment variable groups have been added:
 :env:`PAL:PackagePartialDir` and :env:`PAL:LastPackagePartialDir`.
 
+64-bit support
+--------------
+
+For support of apps which have different executables between 32-bit and 64-bit
+versions, :ini-key:`[Launch]:ProgramExecutable64` and
+:ini-key:`[Launch]:ProgramExecutableWhenParameters64` were added.
+
+If an environment variable is needed so specify ``%PAL:AppDir%\AppName`` and
+``%PAL:AppDir%\AppName64``, depending on the architecture, this can be done
+easily with :ref:`custom code <advanced-custom>`::
+
+   ${If} $Bits = 64
+       ${SetEnvironmentVariablesPath} FullAppDir $AppDirectory\AppName64
+   ${Else}
+       ${SetEnvironmentVariablesPath} FullAppDir $AppDirectory\AppName
+   ${EndIf}
+
+Then environment variables ``FullAppDir``, ``FullAppDir:ForwardSlash``,
+:ref:`etc. <ref-envsub-directory>` will be available for use.
+
+For more information on 64-bit support in the PortableApps.com Launcher, see
+:ref:`64-bit`.
+
 Changes
 =======
 

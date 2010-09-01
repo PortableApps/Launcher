@@ -26,7 +26,8 @@ Starting using the PortableApps.com Launcher
   :ref:`Qt apps <topics-qt>` |
   :ref:`topics-registry` |
   :ref:`topics-languages` |
-  :ref:`Games <topics-games>`
+  :ref:`Games <topics-games>` |
+  :ref:`64-bit apps <64-bit>`
 * **Examples:**
   :ref:`Scribus <examples-scribus>` |
   :ref:`7-Zip <examples-7-zip>`

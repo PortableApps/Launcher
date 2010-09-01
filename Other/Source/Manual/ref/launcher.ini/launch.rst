@@ -48,7 +48,85 @@ executable in the Java Runtime Environment.
 **Example:** inside the portable application package, the executable to run is
 at ``App\AppName\AppName.exe``, so, after removing the ``App\``,
 :ini-key:`ProgramExecutable <[Launch]:ProgramExecutable>`\
-``=AppName\AppName.exe``
+``=AppName\AppName.exe``.
+
+This is the lookup order for the various alternative forms of ProgramExecutable.
+At each level if the condition is not met or the value is not set, it goes on to
+the next.
+
+* :ini-key:`[Launch]:ProgramExecutableWhenParameters64` (only if 64-bit and
+  parameters are given)
+* :ini-key:`[Launch]:ProgramExecutable64` (only if 64-bit)
+* :ini-key:`[Launch]:ProgramExecutableWhenParameters` (only if parameters are
+  given)
+* :ini-key:`[Launch]:ProgramExecutable`
+
+.. ini-key:: [Launch]:ProgramExecutableWhenParameters
+
+ProgramExecutableWhenParameters
+-------------------------------
+
+| Optional.
+| |envsub|
+
+----
+
+Specify the program to be launched by the PortableApps.com Launcher when
+command-line arguments are given here, relative to the App directory of the
+portable application. This has the effect of overriding :ref:`ProgramExecutable
+<[Launch]:ProgramExecutable>` when specified if command-line arguments are
+given. If none are given, the value in ProgramExecutable will be used.
+
+All rules about Java for :ini-key:`[Launch]:ProgramExecutable` hold with this
+value.
+
+This can be used for apps which launch a menu but the menu can be bypassed if
+parameters are passed. One example of this is the NSIS menu - when the program
+is launched, it is desirable for the menu, ``NSIS.exe``, to be shown, but if a
+file is given to it in its command line, the NSIS compiler, ``makensisw.exe``,
+should be launched, as the menu does not recognise file names given to it.
+
+.. ini-key:: [Launch]:ProgramExecutable64
+
+ProgramExecutable64
+-------------------
+
+| Optional.
+| |envsub|
+
+.. versionadded:: 2.1
+
+----
+
+An override for :ref:`[Launch]:ProgramExecutable` when the portable app is
+running on a 64-bit operating system. Typically a portable app should not
+include a 64-bit version whether provided by the publisher or not, but if there
+are significant benefits in having a 64-bit version, or it is required for
+functionality (e.g. defragmentation or system information analysis), it may be
+included.
+
+All the rules of :ref:`[Launch]:ProgramExecutable` hold for this.
+
+.. ini-key:: [Launch]:ProgramExecutableWhenParameters64
+
+ProgramExecutableWhenParameters64
+---------------------------------
+
+| Optional.
+| |envsub|
+
+.. versionadded:: 2.1
+
+----
+
+An override for :ref:`[Launch]:ProgramExecutableWhenParameters` when the
+portable app is running on a 64-bit operating system. Typically a portable app
+should not include a 64-bit version whether provided by the publisher or not,
+but if there are significant benefits in having a 64-bit version, or it is
+required for functionality (e.g. defragmentation or system information
+analysis), it may be included.
+
+All the rules of :ref:`[Launch]:ProgramExecutableWhenParameters` hold for this.
 
 .. ini-key:: [Launch]:CommandLineArguments
 

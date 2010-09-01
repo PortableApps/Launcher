@@ -1,6 +1,7 @@
 ${SegmentFile}
 
 Var LauncherFile
+Var Bits
 
 ${Segment.onInit}
 	StrCpy $0 $EXEDIR 2
@@ -56,6 +57,16 @@ ${Segment.onInit}
 			${EndIf}
 		${EndIf}
 	${EndIf}
+
+	; Work out if it's 64-bit or 32-bit
+	System::Call kernel32::GetCurrentProcess()i.s
+	System::Call kernel32::IsWow64Process(is,*i.r0)
+	${If} $0 == 0
+		StrCpy $Bits 64
+	${Else}
+		StrCpy $Bits 32
+	${EndIf}
+
 !macroend
 
 ${SegmentInit}
@@ -66,6 +77,10 @@ ${SegmentInit}
 		InitPluginsDir
 		CopyFiles /SILENT $LauncherFile $PLUGINSDIR\launcher.ini
 		StrCpy $LauncherFile $PLUGINSDIR\launcher.ini
+	${Else}
+		StrCpy $MissingFileOrPath $LauncherFile
+		MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
+		Quit
 	${EndIf}
 
 	; If there are command line arguments, we use
@@ -73,14 +88,29 @@ ${SegmentInit}
 	; the normal [Launch]ProgramExecutable if it's not set or if there aren't
 	; arguments.
 	${GetParameters} $0
-	${IfThen} $0				 != "" ${|} ${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutableWhenParameters	${|}
-	ClearErrors
-	${IfThen} $ProgramExecutable == "" ${|} ${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutable				${|}
+	StrCpy $ProgramExecutable ""
 
-	${If} ${Errors}
+	${If} $Bits = 64
+		${If} $0 != ""
+			${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutableWhenParameters64
+		${EndIf}
+		${If} $ProgramExecutable == ""
+			${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutable64
+		${EndIf}
+	${EndIf}
+
+	${If} $0 != ""
+	${AndIf} $ProgramExecutable == ""
+		${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutableWhenParameters
+	${EndIf}
+
+	${If} $ProgramExecutable == ""
+		${ReadLauncherConfig} $ProgramExecutable Launch ProgramExecutable
+	${EndIf}
+
+	${If} $ProgramExecutable == ""
 		; Launcher file missing or missing crucial details (what am I to launch?)
-		StrCpy $MissingFileOrPath $LauncherFile
-		MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
+		MessageBox MB_OK|MB_ICONSTOP `$EXEDIR\App\AppInfo\Launcher\$BaseName.ini is missing [Launch]:ProgramExecutable - what am I to launch?`
 		Quit
 	${EndIf}
 
