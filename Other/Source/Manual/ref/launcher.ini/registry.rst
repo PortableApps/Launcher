@@ -17,7 +17,7 @@ want to keep it safe and throw away any changes, set the "file name" to ``-``,
 so you end up with ``-=registry key location``.
 
 Some more description of how this works and what it can be used to do is
-available in :ref:`Dealing with the registry <topics-registry>`.
+available in :ref:`Dealing with the registry <registry>`.
 
 **Example:** ``appname_portable=HKCU\Software\AppName``
 
@@ -51,7 +51,7 @@ when AppName is saved, Publisher will still be left, empty. Remove it with a
 line in here.
 
 Some more description of how this works and what it can be used to do is
-available in :ref:`Dealing with the registry <topics-registry-cleanupifempty>`.
+available in :ref:`Dealing with the registry <registry-cleanupifempty>`.
 
 **Example:** ``1=HKCU\Software\Publisher``
 

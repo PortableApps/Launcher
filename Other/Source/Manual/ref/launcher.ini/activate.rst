@@ -49,4 +49,4 @@ cleaning up if other Java applications get run, as it'll look for instances of
 the application, and find javaw.exe, even though it's another application's
 javaw.exe instance.
 
-See :ref:`topics-java` for more discussion about Java apps.
+See :ref:`java` for more discussion about Java apps.

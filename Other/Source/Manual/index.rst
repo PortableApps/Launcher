@@ -22,11 +22,11 @@ Starting using the PortableApps.com Launcher
   :ref:`ref-envsub` |
   :ref:`paf`
 * **How to handle:**
-  :ref:`Java apps <topics-java>` |
-  :ref:`Qt apps <topics-qt>` |
-  :ref:`topics-registry` |
-  :ref:`topics-languages` |
-  :ref:`Games <topics-games>` |
+  :ref:`Java apps <java>` |
+  :ref:`Qt apps <qt>` |
+  :ref:`Registry <registry>` |
+  :ref:`Languages <languages>` |
+  :ref:`Games <games>` |
   :ref:`64-bit apps <64-bit>`
 * **Examples:**
   :ref:`Scribus <examples-scribus>` |
@@ -36,8 +36,8 @@ General
 -------
 
 * **Topics:**
-  :ref:`intro-index` |
-  :ref:`topics-index` |
+  :ref:`intro` |
+  :ref:`topics` |
   :ref:`ref`
 * **Fixing things:**
   :ref:`troubleshooting` |
@@ -47,10 +47,10 @@ Advanced topics
 ---------------
 
 * **Advanced:**
-  :ref:`advanced-custom` |
-  :ref:`advanced-segments` |
-  :ref:`Development builds <advanced-development>` |
-  :ref:`Debugging <advanced-debug>`
+  :ref:`custom-code` |
+  :ref:`segments` |
+  :ref:`Development builds <development-builds>` |
+  :ref:`Debugging <debug>`
 
 Help!
 -----
@@ -62,4 +62,4 @@ going through :ref:`troubleshooting` first. If that doesn't help you, then try
 Release notes
 -------------
 
-Release notes for releases are available in :ref:`releases-index`.
+Release notes for releases are available in :ref:`releases`.

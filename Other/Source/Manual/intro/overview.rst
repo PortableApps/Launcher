@@ -15,9 +15,9 @@ manual. To start with, read about :ref:`install-launcher` and
 
 The most useful sections are the :ref:`launcher.ini reference
 <ref-launcher.ini>`, covering all the options available for configuring the
-PortableApps.com Launcher without :ref:`writing custom code <advanced-custom>`,
-and the :ref:`topics-index` sections, covering things like
-:ref:`topics-registry` and :ref:`topics-java` (not an exhaustive list).
+PortableApps.com Launcher without :ref:`writing custom code <custom-code>`, and
+the :ref:`topics` sections, covering things like :ref:`registry` and :ref:`java`
+(not an exhaustive list).
 
 (This document is far from complete at the moment. You should probably look at
 the start page to see a more general overview of what's available.)

@@ -62,7 +62,7 @@ Other helpful things
 
 Language switching:
    If an app is multilingual, it's good if the launcher supports automatic
-   language switching. Refer to :ref:`topics-languages` for more details about
+   language switching. Refer to :ref:`languages` for more details about
    implementing this.
 
 Suggestions and improvements

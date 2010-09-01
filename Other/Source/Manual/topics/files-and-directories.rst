@@ -1,4 +1,4 @@
-.. _topics-files-and-directories:
+.. _files-and-directories:
 
 =====================
 Files and directories

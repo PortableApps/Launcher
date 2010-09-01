@@ -1,6 +1,6 @@
 .. index:: Languages, Making things portable; multi-lingual applications
 
-.. _topics-languages:
+.. _languages:
 
 Languages
 =========
@@ -17,7 +17,7 @@ The environment variables
 those environment variables are enough for use in a :ini-section:`[FileWriteN]`
 section, then you shouldn't need to go beyond here.
 
-.. _topics-languages-custom:
+.. _languages-custom:
 
 Setting a custom language environment variable
 ----------------------------------------------
@@ -77,13 +77,13 @@ Other ways
 ----------
 
 If you really can't make language switching work as you need it to, you can
-:ref:`write a custom segment <advanced-custom-segment>` to do what you need.
+:ref:`write a custom segment <custom-code-segment>` to do what you need.
 Remember then that you will need to compile this new code with the
 PortableApps.com Launcher Generator. Also please try :ref:`contacting Chris
 Morgan <help>` as any code you write or a new language situation may be useful
 for putting into the PortableApps.com Launcher itself.
 
-.. _topics-languages-values:
+.. _languages-values:
 
 Language variable values
 ------------------------

@@ -1,6 +1,6 @@
 .. index:: Registry, Making things portable; registry
 
-.. _topics-registry:
+.. _registry:
 
 =========================
 Dealing with the registry
@@ -37,7 +37,7 @@ means that you can update drive letters and things like that inside
 If the registry key exists when the launcher comes to load the portable data, it
 will be backed up, and restored at the end, so that no data is lost.
 
-.. _topics-registry-cleanupifempty:
+.. _registry-cleanupifempty:
 
 If the registry key you are wishing to save and make portable is deeper, like
 ``HKCU\Software\Publisher\AppName``, then you need to make sure that the
@@ -145,15 +145,14 @@ here.
 ``HKCU\Software\JavaSoft\Prefs``
 --------------------------------
 
-Keys in here are from Java applications which use
-:ref:`topics-java-java.util.prefs`. See that page for tips on dealing with those
-registry keys.
+Keys in here are from Java applications which use :ref:`java-java.util.prefs`.
+See that page for tips on dealing with those registry keys.
 
 ``HKCU\Software\Trolltech``
 ---------------------------
 
-Keys in this key are from Qt applications. See :ref:`topics-qt` for details on
-what to do about them.
+Keys in this key are from Qt applications. See :ref:`qt` for details on what to
+do about them.
 
 ``HKLM\Software\Classes\CLSID\XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX``
 --------------------------------------------------------------------
@@ -174,7 +173,7 @@ is with the
 :ini-section:`[RegistryCleanupForce]` and
 :ini-section:`[RegistryValueBackupDelete]` sections.
 
-.. _topics-registry-detecting-changes:
+.. _registry-detecting-changes:
 
 Detecting changes
 =================

@@ -7,8 +7,7 @@ This is not a comprehensive list at all and has yet to be filled out a lot.
 
 * No need to write any code -- all configuration is done in an INI file [#f1]_.
 
-* The ability to write :ref:`custom code <advanced-custom>` for complex
-  situations.
+* The ability to write :ref:`custom code <custom-code>` for complex situations.
 
 * :ref:`Lots of features for the user <features-user>` without you needing to
   implement any of them [#f2]_.
@@ -33,8 +32,8 @@ There are *so* many features that they're not all here.
 .. rubric:: Footnotes
 
 .. [#f1] Conditions apply. Occasionally you may need something not supported out
-         of the box. Then you may need :ref:`custom code <advanced-custom>`.
+         of the box. Then you may need :ref:`custom code <custom-code>`.
 
 .. [#f2] Well, the rest of the launcher is yours to write. In particular,
-         intelligent :ref:`language switching <topics-languages>` is something
+         intelligent :ref:`language switching <languages>` is something
          you need to do yourself.

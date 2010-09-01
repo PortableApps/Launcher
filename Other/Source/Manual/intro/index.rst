@@ -1,4 +1,4 @@
-.. _intro-index:
+.. _intro:
 
 Getting started
 ===============

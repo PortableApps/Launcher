@@ -1,4 +1,4 @@
-.. _topics-index:
+.. _topics:
 
 Using the PortableApps.com Launcher
 ===================================
