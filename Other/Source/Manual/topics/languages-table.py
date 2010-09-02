@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import glob, os, sys
 from ConfigParser import RawConfigParser, ParsingError
+import codecs
 
 locale_parser = RawConfigParser()
 
@@ -12,10 +13,20 @@ def main(path):
     print 'LocaleName           LanguageCode LocaleCode2 LocaleCode3 Localeglibc LocaleID LocaleWinName            '
     print '==================== ============ =========== =========== =========== ======== ========================='
     for locale_file in glob.iglob(os.path.join(path, '*.locale')):
+        fp = open(locale_file, 'r')
+        bom = fp.read(2)
         try:
-            locale_parser.read(locale_file)
+            if bom == codecs.BOM_UTF16_LE:
+                # Having defused the bomb, decode the rest. codecs.open leaves
+                # the BOM in for some reason and then RawConfigParser blows up.
+                locale_parser.readfp(codecs.getreader('utf_16_le')(fp))
+            else:
+                fp.seek(0) # False alarm, it wasn't a bomb
+                locale_parser.readfp(fp) # Now try reading the whole file
         except ParsingError:
             print "Unable to parse %s!" % os.path.basename(locale_file)[:-7]
+        finally:
+            fp.close()
 
         print ' '.join([
             os.path.basename(locale_file)[:-7].ljust(20),
