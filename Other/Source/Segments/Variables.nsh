@@ -160,6 +160,9 @@ ${SegmentInit}
 
 	; Language variables are in the Language segment
 
+	SetShellVarContext all
+	${SetEnvironmentVariablesPath} ALLUSERSAPPDATA $APPDATA
+	SetShellVarContext current
 	${SetEnvironmentVariablesPathFromEnvironmentVariable} ALLUSERSPROFILE
 	${SetEnvironmentVariablesPathFromEnvironmentVariable} USERPROFILE
 	${SetEnvironmentVariablesPath} LOCALAPPDATA $LOCALAPPDATA

@@ -99,6 +99,14 @@ Then environment variables ``FullAppDir``, ``FullAppDir:ForwardSlash``,
 For more information on 64-bit support in the PortableApps.com Launcher, see
 :ref:`64-bit`.
 
+ALLUSERSAPPDATA environment variable
+------------------------------------
+
+To facilitate apps which write to ``C:\Documents and Settings\All
+Users\Application Data`` on Windows 2000 and XP and to ``C:\ProgramData`` on
+Windows Vista and 7, a new environment variable, :env:`ALLUSERSAPPDATA`, was
+added.
+
 Changes
 =======
 
