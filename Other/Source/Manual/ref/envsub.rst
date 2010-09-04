@@ -212,6 +212,24 @@ ALLUSERSPROFILE
 A local variable for copying to and from, e.g. ``C:\Documents and Settings\All
 Users`` on XP and 2000, ``C:\ProgramData`` on Vista.
 
+Most apps will need to use :env:`ALLUSERSAPPDATA` instead of this because it
+includes the "Application Data" part on the end for Windows 2000 and XP.
+
+.. env:: ALLUSERSAPPDATA
+
+ALLUSERSAPPDATA
+---------------
+
+A local variable for copying to and from, e.g. ``C:\Documents and Settings\All
+Users\Application Data`` on XP and 2000, ``C:\ProgramData`` on Vista.
+
+This variable does not exist in Windows itself and is added by the
+PortableApps.com Launcher. The difference between it and
+:env:`ALLUSERSPROFILE` above is that on Windows 2000 and XP it includes
+"Application Data" at the end. This is how it is normally used.
+
+.. versionadded:: 2.1
+
 .. env:: LOCALAPPDATA
 
 LOCALAPPDATA
