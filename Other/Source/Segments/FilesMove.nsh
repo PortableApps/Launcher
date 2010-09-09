@@ -30,7 +30,7 @@ ${SegmentPrePrimary}
 		${GetParent} $1 $4
 		${IfNot} ${FileExists} $4
 			CreateDirectory $4
-			WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FilesMove RemoveIfEmpty:$4 true
+			${WriteRuntimeData} FilesMove RemoveIfEmpty:$4 true
 		${EndIf}
 		; If portable data exists move/copy it to the target directory.  If the
 		; target directory doesn't exist, note down for the end to remove it
@@ -77,7 +77,7 @@ ${SegmentPostPrimary}
 		; If the local directory we put it in didn't exist before, delete it if
 		; it's empty.
 		${GetParent} $1 $4
-		ReadINIStr $2 $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FilesMove RemoveIfEmpty:$4
+		${ReadRuntimeData} $2 FilesMove RemoveIfEmpty:$4
 		${If} $2 == true
 			RMDir $4
 		${EndIf}

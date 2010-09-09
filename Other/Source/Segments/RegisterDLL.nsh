@@ -13,7 +13,7 @@ ${SegmentPrePrimary}
 		ClearErrors
 		RegDLL $0
 		${If} ${Errors}
-			WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FailedRegisterDLL $0 true
+			${WriteRuntimeData} FailedRegisterDLL $0 true
 			${DebugMsg} "Failed to register DLL $0."
 		${EndIf}
 		IntOp $R0 $R0 + 1
@@ -26,7 +26,7 @@ ${SegmentPostPrimary}
 		ClearErrors
 		${ReadLauncherConfig} $0 RegisterDLL $R0
 		${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-		ReadINIStr $R9 $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FailedRegisterDLL $0
+		${ReadRuntimeData} $R9 FailedRegisterDLL $0
 		${If} ${Errors} ; didn't fail
 			${ParseLocations} $0
 			${DebugMsg} "Unregistering DLL $0."

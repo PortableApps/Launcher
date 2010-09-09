@@ -18,7 +18,7 @@ ${SegmentPrePrimary}
 				${DebugMsg} "Loading $DataDirectory\settings\$0.reg into the registry."
 				${registry::RestoreKey} $DataDirectory\settings\$0.reg $R9
 				${If} $R9 != 0 ; -1 = failure (probably HKLM without admin), 0 = success
-					WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FailedRegistryKeys $0 true
+					${WriteRuntimeData} FailedRegistryKeys $0 true
 					${!getdebug}
 					!ifdef DEBUG
 						StrCpy $R9 $1 4
@@ -46,7 +46,7 @@ ${SegmentPostPrimary}
 				${DebugMsg} "Registry key $1 will not be saved."
 			${Else}
 				ClearErrors
-				ReadINIStr $R9 $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini FailedRegistryKeys $0
+				${ReadRuntimeData} $R9 FailedRegistryKeys $0
 				${If} ${Errors} ; didn't fail
 				${AndIf} $RunLocally != true
 					${DebugMsg} "Saving registry key $1 to $DataDirectory\settings\$0.reg."
