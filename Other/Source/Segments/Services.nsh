@@ -46,7 +46,7 @@ ${SegmentPrePrimary}
 				${DebugMsg} "Removed local service $1 (error code $9)
 				*/
 			${EndIf}
-			WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini Service$R0 ExistedBefore true
+			${WriteRuntimeData} Service$R0 ExistedBefore true
 			StrCpy $R9 no-create
 		${EndIf}
 		${If} $R9 == no-create
@@ -90,7 +90,7 @@ ${SegmentPostPrimary}
 		ClearErrors
 		${ReadLauncherConfig} $1 Service$R0 Name
 		${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-		; TODO: save state in PortableApps.comLauncherRuntimeData-$BaseName.ini to prevent doing anything silly.
+		; TODO: save state in the runtime data to prevent doing anything silly.
 		; Possibly also check the service path to make sure it's the right one we delete.
 		SimpleSC::GetServiceStatus $1
 		Pop $9 ; error code

@@ -140,3 +140,11 @@ provide a last used drive letter for first run, which formerly didn't work. A
 full explanation of how to use this will come soon, but for the moment just take
 a look at Data\\settings\\\ *AppNamePortable*\ Settings.ini after you've run an
 app (all values in it are optional).
+
+Increased resiliance
+--------------------
+
+This new version of the PortableApps.com Launcher includes new code to make a
+portable app even more stable when a disk is removed or a power failure occurs
+so that all portable data from the host system is cleaned up and any settings
+substituted are restored.

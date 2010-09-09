@@ -131,7 +131,7 @@ ${SegmentInit}
 
 ${SegmentPreExecPrimary}
 	; Save the $PLUGINSDIR so that in case of crash it can still be cleaned up next time
-	WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini PortableApps.comLauncher PluginsDir $PLUGINSDIR
+	${WriteRuntimeData} PortableApps.comLauncher PluginsDir $PLUGINSDIR
 !macroend
 
 ${SegmentUnload}
@@ -140,12 +140,13 @@ ${SegmentUnload}
 	FileClose $_FEIP_FileHandle
 	Delete $PLUGINSDIR\launcher.ini
 	${If} $SecondaryLaunch != true
-		ReadINIStr $0 $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini PortableApps.comLauncher PluginsDir
+		${ReadRuntimeData} $0 PortableApps.comLauncher PluginsDir
 		${If}    $0 != ""
 		${AndIf} $0 != $PLUGINSDIR
 			RMDir /r $0
 		${EndIf}
 		Delete $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini
+		Delete $PLUGINSDIR\runtimedata.ini
 	${EndIf}
 	; Unload the system plug-in (if it's still there?)
 	System::Free 0

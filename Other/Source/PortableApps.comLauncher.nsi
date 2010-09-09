@@ -106,6 +106,24 @@ Var WaitForProgram
 !macroend
 !define InvalidValueError "!insertmacro InvalidValueError"
 
+; Macros: runtime data read/write {{{1
+; The runtime data file is mirrored on disk and locally so that if the disk is
+; removed it should still be able to clean up and know about things like
+; registry keys that failed.
+!macro WriteRuntimeData Section Key Value
+	WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini ${Section} ${Key} ${Value}
+	WriteINIStr $PLUGINSDIR\runtimedata.ini ${Section} ${Key} ${Value}
+!macroend
+!define WriteRuntimeData "!insertmacro WriteRuntimeData"
+
+!macro ReadRuntimeData Output Section Key
+	IfFileExists $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini 0 +3
+	ReadINIStr ${Output} $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini ${Section} ${Key}
+	Goto +2
+	ReadINIStr ${Output} $PLUGINSDIR\runtimedata.ini ${Section} ${Key}
+!macroend
+!define ReadRuntimeData "!insertmacro ReadRuntimeData"
+
 ; Load the segments {{{1
 ${!echo} "Loading segments..."
 !include Segments.nsh
@@ -354,13 +372,13 @@ FunctionEnd
 
 Section           ;{{{1
 	Call Init
-	ReadINIStr $R9 $EXEDIR\Data\PortableApps.comLauncherRuntimeData-$BaseName.ini PortableApps.comLauncher Status
+	${ReadRuntimeData} $R9 PortableApps.comLauncher Status
 	${If} $R9 != running
 	${OrIf} $SecondaryLaunch == true
 		${CallPS} Pre +
 		${CallPS} PreExec +
 		${If} $WaitForProgram != false
-			WriteINIStr $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini PortableApps.comLauncher Status running
+			${WriteRuntimeData} PortableApps.comLauncher Status running
 		${EndIf}
 		; File gets deleted in segment Core, hook Unload, so it'll only be "running"
 		; in case of power-outage, disk removal while running or something like that.
