@@ -94,7 +94,7 @@ specified below.
 Type
 ----
 
-| Values: ``ConfigRead``, ``INI``
+| Values: ``ConfigRead``, ``INI``, ``XML attribute``, ``XML text``
 | Mandatory.
 
 ----
@@ -105,6 +105,10 @@ Specify the type of file reading which is to be used:
   being selected as one starting with the :ini-key:`Entry <[LanguageFile]:Entry>`.
 
 * ``INI``: read a string from an INI file.
+
+* ``XML attribute``: read the string from an attribute value in an XML file.
+
+* ``XML text``: read the string from a text node in an XML file.
 
 Both ``ConfigRead`` and ``INI`` are Unicode-compatible. The encoding (ANSI,
 UTF-8 or UTF-16LE) will be detected automatically from the file's BOM.
@@ -164,6 +168,35 @@ Key
 ----
 
 The INI key to read the value from.
+
+.. ini-key:: [LanguageFile]:Attribute
+
+Attribute
+---------
+
+| Mandatory for :ini-key:`Type <[LanguageFile]:Type>`\ =\ ``XML attribute``
+| |envsub|
+
+----
+
+The attribute to read the value from. See :ref:`xml` for more details.
+
+.. ini-key:: [LanguageFile]:XPath
+
+XPath
+-----
+
+| Mandatory for :ini-key:`Type <[LanguageFile]:Type`\ =\ ``XML attribute``, ``XML text``.
+
+----
+
+Specify the XPath_ to find the place to read from. It is a good idea to make
+sure that you have a solid understanding of how XPaths work and how to use them
+before writing one.
+
+For information about what this should look like, see :ref:`xml`.
+
+.. _XPath: http://en.wikipedia.org/wiki/XPath
 
 .. ini-key:: [LanguageFile]:CaseSensitive
 

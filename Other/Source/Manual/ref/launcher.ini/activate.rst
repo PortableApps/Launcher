@@ -50,3 +50,29 @@ the application, and find javaw.exe, even though it's another application's
 javaw.exe instance.
 
 See :ref:`java` for more discussion about Java apps.
+
+.. ini-key:: [Activate]:XML
+
+XML
+---
+
+| Values: ``true`` or ``false``
+| Default: ``false``
+| Optional.
+
+----
+
+If you wish to get the language string from an XML file with
+:ini-section:`[LanguageFile]` or write anything to an XML file with
+:ini-section:`[FileWriteN]`, using their ``Type``\ s ``XML text`` or ``XML
+attribute``, you will need to set this to ``true``. After setting this to true,
+**you will need to regenerate the launcher**. This includes the NSIS plug-in,
+which adds approximately 60KB to the file size of the generated launcher
+executable.
+
+Don't worry too much about the possibility of forgetting this; if you try to
+use any XML features when the launcher has not been compiled with XML support,
+it will warn you that you need to set this value to ``true``.
+
+See :ref:`xml` for more information about XML support in the PortableApps.com
+Launcher.

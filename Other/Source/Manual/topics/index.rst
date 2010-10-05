@@ -17,4 +17,5 @@ to know, and useful information about techniques:
    qt
    games
    64-bit
+   xml
    checklist
