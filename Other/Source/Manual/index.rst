@@ -27,6 +27,7 @@ Starting using the PortableApps.com Launcher
   :ref:`Registry <registry>` |
   :ref:`Languages <languages>` |
   :ref:`Games <games>` |
+  :ref:`XML files <xml>` |
   :ref:`64-bit apps <64-bit>`
 * **Examples:**
   :ref:`Scribus <examples-scribus>` |

@@ -11,7 +11,7 @@ For writing data to files. The values which must be set depend on the
 Type
 ----
 
-| Values: ``ConfigWrite``, ``INI``, ``Replace``
+| Values: ``ConfigWrite``, ``INI``, ``Replace``, ``XML attribute``, ``XML text``
 | Mandatory.
 
 ----
@@ -28,6 +28,12 @@ Specify the type of file writing which is to be used:
   (using :env:`%PAL:Drive% <PAL:Drive>` and :env:`%PAL:LastDrive%
   <PAL:LastDrive>`)
 
+* ``XML attribute``: write an attribute to an XML file. Only available when
+  :ini-key:`[Activate]:XML`\ =\ ``true``.
+
+* ``XML text``: write a text node to an XML file. Only available when
+  :ini-key:`[Activate]:XML`\ =\ ``true``.
+
 .. ini-key:: [FileWriteN]:File
 
 File
@@ -38,7 +44,9 @@ File
 
 ----
 
-Specify the file in which the modification will be made.
+Specify the file in which the modification will be made. This file must exist
+before any writing will be done. If it does not exist, the ``[FileWriteN]``
+section will be skipped.
 
 .. ini-key:: [FileWriteN]:Entry
 
@@ -85,15 +93,17 @@ The INI key to write the value to.
 Value
 -----
 
-| Mandatory for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``ConfigWrite``, ``INI``.
+| Mandatory for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``ConfigWrite``,
+  ``INI``, ``XML attribute``, ``XML text``.
 | |envsub|
 
 ----
 
 The value which will be written to the file. If dealing with :ini-key:`Type
-<[FileWriteN]:Type>`\ =` ``ConfigWrite``, you should remember with things like
+<[FileWriteN]:Type>`\ =\ ``ConfigWrite``, you should remember with things like
 XML files that you will normally need to close the tag, for example
-``%PAL:DataDir%\settings</config>``.
+``%PAL:DataDir%\settings</config>``. In such cases you can also try using the
+inbuilt XML support.
 
 .. ini-key:: [FileWriteN]:Find
 
@@ -121,6 +131,36 @@ The string to replace the search string with. If, after environment variable
 replacement, this is the same as the :ini-key:`Find <[FileWriteN]:Find>` string,
 the replacement will be skipped (e.g. if you use it to update drive letters and
 it's on the same letter).
+
+.. ini-key:: [FileWriteN]:Attribute
+
+Attribute
+---------
+
+| Mandatory for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``XML attribute``
+| |envsub|
+
+----
+
+The attribute which will be set inside the element identified by the given
+XPath. See :ref:`xml` for more details.
+
+.. ini-key:: [FileWriteN]:XPath
+
+XPath
+-----
+
+| Mandatory for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``XML attribute``, ``XML text``.
+
+----
+
+Specify the XPath_ to find the place to write to. It is a good idea to make
+sure that you have a solid understanding of how XPaths work and how to use them
+before writing one.
+
+For information about what this should look like, see :ref:`xml`.
+
+.. _XPath: http://en.wikipedia.org/wiki/XPath
 
 .. ini-key:: [FileWriteN]:CaseSensitive
 
