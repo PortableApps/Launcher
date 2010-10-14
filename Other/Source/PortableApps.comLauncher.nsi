@@ -173,7 +173,7 @@ VIAddVersionKey ProductName "${Name}"
 VIAddVersionKey Comments "A universal launcher for PortableApps.com applications, allowing applications to be run from a removable drive.${Comments}  For additional details, visit PortableApps.com"
 VIAddVersionKey CompanyName PortableApps.com
 VIAddVersionKey LegalCopyright PortableApps.com
-VIAddVersionKey FileDescription "PortableApps.com Launcher"
+VIAddVersionKey FileDescription "${Name} (PortableApps.com Launcher)"
 VIAddVersionKey FileVersion ${Version}
 VIAddVersionKey ProductVersion ${Version}
 VIAddVersionKey InternalName "PortableApps.com Launcher"
