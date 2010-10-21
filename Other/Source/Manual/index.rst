@@ -16,7 +16,8 @@ Starting using the PortableApps.com Launcher
   :ref:`overview` |
   :ref:`install-launcher` |
   :ref:`release-checklist` |
-  :ref:`features`
+  :ref:`features` |
+  :ref:`apps-using-pal`
 * **Reference:**
   :ref:`ref-launcher.ini` |
   :ref:`ref-envsub` |
@@ -30,6 +31,7 @@ Starting using the PortableApps.com Launcher
   :ref:`XML files <xml>` |
   :ref:`64-bit apps <64-bit>`
 * **Examples:**
+  :ref:`apps-using-pal` |
   :ref:`Scribus <examples-scribus>` |
   :ref:`7-Zip <examples-7-zip>`
 
