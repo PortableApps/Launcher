@@ -41,7 +41,11 @@
 WindowIcon Off
 SilentInstall Silent
 AutoCloseWindow True
+!ifdef RUNASADMIN_COMPILEFORCE
+RequestExecutionLevel admin
+!else
 RequestExecutionLevel user
+!endif
 SetCompressor /SOLID lzma
 SetCompressorDictSize 32
 
