@@ -3,7 +3,7 @@ ${SegmentFile}
 Var RunLocally
 
 ${SegmentInit}
-	${ReadUserOverrideConfig} $RunLocally RunLocally
+	${ReadUserConfig} $RunLocally RunLocally
 !macroend
 
 ${SegmentPre}

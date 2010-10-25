@@ -50,7 +50,7 @@ ${SegmentPre}
 	${EndIf}
 
 	; Get additional parameters from user INI file
-	${ReadUserOverrideConfig} $0 AdditionalParameters
+	${ReadUserConfig} $0 AdditionalParameters
 	${If} $0 != ""
 		${DebugMsg} "The user has specified additional command line arguments ($0).  Adding them to execution string after parsing."
 		${ParseLocations} $0
