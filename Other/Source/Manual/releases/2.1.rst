@@ -170,3 +170,8 @@ This new version of the PortableApps.com Launcher includes new code to make a
 portable app even more stable when a disk is removed or a power failure occurs
 so that all portable data from the host system is cleaned up and any settings
 substituted are restored.
+
+Also when a :ini-section:`[RegistryKeys]` value targets a key in
+HKEY_LOCAL_MACHINE and the user did not have sufficient privileges, the first
+time it was run, a key was left behind in the registry and future runs of the
+app would not function entirely correctly. This has been fixed.
