@@ -138,34 +138,10 @@ ${!echo} "Loading segments..."
 ;=== Program Details {{{1
 ${!echo} "Specifying program details and setting options..."
 
-!ifndef Version
-	!searchparse /noerrors /file ..\..\App\AppInfo\appinfo.ini "PackageVersion=" Version
-	!ifndef Version
-		!define Version 2.0.0.0
-		!warning "Unable to get PortableApps.com Launcher version number from appinfo.ini; it should have a line PackageVersion=X.X.X.X in it. Used value ${Version} instead."
-	!endif
-!endif
-
-!ifndef AppID
-	!searchparse /noerrors /file ${PACKAGE}\App\AppInfo\appinfo.ini "AppID=" AppID
-	!ifndef AppID
-		!define AppID PortableApps.comLauncher
-		!warning "Unable to get AppID from appinfo.ini; it should have a line AppID=AppNamePortable in it. Used value ${AppID} instead."
-	!endif
-!endif
-
-!ifndef Name
-	!searchparse /noerrors /file ${PACKAGE}\App\AppInfo\appinfo.ini "Name=" Name
-	!ifndef Name
-		!define Name "PortableApps.com Launcher"
-		!warning "Unable to get Name from appinfo.ini; it should have a line Name=App Name Portable in it. Used value ${Name} instead."
-	!endif
-!endif
-
-!if "${Name}" == "PortableApps.com Launcher"
+!if "${NamePortable}" == "PortableApps.com Launcher"
 	!define Comments ""
 !else
-	!define Comments "  This is a custom build for ${Name} with Name and icon and possibly custom code."
+	!define Comments "  This is a custom build for ${NamePortable} with Name and icon and possibly custom code."
 !endif
 
 Name "PortableApps.com Launcher"
@@ -173,11 +149,11 @@ OutFile "${PACKAGE}\${AppID}.exe"
 Icon "${PACKAGE}\App\AppInfo\appicon.ico"
 Caption "PortableApps.com Launcher"
 VIProductVersion ${Version}
-VIAddVersionKey ProductName "${Name}"
+VIAddVersionKey ProductName "${NamePortable}"
 VIAddVersionKey Comments "A universal launcher for PortableApps.com applications, allowing applications to be run from a removable drive.${Comments}  For additional details, visit PortableApps.com"
 VIAddVersionKey CompanyName PortableApps.com
 VIAddVersionKey LegalCopyright PortableApps.com
-VIAddVersionKey FileDescription "${Name} (PortableApps.com Launcher)"
+VIAddVersionKey FileDescription "${NamePortable} (PortableApps.com Launcher)"
 VIAddVersionKey FileVersion ${Version}
 VIAddVersionKey ProductVersion ${Version}
 VIAddVersionKey InternalName "PortableApps.com Launcher"

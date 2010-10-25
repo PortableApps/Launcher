@@ -37,7 +37,7 @@
 			!ifndef _DebugMsg_FileOpened
 				Var /GLOBAL _DebugMsg_File
 				FileOpen $_DebugMsg_File $EXEDIR\Data\debug.log w
-				FileWrite $_DebugMsg_File "PortableApps.com Launcher ${Version} debug messages for ${Name} (${AppID})$\r$\n"
+				FileWrite $_DebugMsg_File "PortableApps.com Launcher ${Version} debug messages for ${NamePortable} (${AppID})$\r$\n"
 				; TODO: hg revision number from .hg/branch, branchheads.cache
 				; My ${!ifexist} doesn't work in Wine, not sure if I can fix it
 				!define _DebugMsg_FileOpened
