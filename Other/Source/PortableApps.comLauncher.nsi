@@ -99,11 +99,14 @@ Var WaitForProgram
 !macroend
 !define ReadLauncherConfigWithDefault "!insertmacro ReadLauncherConfigWithDefault"
 
-!macro ReadUserOverrideConfig _OUTPUT _VALUE
+!macro ReadUserConfig _OUTPUT _VALUE
 	;ReadINIStr ${_OUTPUT} $EXEDIR\$BaseName.ini $BaseName ${_VALUE}
 	${ConfigRead} $EXEDIR\$BaseName.ini ${_VALUE}= ${_OUTPUT}
 !macroend
-!define ReadUserOverrideConfig "!insertmacro ReadUserOverrideConfig"
+!define ReadUserConfig "!insertmacro ReadUserConfig"
+
+; Better to keep people away from the name completely. The Generator updates references in Custom.nsh when moving the file, anyway.
+!define ReadUserOverrideConfig "!error `ReadUserOverrideConfig has been renamed to ReadUserConfig in PAL 2.1.`"
 
 !macro InvalidValueError _SECTION_KEY _VALUE
 	MessageBox MB_OK|MB_ICONSTOP "Error: invalid value '${_VALUE}' for ${_SECTION_KEY}. Please refer to the Manual for valid values."

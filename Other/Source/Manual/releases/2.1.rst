@@ -129,26 +129,29 @@ added.
 Changes
 =======
 
-Advanced paths changed
+Changes to custom code
 ----------------------
 
 For :ref:`custom code <custom-code>` the path has now changed from
 ``Other\Source\PortableApps.comLauncherCustom.nsh`` to
 ``App\AppInfo\Launcher\Custom.nsh``. Although the Generator will still need to
-be run again to compile any changes, this keeps files related to the
-PortableApps.com Launcher together, and makes it clearer that there is custom
-code involved.
+be run again to compile any changes to the custom code, this keeps files
+related to the PortableApps.com Launcher together, and makes it clearer that
+there is custom code involved.
 
 The path to the :ref:`debugging file <debug>` has now changed from
 ``Other\Source\PortableApps.comLauncherDebug.nsh`` to
-``App\AppInfo\Launcher\Debug.nsh``. Although the Generator will still need to be
-run again to compile any changes, this keeps files related to the
-PortableApps.com Launcher together.
+``App\AppInfo\Launcher\Debug.nsh``. Although the Generator will still need to
+be run again to compile any changes to the debug code, this keeps files related
+to the PortableApps.com Launcher together.
 
-Neither of these changes is backwards-incompatible as the Generator will upgrade
-the paths when you first run it. Developers who are using the :ref:`development
-version of the PortableApps.com Launcher <hg>` will need to :ref:`recompile the
-Generator <compile-pal-generator>`.
+In custom code, the macro ``${ReadUserOverrideConfig}`` has been renamed to
+``${ReadUserConfig}``.
+
+None of these changes is backwards-incompatible as the Generator will upgrade
+the paths and macro name when you first run it. Developers who are using the
+:ref:`development version of the PortableApps.com Launcher <hg>` will need to
+:ref:`recompile the Generator <compile-pal-generator>`.
 
 DefaultData now more flexible
 -----------------------------

@@ -56,6 +56,13 @@ SetDatablockOptimize On
 !include LogicLib.nsh
 !include MUI.nsh
 
+;(NSIS Plugins)
+!include NewTextReplace.nsh
+!addplugindir Plugins
+
+;(Custom)
+!include ReplaceInFileWithTextReplace.nsh
+
 ;=== Icon & Stye ===
 !define MUI_ICON "..\..\App\AppInfo\appicon.ico"
 !define MUI_HEADERIMAGE
@@ -199,6 +206,21 @@ Section Main
 		DetailPrint "Upgrading from 2.0 to 2.1..."
 		!insertmacro UpdatePath Other\Source\PortableApps.comLauncherCustom.nsh App\AppInfo\Launcher\Custom.nsh
 		!insertmacro UpdatePath Other\Source\PortableApps.comLauncherDebug.nsh  App\AppInfo\Launcher\Debug.nsh
+
+		; Replace ${ReadUserOverrideConfig} with ${ReadUserConfig}
+		; Check if it's UTF-16LE
+		FileOpen $0 $PACKAGE\App\AppInfo\Launcher\Custom.nsh r
+		FileReadWord $0 $1
+		FileClose $0
+		; Avoid ${...} being taken amiss
+		StrCpy $0 $${ReadUser
+		${If} $1 = 0xFEFF
+			${If} $5 == UTF-16LE
+				${ReplaceInFileUTF16LECS} $PACKAGE\App\AppInfo\Launcher\Custom.nsh $0OverrideConfig} $0Config}
+			${Else}
+				${ReplaceInFileCS} $PACKAGE\App\AppInfo\Launcher\Custom.nsh $0OverrideConfig} $0Config}
+			${EndIf}
+		${EndIf}
 		DetailPrint " "
 	${EndIf}
 

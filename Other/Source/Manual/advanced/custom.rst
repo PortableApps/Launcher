@@ -158,13 +158,13 @@ a default value is put in::
 Allowing extra user configuration
 ---------------------------------
 
-``${ReadUserOverrideConfig}`` is used to get user configuration from the
+``${ReadUserConfig}`` is used to get user configuration from the
 ``AppNamePortable.ini`` file in the root of the package (next to
 ``AppNamePortable.exe``) which contains values like DisableSplashScreen and
 AdditionalParameters. Additional values for user configuration can be introduced
 with this::
 
-   ${ReadUserOverrideConfig} $0 KeyName
+   ${ReadUserConfig} $0 KeyName
 
 Then the user will be able to have a line in that file like this:
 
@@ -176,3 +176,6 @@ For boolean values (true or false, yes or no), the convention is to make the
 allowed values "true" or "false".
 
 Additions like this should be documented in help.html.
+
+.. versionchanged:: 2.1
+   ``${ReadUserOverrideConfig}`` became ``${ReadUserConfig}``

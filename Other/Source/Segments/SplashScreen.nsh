@@ -4,7 +4,7 @@ Var DisableSplashScreen
 
 ${SegmentInit}
 	${If} $DisableSplashScreen != true
-		${ReadUserOverrideConfig} $DisableSplashScreen DisableSplashScreen
+		${ReadUserConfig} $DisableSplashScreen DisableSplashScreen
 		; Hmm... I think we'll skip validating this.
 
 		ClearErrors
