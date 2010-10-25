@@ -238,18 +238,23 @@ Section Main
 	${If} ${FileExists} "${_}\App\AppInfo\Launcher\$AppID.ini"
 		; If not, never mind.  It'll complain when the user tries to run it if they haven't created it yet.
 
+		StrCpy $2 ""
 		; See if we need to enable XML
-		ReadINIStr $2 "${_}\App\AppInfo\Launcher\$AppID.ini" Activate XML
-		${If} $2 == true
-			StrCpy $2 "/DXML_ENABLED"
-		${Else}
-			StrCpy $2 ""
+		ReadINIStr $3 "${_}\App\AppInfo\Launcher\$AppID.ini" Activate XML
+		${If} $3 == true
+			StrCpy $2 "$2 /DXML_ENABLED"
+		${EndIf}
+
+		; See if we need to use the RequestExecutionLevel admin
+		ReadINIStr $3 "${_}\App\AppInfo\Launcher\$AppID.ini" Launch RunAsAdmin
+		${If} $3 == compile-force
+			StrCpy $2 "$2 /DRUNASADMIN_COMPILEFORCE"
 		${EndIf}
 	${EndIf}
 
 	${If} $ERROROCCURED != true
 		; Build the thing
-		ExecDos::exec `"$NSIS" /O"$EXEDIR\Data\PortableApps.comLauncherGeneratorLog.txt" /DPACKAGE="$PACKAGE" /DName="$Name" /DAppID="$AppID" /DVersion="$1" $2 "$EXEDIR\Other\Source\PortableApps.comLauncher.nsi"` "" ""
+		ExecDos::exec `"$NSIS" /O"$EXEDIR\Data\PortableApps.comLauncherGeneratorLog.txt" /DPACKAGE="$PACKAGE" /DName="$Name" /DAppID="$AppID" /DVersion="$1"$2 "$EXEDIR\Other\Source\PortableApps.comLauncher.nsi"` "" ""
 	${EndIf}
 
 	SetDetailsPrint ListOnly

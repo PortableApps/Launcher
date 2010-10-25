@@ -45,6 +45,17 @@ These added values are
 :ini-key:`[Launch]:RunAsAdmin7` and
 :ini-key:`[Launch]:RunAsAdmin2008R2`.
 
+A new way to run as admin
+-------------------------
+
+It seems that the environment can get altered with
+:ini-key:`[Launch]:RunAsAdmin` set to ``try`` or ``force``, making it so that
+portable apps may not work. For cases where this has happened, a new value has
+been added in, ``compile-force``, which sets a flag in the launcher executable
+itself to need to run as administrator, leaving it up to the operating system
+to raise privileges. This should make most or all cases where the value
+``force`` has not worked work.
+
 DLL server registration
 -----------------------
 

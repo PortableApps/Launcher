@@ -1,5 +1,7 @@
 ${SegmentFile}
 
+; The compile-force value is dealt with in PortableApps.comLauncher.nsi
+
 !include UAC.nsh
 
 Var RunAsAdmin
@@ -38,10 +40,21 @@ ${Segment.onInit} ; {{{1
 	; Run as admin if needed {{{2
 	ClearErrors
 	${ReadLauncherConfig} $RunAsAdmin Launch RunAsAdmin
+!ifdef RUNASADMIN_COMPILEFORCE
+	${If} ${Errors}
+	${OrIf} $RunAsAdmin != compile-force
+		MessageBox MB_OK|MB_ICONSTOP "To turn off compile-time RunAsAdmin, you must regenerate the launcher."
+	${EndIf}
+!else
 	${IfNot} ${Errors}
 	${AndIf} $RunAsAdmin != force
 	${AndIf} $RunAsAdmin != try
-		${InvalidValueError} [Launch]:RunAsAdmin $RunAsAdmin
+		${If} $RunAsAdmin == compile-force
+			MessageBox MB_OK|MB_ICONSTOP "To use [Launch]:RunAsAdmin=compile-force, you must regenerate the launcher. Continuing with 'force'."
+			StrCpy $RunAsAdmin force
+		${Else}
+			${InvalidValueError} [Launch]:RunAsAdmin $RunAsAdmin
+		${EndIf}
 	${EndIf}
 
 	!insertmacro RunAsAdmin_OSOverride 2000
@@ -115,4 +128,5 @@ ${Segment.onInit} ; {{{1
 
 		RunAsAdminEnd:
 	${EndIf}
+!endif
 !macroend

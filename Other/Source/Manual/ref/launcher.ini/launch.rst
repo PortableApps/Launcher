@@ -229,11 +229,14 @@ if it doesn't, it doesn't.
 RunAsAdmin
 ----------
 
-| Values: ``force`` / ``try`` / none
+| Values: ``force`` / ``try`` / ``compile-force`` / none
 | Default: none
 | Optional.
 
 ----
+
+.. versionchanged:: 2.1
+   added the ``compile-force`` value
 
 Setting this to ``force`` or ``try`` causes the user to be prompted to run the
 program as an administrator (or a UAC prompt on Windows Vista or Windows 7 when
@@ -267,6 +270,16 @@ situation the recommended path of action is to contact the author of the
 original program and request that they modify their application to store its
 settings in HKEY_CURRENT_USER instead, which is probably where the settings
 should be.
+
+A special value, ``compile-force``, is available for cases when ``force``
+doesn't work properly (there seem to be some cases with environment variables
+not working properly). Use it only if ``force`` doesn't work, as it sets a flag
+in the executable so that the operating system handles running as admin rather
+than the launcher, so no friendly message is given to the user. Internally,
+this is the NSIS line ``RequestExecutionLevel admin``. After setting this value
+you will need to regenerate the launcher. Also note that due to the way it
+works, the value ``compile-force`` is incompatible with the operating
+system-specific overrides below.
 
 You can override this value for specific operating systems with one or more of
 the values below. Sometimes an application may require administrative privileges
