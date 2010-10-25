@@ -6,9 +6,11 @@ ${SegmentPrePrimary}
 			;=== Backup the registry
 			${ValidateRegistryKey} $1
 			${IfNot} ${RegistryKeyExists} HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1
-				${If} ${RegistryKeyExists} $1
-					${DebugMsg} "Backing up registry key $1 to HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1"
-					${registry::MoveKey} $1 HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 $R9
+			${AndIf} ${RegistryKeyExists} $1
+				${DebugMsg} "Backing up registry key $1 to HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1"
+				${registry::MoveKey} $1 HKEY_CURRENT_USER\Software\PortableApps.com\Keys\$1 $R9
+				${If} $R9 == -1 ; failure (probably HKLM without admin)
+					${WriteRuntimeData} FailedRegistryKeys $0 true
 				${EndIf}
 			${EndIf}
 
