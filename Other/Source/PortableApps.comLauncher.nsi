@@ -138,19 +138,13 @@ ${!echo} "Loading segments..."
 ;=== Program Details {{{1
 ${!echo} "Specifying program details and setting options..."
 
-!if "${NamePortable}" == "PortableApps.com Launcher"
-	!define Comments ""
-!else
-	!define Comments "  This is a custom build for ${NamePortable} with Name and icon and possibly custom code."
-!endif
-
-Name "PortableApps.com Launcher"
+Name "${NamePortable} (PortableApps.com Launcher)"
 OutFile "${PACKAGE}\${AppID}.exe"
 Icon "${PACKAGE}\App\AppInfo\appicon.ico"
-Caption "PortableApps.com Launcher"
+Caption "${NamePortable} (PortableApps.com Launcher)"
 VIProductVersion ${Version}
 VIAddVersionKey ProductName "${NamePortable}"
-VIAddVersionKey Comments "A universal launcher for PortableApps.com applications, allowing applications to be run from a removable drive.${Comments}  For additional details, visit PortableApps.com"
+VIAddVersionKey Comments "A build of the PortableApps.com Launcher for ${NamePortable}, allowing it to be run from a removable drive.  For additional details, visit PortableApps.com"
 VIAddVersionKey CompanyName PortableApps.com
 VIAddVersionKey LegalCopyright PortableApps.com
 VIAddVersionKey FileDescription "${NamePortable} (PortableApps.com Launcher)"
