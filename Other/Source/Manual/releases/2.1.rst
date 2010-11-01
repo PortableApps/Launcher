@@ -13,6 +13,20 @@ it easier than ever to make portable apps.
 .. _`various new features`: `New features`_
 .. _`some changes`: `Changes`_
 
+Development team
+================
+
+First of all, the PortableApps.com Launcher core development team has grown!
+Version 2.0 was managed and released just by Chris Morgan; in 2.1, Mark Sikkema
+(Gringoloco) has joined the development team. Mark is the author of several of
+the important new features and modifications in 2.1; XML support and wildcards
+are the biggest features which have been done entirely by him (and very
+thoroughly, too). DLL server and type library registration is also a region
+Mark has done a lot of research and work with, but unfortunately it's proved to
+be more complex than we originally thought, and the code is not yet stable
+enough to be included, so it has been removed from 2.1.  It is expected to ship
+in 2.2.
+
 New features
 ============
 
