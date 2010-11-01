@@ -24,5 +24,4 @@ have been made in that release from the previous release.
 .. toctree::
    :maxdepth: 1
 
-   2.0.1
    2.0
