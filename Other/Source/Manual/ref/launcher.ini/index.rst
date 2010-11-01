@@ -27,5 +27,4 @@ launcher.ini
    filewriten
    filesystem
    language
-   registerdll
    services

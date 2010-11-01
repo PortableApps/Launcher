@@ -159,8 +159,8 @@ do about them.
 
 (Where ``X`` is a hexadecimal digit.)
 
-These are DLL servers and need registering. See
-:ini-section:`[RegisterDLL]` for details on what to do.
+These are DLL servers and need registering. For the moment, this will block an
+app from being properly portable. Code to deal with this is due in version 2.2.
 
 General handling of registry keys
 =================================

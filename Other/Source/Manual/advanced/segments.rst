@@ -96,7 +96,6 @@ Here is the current list of segments included in the PortableApps.com Launcher:
 * **OperatingSystem:** :ini-key:`[Launch]:MinOS` and :ini-key:`[Launch]:MaxOS`
 * **Qt:** :ini-section:`[QtKeysCleanup]` (see also :ref:`qt`)
 * **RefreshShellIcons:** :ini-key:`[Launch]:RefreshShellIcons`
-* **RegisterDLL:** :ini-section:`[RegisterDLL]`
 * **Registry:** :ini-key:`[Activate]:Registry` and helper utilities for
   other Registry segments. See also :ref:`registry` for this and the
   other Registry segments listed here.
