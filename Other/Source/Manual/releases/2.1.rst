@@ -70,13 +70,6 @@ itself to need to run as administrator, leaving it up to the operating system
 to raise privileges. This should make most or all cases where the value
 ``force`` has not worked work.
 
-DLL server registration
------------------------
-
-Some apps register DLL servers (keyword: DllRegisterServer); this leaves data in
-the registry. To take care of this, a new INI section has been added,
-:ini-section:`[RegisterDLL]`, to take care of this.
-
 Support for directory moving
 ----------------------------
 

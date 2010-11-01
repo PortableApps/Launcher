@@ -1,4 +1,4 @@
-${SegmentFile}
+/*${SegmentFile}
 
 ${SegmentPrePrimary}
 	StrCpy $R0 1
@@ -35,4 +35,4 @@ ${SegmentPostPrimary}
 		${EndIf}
 		IntOp $R0 $R0 + 1
 	${Loop}
-!macroend
+!macroend*/
