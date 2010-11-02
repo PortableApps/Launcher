@@ -16,9 +16,12 @@ If the target directory already exists at the start of the process, it will be
 backed up (to *target directory*\ \\\ *file name*-BackupBy\ *AppID*) and
 restored at the end.
 
-Wildcards are not yet supported.
+:ref:`Wildcards <wildcards>` are supported.
 
 **Example:** ``settings\file.txt=%PAL:AppDir%\AppName``
+
+.. versionchanged:: 2.1
+   added support for wildcards
 
 .. ini-section:: [DirectoriesMove]
 
@@ -43,9 +46,12 @@ and throw away any changes, set the source directory to ``-``, so you end up
 with ``-=[target location]``. If you don't wish to back up local data, you can
 use :ini-section:`[DirectoriesCleanupForce]`.
 
-Wildcards are not yet supported.
+:ref:`Wildcards <wildcards>` are supported.
 
 **Example:** ``settings=%APPDATA%\Pub\lisher\AppName``
+
+.. versionchanged:: 2.1
+   added support for wildcards
 
 .. ini-section:: [DirectoriesCleanupIfEmpty]
 
@@ -56,7 +62,7 @@ Wildcards are not yet supported.
 
 |envsub|
 
-Wildcards are not supported.
+:ref:`Wildcards <wildcards>` are supported.
 
 ----
 
@@ -68,6 +74,9 @@ line in here.
 
 **Example:** ``1=%APPDATA%\Publisher``
 
+.. versionchanged:: 2.1
+   added support for wildcards
+
 .. ini-section:: [DirectoriesCleanupForce]
 
 [DirectoriesCleanupForce]
@@ -77,7 +86,7 @@ line in here.
 
 |envsub|
 
-Wildcards are not supported.
+:ref:`Wildcards <wildcards>` are supported.
 
 ----
 
@@ -90,3 +99,6 @@ If you need to back up the local directory so that it will not be ruined, you
 can use :ini-section:`[DirectoriesMove]` with a key name of ``-``.
 
 **Example:** ``1=%APPDATA%\Publisher``
+
+.. versionchanged:: 2.1
+   added support for wildcards

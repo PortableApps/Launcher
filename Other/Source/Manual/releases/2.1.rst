@@ -70,6 +70,17 @@ itself to need to run as administrator, leaving it up to the operating system
 to raise privileges. This should make most or all cases where the value
 ``force`` has not worked work.
 
+Wildcards
+---------
+
+Support for wildcards (using the characters ``*`` and ``?``) in file and
+directory names has been added. It's supported in the
+:ini-section:`[FilesMove]`, :ini-section:`[DirectoriesMove]`,
+:ini-section:`[FileWriteN]`, :ini-section:`[DirectoriesCleanupIfEmpty]` and
+:ini-section:`[DirectoriesCleanupForce]` sections. This is a fairly
+self-explanatory feature which most or all users will already be familiar with.
+Precisely what is supported is documentated in :ref:`wildcards`.
+
 Support for directory moving
 ----------------------------
 
