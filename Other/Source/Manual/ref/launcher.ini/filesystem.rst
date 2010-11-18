@@ -16,6 +16,12 @@ If the target directory already exists at the start of the process, it will be
 backed up (to *target directory*\ \\\ *file name*-BackupBy\ *AppID*) and
 restored at the end.
 
+Concerning how the file should be situated in the Data directory, the directory
+must exist or the file will not be saved. Thus, you are recommended to either
+store files in the root of Data or in the ``settings`` directory. Other
+directories may be suitable sometimes if the directory will be created by
+``DefaultData``.
+
 :ref:`Wildcards <wildcards>` are supported.
 
 **Example:** ``settings\file.txt=%PAL:AppDir%\AppName``
@@ -46,9 +52,17 @@ and throw away any changes, set the source directory to ``-``, so you end up
 with ``-=[target location]``. If you don't wish to back up local data, you can
 use :ini-section:`[DirectoriesCleanupForce]`.
 
+Concerning how the directory should be situated, the parent directory must
+exist or the directory will not be saved. Thus, you are recommended to use a
+top-level directory name. Contrary to some former recommendations, ``settings``
+should **not** be used as the key, as the ``Data\settings`` directory is used
+for storing registry keys in such a way that data will be lost if you move the
+directory; it  may also be used for other purposes, so whether you use registry
+support or not, you should avoid it..
+
 :ref:`Wildcards <wildcards>` are supported.
 
-**Example:** ``settings=%APPDATA%\Pub\lisher\AppName``
+**Example:** ``config=%APPDATA%\Pub\lisher\AppName``
 
 .. versionchanged:: 2.1
    added support for wildcards
