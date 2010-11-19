@@ -58,7 +58,7 @@ top-level directory name. Contrary to some former recommendations, ``settings``
 should **not** be used as the key, as the ``Data\settings`` directory is used
 for storing registry keys in such a way that data will be lost if you move the
 directory; it  may also be used for other purposes, so whether you use registry
-support or not, you should avoid it..
+support or not, you should avoid it.
 
 :ref:`Wildcards <wildcards>` are supported.
 
