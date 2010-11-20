@@ -62,9 +62,9 @@ ${Segment.onInit}
 	System::Call kernel32::GetCurrentProcess()i.s
 	System::Call kernel32::IsWow64Process(is,*i.r0)
 	${If} $0 == 0
-		StrCpy $Bits 64
-	${Else}
 		StrCpy $Bits 32
+	${Else}
+		StrCpy $Bits 64
 	${EndIf}
 
 !macroend
