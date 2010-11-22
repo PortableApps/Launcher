@@ -112,4 +112,4 @@ does **not** include the attribute. That is given as a separate value
 For more information about XPaths, see the `Wikipedia article on XPaths`_ and
 links that it has.
 
-.. _Wikipedia article on XPaths: http://en.wikipedia.org/wiki/XPaths_1.0
+.. _Wikipedia article on XPaths: http://en.wikipedia.org/wiki/XPath_1.0
