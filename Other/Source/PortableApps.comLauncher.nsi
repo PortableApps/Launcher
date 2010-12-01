@@ -106,7 +106,10 @@ Var WaitForProgram
 !define ReadUserConfig "!insertmacro ReadUserConfig"
 
 ; Better to keep people away from the name completely. The Generator updates references in Custom.nsh when moving the file, anyway.
-!define ReadUserOverrideConfig "!error `ReadUserOverrideConfig has been renamed to ReadUserConfig in PAL 2.1.`"
+!macro ReadUserOverrideConfigError a b
+	!error `ReadUserOverrideConfig has been renamed to ReadUserConfig in PAL 2.1.`
+!macroend
+!define ReadUserOverrideConfig "!insertmacro ReadUserOverrideConfigError"
 
 !macro InvalidValueError _SECTION_KEY _VALUE
 	MessageBox MB_OK|MB_ICONSTOP "Error: invalid value '${_VALUE}' for ${_SECTION_KEY}. Please refer to the Manual for valid values."
