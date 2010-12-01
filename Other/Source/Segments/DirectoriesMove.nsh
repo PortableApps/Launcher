@@ -15,6 +15,10 @@ ${SegmentPrePrimary}
 	${ForEachINIPair} DirectoriesMove $0 $1
 		!insertmacro _DirectoriesMove_Start
 
+		${If} $0 == $DataDirectory\settings
+			MessageBox MB_ICONSTOP "DON'T YOU DARE DO THAT! (You can't [DirectoriesMove] settings)"
+		${EndIf}
+
 		; Is the target inside the package?
 		StrLen $R0 $EXEDIR
 		StrCpy $R0 $1 $R0
