@@ -1,5 +1,11 @@
 ${SegmentFile}
 
+; Explanation of the in-package stuff: In Post, if the target was in the
+; package, and the Rename back fails (path is open), instead of killing it
+; badly, we copy it (so it won't be destroyed if the app is upgraded between
+; runs, or missed if backed up) and on next launch delete the Data version (as
+; it's a duplicate).
+
 !macro _DirectoriesMove_Start
 	${IfThen} $0 != - ${|} StrCpy $0 $DataDirectory\$0 ${|}
 	${ParseLocations} $1
@@ -9,11 +15,32 @@ ${SegmentPrePrimary}
 	${ForEachINIPair} DirectoriesMove $0 $1
 		!insertmacro _DirectoriesMove_Start
 
-		; Backup data from a local installation
-		${ForEachDirectory} $4 $3 $1
-			${DebugMsg} "Backing up $4 to $4.BackupBy$AppID"
-			Rename $4 $4.BackupBy$AppID
-		${NextDirectory}
+		; Is the target inside the package?
+		StrLen $R0 $EXEDIR
+		StrCpy $R0 $1 $R0
+		${If} $R0 == $EXEDIR
+			StrCpy $7 in-package
+		${EndIf}
+
+		${If} $7 != in-package
+			; Backup data from a local installation
+			${ForEachDirectory} $4 $3 $1
+				${DebugMsg} "Backing up $4 to $4.BackupBy$AppID"
+				Rename $4 $4.BackupBy$AppID
+			${NextDirectory}
+		${ElseIf} $0 != -
+			${ForEachDirectory} $4 $3 $1
+				${Break} ; Done this way as we can't nest ForEachPaths
+			${NextDirectory}
+			${IfNot} ${Errors}
+				; Target directories existed, so the Rename back failed; clear out the stuff in Data.
+				${DebugMsg} "Matching directories for $1 discovered, deleting $0"
+				${ForEachDirectory} $4 $3 $0
+					RMDir /r $4
+				${NextDirectory}
+				StrCpy $7 in-package-done
+			${EndIf}
+		${EndIf}
 
 		; If the key is -, don't move/copy to the target directory.
 		; If portable data exists move/copy it to the target directory.
@@ -22,7 +49,8 @@ ${SegmentPrePrimary}
 				CreateDirectory $1
 				${DebugMsg} "DirectoriesMove key -, so only creating the directory $1 (no file copy)."
 			${EndIf}
-		${Else}
+		; If in-package-done, the target directory existed and so we know that the copy back failed;
+		${ElseIf} $7 != in-package-done
 			; See if the parent local directory exists. If not, create it and
 			; note down to delete it at the end if it's empty.
 			${GetParent} $1 $4
@@ -62,6 +90,13 @@ ${SegmentPostPrimary}
 	${ForEachINIPair} DirectoriesMove $0 $1
 		!insertmacro _DirectoriesMove_Start
 
+		; Is the target inside the package?
+		StrLen $R0 $EXEDIR
+		StrCpy $R0 $1 $R0
+		${If} $R0 == $EXEDIR
+			StrCpy $7 in-package
+		${EndIf}
+
 		; If the key is "-", don't copy it back
 		; Also if not in Live mode, copy the data back to the Data directory.
 		${GetParent} $0 $3
@@ -74,7 +109,14 @@ ${SegmentPostPrimary}
 				${GetRoot} $1 $6 ; drive
 				${If} $5 == $6   ; letters
 					${DebugMsg} "Renaming directory $4 to $3\$2"
+					ClearErrors
 					Rename $4 $3\$2 ; same volume, rename OK
+					${If} ${Errors}
+						${DebugMsg} "Rename failed, directory handle presumably open. Trying to recover with copy."
+						RMDir /R $3\$2
+						CreateDirectory $3\$2
+						CopyFiles /SILENT $4\*.* $3\$2
+					${EndIf}
 				${Else}
 					${DebugMsg} "Copying $4\*.* to $3\$2\*.*"
 					RMDir /R $3\$2
@@ -83,8 +125,25 @@ ${SegmentPostPrimary}
 				${EndIf}
 			${EndIf}
 			; And then remove it from the runtime location
-			${DebugMsg} "Removing portable settings directory from run location ($4)."
+${!getdebug}
+!ifdef DEBUG
+			${If} $7 != in-package
+			${AndIf} ${FileExists} $4
+				ClearErrors
+				${DebugMsg} "Removing portable settings directory from run location ($4)."
+			${EndIf}
+!endif
 			RMDir /R $4
+!ifdef DEBUG
+			${If} $7 != in-package
+			${AndIf} ${FileExists} $4
+			${AndIf} ${Errors}
+				${DebugMsg} "Failed to remove directory. Internal state is probably messed up."
+				; In the future we may alert the user and request that they
+				; close it themselves but I've added enough strings for 2.1
+				; (bad excuse, I know).
+			${EndIf}
+!endif
 		${NextDirectory}
 
 		; If the parent directory we put the directory in locally didn't exist
