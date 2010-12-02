@@ -101,3 +101,11 @@ features that they use.
 * Moving a directory
 * Language switching including :ini-section:`[LanguageFile]` language
   preservation and :ini-section:`[LanguageStrings]` mappings
+
+`SQLite Database Browser`_
+--------------------------
+
+* Working directory (and that's all - a good example of keeping it simple)
+
+.. _SQLite Database Browser:
+   http://portableapps.com/apps/development/sqlite_database_browser_portable
