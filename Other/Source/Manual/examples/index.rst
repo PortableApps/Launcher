@@ -81,7 +81,7 @@ features that they use.
 * Updating drive letters
 
 .. _Paul's Extreme Sound Stretch:
- http://portableapps.com/apps/music_video/paul_stretch_portable>
+   http://portableapps.com/apps/music_video/paul_stretch_portable
 
 `PChat <http://portableapps.com/apps/internet/pchat_portable>`_
 ---------------------------------------------------------------
