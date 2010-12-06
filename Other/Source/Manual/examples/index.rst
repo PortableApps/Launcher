@@ -45,6 +45,19 @@ features that they use.
   preservation and :ini-section:`[LanguageStrings]` mappings
 * Single portable app instance but multiple app instances
 
+`Console <http://portableapps.com/apps/utilities/console_portable>`_
+--------------------------------------------------------------------
+
+* Updating drive letters
+* Moving a file
+* Setting environment variables
+
+`Free UPX <http://portableapps.com/apps/utilities/free_upx_portable>`_
+----------------------------------------------------------------------
+
+* Updating drive letters
+* Moving a file
+
 `gVim <http://portableapps.com/apps/development/gvim_portable>`_
 ----------------------------------------------------------------
 
@@ -109,3 +122,10 @@ features that they use.
 
 .. _SQLite Database Browser:
    http://portableapps.com/apps/development/sqlite_database_browser_portable
+
+`WAtomic <http://portableapps.com/apps/games/watomic_portable>`_
+----------------------------------------------------------------
+
+* Launch app after splash
+* Moving files
+* Pruning a directory if empty
