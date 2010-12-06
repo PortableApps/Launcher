@@ -114,7 +114,16 @@ Function .onInit
 	CreateDirectory $EXEDIR\Data
 	
 	ReadINIStr $SKIPWELCOMEPAGE $EXEDIR\Data\settings.ini GeneratorWizard SkipWelcomePage
+	ReadINIStr $0 $EXEDIR\Data\settings.ini GeneratorWizard Drive
 	ReadINIStr $PACKAGE $EXEDIR\Data\settings.ini GeneratorWizard Package
+	; Update drive letter; doesn't matter if $0 == ""
+	StrLen $1 $0
+	StrCpy $2 $PACKAGE $1
+	${If} $2 == $0
+		StrCpy $PACKAGE $PACKAGE "" $1
+		StrCpy $PACKAGE $0$PACKAGE
+	${EndIf}
+
 	ReadINIStr $NSIS $EXEDIR\Data\settings.ini GeneratorWizard makensis
 	${If} $NSIS == ""
 		StrCpy $NSIS ..\NSISPortable\App\NSIS\makensis.exe
@@ -158,6 +167,8 @@ Function LeaveOptionsWindow
 		MessageBox MB_OK|MB_ICONEXCLAMATION `Please select a valid portable app's base directory to create a launcher for.`
 		Abort
 	${EndIf}
+	${GetRoot} $EXEDIR $0
+	WriteINIStr $EXEDIR\Data\settings.ini GeneratorWizard Drive $0
 	WriteINIStr $EXEDIR\Data\settings.ini GeneratorWizard Package $PACKAGE
 FunctionEnd
 
