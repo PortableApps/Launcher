@@ -117,11 +117,7 @@ Function .onInit
 	ReadINIStr $PACKAGE $EXEDIR\Data\settings.ini GeneratorWizard Package
 	ReadINIStr $NSIS $EXEDIR\Data\settings.ini GeneratorWizard makensis
 	${If} $NSIS == ""
-		StrCpy $NSIS ..\UnicodeNSISPortable\App\NSIS\makensis.exe
-		${IfNot} ${FileExists} $NSIS
-		${AndIf} ${FileExists} ..\NSISPortable\App\NSIS\makensis.exe
-			StrCpy $NSIS ..\NSISPortable\App\NSIS\makensis.exe
-		${EndIf}
+		StrCpy $NSIS ..\NSISPortable\App\NSIS\makensis.exe
 		WriteINIStr $EXEDIR\Data\settings.ini GeneratorWizard makensis $NSIS
 	${EndIf}
 
