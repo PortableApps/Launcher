@@ -52,6 +52,14 @@ features that they use.
 * Moving a file
 * Setting environment variables
 
+`Finance Explorer`_
+-------------------
+
+* Moving files
+
+.. _Finance Explorer:
+   http://portableapps.com/apps/office/finance_explorer_portable
+
 `Free UPX <http://portableapps.com/apps/utilities/free_upx_portable>`_
 ----------------------------------------------------------------------
 
