@@ -196,7 +196,7 @@ Encoding
 If you need to find and replace in a Unicode (UTF-16LE) file, but it is missing
 the byte-order mark (BOM), set the encoding here as ``UTF-16LE``; if a file for
 some reason has the UTF-16LE BOM, ``U+FFFE``, at the start of the file, but
-isn't really UTF16-LE, set this to ``ANSI``. Otherwise, omit this value and the
+isn't really UTF-16LE, set this to ``ANSI``. Otherwise, omit this value and the
 encoding will be automatically detected by checking for the BOM.
 
 For UTF-8 files, leave this value out. The value ``ANSI`` isn't really ANSI,
