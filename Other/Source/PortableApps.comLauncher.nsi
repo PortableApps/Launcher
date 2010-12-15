@@ -39,6 +39,7 @@
 
 ;=== Runtime Switches {{{1
 WindowIcon Off
+XPStyle on
 SilentInstall Silent
 AutoCloseWindow True
 !ifdef RUNASADMIN_COMPILEFORCE
