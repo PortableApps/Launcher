@@ -173,9 +173,11 @@ If the application must be run from a certain working directory, either to
 store its settings there or so that it can find certain files critical to it,
 set it here. If the reason is so that it can find files, you may be able to
 circumvent this by placing the application's directory in the ``PATH``.  See
-:ini-section:`[Environment]` for details on that technique.  If possible, avoid
-using this as it will make relative files passed through the command line fail
-unless it is only a single file given (which will be automatically corrected).
+:ini-section:`[Environment]` for details on that technique.
+
+If possible, avoid using this as it will make relative files passed through the
+command line fail unless it is only a single file given (which will be
+automatically corrected).
 
 **Example:** ``%PAL:AppDir%\AppName``
 
