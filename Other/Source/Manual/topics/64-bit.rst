@@ -12,7 +12,9 @@ reasoning behind this is that almost all 32-bit apps work in 64-bit versions of
 Windows, and there is normally little or no performance benefit from running a
 native 64-bit app instead of its 32-bit build. So normally including a 64-bit
 build as well as a 32-bit build would just add to the size of a package
-(approximately doubling it) without any real benefit.
+(approximately doubling it) without any real benefit. For some more explanation
+of our policy on 64-bit apps and what happens with them, see `64-bit Software:
+Where It Fits Into Portable Apps`_.
 
 There are however some cases where there is benefit in including 64-bit builds
 of apps. The most common is for apps that utilise low-level functions in the
@@ -76,3 +78,6 @@ additional environment variables ``FullAppDir:ForwardSlash``, :ref:`etc.
 
 .. _`7-Zip Portable`:
    http://portableapps.com/apps/utilities/7zip_portable
+
+.. _`64-bit Software: Where It Fits Into Portable Apps`:
+   http://portableapps.com/node/24371
