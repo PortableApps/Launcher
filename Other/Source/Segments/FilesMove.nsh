@@ -34,7 +34,7 @@ ${SegmentPrePrimary}
 					Rename $4 $4.BackupBy$AppID
 				${EndIf}
 			${NextFile}
-		${ElseIf} $0 != -
+		${Else}
 			${ForEachFile} $4 $2 $1
 				${Break} ; Done this way as we can't nest ForEachPaths
 			${NextFile}
