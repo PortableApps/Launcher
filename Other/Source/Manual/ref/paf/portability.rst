@@ -1,6 +1,6 @@
 .. _paf-portability:
 
-5. Host PC Modifications & Portability
+6. Host PC Modifications & Portability
 ======================================
 
 During use, a portable app is permitted to modify registry entries and files on

@@ -1,10 +1,17 @@
 .. _paf-history:
 
-7. PortableApps.com Format Version History and Discussion
+8. PortableApps.com Format Version History and Discussion
 =========================================================
 
 An ongoing discussion about PortableApps.com Format and the PortableApps.com
 Installer is taking place in the Development Forum.
+
+*2011-04-12: 2.0: Added CompressionFileSizeCutOff to AppCompactor.ini.*
+
+*2010-08-01: 2.0: Added AppCompactor.ini.*
+
+*2010-06-14: 2.0: Added Armenian to supported languages and updated ExtractTo to
+be clear it has been deprecated.*
 
 *2010-06-03: 2.0: Added OptionalSectionInstalledWhenSilent, 128px PNG icons, 11
 languages, full Unicode support, Operating System category removed, Security
