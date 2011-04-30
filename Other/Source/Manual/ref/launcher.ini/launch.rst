@@ -464,9 +464,13 @@ SingleAppInstance
 ----
 
 If you only wish one instance of the application, portable or local, to be run,
-omit this value. If it is set to ``true`` or omitted, if the launcher is started
-while another copy of the application, portable or local, is already running, it
-will abort with an error message.
+omit this value. If it is set to ``true`` or omitted, if the launcher is
+started while a local copy of the application is already running, it will abort
+with an error message. This value only affects running a portable instance
+while a local instance is already running; if a second portable instance is
+launched, this value this value will not affect it.  See
+:ini-key:`SinglePortableAppInstance <[Launch]:SinglePortableAppInstance>` for
+controlling that case.
 
 If, however, it is permissible for a portable version of the application to run
 concurrently with a local instance, you can set this to ``false``.
