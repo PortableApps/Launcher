@@ -1,6 +1,6 @@
 .. _paf-installer:
 
-4. PortableApps.com Installer (and installer.ini)
+5. PortableApps.com Installer (and installer.ini)
 =================================================
 
 All apps in PortableApps.com Format must use the most recent PortableApps.com
@@ -70,6 +70,7 @@ installer.ini should be created from scratch using only the features needed.**
    AFRIKAANS=true
    ALBANIAN=true
    ARABIC=true
+   ARMENIAN=true
    BASQUE=true
    BELARUSIAN=true
    BOSNIAN=true

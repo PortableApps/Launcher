@@ -1,6 +1,6 @@
 .. _paf-plugins:
 
-6. Plugin Installers
+7. Plugin Installers
 ====================
 
 In addition to standard installers, the PortableApps.com Installer can be used
