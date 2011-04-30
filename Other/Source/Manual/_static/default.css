@@ -248,6 +248,7 @@ ol.toc li.b { background-color: #e6e8ea; }
 ol.toc li a:hover { background-color: transparent !important; text-decoration: underline !important; }
 ol.toc span.release-date { color:#600b0b; float: right; font-size: 85%; padding-right: .5em; }
 ol.toc span.comment-count { font-size: 75%; color: #999; }
+.sphinxsidebar ul { padding-left:15px; }
 
 /*** tables ***/
 table { color:#000; margin-bottom: 1em; width: 100%; }
@@ -257,10 +258,11 @@ table.docutils td, table.docutils th { border-bottom:1px solid #dfdfdf; padding:
 table.docutils thead th { border-bottom:1px solid #000000; text-align:left; font-weight: bold; white-space: nowrap; background: url(help_background_header.png) center top; }
 table.docutils thead th p { margin: 0; padding: 0; }
 table.docutils { border-collapse:collapse;
-	/* Make the sidebar line "fade out" if they overlap. Shadow repeated 5 times to make it stronger. */
-	  -moz-box-shadow: white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px;
-	-opera-box-shadow: white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px;
-	       box-shadow: white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px, white 0 0 20px;
+/* Make the sidebar line "fade out" if they overlap. */
+-webkit-box-shadow: white 0 0 10px 10px;
+   -moz-box-shadow: white 0 0 10px 10px;
+     -o-box-shadow: white 0 0 10px 10px;
+        box-shadow: white 0 0 10px 10px;
 }
 
 /*** code blocks ***/
