@@ -192,3 +192,14 @@ Also when a :ini-section:`[RegistryKeys]` value targets a key in
 HKEY_LOCAL_MACHINE and the user did not have sufficient privileges, the first
 time it was run, a key was left behind in the registry and future runs of the
 app would not function entirely correctly. This has been fixed.
+
+Apps will now also detect already-running instances of themselves which are
+shutting down or starting up at the same time, and so prevent data corruption
+which has been observed in one or two apps. At present this only applies in the
+scope of individual portable app installations, not multiple installations of
+the same app. This may mean that some apps which move settings to shared
+locations (such as APPDATA) will still be affected by this issue. However, for
+the apps which it was originally reported with, which moved settings from the
+Data directory to the App directory, this bug is fixed. A complete fix for all
+cases where this bug may manifest itself this will be investigated in version
+2.2.

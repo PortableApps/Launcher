@@ -354,8 +354,16 @@ FunctionEnd
 Section           ;{{{1
 	Call Init
 	${ReadRuntimeData} $R9 PortableApps.comLauncher Status
+	${If} $R9 == starting
+		MessageBox MB_ICONSTOP $(LauncherAlreadyStarting)
+		Quit
+	${ElseIf} $R9 == stopping
+		MessageBox MB_ICONSTOP $(LauncherAlreadyStopping)
+		Quit
+	${EndIf}
 	${If} $R9 != running
 	${OrIf} $SecondaryLaunch == true
+		${WriteRuntimeData} PortableApps.comLauncher Status starting
 		${CallPS} Pre +
 		${CallPS} PreExec +
 		${If} $WaitForProgram != false
@@ -364,6 +372,10 @@ Section           ;{{{1
 		; File gets deleted in segment Core, hook Unload, so it'll only be "running"
 		; in case of power-outage, disk removal while running or something like that.
 		Call Execute
+	${EndIf}
+	${If} $SecondaryLaunch != true
+		; It would be left as "stopping" if secondary wrote it.
+		${WriteRuntimeData} PortableApps.comLauncher Status stopping
 	${EndIf}
 	${If} $WaitForProgram != false
 		${CallPS} Post -
