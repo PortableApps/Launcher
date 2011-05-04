@@ -372,6 +372,14 @@ Section           ;{{{1
 		; File gets deleted in segment Core, hook Unload, so it'll only be "running"
 		; in case of power-outage, disk removal while running or something like that.
 		Call Execute
+	${Else}
+		; After doing Post, we don't do restart automatically as the variables
+		; and environment are all altered and this may affect what happens
+		; (some variables are checked against "" rather than initialising every
+		; variable, and some may depend on environment variables, so spawing a
+		; new instance isn't safe either)
+		MessageBox MB_ICONSTOP $(LauncherCrashCleanup)
+		; One possible solution: ExecWait another copy of self to do cleanup
 	${EndIf}
 	${If} $SecondaryLaunch != true
 		; It would be left as "stopping" if secondary wrote it.
