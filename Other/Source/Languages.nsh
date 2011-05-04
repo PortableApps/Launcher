@@ -18,6 +18,8 @@ ${IncludeLang} Finnish
 ${IncludeLang} French
 ${IncludeLang} Galician
 ${IncludeLang} German
+${IncludeLang} Hungarian
+${IncludeLang} Indonesian
 ${IncludeLang} Italian
 ${IncludeLang} Japanese
 ${IncludeLang} Polish
