@@ -18,6 +18,7 @@ ${IncludeLang} Finnish
 ${IncludeLang} French
 ${IncludeLang} Galician
 ${IncludeLang} German
+${IncludeLang} Hebrew
 ${IncludeLang} Hungarian
 ${IncludeLang} Indonesian
 ${IncludeLang} Italian
