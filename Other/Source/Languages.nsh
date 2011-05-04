@@ -29,6 +29,7 @@ ${IncludeLang} SimpChinese
 ${IncludeLang} Slovenian
 ${IncludeLang} Spanish
 ${IncludeLang} Swedish
+${IncludeLang} Thai
 ${IncludeLang} TradChinese
 ${IncludeLang} Turkish
 
