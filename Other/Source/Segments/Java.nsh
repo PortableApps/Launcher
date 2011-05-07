@@ -56,16 +56,15 @@ ${SegmentInit}
 		${If} $JavaMode == require
 			${IfNot} ${FileExists} $JavaDirectory
 				;=== Java Portable is missing
-				StrCpy $MissingFileOrPath Java
-				MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
+				MessageBox MB_OK|MB_ICONSTOP `$(LauncherNoJava)`
 				Quit
 			${EndIf}
 			${IfThen} $ProgramExecutable == java.exe ${|} StrCpy $UsingJavaExecutable true ${|}
 			${IfThen} $ProgramExecutable == javaw.exe ${|} StrCpy $UsingJavaExecutable true ${|}
-			${IfNot} ${FileExists} $JavaDirectory\bin\$ProgramExecutable
+			${If} $UsingJavaExecutable == true
+			${AndIfNot} ${FileExists} $JavaDirectory\bin\$ProgramExecutable
 				;=== The required Java binary (java.exe or javaw.exe) is missing.
-				StrCpy $MissingFileOrPath $JavaDirectory\bin\$ProgramExecutable
-				MessageBox MB_OK|MB_ICONSTOP `$(LauncherFileNotFound)`
+				MessageBox MB_OK|MB_ICONSTOP `$(LauncherNoJava)`
 				Quit
 			${EndIf}
 		${EndIf}

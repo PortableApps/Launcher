@@ -81,6 +81,11 @@ directory names has been added. It's supported in the
 self-explanatory feature which most or all users will already be familiar with.
 Precisely what is supported is documentated in :ref:`wildcards`.
 
+There is currently one known slight bug; on XP, ``?`` wildcard matching in file
+extensions will also match fewer characters, so ``*.???`` will mistakenly match
+``*.xy``. This usage pattern is extremely rare, however, and so it is unlikely
+to cause any trouble ever.
+
 Support for directory moving
 ----------------------------
 
@@ -143,6 +148,17 @@ To facilitate apps which write to ``C:\Documents and Settings\All
 Users\Application Data`` on Windows 2000 and XP and to ``C:\ProgramData`` on
 Windows Vista and 7, a new environment variable, :env:`ALLUSERSAPPDATA`, was
 added.
+
+Friendlier management of Java apps
+----------------------------------
+
+When Java was not found on the local machine or in the portable installation,
+apps using Java formerly gave the not-particularly-helpful error message "App
+Name Portable cannot be started. You may wish to re-install to fix this issue.
+(ERROR: Java could not be found)". Now a more helpful error message is
+provided, "App Name requires a Java Runtime Environment. Please install
+jPortable from http://portableapps.com/jportable and then try again." Automatic
+installation will come in a later version.
 
 Changes
 =======
