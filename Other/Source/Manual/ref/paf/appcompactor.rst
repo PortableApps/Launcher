@@ -30,13 +30,13 @@ your app or do not need to make changes to its standard compression setup, this
 section should be omitted.*
 
 **FilesExcluded** are any files you would like excluded from an AppCompactor run
-separated by pipes |.
+separated by pipes ``|``.
 
 **AdditionalExtensionsExcluded** is any additional types of files (extensions)
-that you would like to exclude from the compaction separated by pipes |.
+that you would like to exclude from the compaction separated by pipes ``|``.
 
 **AdditionalExtensionsIncluded** is any additional types of files (extensions)
-that you would like to include in the compaction separated by pipes |.
+that you would like to include in the compaction separated by pipes ``|``.
 
 **CompressionFileSizeCutOff** is the cutoff point at which to ignore files for
 compression in bytes. The default is 4096, meaning files 4K in size and smaller
