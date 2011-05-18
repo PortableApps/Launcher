@@ -1,0 +1,20 @@
+.. index:: Release notes; 2.2
+
+.. _releases-2.2:
+
+===============================================================
+PortableApps.com Launcher 2.2 release notes - UNDER DEVELOPMENT
+===============================================================
+
+Hot on the heels of 2.1, 2.2 is being developed with `more new features`_,
+`some changes`_ and further improved documentation. It's never been easier to
+make a high quality portable app.
+
+.. _`more new features`: `New features`_
+.. _`some changes`: `Changes`_
+
+New features
+============
+
+Changes
+=======
