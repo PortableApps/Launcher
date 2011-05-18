@@ -16,5 +16,16 @@ make a high quality portable app.
 New features
 ============
 
+New hook for custom code
+------------------------
+
+Three new hooks have been added which allows custom code to execute immediately
+after the completion of the execution of the app, before all the standard
+segments' ``Post`` hooks are executed (which does things like moving files
+back, saving registry data and cleaning up some other things): ``PostExec``,
+``PostExecPrimary`` and ``PostExecSecondary``. If you don't *know* that you
+need this, you probably don't. See :ref:`Segments: Hooks <segments-hooks>` for
+a little bit more information.
+
 Changes
 =======

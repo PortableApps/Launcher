@@ -31,6 +31,9 @@
 	${_CreateSegmentDef} PreExec
 	${_CreateSegmentDef} PreExecPrimary
 	${_CreateSegmentDef} PreExecSecondary
+	${_CreateSegmentDef} PostExec
+	${_CreateSegmentDef} PostExecPrimary
+	${_CreateSegmentDef} PostExecSecondary
 	${_CreateSegmentDef} Post
 	${_CreateSegmentDef} PostPrimary
 	${_CreateSegmentDef} PostSecondary

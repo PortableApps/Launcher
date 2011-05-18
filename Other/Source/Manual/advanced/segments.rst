@@ -35,7 +35,8 @@ strategic partnership between the developer and... and... well, whatever's left.
 Hooks
 -----
 
-Here is a list of the hooks which can be executed:
+Here is a list of the hooks which can be executed (in the order in which they
+are called:
 
 * ``.onInit``: things which must go in the NSIS ``.onInit`` function (see the
   `NSIS documentation`_ for details about ``.onInit``)
@@ -53,10 +54,14 @@ Here is a list of the hooks which can be executed:
   do something here. Try to use the ``Pre`` hook instead.
 * ``PreExecPrimary``: ``PreExec`` for primary instances.
 * ``PreExecSecondary``: ``PreExec`` for secondary and subsequent instances.
-* ``Post``: clean up the application and handle restoration of settings and
-  related things in here.
+* ``PostExecPrimary``: ``PostExec`` for primary instances.
+* ``PostExecSecondary``: ``PostExec`` for secondary and subsequent instances.
+* ``PreExec``: just after the program gets executed, there's an opportunity to
+  do something here. Try to use the ``Post`` hook instead.
 * ``PostPrimary``: ``Post`` for primary instances.
 * ``PostSecondary``: ``Post`` for secondary and subsequent instances.
+* ``Post``: clean up the application and handle restoration of settings and
+  related things in here.
 * ``Unload``: unload plug-ins and clean up traces from the launcher itself.
 
 .. _`NSIS documentation`: http://nsis.sourceforge.net/Docs/Chapter4.html#4.7.2.1.2
