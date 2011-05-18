@@ -56,7 +56,7 @@ are called:
 * ``PreExecSecondary``: ``PreExec`` for secondary and subsequent instances.
 * ``PostExecPrimary``: ``PostExec`` for primary instances.
 * ``PostExecSecondary``: ``PostExec`` for secondary and subsequent instances.
-* ``PreExec``: just after the program gets executed, there's an opportunity to
+* ``PostExec``: just after the program gets executed, there's an opportunity to
   do something here. Try to use the ``Post`` hook instead.
 * ``PostPrimary``: ``Post`` for primary instances.
 * ``PostSecondary``: ``Post`` for secondary and subsequent instances.
