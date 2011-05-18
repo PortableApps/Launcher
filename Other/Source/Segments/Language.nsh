@@ -129,6 +129,19 @@ ${SegmentInit}
 					${EndIf}
 				${EndIf}
 
+				; Also, see if we want to cut anything off at the left.
+				; This could potentially be useful for some types.
+				ClearErrors
+				${ReadLauncherConfig} $0 LanguageFile TrimLeft
+				${IfNot} ${Errors}
+					; See if it ends with this string.
+					StrLen $1 $0
+					StrCpy $2 $8 $1
+					${If} $2 == $0         ; yes, it does,
+						StrCpy $8 $8 "" $1 ; so cut it off
+					${EndIf}
+				${EndIf}
+
 				; Now we're all done, let's set the environment variable.
 				${DebugMsg} "Setting PAL:LanguageCustom to $8 based on the [LanguageFile] section."
 				${SetEnvironmentVariable} PAL:LanguageCustom $8
