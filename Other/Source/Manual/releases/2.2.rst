@@ -36,5 +36,11 @@ program's execution. These are useful for apps which need to (or can) do some
 special setup or cleanup of their own to improve portability. Refer to the
 linked documentation for further information.
 
+:ini-key:`[LanguageFile]:TrimLeft`
+----------------------------------
+
+:ini-key:`[LanguageFile]:TrimLeft` has been added, the counterpart of
+:ini-key:`[LanguageFile]:TrimRight` for trimming the start of a read string.
+
 Changes
 =======
