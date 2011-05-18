@@ -27,5 +27,14 @@ back, saving registry data and cleaning up some other things): ``PostExec``,
 need this, you probably don't. See :ref:`Segments: Hooks <segments-hooks>` for
 a little bit more information.
 
+Run additional commands before or after the main program
+--------------------------------------------------------
+
+:ini-key:`[Launch]:RunBeforeN` and :ini-key:`[Launch]:RunAfterN` have been
+added, providing a way to execute commands just before and just after the main
+program's execution. These are useful for apps which need to (or can) do some
+special setup or cleanup of their own to improve portability. Refer to the
+linked documentation for further information.
+
 Changes
 =======

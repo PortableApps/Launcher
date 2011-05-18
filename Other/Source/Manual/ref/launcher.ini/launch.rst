@@ -498,6 +498,52 @@ portable application is started than the :ini-key:`ProgramExecutable
 particularly useful with Java applications which use Launch4J. See
 :ref:`java-launch4j` for details on that.
 
+.. ini-key:: [Launch]:RunBeforeN
+
+RunBefore\ *N*
+--------------
+
+| Optional.
+| |envsub|
+
+----
+
+Execute a given command string just before launching the main app. This will
+typically be something like ``"%PAL:AppDir%\AppName\foo.exe"`` or
+``"%PAL:AppDir%\AppName\foo.exe" --arguments``.  Remember that this is a full
+command line, not just a path to an executable, and so you must quote the
+executable path with double quotes so that it will work from paths with spaces.
+Following INI style guidelines, this means your line should be like this:
+
+.. code-block:: ini
+
+   [Launch]
+   RunBefore1='"%PAL:AppDir%\AppName\appname.exe" --setup'
+   RunBefore2='"%PAL:AppDir%\AppName\setup.exe"'
+
+If the read value does not start with double quotes, a warning will always be
+displayed, indicating you should fix it.
+
+The Launcher will wait for the command to complete before continuing.
+
+The standard use case for this is for apps which need to (or can) do some
+special setup or cleanup of their own to improve portability. 
+
+.. ini-key:: [Launch]:RunAfterN
+
+RunAfter\ *N*
+--------------
+
+| Optional.
+| |envsub|
+
+----
+
+Execute a given command string just after all tracked instances of the main app
+have finished. This will not run if :ini-key:`[Launch]:WaitForProgram` is set
+to ``false``. See :ini-key:`[Launch]:RunBeforeN` above for information on
+suitable values for keys in this group.
+
 .. ini-key:: [Launch]:SplashTime
 
 SplashTime

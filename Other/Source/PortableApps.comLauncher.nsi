@@ -220,6 +220,7 @@ Function PreExec           ;{{{1
 	${RunSegment} Custom
 	${RunSegment} RefreshShellIcons
 	${RunSegment} WorkingDirectory
+	${RunSegment} RunBeforeAfter
 FunctionEnd
 
 Function PreExecPrimary    ;{{{1
@@ -311,6 +312,7 @@ Function PostExecSecondary ;{{{1
 FunctionEnd
 
 Function PostExec          ;{{{1
+	${RunSegment} RunBeforeAfter
 	${RunSegment} Custom
 FunctionEnd
 
