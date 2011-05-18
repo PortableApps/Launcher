@@ -2,9 +2,9 @@
 
 .. _releases-2.1:
 
-================================================================
-PortableApps.com Launcher 2.1 release notes -- UNDER DEVELOPMENT
-================================================================
+===========================================
+PortableApps.com Launcher 2.1 release notes
+===========================================
 
 The next version of the PortableApps.com Launcher is coming now! With `various
 new features`_, `some changes`_ and improved documentation, this release makes
