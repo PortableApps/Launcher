@@ -51,14 +51,24 @@ ${SegmentInit}
 		; This code is taken largely from FileWrite segment as it shares the
 		; format and a lot of the method.
 		ClearErrors
-		${ReadLauncherConfig} $0 LanguageFile Type
-		${ReadLauncherConfig} $1 LanguageFile File
-		${ParseLocations} $1
+		${ReadLauncherConfig} $9 Language SaveLanguage
+		${IfNot} ${Errors}
+		${AndIf} $9 == true
+			StrCpy $1 $EXEDIR\Data\settings\$AppIDSettings.ini
+		${Else}
+			ClearErrors
+			${ReadLauncherConfig} $0 LanguageFile Type
+			${ReadLauncherConfig} $1 LanguageFile File
+			${ParseLocations} $1
+		${EndIf}
 		${IfNot} ${Errors}
 		${AndIf} ${FileExists} $1
 			; The custom language is read into $8
 			StrCpy $8 ""
-			${If} $0 == ConfigRead
+			${If} $9 == true
+				${DebugMsg} "Reading saved language from $1, section `$AppIDSettings`, key `Language`, with ReadINIStr."
+				ReadINIStr $8 $1 $AppIDSettings Language
+			${ElseIf} $0 == ConfigRead
 				${ReadLauncherConfig} $2 LanguageFile Entry
 				${IfNot} ${Errors}
 					${ReadLauncherConfig} $4 LanguageFile CaseSensitive
@@ -188,13 +198,23 @@ ${SegmentInit}
 
 	; Write the language back, if desired; this is basically a copy-paste of the previous section.
 	ClearErrors
-	${ReadLauncherConfig} $0 LanguageFile Type
-	${ReadLauncherConfig} $1 LanguageFile File
-	${ParseLocations} $1
+	${ReadLauncherConfig} $9 Language SaveLanguage
+	${IfNot} ${Errors}
+	${AndIf} $9 == true
+		StrCpy $1 $EXEDIR\Data\settings\$AppIDSettings.ini
+	${Else}
+		ClearErrors
+		${ReadLauncherConfig} $0 LanguageFile Type
+		${ReadLauncherConfig} $1 LanguageFile File
+		${ParseLocations} $1
+	${EndIf}
 	${ReadLauncherConfig} $8 LanguageFile SaveAs
 	${ParseLocations} $8
 	${IfNot} ${Errors}
-		${If} $0 == ConfigRead
+		${If} $9 == true
+			${DebugMsg} "Writing the language ($8) to $1, section `$AppIDSettings`, key `Language`."
+			WriteINIStr $1 $AppIDSettings Language $8
+		${ElseIf} $0 == ConfigRead
 			${ReadLauncherConfig} $2 LanguageFile Entry
 			${IfNot} ${Errors}
 				${ReadLauncherConfig} $4 LanguageFile CaseSensitive

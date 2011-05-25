@@ -66,6 +66,19 @@ DefaultIfNotExists
 If the file in :ini-key:`CheckIfExists <[Language]:CheckIfExists>` did not
 exist, the custom language variable will be set to this value.
 
+.. ini-key:: [Language]:SaveLanguage
+
+SaveLanguage
+------------------
+
+| Values: ``true`` / ``false``
+| Default: ``false``
+| Optional.
+
+----
+
+TBD
+
 .. ini-section:: [LanguageStrings]
 
 [LanguageStrings]
