@@ -243,3 +243,15 @@ for example if you want to get rid of a file extension, a quotation mark, a
 closing XML tag or similar, put the text in here and if it is at the end of
 the string it will be removed. Remember the rule about whitespace and
 quotation marks.
+
+.. ini-key:: [LanguageFile]:SaveAs
+
+SaveAs
+---------
+
+| Optional.
+| |envsub|
+
+----
+
+TBD
