@@ -25,7 +25,7 @@ naming scheme ("*AppName* Portable") instead of specifying this value.
 
 **Example:** for the program "App Name", this value would be ``App Name``
 (though it should be unset and ``Name`` in AppInfo.ini should be set to ``App
-Name Portable`` or ``App Name, Portable Edition``.) 
+Name Portable`` or ``App Name, Portable Edition``.)
 
 .. ini-key:: [Launch]:ProgramExecutable
 
@@ -73,7 +73,7 @@ ProgramExecutableWhenParameters
 
 Specify the program to be launched by the PortableApps.com Launcher when
 command-line arguments are given here, relative to the App directory of the
-portable application. This has the effect of overriding :ref:`ProgramExecutable
+portable application. This has the effect of overriding :ini-key:`ProgramExecutable
 <[Launch]:ProgramExecutable>` when specified if command-line arguments are
 given. If none are given, the value in ProgramExecutable will be used.
 
@@ -98,14 +98,14 @@ ProgramExecutable64
 
 ----
 
-An override for :ref:`[Launch]:ProgramExecutable` when the portable app is
+An override for :ini-key:`[Launch]:ProgramExecutable` when the portable app is
 running on a 64-bit operating system. Typically a portable app should not
 include a 64-bit version whether provided by the publisher or not, but if there
 are significant benefits in having a 64-bit version, or it is required for
 functionality (e.g. defragmentation or system information analysis), it may be
 included.
 
-All the rules of :ref:`[Launch]:ProgramExecutable` hold for this.
+All the rules of :ini-key:`[Launch]:ProgramExecutable` hold for this.
 
 .. ini-key:: [Launch]:ProgramExecutableWhenParameters64
 
@@ -119,14 +119,15 @@ ProgramExecutableWhenParameters64
 
 ----
 
-An override for :ref:`[Launch]:ProgramExecutableWhenParameters` when the
+An override for :ini-key:`[Launch]:ProgramExecutableWhenParameters` when the
 portable app is running on a 64-bit operating system. Typically a portable app
 should not include a 64-bit version whether provided by the publisher or not,
 but if there are significant benefits in having a 64-bit version, or it is
 required for functionality (e.g. defragmentation or system information
 analysis), it may be included.
 
-All the rules of :ref:`[Launch]:ProgramExecutableWhenParameters` hold for this.
+All the rules of :ini-key:`[Launch]:ProgramExecutableWhenParameters` hold for
+this.
 
 .. ini-key:: [Launch]:CommandLineArguments
 
@@ -527,7 +528,7 @@ displayed, indicating you should fix it.
 The Launcher will wait for the command to complete before continuing.
 
 The standard use case for this is for apps which need to (or can) do some
-special setup or cleanup of their own to improve portability. 
+special setup or cleanup of their own to improve portability.
 
 .. ini-key:: [Launch]:RunAfterN
 
