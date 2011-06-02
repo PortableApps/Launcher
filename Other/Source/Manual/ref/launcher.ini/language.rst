@@ -69,7 +69,7 @@ exist, the custom language variable will be set to this value.
 .. ini-key:: [Language]:SaveLanguage
 
 SaveLanguage
-------------------
+------------
 
 | Values: ``true`` / ``false``
 | Default: ``false``
@@ -77,7 +77,28 @@ SaveLanguage
 
 ----
 
-TBD
+Save the custom language variable and restore it on startup. Setting this to
+``true`` is equivalent to the following code (for an appropriate value of
+``AppNamePortable``):
+
+.. code-block:: ini
+
+    [LanguageFile]
+    Type=INI
+    File=%PAL:DataDir%\settings\AppNamePortableSettings.ini
+    Section=AppNamePortableSettings
+    Key=Language
+
+    [FileWriteN]
+    Type=INI
+    File=%PAL:DataDir%\settings\AppNamePortableSettings.ini
+    Section=AppNamePortableSettings
+    Key=Language
+    Value=%PAL:LanguageCustom%
+
+If this option is enabled, any :ini-section:`[LanguageFile]` sections present
+will be ignored. It should be used when an environment variable (like ``LANG``)
+is used to store the language.
 
 .. ini-section:: [LanguageStrings]
 
@@ -230,7 +251,7 @@ you can do a case-sensitive ConfigRead, do.
 .. ini-key:: [LanguageFile]:TrimLeft
 
 TrimLeft
----------
+--------
 
 | Optional.
 
@@ -260,11 +281,18 @@ quotation marks.
 .. ini-key:: [LanguageFile]:SaveAs
 
 SaveAs
----------
+------
 
 | Optional.
 | |envsub|
 
 ----
 
-TBD
+Write the language back, using the specified format. Setting this is equivalent
+to a :ini-section:`[FileWriteN]` with the same fields, using the value of this
+option as the value to be written. The rules for :ini-key:`[FileWriteN]:Value`
+apply.
+
+Remember that the value of ``%PAL:LanguageCustom%`` is processed by
+:ini-key:`[LanguageFile]:TrimLeft` and :ini-key:`[LanguageFile]:TrimRight`, so
+if you use any of them, you should put the stripped strings back here.
