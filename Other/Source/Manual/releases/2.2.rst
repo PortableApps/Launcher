@@ -1,0 +1,46 @@
+.. index:: Release notes; 2.2
+
+.. _releases-2.2:
+
+===============================================================
+PortableApps.com Launcher 2.2 release notes - UNDER DEVELOPMENT
+===============================================================
+
+Hot on the heels of 2.1, 2.2 is being developed with `more new features`_,
+`some changes`_ and further improved documentation. It's never been easier to
+make a high quality portable app.
+
+.. _`more new features`: `New features`_
+.. _`some changes`: `Changes`_
+
+New features
+============
+
+New hook for custom code
+------------------------
+
+Three new hooks have been added which allows custom code to execute immediately
+after the completion of the execution of the app, before all the standard
+segments' ``Post`` hooks are executed (which does things like moving files
+back, saving registry data and cleaning up some other things): ``PostExec``,
+``PostExecPrimary`` and ``PostExecSecondary``. If you don't *know* that you
+need this, you probably don't. See :ref:`Segments: Hooks <segments-hooks>` for
+a little bit more information.
+
+Run additional commands before or after the main program
+--------------------------------------------------------
+
+:ini-key:`[Launch]:RunBeforeN` and :ini-key:`[Launch]:RunAfterN` have been
+added, providing a way to execute commands just before and just after the main
+program's execution. These are useful for apps which need to (or can) do some
+special setup or cleanup of their own to improve portability. Refer to the
+linked documentation for further information.
+
+:ini-key:`[LanguageFile]:TrimLeft`
+----------------------------------
+
+:ini-key:`[LanguageFile]:TrimLeft` has been added, the counterpart of
+:ini-key:`[LanguageFile]:TrimRight` for trimming the start of a read string.
+
+Changes
+=======
