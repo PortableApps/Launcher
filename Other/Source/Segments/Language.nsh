@@ -51,14 +51,24 @@ ${SegmentInit}
 		; This code is taken largely from FileWrite segment as it shares the
 		; format and a lot of the method.
 		ClearErrors
-		${ReadLauncherConfig} $0 LanguageFile Type
-		${ReadLauncherConfig} $1 LanguageFile File
-		${ParseLocations} $1
+		${ReadLauncherConfig} $9 Language SaveLanguage
+		${IfNot} ${Errors}
+		${AndIf} $9 == true
+			StrCpy $1 $EXEDIR\Data\settings\$AppIDSettings.ini
+		${Else}
+			ClearErrors
+			${ReadLauncherConfig} $0 LanguageFile Type
+			${ReadLauncherConfig} $1 LanguageFile File
+			${ParseLocations} $1
+		${EndIf}
 		${IfNot} ${Errors}
 		${AndIf} ${FileExists} $1
 			; The custom language is read into $8
 			StrCpy $8 ""
-			${If} $0 == ConfigRead
+			${If} $9 == true
+				${DebugMsg} "Reading saved language from $1, section `$AppIDSettings`, key `Language`, with ReadINIStr."
+				ReadINIStr $8 $1 $AppIDSettings Language
+			${ElseIf} $0 == ConfigRead
 				${ReadLauncherConfig} $2 LanguageFile Entry
 				${IfNot} ${Errors}
 					${ReadLauncherConfig} $4 LanguageFile CaseSensitive
@@ -182,6 +192,72 @@ ${SegmentInit}
 					${SetEnvironmentVariable} PAL:LanguageCustom $1
 				${EndIf}
 			${EndIf}
+		${EndIf}
+	${EndIf}
+
+
+	; Write the language back, if desired; this is basically a copy-paste of the previous section.
+	ClearErrors
+	${ReadLauncherConfig} $9 Language SaveLanguage
+	${IfNot} ${Errors}
+	${AndIf} $9 == true
+		StrCpy $1 $EXEDIR\Data\settings\$AppIDSettings.ini
+	${Else}
+		ClearErrors
+		${ReadLauncherConfig} $0 LanguageFile Type
+		${ReadLauncherConfig} $1 LanguageFile File
+		${ParseLocations} $1
+	${EndIf}
+	${ReadLauncherConfig} $8 LanguageFile SaveAs
+	${ParseLocations} $8
+	${IfNot} ${Errors}
+		${If} $9 == true
+			${DebugMsg} "Writing the language ($8) to $1, section `$AppIDSettings`, key `Language`."
+			WriteINIStr $1 $AppIDSettings Language $8
+		${ElseIf} $0 == ConfigRead
+			${ReadLauncherConfig} $2 LanguageFile Entry
+			${IfNot} ${Errors}
+				${ReadLauncherConfig} $4 LanguageFile CaseSensitive
+				${If} $4 == true
+					${DebugMsg} "Writing the language ($8) to $1, entry `$2`, with ConfigWriteS."
+					${ConfigWriteS} $1 $2 $8 $R9
+				${ElseIf} $4 != false
+					${DebugMsg} "Writing the language ($8) to $1, entry `$2`, with ConfigWrite."
+					${ConfigWrite} $1 $2 $8 $R9
+				${ElseIfNot} ${Errors}
+					${InvalidValueError} [LanguageFile]:CaseSensitive $4
+				${EndIf}
+			${EndIf}
+		${ElseIf} $0 == INI
+			${ReadLauncherConfig} $2 LanguageFile Section
+			${ReadLauncherConfig} $3 LanguageFile Key
+			${IfNot} ${Errors}
+				${DebugMsg} "Writing the language ($8) to $1, section `$2`, key `$3`, with WriteINIStr."
+				WriteINIStr $1 $2 $3 $8
+			${EndIf}
+!ifdef XML_ENABLED
+		${ElseIf} $0 == "XML attribute"
+			${ReadLauncherConfig} $2 LanguageFile XPath
+			${ReadLauncherConfig} $3 LanguageFile Attribute
+			${IfNot} ${Errors}
+				${DebugMsg} "Writing the language ($8) to $1, XPath `$2`, Attribute `$3` with XMLWriteAttrib."
+				${XMLWriteAttrib} $1 $2 $3 $8
+;				${IfThen} ${Errors} ${|} ${DebugMsg} "XMLWriteAttrib XPath error" ${|}
+			${EndIf}
+		${ElseIf} $0 == "XML text"
+			${ReadLauncherConfig} $2 LanguageFile XPath
+			${IfNot} ${Errors}
+				${DebugMsg} "Writing the language to $1, XPath `$2`, with XMLWriteText."
+				${XMLWriteText} $1 $2 $8
+;				${IfThen} ${Errors} ${|} ${DebugMsg} "XMLReadText XPath error" ${|}
+			${EndIf}
+!else
+		${ElseIf} $0 == "XML attribute"
+		${OrIf} $0 == "XML text"
+			!insertmacro XML_WarnNotActivated [LanguageFile]
+!endif
+		${Else}
+			${InvalidValueError} [LanguageFile]:Type $0
 		${EndIf}
 	${EndIf}
 !macroend
