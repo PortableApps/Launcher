@@ -200,6 +200,10 @@ Section Main
 		Abort
 	${EndIf}
 
+	; Fix the package path, if necessary
+	StrCpy $R1 $PACKAGE 1 -1
+	${IfThen} $R1 == "\" ${|} StrCpy $PACKAGE $PACKAGE -1 ${|}
+
 	SetDetailsPrint ListOnly
 	DetailPrint "App: $PACKAGE"
 	DetailPrint " "
