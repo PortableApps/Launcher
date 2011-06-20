@@ -469,7 +469,7 @@ omit this value. If it is set to ``true`` or omitted, if the launcher is
 started while a local copy of the application is already running, it will abort
 with an error message. This value only affects running a portable instance
 while a local instance is already running; if a second portable instance is
-launched, this value this value will not affect it.  See
+launched, this value will not affect it.  See
 :ini-key:`SinglePortableAppInstance <[Launch]:SinglePortableAppInstance>` for
 controlling that case.
 
