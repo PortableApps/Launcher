@@ -36,10 +36,9 @@ Debug messages will be output to the screen in message boxes and to a file
 All modifications to the PortableApps.com Launcher involving debugging go in a
 file ``Debug.nsh`` in the ``App\AppInfo\Launcher`` directory of a package.
 
-**Note:** I am considering relocating this to ``App\AppInfo\Launcher\Debug.nsh``
-before the release of 2.1. In a later release I plan on integrating it into the
-user interface of a utility which will do all that the Generator does and more,
-and then where it is won't matter so much.
+**Note:** In a later release I plan on integrating it into the user interface
+of a utility which will do all that the Generator does and more, and then where
+it is won't matter so much.
 
 .. versionchanged:: 2.1
    previously this file was ``Other\Source\PortableApps.comLauncherDebug.nsh``.
