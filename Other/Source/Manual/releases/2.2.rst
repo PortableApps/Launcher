@@ -55,7 +55,8 @@ New environment variable
 ------------------------
 
 A new environment variable, :env:`PAL:AppID`, is available for use in
-:ref:`ref-launcher.ini` and in :ref:`custom code <custom-code>`.
+:ref:`ref-launcher.ini`. Its counterpart for :ref:`custom code <custom-code>` is
+``$AppID``.
 
 Changes
 =======
