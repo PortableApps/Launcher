@@ -360,4 +360,4 @@ Miscellaneous variables
 PAL:AppID
 ---------
 
-The portable app id, as defined in :ref:`AppInfo.ini <paf-appinfo-appid>`.
+The portable app id, as defined in :ref:`appinfo.ini <paf-appinfo-appid>`.
