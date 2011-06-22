@@ -51,5 +51,11 @@ The new options :ini-key:`[LanguageFile]:SaveAs` and
 custom language when using :ini-section:`[LanguageFile]` or working only with
 environment variables (e.g. ``LANG``).
 
+New environment variable
+------------------------
+
+A new environment variable, :env:`PAL:AppID`, is available for use in
+:ref:`ref-launcher.ini` and in :ref:`custom code <custom-code>`.
+
 Changes
 =======

@@ -349,3 +349,15 @@ A full table of all the values is available in :ref:`languages-values`.
 
 * **PAL:LanguageCustom** -- a custom variable constructed in the
   :ini-section:`[Language]` and :ini-section:`[LanguageStrings]` sections.
+
+.. _ref-envsub-misc:
+
+Miscellaneous variables
+=======================
+
+.. env:: PAL:AppID
+
+PAL:AppID
+---------
+
+The portable app id, as defined in :ref:`AppInfo.ini <paf-appinfo-appid>`.
