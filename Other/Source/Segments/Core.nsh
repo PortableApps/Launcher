@@ -146,8 +146,8 @@ ${SegmentUnload}
 			RMDir /r $0
 		${EndIf}
 		Delete $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini
-		Delete $PLUGINSDIR\runtimedata.ini
 	${EndIf}
+	Delete $PLUGINSDIR\runtimedata.ini
 	; Unload the system plug-in (if it's still there?)
 	System::Free 0
 !macroend
