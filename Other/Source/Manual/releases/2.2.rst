@@ -58,5 +58,13 @@ A new environment variable, :env:`PAL:AppID`, is available for use in
 :ref:`ref-launcher.ini`. Its counterpart for :ref:`custom code <custom-code>` is
 ``$AppID``.
 
+Persist variables between launches
+----------------------------------
+
+A new section, :ini-section:`[PersistentData]`, has been introduced. It allows
+you to save arbitrary content, thus you can refer to it in the next launch. This
+is useful when you need to e.g. know the value of
+:env:`%PAL:LastDrive% <PAL:LastDrive>` from the previous run.
+
 Changes
 =======
