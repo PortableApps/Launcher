@@ -1,0 +1,36 @@
+.. index:: Release notes; 2.1.1
+
+.. _releases-2.1.1:
+
+=============================================
+PortableApps.com Launcher 2.1.1 release notes
+=============================================
+
+This release is the first bug-fix release for the 2.1 line and incidentally the
+first bug-fix release for the PortableApps.com Launcher as a whole.
+
+For more information about the 2.1 release, see :ref:`releases-2.1`.
+
+Bugs fixed
+==========
+
+Tertiary launches don't work
+----------------------------
+
+One of the new features in 2.1 is detection of an already-starting instance of
+the portable app, which formerly could lead to data corruption. However, the
+"starting" flag was set for secondary launches, and so tertiary launches would
+fail to run while any instances were still running (depending slightly on the
+app configuration).
+
+Further details are available in the `bug report`_.
+
+.. _bug report: http://portableapps.com/node/28197
+
+Runtime data file left behind on host machine for secondary launches
+--------------------------------------------------------------------
+
+While investigating the bug mentioned above, another minor problem was found -
+a file ``runtimedata.ini`` was left behind in the plugin directory (which is a
+subdirectory with a name like ``nsXXXXXX`` in the user's TEMP directory) for
+all secondary instances. This has been fixed now.
