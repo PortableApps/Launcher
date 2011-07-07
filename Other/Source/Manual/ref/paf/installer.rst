@@ -67,6 +67,7 @@ installer.ini should be created from scratch using only the features needed.**
 
    [Languages]
    ENGLISH=true
+   ENGLISHGB=true
    AFRIKAANS=true
    ALBANIAN=true
    ARABIC=true

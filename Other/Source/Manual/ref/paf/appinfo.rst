@@ -97,14 +97,15 @@ application, it should still use the English translation of the category).
 multilingual, it should be specified as Multilingual. The language string must
 be in a specific format. The following strings are available: Afrikaans,
 Albanian, Arabic, Armenian, Basque, Belarusian, Bosnian, Breton, Bulgarian,
-Catalan, Cibemba, Croatian, Czech, Danish, Dutch, Efik, English, Estonian,
-Farsi, Finnish, French, Galician, Georgian, German, Greek, Hebrew, Hungarian,
-Icelandic, Igbo, Indonesian, Irish, Italian, Japanese, Khmer, Korean, Kurdish,
-Latvian, Lithuanian, Luxembourgish, Macedonian, Malagasy, Malay, Mongolian,
-Norwegian, NorwegianNynorsk, Pashto, Polish, Portuguese, PortugueseBR, Romanian,
-Russian, Serbian, SerbianLatin, SimpChinese, Slovak, Slovenian, Spanish,
-SpanishInternational, Swahili, Swedish, Thai, TradChinese, Turkish, Ukranian,
-Uzbek, Valencian, Vietnamese, Welsh, Yoruba.
+Catalan, Cibemba, Croatian, Czech, Danish, Dutch, Efik, English, EnglishGB,
+Esperanto, Estonian, Farsi, Finnish, French, Galician, Georgian, German, Greek,
+Hebrew, Hungarian, Icelandic, Igbo, Indonesian, Irish, Italian, Japanese,
+Khmer, Korean, Kurdish, Latvian, Lithuanian, Luxembourgish, Macedonian,
+Malagasy, Malay, Mongolian, Norwegian, NorwegianNynorsk, Pashto, Polish,
+Portuguese, PortugueseBR, Romanian, Russian, Serbian, SerbianLatin,
+SimpChinese, Slovak, Slovenian, Spanish, SpanishInternational, Swahili,
+Swedish, Thai, TradChinese, Turkish, Ukrainian, Uzbek, Valencian, Vietnamese,
+Welsh, Yoruba.
 
 **Trademarks** (optional) is any trademark notifications that should appear. For
 example, HappyApp is a trademark of Acme, Inc.
