@@ -363,7 +363,9 @@ Section           ;{{{1
 	${EndIf}
 	${If} $R9 != running
 	${OrIf} $SecondaryLaunch == true
-		${WriteRuntimeData} PortableApps.comLauncher Status starting
+		${If} $SecondaryLaunch != true
+			${WriteRuntimeData} PortableApps.comLauncher Status starting
+		${EndIf}
 		${CallPS} Pre +
 		${CallPS} PreExec +
 		${If} $WaitForProgram != false
