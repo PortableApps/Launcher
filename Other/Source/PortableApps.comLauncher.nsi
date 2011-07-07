@@ -193,6 +193,7 @@ Function Pre               ;{{{1
 	${RunSegment} Custom
 	${RunSegment} RunLocally
 	${RunSegment} Temp
+	${RunSegment} PersistentData
 	${RunSegment} Environment
 	${RunSegment} ExecString
 FunctionEnd
@@ -226,6 +227,7 @@ FunctionEnd
 Function PreExecPrimary    ;{{{1
 	${RunSegment} Custom
 	${RunSegment} Core
+	${RunSegment} PersistentData
 	${RunSegment} SplashScreen
 FunctionEnd
 
