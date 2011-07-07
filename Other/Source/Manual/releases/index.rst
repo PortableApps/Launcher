@@ -17,6 +17,7 @@ have been made in that release from the previous release.
    :maxdepth: 1
 
    2.1
+   2.1.1
 
 2.0 release
 ===========
