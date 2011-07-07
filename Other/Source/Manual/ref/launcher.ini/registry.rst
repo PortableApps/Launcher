@@ -33,7 +33,11 @@ registry, with the value appended to it after a final slash, and the value is of
 the form REG\_\ *TYPE*:*value*; *REG_TYPE:* is optional, and defaults to
 ``REG_SZ`` (a string).
 
-**Example:** ``HKCU\Software\AppName\Key\Value=REG_DWORD:16``
+**Note:** if there is any possibility that the value does contain a colon,
+write the type explicitly.
+
+**Examples:** ``HKCU\Software\AppName\Key\Value=REG_DWORD:16``,
+``HKCU\Software\AppName\Key\Value2=REG_SZ:%PAL:DataDir%``
 
 .. ini-section:: [RegistryCleanupIfEmpty]
 
