@@ -67,6 +67,8 @@ ${Segment.onInit}
 		StrCpy $Bits 64
 	${EndIf}
 
+	; Make the AppID available in launcher.ini
+	${SetEnvironmentVariable} PAL:AppID $AppID
 !macroend
 
 ${SegmentInit}
