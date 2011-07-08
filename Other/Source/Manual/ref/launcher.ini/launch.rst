@@ -182,6 +182,40 @@ automatically corrected).
 
 **Example:** ``%PAL:AppDir%\AppName``
 
+.. ini-key:: [Launch]:BitsVariable32
+
+BitsVariable32
+--------------
+
+| Default: ``32``
+| Optional.
+
+.. versionadded:: 2.2
+
+----
+
+This is the value that will be stored in the environment variable
+:env:`PAL:Bits` when run on a 32-bit machine. See also
+:ini-key:`[Launch]:BitsVariable64` for configuring the value on 64-bit
+machines.
+
+.. ini-key:: [Launch]:BitsVariable64
+
+BitsVariable64
+--------------
+
+| Default: ``64``
+| Optional.
+
+.. versionadded:: 2.2
+
+----
+
+This is the value that will be stored in the environment variable
+:env:`PAL:Bits` when run on a 64-bit machine. See also
+:ini-key:`[Launch]:BitsVariable32` for configuring the value on 64-bit
+machines.
+
 .. ini-key:: [Launch]:MinOS
 
 MinOS

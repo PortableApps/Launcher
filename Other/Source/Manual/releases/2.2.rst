@@ -58,6 +58,19 @@ A new environment variable, :env:`PAL:AppID`, is available for use in
 :ref:`ref-launcher.ini`. Its counterpart for :ref:`custom code <custom-code>` is
 ``$AppID``.
 
+New environment variable ``%PAL:Bits%``
+---------------------------------------
+
+A new environment variable, :env:`PAL:Bits`, is available for use in
+:ref:`ref-launcher.ini`. Its value defaults to ``32`` when running on a 32-bit
+machine or ``64`` when running on a 64-bit machine. The values which will be
+taken can be configured in :ini-key:`[Launch]:BitsVariable32` and
+:ini-key:`[Launch]:BitsVariable64`.
+
+For :ref:`custom code <custom-code>`, there is ``$Bits``, which is ``64`` or
+``32``. It is not affected by :ini-key:`[Launch]:BitsVariable32` or
+:ini-key:`[Launch]:BitsVariable64`.
+
 Persist variables between launches
 ----------------------------------
 
