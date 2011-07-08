@@ -361,3 +361,17 @@ PAL:AppID
 ---------
 
 The portable app id, as defined in :ref:`appinfo.ini <paf-appinfo-appid>`.
+
+.. env:: PAL:Bits
+
+PAL:Bits
+--------
+
+By default, on a 32-bit machine, this will be ``32`` and on a 64-bit machine,
+this will be ``64``. The most common usage for this is for app paths which can
+then be specified as ``%PAL:AppDir%\AppName%PAL:Bits%``.
+
+The value for this can be configured by :ini-key:`[Launch]:BitsVariable32` or
+:ini-key:`[Launch]:BitsVariable32`.
+
+.. TODO make :ini-key:`[Launch]:ProgramExecutable` support |envsub|

@@ -67,6 +67,9 @@ ${Segment.onInit}
 		StrCpy $Bits 64
 	${EndIf}
 
+	${ReadLauncherConfigWithDefault} $0 Launch BitsVariable$Bits $Bits
+	${SetEnvironmentVariable} PAL:Bits $1
+
 	; Make the AppID available in launcher.ini
 	${SetEnvironmentVariable} PAL:AppID $AppID
 !macroend
