@@ -10,7 +10,7 @@ ${SegmentPre}
 		ReadINIStr $1 $DataDirectory\settings\$AppIDSettings.ini PersistentData $0
 		${IfNot} ${Errors}
 			${DebugMsg} "Restoring persistent environment variable $0; last value was `$1`"
-			System::Call Kernel32::SetEnvironmentVariable(tr0,tr1)
+			${SetEnvironmentVariable} $0 $1
 		${EndIf}
 	${NextINIPair}
 !macroend
