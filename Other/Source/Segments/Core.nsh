@@ -68,7 +68,7 @@ ${Segment.onInit}
 	${EndIf}
 
 	${ReadLauncherConfigWithDefault} $0 Launch BitsVariable$Bits $Bits
-	${SetEnvironmentVariable} PAL:Bits $1
+	${SetEnvironmentVariable} PAL:Bits $0
 
 	; Make the AppID available in launcher.ini
 	${SetEnvironmentVariable} PAL:AppID $AppID
