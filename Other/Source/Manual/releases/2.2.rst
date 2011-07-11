@@ -81,3 +81,14 @@ is useful when you need to e.g. know the value of
 
 Changes
 =======
+
+Directory variables
+-------------------
+
+Now you can define environment variables as
+:ref:`directory variables <ref-envsub-directory>` by appending a ``~`` to the
+key name. This way, you will get the same additional variables as the built-in
+ones.
+
+Currently, :ini-section:`[Environment]` and :ini-section:`[PersistentData]`
+support this feature. Refer to their documentation for details.

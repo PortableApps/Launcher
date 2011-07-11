@@ -42,3 +42,19 @@ restored. Then, the ``HOME`` environment variable is set with the value of the
 :env:`PAL:DataDir` environment variable. The ``[FileWrite1]`` section is
 executed using the saved value of ``OldHome`` and only then ``OldHome`` is saved
 with the current value of ``HOME``.
+
+If a key name has a ``~`` appended to it, it will be processed as a
+:ref:`directory variable <ref-envsub-directory>`, therefore getting the same
+additional variables:
+
+.. code-block:: ini
+
+   [Environment]
+   Home~=%PAL:DataDir%\AppHome
+
+This code will make available the following environment variables:
+
+* ``%Home%`` -- ``X:\PortableApps\AppNamePortable\Data\AppHome``
+* ``%Home:ForwardSlash%`` -- ``X:/PortableApps/AppNamePortable/Data/AppHome``
+* ``%Home:DoubleBackslash%`` -- ``X:\\PortableApps\\AppNamePortable\\Data\\AppHome``
+* ``%Home:java.util.prefs%`` -- ``/X:///Portable/Apps///App/Name/Portable///Data///AppHome``

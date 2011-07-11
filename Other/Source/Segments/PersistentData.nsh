@@ -6,11 +6,21 @@ ${SegmentFile}
 ${SegmentPre}
 	; Read the keys from launcher.ini, not from $AppIDSettings.ini; this will allow the developer to update the loaded variables.
 	${ForEachINIPair} PersistentData $0 $1
+		; Check for a directory variable
+		StrCpy $2 $0 1 -1
+		${If} $2 == ~
+			StrCpy $0 $0 -1 ; Strip the last character from the key
+		${EndIf}
+
 		ClearErrors
 		ReadINIStr $1 $DataDirectory\settings\$AppIDSettings.ini PersistentData $0
 		${IfNot} ${Errors}
 			${DebugMsg} "Restoring persistent environment variable $0; last value was `$1`"
-			${SetEnvironmentVariable} $0 $1
+			${If} $2 == ~
+				${SetEnvironmentVariablesPath} $0 $1
+			${Else}
+				${SetEnvironmentVariable} $0 $1
+			${EndIf}
 		${EndIf}
 	${NextINIPair}
 !macroend
@@ -19,6 +29,12 @@ ${SegmentPre}
 ; And finally, save the persistent data after [Environment] is processed.
 ${SegmentPreExecPrimary}
 	${ForEachINIPair} PersistentData $0 $1
+		; Check for a directory variable
+		StrCpy $2 $0 1 -1
+		${If} $2 == ~
+			StrCpy $0 $0 -1 ; Strip the last character from the key
+		${EndIf}
+
 		${ParseLocations} $1
 		${DebugMsg} "Saving persistent environment variable $0 with value `$1`"
 		WriteINIStr $DataDirectory\settings\$AppIDSettings.ini PersistentData $0 $1
