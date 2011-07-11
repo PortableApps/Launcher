@@ -514,7 +514,7 @@ If the application stores settings in a local location like %APPDATA%, or in the
 registry, then it is not correct to set this to ``false``. You should only set
 it to ``false`` in such a case as when it stores its settings in the
 executable's directory or some path specified by an environment variable or
-command-line argument, and will not interfere with a local instance or vica
+command-line argument, and will not interfere with a local instance or vice
 versa.
 
 .. ini-key:: [Launch]:CloseEXE
