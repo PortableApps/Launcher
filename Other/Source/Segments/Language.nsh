@@ -202,13 +202,14 @@ ${SegmentInit}
 	${IfNot} ${Errors}
 	${AndIf} $9 == true
 		StrCpy $1 $EXEDIR\Data\settings\$AppIDSettings.ini
+		StrCpy $8 %PAL:LanguageCustom%
 	${Else}
 		ClearErrors
 		${ReadLauncherConfig} $0 LanguageFile Type
 		${ReadLauncherConfig} $1 LanguageFile File
+		${ReadLauncherConfig} $8 LanguageFile SaveAs
 		${ParseLocations} $1
 	${EndIf}
-	${ReadLauncherConfig} $8 LanguageFile SaveAs
 	${ParseLocations} $8
 	${IfNot} ${Errors}
 		${If} $9 == true
