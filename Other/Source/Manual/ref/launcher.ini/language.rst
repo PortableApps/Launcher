@@ -66,6 +66,40 @@ DefaultIfNotExists
 If the file in :ini-key:`CheckIfExists <[Language]:CheckIfExists>` did not
 exist, the custom language variable will be set to this value.
 
+.. ini-key:: [Language]:SaveLanguage
+
+SaveLanguage
+------------
+
+| Values: ``true`` / ``false``
+| Default: ``false``
+| Optional.
+
+----
+
+Save the custom language variable and restore it on startup. Setting this to
+``true`` is equivalent to the following code (for an appropriate value of
+``AppNamePortable``):
+
+.. code-block:: ini
+
+    [LanguageFile]
+    Type=INI
+    File=%PAL:DataDir%\settings\AppNamePortableSettings.ini
+    Section=AppNamePortableSettings
+    Key=Language
+
+    [FileWriteN]
+    Type=INI
+    File=%PAL:DataDir%\settings\AppNamePortableSettings.ini
+    Section=AppNamePortableSettings
+    Key=Language
+    Value=%PAL:LanguageCustom%
+
+If this option is enabled, any :ini-section:`[LanguageFile]` sections present
+will be ignored. It should be used when an environment variable (like ``LANG``)
+is used to store the language.
+
 .. ini-section:: [LanguageStrings]
 
 [LanguageStrings]
@@ -144,8 +178,9 @@ id="something">'``; note that you **must** include any leading whitespace
 which will be in the file, and if there is any leading or trailing whitespace
 you must quote the string with single (``'``) or double (``"``) quotes.
 
-If you need to cut something off the end such as a quotation mark or a closing
-XML tag, see :ini-key:`[LanguageFile]:TrimRight`.
+If you need to cut something off the start or end such as a quotation mark or a
+closing XML tag, see :ini-key:`[LanguageFile]:TrimRight` and
+:ini-key:`[LanguageFile]:TrimLeft`.
 
 .. ini-key:: [LanguageFile]:Section
 
@@ -213,6 +248,21 @@ CaseSensitive
 Case sensitive searches are somewhat faster than case-insensitive searches. If
 you can do a case-sensitive ConfigRead, do.
 
+.. ini-key:: [LanguageFile]:TrimLeft
+
+TrimLeft
+--------
+
+| Optional.
+
+----
+
+If you need to remove something from the left of a line which you have read,
+for example if you want to get rid of an extra quotation mark or a directory
+name or something like that, put the text in here and if it is at the start of
+the string it will be removed. Remember the rule about whitespace and quotation
+marks.
+
 .. ini-key:: [LanguageFile]:TrimRight
 
 TrimRight
@@ -227,3 +277,22 @@ for example if you want to get rid of a file extension, a quotation mark, a
 closing XML tag or similar, put the text in here and if it is at the end of
 the string it will be removed. Remember the rule about whitespace and
 quotation marks.
+
+.. ini-key:: [LanguageFile]:SaveAs
+
+SaveAs
+------
+
+| Optional.
+| |envsub|
+
+----
+
+Write the language back, using the specified format. Setting this is equivalent
+to a :ini-section:`[FileWriteN]` with the same fields, using the value of this
+option as the value to be written. The rules for :ini-key:`[FileWriteN]:Value`
+apply.
+
+Remember that the value of ``%PAL:LanguageCustom%`` is processed by
+:ini-key:`[LanguageFile]:TrimLeft` and :ini-key:`[LanguageFile]:TrimRight`, so
+if you use any of them, you should put the stripped strings back here.
