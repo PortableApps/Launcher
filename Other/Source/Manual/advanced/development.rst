@@ -50,9 +50,9 @@ Compiling the PortableApps.com Launcher Generator
 The PortableApps.com Launcher Generator is written in :term:`NSIS` and so you
 will need NSIS Portable to compile it (it has the necessary plug-ins included).
 
-1. :ref:`Install the PortableApps.com Launcher <install>`. Instead of installing
-   the PortableApps.com Launcher package, you can get a copy of the :ref:`source
-   repository <hg>`.
+1. :ref:`Install the PortableApps.com Launcher <install-launcher>`. Instead of
+   installing the PortableApps.com Launcher package, you can get a copy of the
+   :ref:`source repository <hg>`.
 
 2. Run NSIS Portable and compile ``Other\Source\GeneratorWizard.nsi``
    from the PortableApps.com Launcher source.
