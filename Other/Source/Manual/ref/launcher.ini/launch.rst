@@ -213,7 +213,7 @@ BitsVariable64
 
 This is the value that will be stored in the environment variable
 :env:`PAL:Bits` when run on a 64-bit machine. See also
-:ini-key:`[Launch]:BitsVariable32` for configuring the value on 64-bit
+ini-key:`[Launch]:BitsVariable32` for configuring the value on 32-bit
 machines.
 
 .. ini-key:: [Launch]:MinOS
