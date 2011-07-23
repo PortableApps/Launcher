@@ -16,9 +16,12 @@ ${Segment.onInit}
 ${SegmentInit}
 	; Detect to see if the language code is coming from the PortableApps.com Platform.
 	ReadEnvStr $0 PortableApps.comLanguageCode
+	ReadEnvStr $1 PAL:_IgnoreLanguage
 	${If} $0 == ""
+	${OrIf} $1 == true
 		${DebugMsg} "PortableApps.com Platform language variables are missing."
 		StrCpy $9 pap-missing
+		${SetEnvironmentVariable} PAL:_IgnoreLanguage true
 	${EndIf}
 
 	; Set the default values
