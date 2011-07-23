@@ -630,6 +630,8 @@ set this to false. Note that you should only do this if you do not have registry
 entries to handle or files to move, for example if you can redirect all settings
 with command-line arguments or environment variables.
 
+This option is ignored when running locally.
+
 .. ini-key:: [Launch]:WaitForOtherInstances
 
 WaitForOtherInstances

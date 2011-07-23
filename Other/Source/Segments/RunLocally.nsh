@@ -54,6 +54,11 @@ ${SegmentPre}
 		; But you know what? I don't care. :-)
 		CopyFiles /SILENT $1\PortableApps.comLauncherRuntimeData-$BaseName.ini $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini
 		Delete $1\PortableApps.comLauncherRuntimeData-$BaseName.ini
+
+		; Wait for the program to finish if we are a primary instance
+		${If} $SecondaryLaunch != true
+			StrCpy $WaitForProgram true
+		${EndIf}
 	${EndIf}
 
 	CreateDirectory $DataDirectory
