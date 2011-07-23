@@ -57,7 +57,6 @@ check won't function at all until 2.2.
 Flaws in automatic language switching in nested launchers
 ---------------------------------------------------------
 
-Fixed language when not running from the PortableApps.com Platform.
 Previously, if an app not running from the PortableApps.com Platform launched
 another app, this other app would believe that the language had been set by the
 Platform, thus ignoring its own saved language, if any. The typical case for
@@ -67,3 +66,11 @@ resolve this, when the PortableApps.com Platform is missing, a special
 environment variable is set to indicate the fact which will be picked up by
 nested launchers, so that they have the option of using the last language used
 (as defined by the :ini-section:`[LanguageFile]` section in launcher.ini).
+
+Incompatibility between Live mode and :ini-key:`[Launch]:WaitForProgram`\ =\ ``false``
+--------------------------------------------------------------------------------------
+
+Previously, when the developer had set :ini-key:`[Launch]:WaitForProgram` to
+``false``, and Live mode had been enabled, the launcher would just exit after
+running the app, without cleaning up. Now, the value of ``WaitForProgram`` is
+simply ignored.
