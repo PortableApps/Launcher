@@ -28,14 +28,9 @@ ${SegmentInit}
 ${SegmentPre}
 	${If} $UsesContainedTempDirectory != false
 		ClearErrors
-		${ReadLauncherConfig} $0 Launch WaitForProgram
-		${If} $0 == false
+		${If} $WaitForProgram == false
 			StrCpy $TempDirectory $DataDirectory\Temp
 		${Else}
-			${IfNot} ${Errors}
-			${AndIf} $0 != true
-				${InvalidValueError} [Launch]:WaitForProgram $0
-			${EndIf}
 			StrCpy $TempDirectory $TMP\$AppIDTemp
 		${EndIf}
 		${DebugMsg} "Creating temporary directory $TempDirectory"
