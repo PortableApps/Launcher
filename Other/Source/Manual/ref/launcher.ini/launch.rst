@@ -33,7 +33,6 @@ ProgramExecutable
 -----------------
 
 | Mandatory.
-| |envsub|
 
 ----
 
@@ -67,7 +66,6 @@ ProgramExecutableWhenParameters
 -------------------------------
 
 | Optional.
-| |envsub|
 
 ----
 
@@ -92,7 +90,6 @@ ProgramExecutable64
 -------------------
 
 | Optional.
-| |envsub|
 
 .. versionadded:: 2.1
 
@@ -113,7 +110,6 @@ ProgramExecutableWhenParameters64
 ---------------------------------
 
 | Optional.
-| |envsub|
 
 .. versionadded:: 2.1
 
