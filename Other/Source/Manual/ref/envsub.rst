@@ -373,5 +373,3 @@ then be specified as ``%PAL:AppDir%\AppName%PAL:Bits%``.
 
 The value for this can be configured by :ini-key:`[Launch]:BitsVariable32` or
 :ini-key:`[Launch]:BitsVariable64`.
-
-.. TODO make :ini-key:`[Launch]:ProgramExecutable` support |envsub|
