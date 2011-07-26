@@ -88,6 +88,9 @@ Key
 
 The INI key to write the value to.
 
+Remember that, when writing to Registry files (``.REG``), the key should always be quoted, e.g.
+``Key='"RegistryKey"'``.
+
 .. ini-key:: [FileWriteN]:Value
 
 Value
@@ -104,6 +107,9 @@ The value which will be written to the file. If dealing with :ini-key:`Type
 XML files that you will normally need to close the tag, for example
 ``%PAL:DataDir%\settings</config>``. In such cases you can also try using the
 inbuilt XML support.
+
+When writing string values to Registry files, remember that it should be quoted, e.g.
+``Value='"registry value"'``.
 
 .. ini-key:: [FileWriteN]:Find
 

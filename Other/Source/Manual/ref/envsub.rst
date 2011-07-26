@@ -2,14 +2,14 @@
 
 .. _ref-envsub:
 
-================================
-Environment variable substitions
-================================
+==================================
+Environment variable substitutions
+==================================
 
-This document covers environment variable substition.
+This document covers environment variable substitution.
 
 Many of the values in :ref:`launcher.ini <ref-launcher.ini>` are subject to
-environment variable substitions. This works by taking the input string and
+environment variable substitutions. This works by taking the input string and
 parsing environment variables, so that a chunk like ``%TEMP%`` will become
 something like ``C:\Users\user\AppData\Roaming\Temp``. To make this more useful
 in making applications portable, a number of extra environment variables are
@@ -32,7 +32,7 @@ These are a few variables for drive letter updating. In Live mode, these are the
 location of the portable device from which the application was run, *not* the
 application or data directory if :ini-key:`[LiveMode]:CopyApp` is set.
 
-Note that you cannot guarrantee the case that this variable will be in. It may
+Note that you cannot guarantee the case that this variable will be in. It may
 be lower or upper case.
 
 .. env:: PAL:Drive
@@ -161,40 +161,40 @@ or ``require``, but if it is ``find``, the path it is set to may not exist (for
 PortableApps.comDocuments
 -------------------------
 
-The PortableApps.com Documents directory, normally ``X:\Documents``. There is no
-guarrantee that this directory will exist.
+The PortableApps.com Documents directory, normally ``X:\Documents``. There is
+no guarantee that this directory will exist.
 
 .. env:: PortableApps.comPictures
 
 PortableApps.comPictures
 ------------------------
 
-The PortableApps.com Pictures directory, normally ``X:\Documents\Pictures``. There is no
-guarrantee that this directory will exist.
+The PortableApps.com Pictures directory, normally ``X:\Documents\Pictures``.
+There is no guarantee that this directory will exist.
 
 .. env:: PortableApps.comMusic
 
 PortableApps.comMusic
 ---------------------
 
-The PortableApps.com Music directory, normally ``X:\Documents\Music``. There is no
-guarrantee that this directory will exist.
+The PortableApps.com Music directory, normally ``X:\Documents\Music``. There is
+no guarantee that this directory will exist.
 
 .. env:: PortableApps.comVideos
 
 PortableApps.comVideos
 ----------------------
 
-The PortableApps.com Videos directory, normally ``X:\Documents\Videos``. There is no
-guarrantee that this directory will exist.
+The PortableApps.com Videos directory, normally ``X:\Documents\Videos``. There
+is no guarantee that this directory will exist.
 
 .. env:: PAL:PortableAppsDir
 
 PAL:PortableAppsDir
 -------------------
 
-The PortableApps.com PortableApps directory, normally ``X:\PortableApps``. To be
-exact, this is the parent directory of the portable app package.
+The PortableApps.com PortableApps directory, normally ``X:\PortableApps``. To
+be exact, this is the parent directory of the portable app package.
 
 .. env:: USERPROFILE
 
@@ -349,3 +349,29 @@ A full table of all the values is available in :ref:`languages-values`.
 
 * **PAL:LanguageCustom** -- a custom variable constructed in the
   :ini-section:`[Language]` and :ini-section:`[LanguageStrings]` sections.
+
+.. _ref-envsub-misc:
+
+Miscellaneous variables
+=======================
+
+.. env:: PAL:AppID
+
+PAL:AppID
+---------
+
+The portable app id, as defined in :ref:`appinfo.ini <paf-appinfo-appid>`.
+
+.. env:: PAL:Bits
+
+PAL:Bits
+--------
+
+By default, on a 32-bit machine, this will be ``32`` and on a 64-bit machine,
+this will be ``64``. The most common usage for this is for app paths which can
+then be specified as ``%PAL:AppDir%\AppName%PAL:Bits%``.
+
+The value for this can be configured by :ini-key:`[Launch]:BitsVariable32` or
+:ini-key:`[Launch]:BitsVariable64`.
+
+.. TODO make :ini-key:`[Launch]:ProgramExecutable` support |envsub|

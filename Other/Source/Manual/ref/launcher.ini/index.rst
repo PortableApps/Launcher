@@ -21,6 +21,7 @@ launcher.ini
    launch
    activate
    livemode
+   persistentdata
    environment
    registry
    qt

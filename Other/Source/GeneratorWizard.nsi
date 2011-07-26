@@ -181,7 +181,6 @@ FunctionEnd
 	FileWriteByte $9 "13"
 	FileWriteByte $9 "10"
 	FileClose $9
-	StrCpy $ERROROCCURED "true"
 !macroend
 
 !macro UpdatePath Source Target
@@ -200,6 +199,10 @@ Section Main
 		MessageBox MB_ICONSTOP "NSIS was not found! (Looked for it in $NSIS)$\r$\n$\r$\nYou can specify a custom path to makensis.exe in $EXEDIR\Data\settings.ini, [GeneratorWizard]:makensis"
 		Abort
 	${EndIf}
+
+	; Fix the package path, if necessary
+	StrCpy $R1 $PACKAGE 1 -1
+	${IfThen} $R1 == "\" ${|} StrCpy $PACKAGE $PACKAGE -1 ${|}
 
 	SetDetailsPrint ListOnly
 	DetailPrint "App: $PACKAGE"
@@ -284,19 +287,23 @@ Section Main
 	${If} $ERROROCCURED != true
 		; Build the thing
 		ExecDos::exec `"$NSIS" /O"$EXEDIR\Data\PortableApps.comLauncherGeneratorLog.txt" /DPACKAGE="$PACKAGE" /DNamePortable="$Name" /DAppID="$AppID" /DVersion="$1"$2 "$EXEDIR\Other\Source\PortableApps.comLauncher.nsi"` "" ""
+		Pop $R1
+		${If} $R1 <> 0
+			StrCpy $ERROROCCURED true
+			${WriteErrorToLog} "MakeNSIS exited with status code $R1"
+		${EndIf}
 	${EndIf}
 
 	SetDetailsPrint ListOnly
 
 	DetailPrint " "
 	DetailPrint "Processing complete."
-	${If} ${FileExists} $PACKAGE\$AppID.exe
+	${If} $ERROROCCURED != true
 		StrCpy $FINISHTITLE "Launcher Created"
 		StrCpy $FINISHTEXT "The launcher has been created. Launcher location:\r\n$PACKAGE\r\n\r\nLauncher name:\r\n$AppID.exe" 
 	${Else}
 		StrCpy $FINISHTITLE "An Error Occured"
 		StrCpy $FINISHTEXT "The launcher was not created.  You can view the log file for more information."
-		StrCpy $ERROROCCURED true
 	${EndIf}
 SectionEnd
 
