@@ -71,7 +71,8 @@ Here is a diagram of how it works:
 When the portable application is not launched from the PortableApps.com
 Platform, to maintain the user's language setting, the custom language should
 be read from a file with the aid of the :ini-section:`[LanguageFile]` section,
-if this is possible.
+if this is possible. If the language is not written to a file, but e.g. read
+from an environment variable, you can use :ini-key:`[Language]:SaveLanguage`.
 
 Other ways
 ----------
