@@ -86,9 +86,9 @@ Directory variables
 -------------------
 
 Now you can define environment variables as
-:ref:`directory variables <ref-envsub-directory>` by appending a ``~`` to the
-key name. This way, you will get the same additional variables as the built-in
-ones.
+:ref:`directory variables <ref-envsub-directory>` by appending a ``~`` (tilde)
+to the key name. This way, you will get the same additional variables as the
+built-in ones.
 
 Currently, :ini-section:`[Environment]` and :ini-section:`[PersistentData]`
 support this feature. Refer to their documentation for details.
