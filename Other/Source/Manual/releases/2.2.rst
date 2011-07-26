@@ -92,3 +92,12 @@ ones.
 
 Currently, :ini-section:`[Environment]` and :ini-section:`[PersistentData]`
 support this feature. Refer to their documentation for details.
+
+Environment variable parsing on :ini-key:`[Launch]:ProgramExecutable`
+---------------------------------------------------------------------
+
+:ini-key:`[Launch]:ProgramExecutable` and
+:ini-key:`[Launch]:ProgramExecutableWhenParameters` now have environment
+variables parsed. This allows the use of :env:`%PAL:Bits% <PAL:Bits>` instead of
+the -64 variants, :ini-key:`[Launch]:ProgramExecutable64` and
+:ini-key:`[Launch]:ProgramExecutableWhenParameters64`.
