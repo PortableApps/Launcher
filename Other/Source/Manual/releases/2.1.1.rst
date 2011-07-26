@@ -18,6 +18,19 @@ is common with a couple of these bugs.
 
 For more information about the 2.1 release, see :ref:`releases-2.1`.
 
+Development team
+================
+
+First of all, we have a new team member in the PortableApps.com Launcher
+development team: **Aluísio Augusto Silva Gonçalves** (known generally as
+**kAlug**). He started contributing shortly after the release of 2.1 and has
+done a number of the things on the 2.2 roadmap already, and has also identified
+and fixed some of the bugs found in this release while I have been busy doing
+mission work in India and so have had less time to spare on this than normal.
+The release of 2.1.1 would have taken quite a lot longer without him (and the
+delays have still been my fault, too). I thank kAlug for his contributions and
+am looking forward to further work with him. *--- Chris Morgan*
+
 Bugs fixed
 ==========
 
