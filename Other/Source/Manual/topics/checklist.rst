@@ -66,8 +66,8 @@ Does it run from a different drive letter?
 
 Does it run if you move the directory?
    Prior to the PortableApps.com Launcher, little attention has been paid to
-   supporting moving the directory (e.g. from C:\Users\user\Desktop to
-   X:\PortableApps). It is not a requirement that you support directory moving,
+   supporting moving the directory (e.g. from C:\\Users\\user\\Desktop to
+   X:\\PortableApps). It is not a requirement that you support directory moving,
    but it is generally fairly easy to do and is often already supported. It's
    recommended that you make sure that this works and set
    :ini-key:`[Launch]:DirectoryMoveOK` to ``yes``, or determine that it's too

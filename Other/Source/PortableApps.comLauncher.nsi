@@ -163,7 +163,7 @@ VIAddVersionKey OriginalFilename "${AppID}.exe"
 
 !verbose 4
 
-Function .onInit          ;{{{1
+Function .onInit           ;{{{1
 	${RunSegment} Custom
 	${RunSegment} Core
 	${RunSegment} Temp
@@ -172,7 +172,7 @@ Function .onInit          ;{{{1
 	${RunSegment} RunAsAdmin
 FunctionEnd
 
-Function Init             ;{{{1
+Function Init              ;{{{1
 	${RunSegment} Custom
 	${RunSegment} Core
 	${RunSegment} Settings
@@ -189,15 +189,16 @@ Function Init             ;{{{1
 	${RunSegment} RefreshShellIcons
 FunctionEnd
 
-Function Pre              ;{{{1
+Function Pre               ;{{{1
 	${RunSegment} Custom
 	${RunSegment} RunLocally
 	${RunSegment} Temp
+	${RunSegment} PersistentData
 	${RunSegment} Environment
 	${RunSegment} ExecString
 FunctionEnd
 
-Function PrePrimary       ;{{{1
+Function PrePrimary        ;{{{1
 	${RunSegment} Custom
 	${RunSegment} DriveLetter
 	${RunSegment} DirectoryMoving
@@ -211,29 +212,31 @@ Function PrePrimary       ;{{{1
 	${RunSegment} Services
 FunctionEnd
 
-Function PreSecondary     ;{{{1
+Function PreSecondary      ;{{{1
 	${RunSegment} Custom
 	;${RunSegment} *
 FunctionEnd
 
-Function PreExec          ;{{{1
+Function PreExec           ;{{{1
 	${RunSegment} Custom
 	${RunSegment} RefreshShellIcons
 	${RunSegment} WorkingDirectory
+	${RunSegment} RunBeforeAfter
 FunctionEnd
 
-Function PreExecPrimary   ;{{{1
+Function PreExecPrimary    ;{{{1
 	${RunSegment} Custom
 	${RunSegment} Core
+	${RunSegment} PersistentData
 	${RunSegment} SplashScreen
 FunctionEnd
 
-Function PreExecSecondary ;{{{1
+Function PreExecSecondary  ;{{{1
 	${RunSegment} Custom
 	;${RunSegment} *
 FunctionEnd
 
-Function Execute          ;{{{1
+Function Execute           ;{{{1
 	; Users can override this function in Custom.nsh
 	; like this (see Segments.nsh for the OverrideExecute define):
 	;
@@ -302,7 +305,20 @@ Function Execute          ;{{{1
 	!endif
 FunctionEnd
 
-Function PostPrimary      ;{{{1
+Function PostExecPrimary   ;{{{1
+	${RunSegment} Custom
+FunctionEnd
+
+Function PostExecSecondary ;{{{1
+	${RunSegment} Custom
+FunctionEnd
+
+Function PostExec          ;{{{1
+	${RunSegment} RunBeforeAfter
+	${RunSegment} Custom
+FunctionEnd
+
+Function PostPrimary       ;{{{1
 	${RunSegment} Services
 	${RunSegment} RegistryValueBackupDelete
 	${RunSegment} RegistryKeys
@@ -317,17 +333,17 @@ Function PostPrimary      ;{{{1
 	${RunSegment} Custom
 FunctionEnd
 
-Function PostSecondary    ;{{{1
+Function PostSecondary     ;{{{1
 	;${RunSegment} *
 	${RunSegment} Custom
 FunctionEnd
 
-Function Post             ;{{{1
+Function Post              ;{{{1
 	${RunSegment} RefreshShellIcons
 	${RunSegment} Custom
 FunctionEnd
 
-Function Unload           ;{{{1
+Function Unload            ;{{{1
 	${RunSegment} XML
 	${RunSegment} Registry
 	${RunSegment} SplashScreen
@@ -388,6 +404,7 @@ Section           ;{{{1
 		${WriteRuntimeData} PortableApps.comLauncher Status stopping
 	${EndIf}
 	${If} $WaitForProgram != false
+		${CallPS} PostExec -
 		${CallPS} Post -
 	${EndIf}
 	Call Unload

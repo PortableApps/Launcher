@@ -18,20 +18,23 @@ ${SegmentPrePrimary}
 				${GetFileName} $0 $3 ; item
 			${EndIf}
 
-			StrLen $4 $1
-			StrCpy $5 0
-			${Do}
-				StrCpy $6 $1 1 $5
-				${IfThen} $6 == : ${|} ${ExitDo} ${|}
-				IntOp $5 $5 + 1
-			${LoopUntil} $5 > $4
+			; Check if the string starts with "REG_" before splitting type and value
+			StrCpy $7 $1 4
+			StrCpy $4 REG_SZ ; Keep REG_SZ as default
+			${If} $7 == REG_
+				StrLen $4 $1
+				StrCpy $5 0
+				${Do} ; Find the first ":" in the string
+					StrCpy $6 $1 1 $5
+					${IfThen} $6 == : ${|} ${ExitDo} ${|}
+					IntOp $5 $5 + 1
+				${LoopUntil} $5 > $4
 
-			${If} $6 == :
-				StrCpy $4 $1 $5 ; type (e.g. REG_DWORD)
-				IntOp $5 $5 + 1
-				StrCpy $1 $1 "" $5 ; value
-			${Else}
-				StrCpy $4 REG_SZ
+				${If} $6 == : ; Split type (..$5) and value ($5+1..)
+					StrCpy $4 $1 $5 ; type (e.g. REG_DWORD)
+					IntOp $5 $5 + 1
+					StrCpy $1 $1 "" $5 ; value
+				${EndIf}
 			${EndIf}
 
 			${ParseLocations} $1
