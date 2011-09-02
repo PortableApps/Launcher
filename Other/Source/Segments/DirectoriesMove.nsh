@@ -24,6 +24,8 @@ ${SegmentPrePrimary}
 		StrCpy $R0 $1 $R0
 		${If} $R0 == $EXEDIR
 			StrCpy $7 in-package
+		${Else}
+			StrCpy $7 not-in-package
 		${EndIf}
 
 		${If} $7 != in-package
