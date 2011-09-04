@@ -85,6 +85,7 @@ Var MissingFileOrPath
 Var AppNamePortable
 Var AppName
 Var ProgramExecutable
+Var StatusMutex
 Var WaitForProgram
 
 ; Macro: read a value from the launcher configuration file {{{1
@@ -369,25 +370,36 @@ FunctionEnd
 
 Section           ;{{{1
 	Call Init
-	${ReadRuntimeData} $R9 PortableApps.comLauncher Status
-	${If} $R9 == starting
+
+	System::Call 'Kernel32::OpenMutex(i1048576, b0, t"PortableApps.comLauncher$AppID-$BaseName::Starting") i.R0 ?e'
+	System::Call 'Kernel32::CloseHandle(iR0)'
+	Pop $R9
+	${If} $R9 <> 2
 		MessageBox MB_ICONSTOP $(LauncherAlreadyStarting)
 		Quit
-	${ElseIf} $R9 == stopping
+	${EndIf}
+	System::Call 'Kernel32::OpenMutex(i1048576, i0, t"PortableApps.comLauncher$AppID-$BaseName::Stopping") i.R0 ?e'
+	System::Call 'Kernel32::CloseHandle(iR0)'
+	Pop $R9
+	${If} $R9 <> 2
 		MessageBox MB_ICONSTOP $(LauncherAlreadyStopping)
 		Quit
 	${EndIf}
-	${If} $R9 != running
+
+	${IfNot} ${FileExists} $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini
 	${OrIf} $SecondaryLaunch == true
 		${If} $SecondaryLaunch != true
-			${WriteRuntimeData} PortableApps.comLauncher Status starting
+			System::Call 'Kernel32::CreateMutex(i0, i0, t"PortableApps.comLauncher$AppID-$BaseName::Starting") i.r0'
+			StrCpy $StatusMutex $0
 		${EndIf}
 		${CallPS} Pre +
 		${CallPS} PreExec +
-		${If} $WaitForProgram != false
-			${WriteRuntimeData} PortableApps.comLauncher Status running
+		${If} $SecondaryLaunch != true
+			StrCpy $0 $StatusMutex
+			System::Call 'Kernel32::CloseHandle(ir0) ?e'
+			Pop $R9
 		${EndIf}
-		; File gets deleted in segment Core, hook Unload, so it'll only be "running"
+		; File gets deleted in segment Core, hook Unload, so it'll only exist
 		; in case of power-outage, disk removal while running or something like that.
 		Call Execute
 	${Else}
@@ -400,8 +412,7 @@ Section           ;{{{1
 		; One possible solution: ExecWait another copy of self to do cleanup
 	${EndIf}
 	${If} $SecondaryLaunch != true
-		; It would be left as "stopping" if secondary wrote it.
-		${WriteRuntimeData} PortableApps.comLauncher Status stopping
+		System::Call 'Kernel32::CreateMutex(i0, i0, t"PortableApps.comLauncher$AppID-$BaseName::Stopping")'
 	${EndIf}
 	${If} $WaitForProgram != false
 		${CallPS} PostExec -
