@@ -101,3 +101,11 @@ Environment variable parsing on :ini-key:`[Launch]:ProgramExecutable`
 variables parsed. This allows the use of :env:`%PAL:Bits% <PAL:Bits>` instead of
 the -64 variants, :ini-key:`[Launch]:ProgramExecutable64` and
 :ini-key:`[Launch]:ProgramExecutableWhenParameters64`.
+
+Mutex-based starting/stopping checks
+------------------------------------
+
+The starting/stopping checks introduced in 2.1 were switched from using a
+RuntimeData INI file to using mutexes. This change allows system-wide blocking
+of apps in those phases, where the current one is installation-wide, i.e. it
+will not work if you run the same app from different directories.
