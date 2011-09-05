@@ -5,6 +5,7 @@ Var _FEIP_Line
 Var _FEIP_LineLength
 Var _FEIP_CharNum
 Var _FEIP_Char
+Var _FEIP_UTF16
 
 !macro ForEachINIPair SECTION KEY VALUE
 	!ifdef _ForEachINIPair_Open
@@ -13,12 +14,31 @@ Var _FEIP_Char
 	!define _ForEachINIPair_Open
 	${If} $_FEIP_FileHandle == ""
 		FileOpen $_FEIP_FileHandle $LauncherFile r
+	${EndIf}
+
+	Push $R1
+	Push $R0
+	FileSeek $_FEIP_FileHandle 0
+	FileReadByte $_FEIP_FileHandle $R0
+	FileReadByte $_FEIP_FileHandle $R1
+	IntOp $R0 $R0 << 8
+	IntOp $R0 $R0 + $R1
+	${If} $R0 = 0xFFFE
+		StrCpy $_FEIP_UTF16 true
 	${Else}
+		StrCpy $_FEIP_UTF16 false
 		FileSeek $_FEIP_FileHandle 0
 	${EndIf}
+	Pop $R0
+	Pop $R1
+
 	${Do}
 		ClearErrors
-		FileRead $_FEIP_FileHandle $_FEIP_Line
+		${If} $_FEIP_UTF16 == true
+			FileReadUTF16LE $_FEIP_FileHandle $_FEIP_Line
+		${Else}
+			FileRead $_FEIP_FileHandle $_FEIP_Line
+		${EndIf}
 		${TrimNewLines} $_FEIP_Line $_FEIP_Line
 		${If} ${Errors} ; end of file
 		${OrIf} $_FEIP_Line == "[${SECTION}]" ; right section
@@ -29,7 +49,11 @@ Var _FEIP_Char
 	${IfNot} ${Errors} ; right section
 		${Do}
 			ClearErrors
-			FileRead $_FEIP_FileHandle $_FEIP_Line
+			${If} $_FEIP_UTF16 == true
+				FileReadUTF16LE $_FEIP_FileHandle $_FEIP_Line
+			${Else}
+				FileRead $_FEIP_FileHandle $_FEIP_Line
+			${EndIf}
 
 			StrCpy $_FEIP_LineLength $_FEIP_Line 1
 			${If} ${Errors} ; end of file
