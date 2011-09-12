@@ -1,7 +1,7 @@
-.. ini-section:: [PersistentData]
+.. ini-section:: [LastRunEnvironment]
 
-[PersistentData]
-================
+[LastRunEnvironment]
+====================
 
 **Format:** arbitrary pairs
 
@@ -18,7 +18,7 @@ pairs.
 All values are saved and restored in the order they are come across, and the
 restoration is done before the :ini-section:`[Environment]` section is parsed,
 thus you can, in a way, store a variable if you want to, for use in later
-``[PersistentData]`` pairs or in another section such as
+``[LastRunEnvironment]`` pairs or in another section such as
 :ini-section:`[FileWriteN]`. Also, the values are saved after
 :ini-section:`[Environment]` is parsed , so you can change the saved data in
 there:
@@ -28,7 +28,7 @@ there:
    [Environment]
    HOME=%PAL:DataDir%
 
-   [PersistentData]
+   [LastRunEnvironment]
    OldHome=%HOME%
 
    [FileWrite1]
