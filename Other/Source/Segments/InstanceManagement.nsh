@@ -37,7 +37,7 @@ ${SegmentInit}
 	; Expand the program executable filename.
 	; Doing it here instead of in Core.nsh (where it is defined) allows the user to use
 	; the built-in environment variables (but not custom ones, defined in [Environment]
-	; and [PersistentData]).
+	; and [LastRunEnvironment]).
 	${ParseLocations} $ProgramExecutable
 
 	; Check that what we're going to execute exists (it'd be a pretty poor

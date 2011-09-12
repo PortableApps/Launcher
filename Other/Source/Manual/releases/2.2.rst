@@ -74,9 +74,9 @@ For :ref:`custom code <custom-code>`, there is ``$Bits``, which is ``64`` or
 Persist variables between launches
 ----------------------------------
 
-A new section, :ini-section:`[PersistentData]`, has been introduced. It allows
-you to save arbitrary content, thus you can refer to it in the next launch. This
-is useful when you need to e.g. know the value of
+A new section, :ini-section:`[LastRunEnvironment]`, has been introduced. It
+allows you to save arbitrary content, thus you can refer to it in the next
+launch. This is useful when you need to e.g. know the value of
 :env:`%PAL:LastDrive% <PAL:LastDrive>` from the previous run.
 
 Changes
@@ -90,7 +90,7 @@ Now you can define environment variables as
 to the key name. This way, you will get the same additional variables as the
 built-in ones.
 
-Currently, :ini-section:`[Environment]` and :ini-section:`[PersistentData]`
+Currently, :ini-section:`[Environment]` and :ini-section:`[LastRunEnvironment]`
 support this feature. Refer to their documentation for details.
 
 Environment variable parsing on :ini-key:`[Launch]:ProgramExecutable`
