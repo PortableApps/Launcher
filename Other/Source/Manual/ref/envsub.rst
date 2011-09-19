@@ -314,34 +314,34 @@ These variables are for language switching. Particularly of interest is
 
 A full table of all the values is available in :ref:`languages-values`.
 
-.. env:: PortableApps.comLanguageCode
+.. env:: PAL:LanguageCode
 
-* **PortableApps.comLanguageCode** -- e.g. "en", "pt", "pt-br"
+* **PAL:LanguageCode** -- e.g. "en", "pt", "pt-br"
 
-.. env:: PortableApps.comLocaleCode2
+.. env:: PAL:LanguageCode2
 
-* **PortableApps.comLocaleCode2** -- e.g. "en", "pt", "pt"
+* **PAL:LanguageCode2** -- e.g. "en", "pt", "pt"
 
-.. env:: PortableApps.comLocaleCode3
+.. env:: PAL:LanguageCode3
 
-* **PortableApps.comLocaleCode3** -- e.g. "eng", "por", "por"
+* **PAL:LanguageCode3** -- e.g. "eng", "por", "por"
 
-.. env:: PortableApps.comLocaleglibc
+.. env:: PAL:LocaleGlibc
 
-* **PortableApps.comLocaleglibc** -- e.g. "en_US", "pt", "pt_BR"
+* **PAL:LocaleGlibc** -- e.g. "en_US", "pt", "pt_BR"
 
-.. env:: PortableApps.comLocaleID
+.. env:: PAL:LocaleID
 
-* **PortableApps.comLocaleID** -- e.g. "1033", "2070", "1046"
+* **PAL:LocaleID** -- e.g. "1033", "2070", "1046"
 
-.. env:: PortableApps.comLocaleWinName
+.. env:: PAL:LocaleNSIS
 
-* **PortableApps.comLocaleWinName** -- e.g. "LANG_ENGLISH", "LANG_PORTUGUESE",
+* **PAL:LocaleNSIS** -- e.g. "LANG_ENGLISH", "LANG_PORTUGUESE",
   "LANG_PORTUGUESEBR"
 
-.. env:: PortableApps.comLocaleName
+.. env:: PAL:LocaleName
 
-* **PortableApps.comLocaleName** -- e.g. "English", "Portuguese", "PortugueseBR"
+* **PAL:LocaleName** -- e.g. "English", "Portuguese", "PortugueseBR"
   (note: these will be upper case until implemented in the PortableApps.com
   Platform)
 

@@ -192,6 +192,32 @@ FunctionEnd
 	${EndIf}
 !macroend
 
+Function UpdateLanguageEnvironmentVariables
+	Pop $9 # file
+
+	FileOpen $8 $9 r
+	FileReadWord $8 $7
+	FileClose $8
+
+	SetDetailsPrint none
+	${If} $7 = 0xFEFF
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLanguageCode  PAL:LanguageCode
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleCode2   PAL:LanguageCode2
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleCode3   PAL:LanguageCode3
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleGlibc   PAL:LocaleGlibc
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleWinName PAL:LocaleNSIS
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleName    PAL:LocaleName
+	${Else}
+		${ReplaceInFile} $9 PortableApps.comLanguageCode  PAL:LanguageCode
+		${ReplaceInFile} $9 PortableApps.comLocaleCode2   PAL:LanguageCode2
+		${ReplaceInFile} $9 PortableApps.comLocaleCode3   PAL:LanguageCode3
+		${ReplaceInFile} $9 PortableApps.comLocaleGlibc   PAL:LocaleGlibc
+		${ReplaceInFile} $9 PortableApps.comLocaleWinName PAL:LocaleNSIS
+		${ReplaceInFile} $9 PortableApps.comLocaleName    PAL:LocaleName
+	${EndIf}
+	SetDetailsPrint lastused
+FunctionEnd
+
 Section Main
 	${IfNot} ${FileExists} $NSIS
 		StrCpy $ERROROCCURED true
@@ -231,6 +257,20 @@ Section Main
 		${EndIf}
 		DetailPrint " "
 	${EndIf}
+
+	; Check if any upgrade needs to be done from 2.1 to 2.2
+	DetailPrint "Upgrading from 2.1 to 2.2..."
+	; Replace the PortableApps.com language environment variables with their PAL counterparts
+	Push $PACKAGE\App\AppInfo\Launcher\Custom.nsh
+	Call UpdateLanguageEnvironmentVariables
+	FindFirst $0 $1 $PACKAGE\App\AppInfo\Launcher\*.ini
+	${DoUntil} $1 == ""
+		Push $PACKAGE\App\AppInfo\Launcher\$1
+		Call UpdateLanguageEnvironmentVariables
+		FindNext $0 $1
+	${Loop}
+	FindClose $0
+	DetailPrint " "
 
 
 	DetailPrint "Generating launcher..."

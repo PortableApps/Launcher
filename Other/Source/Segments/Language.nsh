@@ -16,32 +16,29 @@ ${Segment.onInit}
 ${SegmentInit}
 	; Detect to see if the language code is coming from the PortableApps.com Platform.
 	ReadEnvStr $0 PortableApps.comLanguageCode
-	ReadEnvStr $1 PAL:_IgnoreLanguage
 	${If} $0 == ""
-	${OrIf} $1 == true
 		${DebugMsg} "PortableApps.com Platform language variables are missing."
 		StrCpy $9 pap-missing
-		${SetEnvironmentVariable} PAL:_IgnoreLanguage true
 	${EndIf}
 
-	; Set the default values
-	${SetEnvironmentVariableDefault} PortableApps.comLanguageCode en
-	${SetEnvironmentVariableDefault} PortableApps.comLocaleCode2 en
-	${SetEnvironmentVariableDefault} PortableApps.comLocaleCode3 eng
-	${SetEnvironmentVariableDefault} PortableApps.comLocaleglibc en_US
-	${SetEnvironmentVariableDefault} PortableApps.comLocaleID 1033
-	${SetEnvironmentVariableDefault} PortableApps.comLocaleWinName LANG_ENGLISH
+	; Set languages variables; fallback to U.S. English if not launched from the PortableApps.com Platform.
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageCode  PortableApps.comLanguageCode  en
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageCode2 PortableApps.comLocaleCode2   en
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageCode3 PortableApps.comLocaleCode3   eng
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LocaleGlibc   PortableApps.comLocaleglibc   en_US
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LocaleID      PortableApps.comLocaleID      1033
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LocaleNSIS    PortableApps.comLocaleWinName LANG_ENGLISH
 
 	; LocaleName: added in Platform 2.0 Beta 5.
 	; It's a mixed-case variant of LocaleWinName minus the LANG_.
 	; If it's not set (1.6 - 2.0b4) it's worked out from that.
 	; There's then no need for a table to fix the case, all operations I can
 	; think of are case-insensitive.
-	ReadEnvStr $0 PortableApps.comLocaleName
+	ReadEnvStr $0 PAL:LocaleName
 	${If} $0 == ""
-		ReadEnvStr $0 PortableApps.comLocaleWinName
+		ReadEnvStr $0 PAL:LocaleNSIS
 		StrCpy $0 $0 "" 5 ; Chop off the LANG_
-		${SetEnvironmentVariable} PortableApps.comLocaleName $0
+		${SetEnvironmentVariable} PAL:LocaleName $0
 	${EndIf}
 
 	; Now we can consider what to do next: was this launched from the
