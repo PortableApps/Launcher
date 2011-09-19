@@ -10,7 +10,7 @@ def main(path):
         usage()
 
     print '==================== ============ ============= ============= =========== ======== ========================='
-    print 'LocaleName           LanguageCode LanguageCode2 LanguageCode3 LocaleGlibc LocaleID LocaleNSIS            '
+    print 'LocaleName           LanguageCode LanguageCode2 LanguageCode3 LocaleGlibc LocaleID LocaleNSIS               '
     print '==================== ============ ============= ============= =========== ======== ========================='
     for locale_file in glob.iglob(os.path.join(path, '*.locale')):
         fp = open(locale_file, 'r')
@@ -32,13 +32,13 @@ def main(path):
         print ' '.join([
             os.path.basename(locale_file)[:-7].ljust(20),
             get_value('LanguageCode'),
-            get_value('LocaleCode2'),
-            get_value('LocaleCode3'),
+            get_value('LocaleCode2', len('LanguageCode2')),
+            get_value('LocaleCode3', len('LanguageCode3')),
             get_value('Localeglibc'),
             get_value('LocaleID'),
             get_value('LocaleWinName', 25),
         ])
-    print '==================== ============ =========== =========== =========== ======== ========================='
+    print '==================== ============ ============= ============= =========== ======== ========================='
 
 def get_value(value, padwidth=None):
     if padwidth == None:
