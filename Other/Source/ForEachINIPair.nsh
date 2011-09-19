@@ -16,21 +16,16 @@ Var _FEIP_UTF16
 		FileOpen $_FEIP_FileHandle $LauncherFile r
 	${EndIf}
 
-	Push $R1
 	Push $R0
 	FileSeek $_FEIP_FileHandle 0
-	FileReadByte $_FEIP_FileHandle $R0
-	FileReadByte $_FEIP_FileHandle $R1
-	IntOp $R0 $R0 << 8
-	IntOp $R0 $R0 + $R1
-	${If} $R0 = 0xFFFE
+	FileReadWord $_FEIP_FileHandle $R0
+	${If} $R0 = 0xFEFF
 		StrCpy $_FEIP_UTF16 true
 	${Else}
 		StrCpy $_FEIP_UTF16 false
 		FileSeek $_FEIP_FileHandle 0
 	${EndIf}
 	Pop $R0
-	Pop $R1
 
 	${Do}
 		ClearErrors

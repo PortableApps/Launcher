@@ -225,11 +225,9 @@ Section Main
 		; Avoid ${...} being taken amiss
 		StrCpy $0 $${ReadUser
 		${If} $1 = 0xFEFF
-			${If} $5 == UTF-16LE
-				${ReplaceInFileUTF16LECS} $PACKAGE\App\AppInfo\Launcher\Custom.nsh $0OverrideConfig} $0Config}
-			${Else}
-				${ReplaceInFileCS} $PACKAGE\App\AppInfo\Launcher\Custom.nsh $0OverrideConfig} $0Config}
-			${EndIf}
+			${ReplaceInFileUTF16LECS} $PACKAGE\App\AppInfo\Launcher\Custom.nsh $0OverrideConfig} $0Config}
+		${Else}
+			${ReplaceInFileCS} $PACKAGE\App\AppInfo\Launcher\Custom.nsh $0OverrideConfig} $0Config}
 		${EndIf}
 		DetailPrint " "
 	${EndIf}
