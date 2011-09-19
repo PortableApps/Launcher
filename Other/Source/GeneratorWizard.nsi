@@ -207,6 +207,7 @@ Function UpdateLanguageEnvironmentVariables
 		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleGlibc   PAL:LocaleGlibc
 		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleWinName PAL:LocaleNSIS
 		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleName    PAL:LocaleName
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleID      PAL:LocaleID
 	${Else}
 		${ReplaceInFile} $9 PortableApps.comLanguageCode  PAL:LanguageCode
 		${ReplaceInFile} $9 PortableApps.comLocaleCode2   PAL:LanguageCode2
@@ -214,6 +215,7 @@ Function UpdateLanguageEnvironmentVariables
 		${ReplaceInFile} $9 PortableApps.comLocaleGlibc   PAL:LocaleGlibc
 		${ReplaceInFile} $9 PortableApps.comLocaleWinName PAL:LocaleNSIS
 		${ReplaceInFile} $9 PortableApps.comLocaleName    PAL:LocaleName
+		${ReplaceInFile} $9 PortableApps.comLocaleID      PAL:LocaleID
 	${EndIf}
 	SetDetailsPrint lastused
 FunctionEnd
