@@ -125,6 +125,7 @@ PortableApps.comLocaleCode3   PAL:LanguageCode3
 PortableApps.comLocaleGlibc   PAL:LocaleGlibc
 PortableApps.comLocaleWinName PAL:LocaleNSIS
 PortableApps.comLocaleName    PAL:LocaleName
+PortableApps.comLocaleID      PAL:LocaleID
 ============================= =================
 
 The PortableApps.com Launcher Generator will automatically change your code to
