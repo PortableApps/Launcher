@@ -25,6 +25,7 @@ def main(path):
                 locale_parser.readfp(fp) # Now try reading the whole file
         except ParsingError:
             print "Unable to parse %s!" % os.path.basename(locale_file)[:-7]
+            continue
         finally:
             fp.close()
 
