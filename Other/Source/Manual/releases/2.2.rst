@@ -109,3 +109,23 @@ The starting/stopping checks introduced in 2.1 were switched from using a
 RuntimeData INI file to using mutexes. This change allows system-wide blocking
 of apps in those phases, where the current one is installation-wide, i.e. it
 will not work if you run the same app from different directories.
+
+Renamed language environment variables
+--------------------------------------
+
+The language environment variables were renamed in order to fix a conflict with
+the PortableApps.com Platform. The following tables lists their new names:
+
+============================= =================
+Old name                      New name
+============================= =================
+PortableApps.comLanguageCode  PAL:LanguageCode
+PortableApps.comLocaleCode2   PAL:LanguageCode2
+PortableApps.comLocaleCode3   PAL:LanguageCode3
+PortableApps.comLocaleGlibc   PAL:LocaleGlibc
+PortableApps.comLocaleWinName PAL:LocaleNSIS
+PortableApps.comLocaleName    PAL:LocaleName
+============================= =================
+
+The PortableApps.com Launcher Generator will automatically change your code to
+use the new environment variables.

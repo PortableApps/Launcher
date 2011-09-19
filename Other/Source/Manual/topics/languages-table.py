@@ -9,9 +9,9 @@ def main(path):
     if not os.path.exists(path) or not os.path.isdir(path):
         usage()
 
-    print '==================== ============ =========== =========== =========== ======== ========================='
-    print 'LocaleName           LanguageCode LocaleCode2 LocaleCode3 Localeglibc LocaleID LocaleWinName            '
-    print '==================== ============ =========== =========== =========== ======== ========================='
+    print '==================== ============ ============= ============= =========== ======== ========================='
+    print 'LocaleName           LanguageCode LanguageCode2 LanguageCode3 LocaleGlibc LocaleID LocaleNSIS            '
+    print '==================== ============ ============= ============= =========== ======== ========================='
     for locale_file in glob.iglob(os.path.join(path, '*.locale')):
         fp = open(locale_file, 'r')
         bom = fp.read(2)
