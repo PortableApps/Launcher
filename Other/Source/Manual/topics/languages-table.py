@@ -9,9 +9,9 @@ def main(path):
     if not os.path.exists(path) or not os.path.isdir(path):
         usage()
 
-    print '==================== ============ ============= ============= =========== ======== ========================='
-    print 'LocaleName           LanguageCode LanguageCode2 LanguageCode3 LocaleGlibc LocaleID LocaleNSIS               '
-    print '==================== ============ ============= ============= =========== ======== ========================='
+    print '==================== ============ ============= ============= ============= ============ ========================='
+    print 'LanguageName         LanguageCode LanguageCode2 LanguageCode3 LanguageGlibc LanguageLCID LanguageNSIS             '
+    print '==================== ============ ============= ============= ============= ============ ========================='
     for locale_file in glob.iglob(os.path.join(path, '*.locale')):
         fp = open(locale_file, 'r')
         bom = fp.read(2)
@@ -34,11 +34,11 @@ def main(path):
             get_value('LanguageCode'),
             get_value('LocaleCode2', len('LanguageCode2')),
             get_value('LocaleCode3', len('LanguageCode3')),
-            get_value('Localeglibc'),
-            get_value('LocaleID'),
+            get_value('Localeglibc', len('LanguageGlibc')),
+            get_value('LocaleID', len('LanguageLCID')),
             get_value('LocaleWinName', 25),
         ])
-    print '==================== ============ ============= ============= =========== ======== ========================='
+    print '==================== ============ ============= ============= ============= ============ ========================='
 
 def get_value(value, padwidth=None):
     if padwidth == None:

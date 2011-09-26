@@ -122,10 +122,10 @@ Old name                      New name
 PortableApps.comLanguageCode  PAL:LanguageCode
 PortableApps.comLocaleCode2   PAL:LanguageCode2
 PortableApps.comLocaleCode3   PAL:LanguageCode3
-PortableApps.comLocaleGlibc   PAL:LocaleGlibc
-PortableApps.comLocaleWinName PAL:LocaleNSIS
-PortableApps.comLocaleName    PAL:LocaleName
-PortableApps.comLocaleID      PAL:LocaleID
+PortableApps.comLocaleGlibc   PAL:LanguageGlibc
+PortableApps.comLocaleWinName PAL:LanguageNSIS
+PortableApps.comLocaleName    PAL:LanguageName
+PortableApps.comLocaleID      PAL:LanguageLCID
 ============================= =================
 
 The PortableApps.com Launcher Generator will automatically change your code to

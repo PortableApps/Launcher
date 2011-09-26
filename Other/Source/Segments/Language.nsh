@@ -25,20 +25,20 @@ ${SegmentInit}
 	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageCode  PortableApps.comLanguageCode  en
 	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageCode2 PortableApps.comLocaleCode2   en
 	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageCode3 PortableApps.comLocaleCode3   eng
-	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LocaleGlibc   PortableApps.comLocaleglibc   en_US
-	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LocaleID      PortableApps.comLocaleID      1033
-	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LocaleNSIS    PortableApps.comLocaleWinName LANG_ENGLISH
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageGlibc PortableApps.comLocaleglibc   en_US
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageLCID  PortableApps.comLocaleID      1033
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageNSIS  PortableApps.comLocaleWinName LANG_ENGLISH
 
-	; LocaleName: added in Platform 2.0 Beta 5.
+	; LanguageName: added in Platform 2.0 Beta 5.
 	; It's a mixed-case variant of LocaleWinName minus the LANG_.
 	; If it's not set (1.6 - 2.0b4) it's worked out from that.
 	; There's then no need for a table to fix the case, all operations I can
 	; think of are case-insensitive.
-	ReadEnvStr $0 PAL:LocaleName
+	ReadEnvStr $0 PAL:LanguageName
 	${If} $0 == ""
-		ReadEnvStr $0 PAL:LocaleNSIS
+		ReadEnvStr $0 PAL:LanguageNSIS
 		StrCpy $0 $0 "" 5 ; Chop off the LANG_
-		${SetEnvironmentVariable} PAL:LocaleName $0
+		${SetEnvironmentVariable} PAL:LanguageName $0
 	${EndIf}
 
 	; Now we can consider what to do next: was this launched from the

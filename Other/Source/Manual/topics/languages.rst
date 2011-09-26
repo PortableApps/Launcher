@@ -93,7 +93,7 @@ Here is a table of language variables and the values they are given. (All the
 variables in this table have ``PAL:`` prefixed to them, see
 :ref:`ref-envsub-language` for the full names.)
 
-**Note:** :env:`PAL:LocaleName` will be in uppercase for users of
+**Note:** :env:`PAL:LanguageName` will be in uppercase for users of
 the PortableApps.com Platform 2.0 Beta 5 and earlier. If this matters, you may
 need to use the :ini-section:`[LanguageStrings]` section.
 
