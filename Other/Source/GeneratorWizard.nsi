@@ -204,18 +204,18 @@ Function UpdateLanguageEnvironmentVariables
 		${ReplaceInFileUTF16LE} $9 PortableApps.comLanguageCode  PAL:LanguageCode
 		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleCode2   PAL:LanguageCode2
 		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleCode3   PAL:LanguageCode3
-		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleGlibc   PAL:LocaleGlibc
-		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleWinName PAL:LocaleNSIS
-		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleName    PAL:LocaleName
-		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleID      PAL:LocaleID
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleGlibc   PAL:LanguageGlibc
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleWinName PAL:LanguageNSIS
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleName    PAL:LanguageName
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleID      PAL:LanguageLCID
 	${Else}
 		${ReplaceInFile} $9 PortableApps.comLanguageCode  PAL:LanguageCode
 		${ReplaceInFile} $9 PortableApps.comLocaleCode2   PAL:LanguageCode2
 		${ReplaceInFile} $9 PortableApps.comLocaleCode3   PAL:LanguageCode3
-		${ReplaceInFile} $9 PortableApps.comLocaleGlibc   PAL:LocaleGlibc
-		${ReplaceInFile} $9 PortableApps.comLocaleWinName PAL:LocaleNSIS
-		${ReplaceInFile} $9 PortableApps.comLocaleName    PAL:LocaleName
-		${ReplaceInFile} $9 PortableApps.comLocaleID      PAL:LocaleID
+		${ReplaceInFile} $9 PortableApps.comLocaleGlibc   PAL:LanguageGlibc
+		${ReplaceInFile} $9 PortableApps.comLocaleWinName PAL:LanguageNSIS
+		${ReplaceInFile} $9 PortableApps.comLocaleName    PAL:LanguageName
+		${ReplaceInFile} $9 PortableApps.comLocaleID      PAL:LanguageLCID
 	${EndIf}
 	SetDetailsPrint lastused
 FunctionEnd

@@ -326,22 +326,22 @@ A full table of all the values is available in :ref:`languages-values`.
 
 * **PAL:LanguageCode3** -- e.g. "eng", "por", "por"
 
-.. env:: PAL:LocaleGlibc
+.. env:: PAL:LanguageGlibc
 
-* **PAL:LocaleGlibc** -- e.g. "en_US", "pt", "pt_BR"
+* **PAL:LanguageGlibc** -- e.g. "en_US", "pt", "pt_BR"
 
-.. env:: PAL:LocaleID
+.. env:: PAL:LanguageLCID
 
-* **PAL:LocaleID** -- e.g. "1033", "2070", "1046"
+* **PAL:LanguageLCID** -- e.g. "1033", "2070", "1046"
 
-.. env:: PAL:LocaleNSIS
+.. env:: PAL:LanguageNSIS
 
-* **PAL:LocaleNSIS** -- e.g. "LANG_ENGLISH", "LANG_PORTUGUESE",
+* **PAL:LanguageNSIS** -- e.g. "LANG_ENGLISH", "LANG_PORTUGUESE",
   "LANG_PORTUGUESEBR"
 
-.. env:: PAL:LocaleName
+.. env:: PAL:LanguageName
 
-* **PAL:LocaleName** -- e.g. "English", "Portuguese", "PortugueseBR"
+* **PAL:LanguageName** -- e.g. "English", "Portuguese", "PortugueseBR"
   (note: these will be upper case until implemented in the PortableApps.com
   Platform)
 
