@@ -67,8 +67,10 @@ if [[ $VERSION =~ $regex ]]; then
 		if [ "${BASH_REMATCH[6]}" != "" ]; then
 			# Alpha/Beta/RC
 			XXXX4=$(( $XXXX4 + ${BASH_REMATCH[7]} ))
+			RELEASE=false
 		else
 			XXXX4=0 # Final
+			RELEASE=true
 		fi
 	fi
 	XXXX=$XXXX1.$XXXX2.$XXXX3.$XXXX4
@@ -106,6 +108,7 @@ echo "Building the PortableApps.com Launcher installer..."
 	cd ../..
 	installer_filename="PortableApps.comLauncher_`echo $VERSION | sed "s/ /_/g"`.paf.exe"
 	rm ../$installer_filename
+	$RELEASE && rm ../UNSIGNED_$installer_filename
 	pai $PWD
 	cd ..
 
@@ -114,21 +117,23 @@ echo "Building the PortableApps.com Launcher installer..."
 		exit 1
 	fi
 
+	if [ "$RELEASE" = "true" ]; then
+		mv ../$installer_filename ../UNSIGNED_$installer_filename
+		installer_filename=UNSIGNED_$installer_filename
+	fi
+
 echo "Uploading the installer..."
 	if [ "$sfusername" = "" ]; then
 		sfusername=chriswombat
 	fi
 
-	directory="PortableApps.com Launcher $VERSION"
-	if [ "${BASH_REMATCH[6]}" != "" ]; then
-		parent_directory="PortableApps.com Launcher Test"
+	if [ "$RELEASE" = "true" ]; then
+		directory="PortableApps.com Launcher"
 	else
-		parent_directory="PortableApps.com Launcher"
+		directory="PortableApps.com Launcher Test"
 	fi
 
-	echo "cd \"/home/pfs/project/p/po/portableapps/$parent_directory\"
--mkdir \"$directory\"
-cd \"$directory\"
+	echo "cd \"/home/pfs/project/p/po/portableapps/$directory\"
 -rm \"$installer_filename\"
 put \"$installer_filename\"" | sftp $sfusername,portableapps@frs.sourceforge.net
 
