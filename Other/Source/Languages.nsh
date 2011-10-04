@@ -10,6 +10,7 @@
 !macroend
 !define IncludeLang "!insertmacro IncludeLang"
 ${IncludeLang} English
+${IncludeLang} Armenian
 ${IncludeLang} Bulgarian
 ${IncludeLang} Danish
 ${IncludeLang} Dutch
