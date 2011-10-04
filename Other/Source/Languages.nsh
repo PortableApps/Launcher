@@ -34,6 +34,7 @@ ${IncludeLang} Swedish
 ${IncludeLang} Thai
 ${IncludeLang} TradChinese
 ${IncludeLang} Turkish
+${IncludeLang} Vietnamese
 
 ; Use the Case statements formed above.
 ; Used in Segments/Language.nsh
