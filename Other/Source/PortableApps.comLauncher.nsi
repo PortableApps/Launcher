@@ -85,6 +85,7 @@ Var MissingFileOrPath
 Var AppNamePortable
 Var AppName
 Var ProgramExecutable
+Var StatusMutex
 Var WaitForProgram
 
 ; Macro: read a value from the launcher configuration file {{{1
@@ -163,7 +164,7 @@ VIAddVersionKey OriginalFilename "${AppID}.exe"
 
 !verbose 4
 
-Function .onInit          ;{{{1
+Function .onInit           ;{{{1
 	${RunSegment} Custom
 	${RunSegment} Core
 	${RunSegment} Temp
@@ -172,7 +173,7 @@ Function .onInit          ;{{{1
 	${RunSegment} RunAsAdmin
 FunctionEnd
 
-Function Init             ;{{{1
+Function Init              ;{{{1
 	${RunSegment} Custom
 	${RunSegment} Core
 	${RunSegment} Settings
@@ -189,15 +190,16 @@ Function Init             ;{{{1
 	${RunSegment} RefreshShellIcons
 FunctionEnd
 
-Function Pre              ;{{{1
+Function Pre               ;{{{1
 	${RunSegment} Custom
 	${RunSegment} RunLocally
 	${RunSegment} Temp
+	${RunSegment} LastRunEnvironment
 	${RunSegment} Environment
 	${RunSegment} ExecString
 FunctionEnd
 
-Function PrePrimary       ;{{{1
+Function PrePrimary        ;{{{1
 	${RunSegment} Custom
 	${RunSegment} DriveLetter
 	${RunSegment} DirectoryMoving
@@ -211,29 +213,31 @@ Function PrePrimary       ;{{{1
 	${RunSegment} Services
 FunctionEnd
 
-Function PreSecondary     ;{{{1
+Function PreSecondary      ;{{{1
 	${RunSegment} Custom
 	;${RunSegment} *
 FunctionEnd
 
-Function PreExec          ;{{{1
+Function PreExec           ;{{{1
 	${RunSegment} Custom
 	${RunSegment} RefreshShellIcons
 	${RunSegment} WorkingDirectory
+	${RunSegment} RunBeforeAfter
 FunctionEnd
 
-Function PreExecPrimary   ;{{{1
+Function PreExecPrimary    ;{{{1
 	${RunSegment} Custom
 	${RunSegment} Core
+	${RunSegment} LastRunEnvironment
 	${RunSegment} SplashScreen
 FunctionEnd
 
-Function PreExecSecondary ;{{{1
+Function PreExecSecondary  ;{{{1
 	${RunSegment} Custom
 	;${RunSegment} *
 FunctionEnd
 
-Function Execute          ;{{{1
+Function Execute           ;{{{1
 	; Users can override this function in Custom.nsh
 	; like this (see Segments.nsh for the OverrideExecute define):
 	;
@@ -302,7 +306,20 @@ Function Execute          ;{{{1
 	!endif
 FunctionEnd
 
-Function PostPrimary      ;{{{1
+Function PostExecPrimary   ;{{{1
+	${RunSegment} Custom
+FunctionEnd
+
+Function PostExecSecondary ;{{{1
+	${RunSegment} Custom
+FunctionEnd
+
+Function PostExec          ;{{{1
+	${RunSegment} RunBeforeAfter
+	${RunSegment} Custom
+FunctionEnd
+
+Function PostPrimary       ;{{{1
 	${RunSegment} Services
 	${RunSegment} RegistryValueBackupDelete
 	${RunSegment} RegistryKeys
@@ -317,17 +334,17 @@ Function PostPrimary      ;{{{1
 	${RunSegment} Custom
 FunctionEnd
 
-Function PostSecondary    ;{{{1
+Function PostSecondary     ;{{{1
 	;${RunSegment} *
 	${RunSegment} Custom
 FunctionEnd
 
-Function Post             ;{{{1
+Function Post              ;{{{1
 	${RunSegment} RefreshShellIcons
 	${RunSegment} Custom
 FunctionEnd
 
-Function Unload           ;{{{1
+Function Unload            ;{{{1
 	${RunSegment} XML
 	${RunSegment} Registry
 	${RunSegment} SplashScreen
@@ -353,25 +370,36 @@ FunctionEnd
 
 Section           ;{{{1
 	Call Init
-	${ReadRuntimeData} $R9 PortableApps.comLauncher Status
-	${If} $R9 == starting
+
+	System::Call 'Kernel32::OpenMutex(i1048576, b0, t"PortableApps.comLauncher$AppID-$BaseName::Starting") i.R0 ?e'
+	System::Call 'Kernel32::CloseHandle(iR0)'
+	Pop $R9
+	${If} $R9 <> 2
 		MessageBox MB_ICONSTOP $(LauncherAlreadyStarting)
 		Quit
-	${ElseIf} $R9 == stopping
+	${EndIf}
+	System::Call 'Kernel32::OpenMutex(i1048576, i0, t"PortableApps.comLauncher$AppID-$BaseName::Stopping") i.R0 ?e'
+	System::Call 'Kernel32::CloseHandle(iR0)'
+	Pop $R9
+	${If} $R9 <> 2
 		MessageBox MB_ICONSTOP $(LauncherAlreadyStopping)
 		Quit
 	${EndIf}
-	${If} $R9 != running
+
+	${IfNot} ${FileExists} $DataDirectory\PortableApps.comLauncherRuntimeData-$BaseName.ini
 	${OrIf} $SecondaryLaunch == true
 		${If} $SecondaryLaunch != true
-			${WriteRuntimeData} PortableApps.comLauncher Status starting
+			System::Call 'Kernel32::CreateMutex(i0, i0, t"PortableApps.comLauncher$AppID-$BaseName::Starting") i.r0'
+			StrCpy $StatusMutex $0
 		${EndIf}
 		${CallPS} Pre +
 		${CallPS} PreExec +
-		${If} $WaitForProgram != false
-			${WriteRuntimeData} PortableApps.comLauncher Status running
+		${If} $SecondaryLaunch != true
+			StrCpy $0 $StatusMutex
+			System::Call 'Kernel32::CloseHandle(ir0) ?e'
+			Pop $R9
 		${EndIf}
-		; File gets deleted in segment Core, hook Unload, so it'll only be "running"
+		; File gets deleted in segment Core, hook Unload, so it'll only exist
 		; in case of power-outage, disk removal while running or something like that.
 		Call Execute
 	${Else}
@@ -384,10 +412,10 @@ Section           ;{{{1
 		; One possible solution: ExecWait another copy of self to do cleanup
 	${EndIf}
 	${If} $SecondaryLaunch != true
-		; It would be left as "stopping" if secondary wrote it.
-		${WriteRuntimeData} PortableApps.comLauncher Status stopping
+		System::Call 'Kernel32::CreateMutex(i0, i0, t"PortableApps.comLauncher$AppID-$BaseName::Stopping")'
 	${EndIf}
 	${If} $WaitForProgram != false
+		${CallPS} PostExec -
 		${CallPS} Post -
 	${EndIf}
 	Call Unload

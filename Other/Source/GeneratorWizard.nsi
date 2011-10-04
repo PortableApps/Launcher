@@ -181,7 +181,6 @@ FunctionEnd
 	FileWriteByte $9 "13"
 	FileWriteByte $9 "10"
 	FileClose $9
-	StrCpy $ERROROCCURED "true"
 !macroend
 
 !macro UpdatePath Source Target
@@ -193,6 +192,34 @@ FunctionEnd
 	${EndIf}
 !macroend
 
+Function UpdateLanguageEnvironmentVariables
+	Pop $9 # file
+
+	FileOpen $8 $9 r
+	FileReadWord $8 $7
+	FileClose $8
+
+	SetDetailsPrint none
+	${If} $7 = 0xFEFF
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLanguageCode  PAL:LanguageCode
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleCode2   PAL:LanguageCode2
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleCode3   PAL:LanguageCode3
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleGlibc   PAL:LanguageGlibc
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleWinName PAL:LanguageNSIS
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleName    PAL:LanguageName
+		${ReplaceInFileUTF16LE} $9 PortableApps.comLocaleID      PAL:LanguageLCID
+	${Else}
+		${ReplaceInFile} $9 PortableApps.comLanguageCode  PAL:LanguageCode
+		${ReplaceInFile} $9 PortableApps.comLocaleCode2   PAL:LanguageCode2
+		${ReplaceInFile} $9 PortableApps.comLocaleCode3   PAL:LanguageCode3
+		${ReplaceInFile} $9 PortableApps.comLocaleGlibc   PAL:LanguageGlibc
+		${ReplaceInFile} $9 PortableApps.comLocaleWinName PAL:LanguageNSIS
+		${ReplaceInFile} $9 PortableApps.comLocaleName    PAL:LanguageName
+		${ReplaceInFile} $9 PortableApps.comLocaleID      PAL:LanguageLCID
+	${EndIf}
+	SetDetailsPrint lastused
+FunctionEnd
+
 Section Main
 	${IfNot} ${FileExists} $NSIS
 		StrCpy $ERROROCCURED true
@@ -200,6 +227,10 @@ Section Main
 		MessageBox MB_ICONSTOP "NSIS was not found! (Looked for it in $NSIS)$\r$\n$\r$\nYou can specify a custom path to makensis.exe in $EXEDIR\Data\settings.ini, [GeneratorWizard]:makensis"
 		Abort
 	${EndIf}
+
+	; Fix the package path, if necessary
+	StrCpy $R1 $PACKAGE 1 -1
+	${IfThen} $R1 == "\" ${|} StrCpy $PACKAGE $PACKAGE -1 ${|}
 
 	SetDetailsPrint ListOnly
 	DetailPrint "App: $PACKAGE"
@@ -222,14 +253,26 @@ Section Main
 		; Avoid ${...} being taken amiss
 		StrCpy $0 $${ReadUser
 		${If} $1 = 0xFEFF
-			${If} $5 == UTF-16LE
-				${ReplaceInFileUTF16LECS} $PACKAGE\App\AppInfo\Launcher\Custom.nsh $0OverrideConfig} $0Config}
-			${Else}
-				${ReplaceInFileCS} $PACKAGE\App\AppInfo\Launcher\Custom.nsh $0OverrideConfig} $0Config}
-			${EndIf}
+			${ReplaceInFileUTF16LECS} $PACKAGE\App\AppInfo\Launcher\Custom.nsh $0OverrideConfig} $0Config}
+		${Else}
+			${ReplaceInFileCS} $PACKAGE\App\AppInfo\Launcher\Custom.nsh $0OverrideConfig} $0Config}
 		${EndIf}
 		DetailPrint " "
 	${EndIf}
+
+	; Check if any upgrade needs to be done from 2.1 to 2.2
+	DetailPrint "Upgrading from 2.1 to 2.2..."
+	; Replace the PortableApps.com language environment variables with their PAL counterparts
+	Push $PACKAGE\App\AppInfo\Launcher\Custom.nsh
+	Call UpdateLanguageEnvironmentVariables
+	FindFirst $0 $1 $PACKAGE\App\AppInfo\Launcher\*.ini
+	${DoUntil} $1 == ""
+		Push $PACKAGE\App\AppInfo\Launcher\$1
+		Call UpdateLanguageEnvironmentVariables
+		FindNext $0 $1
+	${Loop}
+	FindClose $0
+	DetailPrint " "
 
 
 	DetailPrint "Generating launcher..."
@@ -284,19 +327,23 @@ Section Main
 	${If} $ERROROCCURED != true
 		; Build the thing
 		ExecDos::exec `"$NSIS" /O"$EXEDIR\Data\PortableApps.comLauncherGeneratorLog.txt" /DPACKAGE="$PACKAGE" /DNamePortable="$Name" /DAppID="$AppID" /DVersion="$1"$2 "$EXEDIR\Other\Source\PortableApps.comLauncher.nsi"` "" ""
+		Pop $R1
+		${If} $R1 <> 0
+			StrCpy $ERROROCCURED true
+			${WriteErrorToLog} "MakeNSIS exited with status code $R1"
+		${EndIf}
 	${EndIf}
 
 	SetDetailsPrint ListOnly
 
 	DetailPrint " "
 	DetailPrint "Processing complete."
-	${If} ${FileExists} $PACKAGE\$AppID.exe
+	${If} $ERROROCCURED != true
 		StrCpy $FINISHTITLE "Launcher Created"
 		StrCpy $FINISHTEXT "The launcher has been created. Launcher location:\r\n$PACKAGE\r\n\r\nLauncher name:\r\n$AppID.exe" 
 	${Else}
 		StrCpy $FINISHTITLE "An Error Occured"
 		StrCpy $FINISHTEXT "The launcher was not created.  You can view the log file for more information."
-		StrCpy $ERROROCCURED true
 	${EndIf}
 SectionEnd
 
