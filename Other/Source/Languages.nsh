@@ -31,6 +31,7 @@ ${IncludeLang} Romanian
 ${IncludeLang} SimpChinese
 ${IncludeLang} Slovenian
 ${IncludeLang} Spanish
+${IncludeLang} Sundanese
 ${IncludeLang} Swedish
 ${IncludeLang} Thai
 ${IncludeLang} TradChinese
