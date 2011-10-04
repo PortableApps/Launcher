@@ -26,6 +26,7 @@ ${IncludeLang} Japanese
 ${IncludeLang} Polish
 ${IncludeLang} Portuguese
 ${IncludeLang} PortugueseBR
+${IncludeLang} Romanian
 ${IncludeLang} SimpChinese
 ${IncludeLang} Slovenian
 ${IncludeLang} Spanish
