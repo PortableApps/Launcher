@@ -18,6 +18,7 @@ have been made in that release from the previous release.
 
    2.1
    2.1.1
+   2.1.2
 
 2.0 release
 ===========
