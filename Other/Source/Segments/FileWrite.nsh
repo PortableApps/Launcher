@@ -114,18 +114,8 @@ ${SegmentPrePrimary}
 				${ReadLauncherConfig} $5 FileWrite$R0 Encoding
 				${If} ${Errors}
 					FileOpen $9 $1 r
-
-					; Using FileReadWord would end up with 0xFEFF as it
-					; flips everything back to front like a good little
-					; endian parser. (Lilliput and Blefuscu really did
-					; cause a lot of trouble!)
-
-					FileReadByte $9 $5
-					FileReadByte $9 $6
-					IntOp $5 $5 << 8
-					IntOp $5 $5 + $6
-
-					${IfThen} $5 = 0xFFFE ${|} StrCpy $5 UTF-16LE ${|}
+					FileReadWord $9 $5
+					${IfThen} $5 = 0xFEFF ${|} StrCpy $5 UTF-16LE ${|}
 					FileClose $9
 				${ElseIf} $5 != UTF-16LE
 				${AndIf} $5 != ANSI

@@ -71,7 +71,8 @@ Here is a diagram of how it works:
 When the portable application is not launched from the PortableApps.com
 Platform, to maintain the user's language setting, the custom language should
 be read from a file with the aid of the :ini-section:`[LanguageFile]` section,
-if this is possible.
+if this is possible. If the language is not written to a file, but e.g. read
+from an environment variable, you can use :ini-key:`[Language]:SaveLanguage`.
 
 Other ways
 ----------
@@ -89,10 +90,10 @@ Language variable values
 ------------------------
 
 Here is a table of language variables and the values they are given. (All the
-variables in this table have ``PortableApps.com`` prefixed to them, see
+variables in this table have ``PAL:`` prefixed to them, see
 :ref:`ref-envsub-language` for the full names.)
 
-**Note:** :env:`PortableApps.comLocaleName` will be in uppercase for users of
+**Note:** :env:`PAL:LanguageName` will be in uppercase for users of
 the PortableApps.com Platform 2.0 Beta 5 and earlier. If this matters, you may
 need to use the :ini-section:`[LanguageStrings]` section.
 

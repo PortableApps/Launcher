@@ -36,7 +36,7 @@ release:
 	-rm ../../../App/Manual/.buildinfo
 	-rm ../../../App/Manual/objects.inv
 	-rm -rf _build
-	-rm _ext/paldocs.pyc
+	-rm -f _ext/paldocs.pyc
 
 clean:
 	-rm -rf ../../../App/Manual/*

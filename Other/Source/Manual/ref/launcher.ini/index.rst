@@ -21,6 +21,7 @@ launcher.ini
    launch
    activate
    livemode
+   lastrunenvironment
    environment
    registry
    qt

@@ -9,9 +9,9 @@ def main(path):
     if not os.path.exists(path) or not os.path.isdir(path):
         usage()
 
-    print '==================== ============ =========== =========== =========== ======== ========================='
-    print 'LocaleName           LanguageCode LocaleCode2 LocaleCode3 Localeglibc LocaleID LocaleWinName            '
-    print '==================== ============ =========== =========== =========== ======== ========================='
+    print '==================== ============ ============= ============= ============= ============ ========================='
+    print 'LanguageName         LanguageCode LanguageCode2 LanguageCode3 LanguageGlibc LanguageLCID LanguageNSIS             '
+    print '==================== ============ ============= ============= ============= ============ ========================='
     for locale_file in glob.iglob(os.path.join(path, '*.locale')):
         fp = open(locale_file, 'r')
         bom = fp.read(2)
@@ -25,19 +25,20 @@ def main(path):
                 locale_parser.readfp(fp) # Now try reading the whole file
         except ParsingError:
             print "Unable to parse %s!" % os.path.basename(locale_file)[:-7]
+            continue
         finally:
             fp.close()
 
         print ' '.join([
             os.path.basename(locale_file)[:-7].ljust(20),
             get_value('LanguageCode'),
-            get_value('LocaleCode2'),
-            get_value('LocaleCode3'),
-            get_value('Localeglibc'),
-            get_value('LocaleID'),
+            get_value('LocaleCode2', len('LanguageCode2')),
+            get_value('LocaleCode3', len('LanguageCode3')),
+            get_value('Localeglibc', len('LanguageGlibc')),
+            get_value('LocaleID', len('LanguageLCID')),
             get_value('LocaleWinName', 25),
         ])
-    print '==================== ============ =========== =========== =========== ======== ========================='
+    print '==================== ============ ============= ============= ============= ============ ========================='
 
 def get_value(value, padwidth=None):
     if padwidth == None:

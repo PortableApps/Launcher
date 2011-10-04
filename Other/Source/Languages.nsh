@@ -26,6 +26,7 @@ ${IncludeLang} Japanese
 ${IncludeLang} Polish
 ${IncludeLang} Portuguese
 ${IncludeLang} PortugueseBR
+${IncludeLang} Romanian
 ${IncludeLang} SimpChinese
 ${IncludeLang} Slovenian
 ${IncludeLang} Spanish
@@ -33,6 +34,7 @@ ${IncludeLang} Swedish
 ${IncludeLang} Thai
 ${IncludeLang} TradChinese
 ${IncludeLang} Turkish
+${IncludeLang} Vietnamese
 
 ; Use the Case statements formed above.
 ; Used in Segments/Language.nsh
