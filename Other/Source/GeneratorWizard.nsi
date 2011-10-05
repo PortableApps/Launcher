@@ -261,7 +261,7 @@ Section Main
 	${EndIf}
 
 	; Check if any upgrade needs to be done from 2.1 to 2.2
-	DetailPrint "Upgrading from 2.1 to 2.2..."
+	DetailPrint "Upgrading from 2.1 to 2.2 if needed..."
 	; Replace the PortableApps.com language environment variables with their PAL counterparts
 	Push $PACKAGE\App\AppInfo\Launcher\Custom.nsh
 	Call UpdateLanguageEnvironmentVariables
