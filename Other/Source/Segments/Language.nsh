@@ -51,7 +51,7 @@ ${SegmentInit}
 		; This code is taken largely from FileWrite segment as it shares the
 		; format and a lot of the method.
 		ClearErrors
-		${ReadLauncherConfig} $9 Language SaveLanguage
+		${ReadLauncherConfig} $9 Language Save
 		${IfNot} ${Errors}
 		${AndIf} $9 == true
 			StrCpy $1 $EXEDIR\Data\settings\$AppIDSettings.ini
@@ -198,7 +198,7 @@ ${SegmentInit}
 
 	; Write the language back, if desired; this is basically a copy-paste of the previous section.
 	ClearErrors
-	${ReadLauncherConfig} $9 Language SaveLanguage
+	${ReadLauncherConfig} $9 Language Save
 	${IfNot} ${Errors}
 	${AndIf} $9 == true
 		StrCpy $1 $EXEDIR\Data\settings\$AppIDSettings.ini

@@ -46,10 +46,10 @@ Save the language easily
 ------------------------
 
 The new options :ini-key:`[LanguageFile]:SaveAs` and
-:ini-key:`[Language]:SaveLanguage` can be used instead of
-:ini-section:`[FileWriteN]` for the most common cases in order to save the
-custom language when using :ini-section:`[LanguageFile]` or working only with
-environment variables (e.g. ``LANG``).
+:ini-key:`[Language]:Save` can be used instead of :ini-section:`[FileWriteN]`
+for the most common cases in order to save the custom language when using
+:ini-section:`[LanguageFile]` or working only with environment variables (e.g.
+``LANG``).
 
 New environment variable ``%PAL:AppID%``
 ----------------------------------------
