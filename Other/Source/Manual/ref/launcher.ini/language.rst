@@ -96,9 +96,9 @@ Save the custom language variable and restore it on startup. Setting this to
     Key=Language
     Value=%PAL:LanguageCustom%
 
-If this option is enabled, any :ini-section:`[LanguageFile]` sections present
-will be ignored. It should be used when an environment variable (like ``LANG``)
-is used to store the language.
+If this option is enabled, the :ini-section:`[LanguageFile]` section, if
+present, will be ignored. It should be used when an environment variable (like
+``LANG``) is used to store the language.
 
 .. ini-section:: [LanguageStrings]
 
