@@ -71,14 +71,14 @@ exist, the custom language variable will be set to this value.
 Save
 ----
 
-| Values: ``true`` / ``false``
-| Default: ``false``
+| Values: ``yes`` / ``no``
+| Default: ``no``
 | Optional.
 
 ----
 
 Save the custom language variable and restore it on startup. Setting this to
-``true`` is equivalent to the following code (for an appropriate value of
+``yes`` is equivalent to the following code (for an appropriate value of
 ``AppNamePortable``):
 
 .. code-block:: ini

@@ -65,7 +65,7 @@ ${SegmentInit}
 		${AndIf} ${FileExists} $1
 			; The custom language is read into $8
 			StrCpy $8 ""
-			${If} $9 == true
+			${If} $9 == yes
 				${DebugMsg} "Reading saved language from $1, section `$AppIDSettings`, key `Language`, with ReadINIStr."
 				ReadINIStr $8 $1 $AppIDSettings Language
 			${ElseIf} $0 == ConfigRead
@@ -200,7 +200,7 @@ ${SegmentInit}
 	ClearErrors
 	${ReadLauncherConfig} $9 Language Save
 	${IfNot} ${Errors}
-	${AndIf} $9 == true
+	${AndIf} $9 == yes
 		StrCpy $1 $EXEDIR\Data\settings\$AppIDSettings.ini
 		StrCpy $8 %PAL:LanguageCustom%
 	${Else}
@@ -212,7 +212,7 @@ ${SegmentInit}
 	${EndIf}
 	${ParseLocations} $8
 	${IfNot} ${Errors}
-		${If} $9 == true
+		${If} $9 == yes
 			${DebugMsg} "Writing the language ($8) to $1, section `$AppIDSettings`, key `Language`."
 			WriteINIStr $1 $AppIDSettings Language $8
 		${ElseIf} $0 == ConfigRead
