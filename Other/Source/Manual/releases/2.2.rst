@@ -130,3 +130,14 @@ PortableApps.comLocaleID      PAL:LanguageLCID
 
 The PortableApps.com Launcher Generator will automatically change your code to
 use the new environment variables.
+
+Bugs fixed
+==========
+
+Additional command-line parameters with runtime privilege elevation
+-------------------------------------------------------------------
+
+On Windows Vista and later, when the :ini-key:`[Launch]:RunAsAdmin` options were
+enabled, two extra command-line parameters were added to the program's arguments.
+Those extra arguments could confuse some apps and are now removed from the
+command-line.
