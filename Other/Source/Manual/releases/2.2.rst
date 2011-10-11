@@ -132,6 +132,13 @@ PortableApps.comLocaleID      PAL:LanguageLCID
 The PortableApps.com Launcher Generator will automatically change your code to
 use the new environment variables.
 
+Dealing with default values with :ini-section:`[RegistryValueBackupDelete]`
+---------------------------------------------------------------------------
+
+Due to an oversight, the :ini-section:`[RegistryValueBackupDelete]` section
+couldn't cope with the default value (while :ini-section:`[RegistryValueWrite]`
+could). This omission has now been amended.
+
 Bugs fixed
 ==========
 
