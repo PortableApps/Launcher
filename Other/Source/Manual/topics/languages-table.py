@@ -12,7 +12,7 @@ def main(path):
     print '==================== ============ ============= ============= ============= ============ ========================='
     print 'LanguageName         LanguageCode LanguageCode2 LanguageCode3 LanguageGlibc LanguageLCID LanguageNSIS             '
     print '==================== ============ ============= ============= ============= ============ ========================='
-    for locale_file in glob.iglob(os.path.join(path, '*.locale')):
+    for locale_file in sorted(glob.iglob(os.path.join(path, '*.locale'))):
         fp = open(locale_file, 'r')
         bom = fp.read(2)
         try:
