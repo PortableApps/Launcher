@@ -119,6 +119,26 @@ will be available:
 
 Now on to the environment variables themselves.
 
+.. env:: PAL:DrivePath
+
+PAL:DrivePath
+-------------
+
+This is just the drive letter from which the portable app is running followed
+by a colon and a path separator.
+
+**Example:** ``X:\``
+
+.. env:: PAL:LastDrivePath
+
+PAL:LastDrivePath
+-----------------
+
+This is just the drive letter from which the portable app ran last followed
+by a colon and a path separator.
+
+**Example:** ``W:\``
+
 .. env:: PAL:AppDir
 
 PAL:AppDir

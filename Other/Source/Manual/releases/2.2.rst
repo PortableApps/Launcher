@@ -52,25 +52,24 @@ for the most common cases in order to save the custom language when using
 :ini-section:`[LanguageFile]` or working only with environment variables (e.g.
 ``LANG``).
 
-New environment variable ``%PAL:AppID%``
-----------------------------------------
+New environment variables
+-------------------------
 
-A new environment variable, :env:`PAL:AppID`, is available for use in
-:ref:`ref-launcher.ini`. Its counterpart for :ref:`custom code <custom-code>` is
-``$AppID``.
+Lots of new environment variables were added, like :env:`PAL:AppID`, a
+:ref:`ref-launcher.ini` counterpart to ``$AppID`` in
+:ref:`custom code <custom-code>`.
 
-New environment variable ``%PAL:Bits%``
----------------------------------------
-
-A new environment variable, :env:`PAL:Bits`, is available for use in
-:ref:`ref-launcher.ini`. Its value defaults to ``32`` when running on a 32-bit
-machine or ``64`` when running on a 64-bit machine. The values which will be
-taken can be configured in :ini-key:`[Launch]:BitsVariable32` and
-:ini-key:`[Launch]:BitsVariable64`.
-
+Another environment variable, :env:`PAL:Bits`, can be used for different
+configurations on 32-bit and 64-bit machines. Its value defaults to ``32``
+when running on a 32-bit machine or ``64`` when running on a 64-bit machine.
+The values which will be taken can be configured in
+:ini-key:`[Launch]:BitsVariable32` and :ini-key:`[Launch]:BitsVariable64`.
 For :ref:`custom code <custom-code>`, there is ``$Bits``, which is ``64`` or
 ``32``. It is not affected by :ini-key:`[Launch]:BitsVariable32` or
 :ini-key:`[Launch]:BitsVariable64`.
+
+:env:`PAL:DrivePath` and :env:`PAL:LastDrivePath` contains another form of the
+current and previous drives, this time with a path separator in the end.
 
 Persist variables between launches
 ----------------------------------

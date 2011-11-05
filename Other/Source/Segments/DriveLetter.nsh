@@ -22,6 +22,8 @@ ${SegmentInit}
 	${SetEnvironmentVariable} PAL:LastDrive $LastDrive
 	${SetEnvironmentVariable} PAL:DriveLetter $0
 	${SetEnvironmentVariable} PAL:LastDriveLetter $1
+	${SetEnvironmentVariablesPath} PAL:DrivePath "$CurrentDrive\"
+	${SetEnvironmentVariablesPath} PAL:LastDrivePath "$LastDrive\"
 !macroend
 
 ${SegmentPrePrimary}
