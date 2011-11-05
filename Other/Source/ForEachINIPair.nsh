@@ -16,16 +16,16 @@ Var _FEIP_UTF16
 		FileOpen $_FEIP_FileHandle $LauncherFile r
 	${EndIf}
 
-	Push $R0
-	FileSeek $_FEIP_FileHandle 0
-	FileReadWord $_FEIP_FileHandle $R0
-	${If} $R0 = 0xFEFF
-		StrCpy $_FEIP_UTF16 true
-	${Else}
-		StrCpy $_FEIP_UTF16 false
+	${If} $_FEIP_UTF16 == ""
 		FileSeek $_FEIP_FileHandle 0
+		FileReadWord $_FEIP_FileHandle $_FEIP_Char
+		${If} $_FEIP_Char = 0xFEFF
+			StrCpy $_FEIP_UTF16 true
+		${Else}
+			StrCpy $_FEIP_UTF16 false
+			FileSeek $_FEIP_FileHandle 0
+		${EndIf}
 	${EndIf}
-	Pop $R0
 
 	${Do}
 		ClearErrors
@@ -99,8 +99,23 @@ Var _FEIP_UTF16
 			${EndIf}
 		${Loop}
 	${EndIf}
-	;FileClose $_FEIP_FileHandle
+!macroend
+
+!macro ForEachINIPairWithFile file section key value
+	FileClose $_FEIP_FileHandle
+	FileOpen $_FEIP_FileHandle "${new_file}" r
+	StrCpy $_FEIP_UTF16 ""
+	${ForEachINIPair} `${section}` `${key}` `${value}`
+!macroend
+
+!macro NextINIPairWithFile
+	${NextINIPair}
+	FileClose $_FEIP_FileHandle
+	StrCpy $_FEIP_FileHandle ""
+	StrCpy $_FEIP_UTF16 ""
 !macroend
 
 !define ForEachINIPair '!insertmacro ForEachINIPair'
 !define NextINIPair '!insertmacro NextINIPair'
+!define ForEachINIPairWithFile '!insertmacro ForEachINIPairWithFile'
+!define NextINIPairWithFile '!insertmacro NextINIPairWithFile'
