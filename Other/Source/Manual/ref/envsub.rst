@@ -151,6 +151,13 @@ When Live mode is not enabled, this will be
 be ``%TEMP%\AppNamePortableLive\App`` unless :ini-key:`[LiveMode]:CopyApp` is
 set to ``false``.
 
+.. env:: PAL:LastAppDirectory
+
+PAL:LastAppDirectory
+--------------------
+
+The value of :env:`PAL:AppDir` from when the app last ran.
+
 .. env:: PAL:DataDir
 
 PAL:DataDir
@@ -161,6 +168,13 @@ The path to the Data directory which contains the portable app's data.
 When Live mode is not enabled, this will be
 ``X:\PortableApps\AppNamePortable\Data`` and when Live mode is enabled it will
 be ``%TEMP%\AppNamePortableLive\Data``.
+
+.. env:: PAL:LastDataDirectory
+
+PAL:LastDataDirectory
+---------------------
+
+The value of :env:`PAL:DataDir` from when the app last ran.
 
 .. env:: JAVA_HOME
 
@@ -184,6 +198,13 @@ PortableApps.comDocuments
 The PortableApps.com Documents directory, normally ``X:\Documents``. There is
 no guarantee that this directory will exist.
 
+.. env:: PAL:LastPortableApps.comDocumentsDirectory
+
+PAL:LastPortableApps.comDocumentsDirectory
+------------------------------------------
+
+The value of :env:`PortableApps.comDocuments` from when the app last ran.
+
 .. env:: PortableApps.comPictures
 
 PortableApps.comPictures
@@ -191,6 +212,13 @@ PortableApps.comPictures
 
 The PortableApps.com Pictures directory, normally ``X:\Documents\Pictures``.
 There is no guarantee that this directory will exist.
+
+.. env:: PAL:LastPortableApps.comPicturesDirectory
+
+PAL:LastPortableApps.comPicturesDirectory
+-----------------------------------------
+
+The value of :env:`PortableApps.comPictures` from when the app last ran.
 
 .. env:: PortableApps.comMusic
 
@@ -200,6 +228,13 @@ PortableApps.comMusic
 The PortableApps.com Music directory, normally ``X:\Documents\Music``. There is
 no guarantee that this directory will exist.
 
+.. env:: PAL:LastPortableApps.comMusicDirectory
+
+PAL:LastPortableApps.comMusicDirectory
+--------------------------------------
+
+The value of :env:`PortableApps.comMusic` from when the app last ran.
+
 .. env:: PortableApps.comVideos
 
 PortableApps.comVideos
@@ -208,6 +243,13 @@ PortableApps.comVideos
 The PortableApps.com Videos directory, normally ``X:\Documents\Videos``. There
 is no guarantee that this directory will exist.
 
+.. env:: PAL:LastPortableApps.comVideosDirectory
+
+PAL:LastPortableApps.comVideosDirectory
+---------------------------------------
+
+The value of :env:`PortableApps.comVideos` from when the app last ran.
+
 .. env:: PAL:PortableAppsDir
 
 PAL:PortableAppsDir
@@ -215,6 +257,13 @@ PAL:PortableAppsDir
 
 The PortableApps.com PortableApps directory, normally ``X:\PortableApps``. To
 be exact, this is the parent directory of the portable app package.
+
+.. env:: PAL:LastPortableAppsDirectory
+
+PAL:LastPortableAppsDirectory
+-----------------------------
+
+The value of :env:`PAL:PortableAppsDir` from when the app last ran.
 
 .. env:: USERPROFILE
 

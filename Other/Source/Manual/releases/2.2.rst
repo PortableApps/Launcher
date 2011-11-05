@@ -71,6 +71,17 @@ For :ref:`custom code <custom-code>`, there is ``$Bits``, which is ``64`` or
 :env:`PAL:DrivePath` and :env:`PAL:LastDrivePath` contains another form of the
 current and previous drives, this time with a path separator in the end.
 
+The environment variables :env:`PAL:LastAppDirectory`,
+:env:`PAL:LastDataDirectory`, :env:`PAL:LastPortableAppsDirectory`,
+:env:`PAL:LastPortableApps.comDocumentsDirectory`,
+:env:`PAL:LastPortableApps.comPicturesDirectory`,
+:env:`PAL:LastPortableApps.comMusicDirectory`
+and :env:`PAL:LastPortableApps.comVideosDirectory` hold the values of
+:env:`PAL:AppDir`, :env:`PAL:DataDir`, :env:`PAL:PortableAppsDir`,
+:env:`PortableApps.comDocuments`, :env:`PortableApps.comPictures`,
+:env:`PortableApps.comMusic` and :env:`PortableApps.comVideos` from the last
+execution of the app.
+
 Persist variables between launches
 ----------------------------------
 
