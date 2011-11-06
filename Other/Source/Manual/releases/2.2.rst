@@ -90,6 +90,15 @@ allows you to save arbitrary content, thus you can refer to it in the next
 launch. This is useful when you need to e.g. know the value of
 :env:`%PAL:LastDrive% <PAL:LastDrive>` from the previous run.
 
+New catch-all find/replace
+--------------------------
+
+Two new :ini-key:`[FileWriteN]:Type`\ ``s`` were added: ``ReplaceAll`` and
+``ReplaceCommon``. Both can be used to automatically perform the most common
+path updates: app and data directories, plus drive path. Additionally,
+``ReplaceAll`` also updates several platform-level directories, like the paths
+to documents and to other portable apps.
+
 Changes
 =======
 
