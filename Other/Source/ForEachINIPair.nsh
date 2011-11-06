@@ -16,7 +16,8 @@ Var _FEIP_UTF16
 		FileOpen $_FEIP_FileHandle $LauncherFile r
 	${EndIf}
 
-	${If} $_FEIP_UTF16 == ""
+	${Select} $_FEIP_UTF16
+	${Case} ""
 		FileSeek $_FEIP_FileHandle 0
 		FileReadWord $_FEIP_FileHandle $_FEIP_Char
 		${If} $_FEIP_Char = 0xFEFF
@@ -25,7 +26,11 @@ Var _FEIP_UTF16
 			StrCpy $_FEIP_UTF16 false
 			FileSeek $_FEIP_FileHandle 0
 		${EndIf}
-	${EndIf}
+	${Case} true
+		FileSeek $_FEIP_FileHandle 2
+	${Case} false
+		FileSeek $_FEIP_FileHandle 0
+	${EndSelect}
 
 	${Do}
 		ClearErrors
@@ -103,7 +108,7 @@ Var _FEIP_UTF16
 
 !macro ForEachINIPairWithFile file section key value
 	FileClose $_FEIP_FileHandle
-	FileOpen $_FEIP_FileHandle "${new_file}" r
+	FileOpen $_FEIP_FileHandle "${file}" r
 	StrCpy $_FEIP_UTF16 ""
 	${ForEachINIPair} `${section}` `${key}` `${value}`
 !macroend
