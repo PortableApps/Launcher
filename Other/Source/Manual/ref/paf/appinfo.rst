@@ -42,7 +42,7 @@ following:
    Plugins=NONE
 
    [Dependencies]
-   UsesJava=false
+   UsesJava=no
    UsesDotNetVersion=
 
    [Control]
@@ -162,13 +162,19 @@ Within the optional ``[Dependencies]`` section:
 -----------------------------------------------
 
 **UsesJava** (optional) specifies whether the portable app makes use of `Java
-Portable`_. If needed, this value should be set to true. If not needed, it
-should be omitted or set to false.
+Portable`_. If needed, this value should be set to ``yes``. If not needed, it
+should be omitted or set to ``no``. If Java adds optional functionality but is
+not required for normal operation, this value should be set to ``optional``.
+The deprecated values of ``true``/``false`` will be interpreted as
+``yes``/``no``.
 
 **UsesDotNetVersion** (optional) specifies which minimum version of the .NET
-framework the application requires. If needed, this value should be set to the
-minimum version the application requires (example: 1.1, 2.0, 3.0, 3.5). If not
-needed, this value should be omitted.
+Framework the application requires. If needed, this value should be set to the
+minimum version the application requires (example: 1.1, 2.0, 3.0, 3.5, 4.0).
+If a specific service pack of a given version is required, it can be added
+after the version number (example: 2.0SP2, 3.0SP1). If using 4.0, it is assumed
+the app only needs Client Profile. If it needs the full framework, that can be
+specified as 4.0F. If .NET is not needed, this value should be omitted.
 
 *Please note that PortableApps.com does not currently accept .NET-based apps for
 inclusion in our application listings. Most PCs "in the wild" do not have .NET
