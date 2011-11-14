@@ -6,6 +6,8 @@
 An ongoing discussion about PortableApps.com Format and the PortableApps.com
 Installer is taking place in the Development Forum.
 
+*2011-11-13: 2.0: Added new yes/optional/no Java entries and updated .NET handling with SPs*
+
 *2011-05-31: 2.0: Fixed some missing and misspelled languages in the example AppInfo.ini and Installer.ini*
 
 *2011-04-12: 2.0: Added CompressionFileSizeCutOff to AppCompactor.ini.*
