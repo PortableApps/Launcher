@@ -6,7 +6,7 @@ ${SegmentPre}
 	${DebugMsg} "Constructing execution string"
 
 	; If ProgramExecutable was java.exe or javaw.exe and
-	; [Activate]:Java=require, we want to run Java from elsewhere (portable
+	; Java is required, we want to run Java from elsewhere (portable
 	; CommonFiles or a local installation), not something in the current
 	; directory tree.
 	${If} $UsingJavaExecutable != true

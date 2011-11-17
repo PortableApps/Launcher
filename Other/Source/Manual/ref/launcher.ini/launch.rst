@@ -41,7 +41,7 @@ Specify the program to be launched by the PortableApps.com Launcher here,
 relative to the App directory of the portable application.
 
 There is a special case for Java applications; after specifying
-:ini-key:`[Activate]:Java`\ ``=require`` they can specify a value of
+``appinfo.ini\[Dependencies]:UsesJava``=``yes`` they can specify a value of
 ``java.exe`` or ``javaw.exe`` and it will be interpreted into the path to that
 executable in the Java Runtime Environment.
 
