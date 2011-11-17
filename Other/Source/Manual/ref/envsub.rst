@@ -186,9 +186,9 @@ including the "bin" directory or a filename like "javaw.exe". This will be the
 Java Portable directory, e.g.  ``X:\PortableApps\CommonFiles\Java``, or some
 local installation, e.g.  ``C:\Program Files\Java``.
 
-This variable is only available with :ini-key:`[Activate]:Java` set to ``find``
-or ``require``, but if it is ``find``, the path it is set to may not exist (for
-``require`` the launcher will abort if Java is not found).
+This variable is only available with ``appinfo.ini\[Dependencies]:UsesJava`` set
+to ``yes`` or ``optional``, but if it is ``optional``, the path it is set to may
+not exist (for ``yes`` the launcher will abort if Java is not found).
 
 .. env:: PortableApps.comDocuments
 

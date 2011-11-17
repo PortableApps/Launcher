@@ -29,6 +29,8 @@ Java
 | Values: none, ``find`` or ``require``
 | Default: none
 | Optional.
+| Deprecated. Use :ref:`appinfo.ini <paf-appinfo>`\ ``\[Dependencies]:UsesJava``
+  instead.
 
 ----
 
