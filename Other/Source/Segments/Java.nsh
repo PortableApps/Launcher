@@ -101,7 +101,7 @@ ${SegmentInit}
 		; Now set %JAVA_HOME% to the path (still may not exist)
 		${DebugMsg} "Selected Java path: $JavaDirectory"
 		${SetEnvironmentVariablesPath} JAVA_HOME $JavaDirectory
-	${ElseIfNot} $JavaMode != ""
+	${ElseIf} $JavaMode != ""
 		${InvalidValueError} [Activate]:Java $JavaMode
 	${EndIf}
 !macroend
