@@ -60,10 +60,12 @@ ${!echo} "Including required files..."
 !include WordFunc.nsh
 
 ;(NSIS Plugins) {{{2
+!addincludedir Plugins
+!addplugindir  Plugins
 !include NewTextReplace.nsh
-!addplugindir Plugins
 
 ;(Custom) {{{2
+!addincludedir Include
 !include ReplaceInFileWithTextReplace.nsh
 !include ForEachINIPair.nsh
 !include ForEachPath.nsh

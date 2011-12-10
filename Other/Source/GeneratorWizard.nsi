@@ -57,11 +57,12 @@ SetDatablockOptimize On
 !include MUI.nsh
 
 ;(NSIS Plugins)
+!addincludedir Plugins
+!addplugindir  Plugins
 !include NewTextReplace.nsh
-!addplugindir Plugins
 
 ;(Custom)
-!include ReplaceInFileWithTextReplace.nsh
+!include Include\ReplaceInFileWithTextReplace.nsh
 
 ;=== Icon & Stye ===
 !define MUI_ICON "..\..\App\AppInfo\appicon.ico"
