@@ -55,11 +55,11 @@ SetDatablockOptimize On
 !include FileFunc.nsh
 !include LogicLib.nsh
 !include MUI.nsh
+!include NewTextReplace.nsh
 
 ;(NSIS Plugins)
 !addincludedir Plugins
 !addplugindir  Plugins
-!include NewTextReplace.nsh
 
 ;(Custom)
 !include Include\ReplaceInFileWithTextReplace.nsh
