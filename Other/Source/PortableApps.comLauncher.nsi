@@ -56,13 +56,13 @@ ${!echo} "Including required files..."
 !include LangFile.nsh
 !include LogicLib.nsh
 !include FileFunc.nsh
+!include NewTextReplace.nsh
 !include TextFunc.nsh
 !include WordFunc.nsh
 
 ;(NSIS Plugins) {{{2
 !addincludedir Plugins
 !addplugindir  Plugins
-!include NewTextReplace.nsh
 
 ;(Custom) {{{2
 !addincludedir Include
