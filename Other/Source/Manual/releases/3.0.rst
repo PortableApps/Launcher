@@ -99,6 +99,16 @@ path updates: app and data directories, plus drive path. Additionally,
 ``ReplaceAll`` also updates several platform-level directories, like the paths
 to documents and to other portable apps.
 
+Ghostscript support
+-------------------
+
+Turn on :ini-key:`[Activate]:Ghostscript` and your launcher will now get the
+appropriate Ghostscript environment variables added and the Ghostscript
+directory added to the ``PATH``.
+
+Apps like the GIMP, Inkscape, Scribus and XnView can all now take advantage of
+this.
+
 Changes
 =======
 
