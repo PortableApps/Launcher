@@ -75,6 +75,8 @@ Save
 | Default: ``no``
 | Optional.
 
+.. versionadded:: 3.0
+
 ----
 
 Save the custom language variable and restore it on startup. Setting this to
@@ -255,6 +257,8 @@ TrimLeft
 
 | Optional.
 
+.. versionadded:: 3.0
+
 ----
 
 If you need to remove something from the left of a line which you have read,
@@ -286,13 +290,11 @@ SaveAs
 | Optional.
 | |envsub|
 
+.. versionadded:: 3.0
+
 ----
 
 Write the language back, using the specified format. Setting this is equivalent
 to a :ini-section:`[FileWriteN]` with the same fields, using the value of this
 option as the value to be written. The rules for :ini-key:`[FileWriteN]:Value`
 apply.
-
-Remember that the value of ``%PAL:LanguageCustom%`` is processed by
-:ini-key:`[LanguageFile]:TrimLeft` and :ini-key:`[LanguageFile]:TrimRight`, so
-if you use any of them, you should put the stripped strings back here.

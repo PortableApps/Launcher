@@ -61,6 +61,9 @@ the next.
   given)
 * :ini-key:`[Launch]:ProgramExecutable`
 
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
+
 .. ini-key:: [Launch]:ProgramExecutableWhenParameters
 
 ProgramExecutableWhenParameters
@@ -86,6 +89,9 @@ is launched, it is desirable for the menu, ``NSIS.exe``, to be shown, but if a
 file is given to it in its command line, the NSIS compiler, ``makensisw.exe``,
 should be launched, as the menu does not recognise file names given to it.
 
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
+
 .. ini-key:: [Launch]:ProgramExecutable64
 
 ProgramExecutable64
@@ -106,6 +112,9 @@ functionality (e.g. defragmentation or system information analysis), it may be
 included.
 
 All the rules of :ini-key:`[Launch]:ProgramExecutable` hold for this.
+
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
 
 .. ini-key:: [Launch]:ProgramExecutableWhenParameters64
 
@@ -128,6 +137,9 @@ analysis), it may be included.
 
 All the rules of :ini-key:`[Launch]:ProgramExecutableWhenParameters` hold for
 this.
+
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
 
 .. ini-key:: [Launch]:CommandLineArguments
 
@@ -190,7 +202,7 @@ BitsVariable32
 | Default: ``32``
 | Optional.
 
-.. versionadded:: 2.2
+.. versionadded:: 3.0
 
 ----
 
@@ -207,7 +219,7 @@ BitsVariable64
 | Default: ``64``
 | Optional.
 
-.. versionadded:: 2.2
+.. versionadded:: 3.0
 
 ----
 
@@ -272,9 +284,6 @@ RunAsAdmin
 
 ----
 
-.. versionchanged:: 2.1
-   added the ``compile-force`` value
-
 Setting this to ``force`` or ``try`` causes the user to be prompted to run the
 program as an administrator (or a UAC prompt on Windows Vista or Windows 7 when
 UAC is turned on). If the user cannot elevate to admin or cancels the operation
@@ -325,6 +334,9 @@ In such a situation, you should probably set this to ``force`` and use values
 for 2000, XP and 2003, ``none``, for future compatibility. On Linux or Mac with
 Wine, the user will always be reported as running as the administrator, and so
 you don't need a special case for it.
+
+.. versionchanged:: 2.1
+   added the ``compile-force`` value
 
 .. ini-key:: [Launch]:RunAsAdmin2000
 

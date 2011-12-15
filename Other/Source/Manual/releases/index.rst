@@ -10,13 +10,13 @@ Release notes for official PortableApps.com Launcher releases. Each note will
 provide details of new features and any backwards-incompatible changes which may
 have been made in that release from the previous release.
 
-2.2 release
+3.0 release
 ===========
 
 .. toctree::
    :maxdepth: 1
 
-   2.2
+   3.0
 
 2.1 release
 ===========

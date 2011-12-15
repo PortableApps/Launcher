@@ -26,8 +26,7 @@ are the biggest features which have been done entirely by him (and very
 thoroughly, too). DLL server and type library registration is also a region
 Mark has done a lot of research and work with, but unfortunately it's proved to
 be more complex than we originally thought, and the code is not yet stable
-enough to be included, so it has been removed from 2.1.  It may ship in 2.2 or
-2.3, depending on the rapidity of the release cycle.
+enough to be included, so it has been removed from 2.1.
 
 New features
 ============

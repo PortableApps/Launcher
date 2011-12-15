@@ -43,6 +43,9 @@ Specify the type of file writing which is to be used:
 * ``XML text``: write a text node to an XML file. Only available when
   :ini-key:`[Activate]:XML`\ =\ ``true``.
 
+.. versionchanged:: 3.0
+   added ``ReplaceCommon`` and ``ReplaceAll``
+
 .. ini-key:: [FileWriteN]:File
 
 File
@@ -156,6 +159,8 @@ Context
   ``ReplaceCommon``.
 | Optional.
 
+.. versionadded:: 3.0
+
 ----
 
 The format string used to during search and replacement. It is used to
@@ -174,6 +179,8 @@ PathForm
 | Applies for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``ReplaceAll``,
   ``ReplaceCommon``.
 | Optional.
+
+.. versionadded:: 3.0
 
 ----
 
