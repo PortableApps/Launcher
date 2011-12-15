@@ -1,5 +1,5 @@
-# .NET Framework detection code
-# Copyright © 2011 Aluísio Augusto Silva Gonçalves
+ï»¿# .NET Framework detection code
+# Copyright Â© 2011 AluÃ­sio Augusto Silva GonÃ§alves
 
 #
 # This software is provided 'as-is', without any express or implied warranty.  In no event will the
