@@ -186,6 +186,7 @@ Function Init              ;{{{1
 	${RunSegment} Registry
 	${RunSegment} Java
 	${RunSegment} DotNet
+	${RunSegment} Ghostscript
 	${RunSegment} RunLocally
 	${RunSegment} Temp
 	${RunSegment} InstanceManagement
@@ -344,6 +345,7 @@ Function PostSecondary     ;{{{1
 FunctionEnd
 
 Function Post              ;{{{1
+	${RunSegment} Ghostscript
 	${RunSegment} RefreshShellIcons
 	${RunSegment} Custom
 FunctionEnd
