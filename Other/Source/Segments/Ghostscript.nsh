@@ -5,6 +5,47 @@ Var GSDirectory
 Var GSRegExists
 Var GSExecutable
 
+Function _Ghostscript_ValidateInstall
+	; It seems that ${DebugMsg} doesn't compile inside functions, so let's store the messages
+	; in $R8.  Maybe we could transform this into an artificial function?
+	StrCpy $R8 ""
+
+	${If} $Bits = 64
+		${If} ${FileExists} $GSDirectory\bin\gswin64c.exe
+			StrCpy $GSExecutable $GSDirectory\bin\gswin64c.exe
+			StrCpy $R8 "Found valid 64-bit Ghostscript install at $GSDirectory."
+			Push true
+			Goto End
+		${Else}
+			StrCpy $R8 "64-bit Windows but gswin64c.exe not found; trying gswin32c.exe instead.$\r$\n"
+		${EndIf}
+	${EndIf}
+
+	${IfNot} ${FileExists} $GSDirectory\bin\gswin32c.exe
+		StrCpy $GSDirectory ""
+		StrCpy $GSExecutable ""
+		StrCpy $R8 "$R8No valid Ghostscript install found at $GSDirectory."
+		Push false
+		Goto End
+	${EndIf}
+
+	StrCpy $GSExecutable $GSDirectory\bin\gswin32c.exe
+	StrCpy $R8 "$R8Found valid 32-bit Ghostscript install at $GSDirectory."
+	Push true
+	Goto End
+
+	End:
+FunctionEnd
+!macro _Ghostscript_ValidateInstall _a _b _t _f
+	!insertmacro _LOGICLIB_TEMP
+	${DebugMsg} "Checking for Ghostscript in $GSDirectory..."
+	Call _Ghostscript_ValidateInstall
+	${DebugMsg} `$R8`
+	Pop $_LOGICLIB_TEMP
+	!insertmacro _== $_LOGICLIB_TEMP true `${_t}` `${_f}`
+!macroend
+!define IsValidGhostscriptInstall `"" Ghostscript_ValidateInstall ""`
+
 ${SegmentInit}
 	; If [Activate]:Ghostscript=find|require, search for Ghostscript in the
 	; following locations (in order):
@@ -20,38 +61,20 @@ ${SegmentInit}
 	${If} $GSMode == find
 	${OrIf} $GSMode == require
 		StrCpy $GSDirectory $PortableAppsDirectory\CommonFiles\Ghostscript
-		${IfNot} ${FileExists} $GSDirectory
+		${IfNot} ${IsValidGhostscriptInstall}
 			ReadEnvStr $GSDirectory GS_PROG
 			${GetParent} $GSDirectory $GSDirectory
 			${GetParent} $GSDirectory $GSDirectory
-			${If} $GSDirectory != ""
+			${IfNot} ${IsValidGhostscriptInstall}
 				ClearErrors
 				SearchPath $GSDirectory gswin32c.exe
-				${IfNot} ${Errors}
-					${GetParent} $GSDirectory $GSDirectory
-					${GetParent} $GSDirectory $GSDirectory
-				${Else}
-					StrCpy $GSDirectory ""
-					${DebugMsg} "Unable to find Ghostscript installation."
+				${GetParent} $GSDirectory $GSDirectory
+				${GetParent} $GSDirectory $GSDirectory
+				${IfNot} ${IsValidGhostscriptInstall}
+					; If not valid, ${IsValidGhostscriptInstall} will clear
+					; $GSDirectory for us.
+					Nop
 				${EndIf}
-			${EndIf}
-		${EndIf}
-
-		; Make sure we can find gswin(32|64)c.exe
-		${If} $GSDirectory != ""
-			StrCpy $GSExecutable $GSDirectory\bin\gswin32c.exe
-			${If} $Bits = 64
-			${AndIf} ${FileExists} $GSDirectory\bin\gswin64c.exe
-				StrCpy $GSExecutable $GSDirectory\bin\gswin64c.exe
-${!getdebug}
-!ifdef DEBUG
-			${Else}
-				${DebugMsg} "64-bit Windows but gswin64c.exe not found, trying gswin32c.exe instead."
-!endif
-			${EndIf}
-			${IfNot} ${FileExists} $GSExecutable
-				StrCpy $GSDirectory ""
-				${DebugMsg} "Found Ghostscript directory but no gswin32c.exe."
 			${EndIf}
 		${EndIf}
 
