@@ -7,6 +7,9 @@
 
 |envsub|
 
+.. versionchanged:: 3.0
+   added support for :ref:`directory variables <ref-envsub-directory>`
+
 ----
 
 This section is for the setting of environment variables. The key names are the

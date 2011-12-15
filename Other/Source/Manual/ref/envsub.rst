@@ -129,6 +129,8 @@ by a colon and a path separator.
 
 **Example:** ``X:\``
 
+.. versionadded:: 3.0
+
 .. env:: PAL:LastDrivePath
 
 PAL:LastDrivePath
@@ -138,6 +140,8 @@ This is just the drive letter from which the portable app ran last followed
 by a colon and a path separator.
 
 **Example:** ``W:\``
+
+.. versionadded:: 3.0
 
 .. env:: PAL:AppDir
 
@@ -157,6 +161,8 @@ PAL:LastAppDirectory
 --------------------
 
 The value of :env:`PAL:AppDir` from when the app last ran.
+
+.. versionadded:: 3.0
 
 .. env:: PAL:DataDir
 
@@ -220,6 +226,8 @@ PAL:LastPortableApps.comPicturesDirectory
 
 The value of :env:`PortableApps.comPictures` from when the app last ran.
 
+.. versionadded:: 3.0
+
 .. env:: PortableApps.comMusic
 
 PortableApps.comMusic
@@ -234,6 +242,8 @@ PAL:LastPortableApps.comMusicDirectory
 --------------------------------------
 
 The value of :env:`PortableApps.comMusic` from when the app last ran.
+
+.. versionadded:: 3.0
 
 .. env:: PortableApps.comVideos
 
@@ -250,6 +260,8 @@ PAL:LastPortableApps.comVideosDirectory
 
 The value of :env:`PortableApps.comVideos` from when the app last ran.
 
+.. versionadded:: 3.0
+
 .. env:: PAL:PortableAppsDir
 
 PAL:PortableAppsDir
@@ -264,6 +276,8 @@ PAL:LastPortableAppsDirectory
 -----------------------------
 
 The value of :env:`PAL:PortableAppsDir` from when the app last ran.
+
+.. versionadded:: 3.0
 
 .. env:: USERPROFILE
 
@@ -431,6 +445,8 @@ PAL:AppID
 
 The portable app id, as defined in :ref:`appinfo.ini <paf-appinfo-appid>`.
 
+.. versionadded:: 3.0
+
 .. env:: PAL:Bits
 
 PAL:Bits
@@ -442,3 +458,5 @@ then be specified as ``%PAL:AppDir%\AppName%PAL:Bits%``.
 
 The value for this can be configured by :ini-key:`[Launch]:BitsVariable32` or
 :ini-key:`[Launch]:BitsVariable64`.
+
+.. versionadded:: 3.0

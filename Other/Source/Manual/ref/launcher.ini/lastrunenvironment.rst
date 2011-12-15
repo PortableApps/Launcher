@@ -7,6 +7,8 @@
 
 |envsub|
 
+.. versionadded:: 3.0
+
 ----
 
 This section can be used to keep values between launches. The key names are
