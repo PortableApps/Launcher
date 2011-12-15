@@ -109,6 +109,14 @@ directory added to the ``PATH``.
 Apps like the GIMP, Inkscape, Scribus and XnView can all now take advantage of
 this.
 
+Support for managed code applications
+-------------------------------------
+
+The launcher can now detect the presence of any .NET Framework version before
+trying to execute the program. If an application depends on the .NET Framework,
+you just need to set the value ``[Dependencies]:UsesDotNetVersion`` in
+:ref:`appinfo.ini <paf-appinfo>` to the version required by the application.
+
 Changes
 =======
 

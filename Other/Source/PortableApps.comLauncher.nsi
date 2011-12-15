@@ -185,6 +185,7 @@ Function Init              ;{{{1
 	${RunSegment} Language
 	${RunSegment} Registry
 	${RunSegment} Java
+	${RunSegment} DotNet
 	${RunSegment} RunLocally
 	${RunSegment} Temp
 	${RunSegment} InstanceManagement
