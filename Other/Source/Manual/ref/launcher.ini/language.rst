@@ -223,7 +223,7 @@ The attribute to read the value from. See :ref:`xml` for more details.
 XPath
 -----
 
-| Mandatory for :ini-key:`Type <[LanguageFile]:Type`\ =\ ``XML attribute``, ``XML text``.
+| Mandatory for :ini-key:`Type <[LanguageFile]:Type>`\ =\ ``XML attribute``, ``XML text``.
 
 ----
 
