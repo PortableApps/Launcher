@@ -6,31 +6,27 @@ Var GSRegExists
 Var GSExecutable
 
 Function _Ghostscript_ValidateInstall
-	; It seems that ${DebugMsg} doesn't compile inside functions, so let's store the messages
-	; in $R8.  Maybe we could transform this into an artificial function?
-	StrCpy $R8 ""
-
 	${If} $Bits = 64
 		${If} ${FileExists} $GSDirectory\bin\gswin64c.exe
 			StrCpy $GSExecutable $GSDirectory\bin\gswin64c.exe
-			StrCpy $R8 "Found valid 64-bit Ghostscript install at $GSDirectory."
+			${DebugMsg} "Found valid 64-bit Ghostscript install at $GSDirectory."
 			Push true
 			Goto End
 		${Else}
-			StrCpy $R8 "64-bit Windows but gswin64c.exe not found; trying gswin32c.exe instead.$\r$\n"
+			${DebugMsg} "64-bit Windows but gswin64c.exe not found; trying gswin32c.exe instead."
 		${EndIf}
 	${EndIf}
 
 	${IfNot} ${FileExists} $GSDirectory\bin\gswin32c.exe
 		StrCpy $GSDirectory ""
 		StrCpy $GSExecutable ""
-		StrCpy $R8 "$R8No valid Ghostscript install found at $GSDirectory."
+		${DebugMsg} "No valid Ghostscript install found at $GSDirectory."
 		Push false
 		Goto End
 	${EndIf}
 
 	StrCpy $GSExecutable $GSDirectory\bin\gswin32c.exe
-	StrCpy $R8 "$R8Found valid 32-bit Ghostscript install at $GSDirectory."
+	${DebugMsg} "Found valid 32-bit Ghostscript install at $GSDirectory."
 	Push true
 	Goto End
 
@@ -40,7 +36,6 @@ FunctionEnd
 	!insertmacro _LOGICLIB_TEMP
 	${DebugMsg} "Checking for Ghostscript in $GSDirectory..."
 	Call _Ghostscript_ValidateInstall
-	${DebugMsg} `$R8`
 	Pop $_LOGICLIB_TEMP
 	!insertmacro _== $_LOGICLIB_TEMP true `${_t}` `${_f}`
 !macroend
