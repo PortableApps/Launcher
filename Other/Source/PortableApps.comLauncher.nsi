@@ -66,6 +66,7 @@ ${!echo} "Including required files..."
 
 ;(Custom) {{{2
 !addincludedir Include
+!include Debug.nsh
 !include ReplaceInFileWithTextReplace.nsh
 !include ForEachINIPair.nsh
 !include ForEachPath.nsh
@@ -141,9 +142,6 @@ Var WaitForProgram
 ; Load the segments {{{1
 ${!echo} "Loading segments..."
 !include Segments.nsh
-
-;=== Debugging {{{1
-!include Debug.nsh
 
 ;=== Program Details {{{1
 ${!echo} "Specifying program details and setting options..."
