@@ -54,6 +54,8 @@ File
 | Mandatory.
 | |envsub|
 
+:ref:`Wildcards <wildcards>` are supported.
+
 ----
 
 Specify the file in which the modification will be made. This file must exist
