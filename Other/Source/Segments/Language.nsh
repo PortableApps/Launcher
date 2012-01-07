@@ -53,7 +53,7 @@ ${SegmentInit}
 		ClearErrors
 		${ReadLauncherConfig} $9 Language Save
 		${IfNot} ${Errors}
-		${AndIf} $9 == true
+		${AndIf} $9 == yes
 			StrCpy $1 $EXEDIR\Data\settings\$AppIDSettings.ini
 		${Else}
 			ClearErrors
