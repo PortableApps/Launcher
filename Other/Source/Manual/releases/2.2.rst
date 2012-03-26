@@ -22,3 +22,15 @@ The starting/stopping checks introduced in 2.1 were switched from using the
 RuntimeData INI file to using mutexes. This change allows system-wide blocking
 of apps in those phases, where the current method works installation-wide,
 i.e. it will not work if you run the same app from different directories.
+
+Running from Program Files is now forbidden
+-------------------------------------------
+
+In former times portable apps would not always complain if they were run from
+the system's Program Files directory, leading to quite a few support requests
+over time where people had installed their portable apps to Program Files, not
+realising that this wasn't supported and didn't work properly, wondering why it
+wasn't working properly. This situation has now been remedied, and the
+PortableApps.com Launcher will now forbid execution from the Program Files
+directory (in line with a change in the PortableApps.com Installer forbidding
+installation into this directory).
