@@ -12,6 +12,17 @@ apps getting stuck in a non-functional state which could occasionally happen.
 No new features have been added and there will be no apparent changes to normal
 portable app developers.
 
+New features
+============
+
+:env:`PAL:PortableAppsBaseDir` and ``$PortableAppsBaseDirectory``
+-----------------------------------------------------------------
+
+A new directory environment variable pair,
+``PAL:LastPortableAppsBaseDirectory`` and ``PAL:PortableAppsBaseDirectory``,
+has been added.  It will allow to replace the path to all the PortableApps.com-
+related directories in a single shot.
+
 Changes
 =======
 
