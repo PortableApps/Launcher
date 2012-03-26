@@ -202,6 +202,7 @@ FunctionEnd
 Function PrePrimary       ;{{{1
 	${RunSegment} Custom
 	${RunSegment} DriveLetter
+	${RunSegment} Variables
 	${RunSegment} DirectoryMoving
 	${RunSegment} FileWrite
 	${RunSegment} FilesMove

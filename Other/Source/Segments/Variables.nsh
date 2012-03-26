@@ -118,6 +118,9 @@ Var AppDirectory
 Var DataDirectory
 Var PortableAppsDirectory
 
+Var PortableAppsBaseDirectory
+Var LastPortableAppsBaseDirectory
+
 ; Segments {{{1
 ${SegmentInit}
 	;=== Initialise variables
@@ -129,6 +132,14 @@ ${SegmentInit}
 
 	${GetParent} $EXEDIR $PortableAppsDirectory
 	${SetEnvironmentVariablesPath} PAL:PortableAppsDir $PortableAppsDirectory
+
+	${GetParent} $PortableAppsDirectory $PortableAppsBaseDirectory
+	${SetEnvironmentVariablesPath} PAL:PortableAppsBaseDir $PortableAppsBaseDirectory
+	ClearErrors
+	ReadINIStr $LastPortableAppsBaseDirectory $DataDirectory\settings\$AppIDSettings.ini PortableApps.comLauncherLastRunEnvironment PAL:LastPortableAppsBaseDir
+	${IfNot} ${Errors}
+		${SetEnvironmentVariablesPath} PAL:LastPortableAppsBaseDir $LastPortableAppsBaseDirectory
+	${EndIf}
 
 	ReadEnvStr $0 PortableApps.comDocuments
 	${If} $0 == ""
@@ -168,4 +179,8 @@ ${SegmentInit}
 	${SetEnvironmentVariablesPath} LOCALAPPDATA $LOCALAPPDATA
 	${SetEnvironmentVariablesPath} APPDATA $APPDATA
 	${SetEnvironmentVariablesPath} DOCUMENTS $DOCUMENTS
+!macroend
+
+${SegmentPrePrimary}
+	WriteINIStr $DataDirectory\settings\$AppIDSettings.ini PortableApps.comLauncherLastRunEnvironment PAL:LastPortableAppsBaseDir $PortableAppsBaseDirectory
 !macroend

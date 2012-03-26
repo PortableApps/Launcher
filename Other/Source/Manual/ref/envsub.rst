@@ -196,6 +196,21 @@ PAL:PortableAppsDir
 The PortableApps.com PortableApps directory, normally ``X:\PortableApps``. To be
 exact, this is the parent directory of the portable app package.
 
+.. env:: PAL:PortableAppsBaseDir
+
+PAL:PortableAppsBaseDir
+-----------------------
+
+The base of the PortableApps.com directory hierachy, where
+``PAL:PortableAppsDir`` and ``PortableApps.comDocuments`` are usually at.
+
+.. env:: PAL:LastPortableAppsBaseDir
+
+PAL:LastPortableAppsBaseDir
+---------------------------
+
+The value of ``PAL:PortableAppsBaseDir`` from the previous run.
+
 .. env:: USERPROFILE
 
 USERPROFILE
