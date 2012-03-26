@@ -1,0 +1,24 @@
+.. index:: Release notes; 2.2
+
+.. _releases-2.2:
+
+=============================================
+PortableApps.com Launcher 2.2 release notes
+=============================================
+
+This release improves the runtime state saving mechanism which was introduced
+in version 2.1, to improve stability and decrease the probability of portable
+apps getting stuck in a non-functional state which could occasionally happen.
+No new features have been added and there will be no apparent changes to normal
+portable app developers.
+
+Changes
+=======
+
+Mutex-based starting/stopping checks
+------------------------------------
+
+The starting/stopping checks introduced in 2.1 were switched from using the
+RuntimeData INI file to using mutexes. This change allows system-wide blocking
+of apps in those phases, where the current method works installation-wide,
+i.e. it will not work if you run the same app from different directories.
