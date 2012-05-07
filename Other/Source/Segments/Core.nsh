@@ -27,7 +27,7 @@ ${Segment.onInit}
 		${If} $0 == " Portable"
 			StrCpy $AppName $AppNamePortable -9
 		${Else}
-			StrCpy $1 $AppNamePortable "" -18
+			StrCpy $0 $AppNamePortable "" -18
 			${If} $0 == ", Portable Edition"
 				StrCpy $AppName $AppNamePortable -18
 			${Else}
@@ -45,6 +45,11 @@ ${Segment.onInit}
 		StrCpy $Bits 64
 	${EndIf}
 
+	${ReadLauncherConfigWithDefault} $0 Launch BitsVariable$Bits $Bits
+	${SetEnvironmentVariable} PAL:Bits $0
+
+	; Make the AppID available in launcher.ini
+	${SetEnvironmentVariable} PAL:AppID $AppID
 !macroend
 
 ${SegmentInit}

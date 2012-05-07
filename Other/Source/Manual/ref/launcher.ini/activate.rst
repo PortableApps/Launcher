@@ -29,6 +29,8 @@ Java
 | Values: none, ``find`` or ``require``
 | Default: none
 | Optional.
+| Deprecated. Use :ref:`appinfo.ini <paf-appinfo>`\ ``\[Dependencies]:UsesJava``
+  instead.
 
 ----
 
@@ -50,6 +52,41 @@ the application, and find javaw.exe, even though it's another application's
 javaw.exe instance.
 
 See :ref:`java` for more discussion about Java apps.
+
+.. ini-key:: [Activate]:Ghostscript
+
+Ghostscript
+-----------
+
+| Values: none, ``find`` or ``require``
+| Default: none
+| Optional.
+
+----
+
+Enabling this makes the launcher find Ghostscript and make the launched app
+aware of it, if it exists. If the app can use Ghostscript but does not depend
+entirely of its existence, use ``find``.
+It looks for Ghostscript as a CommonFiles package, that is, generally in
+``X:\PortableApps\CommonFiles\Ghostscript``. If that doesn't exist, it will
+look for a local installation in the ``GS_PROG`` environment variable and then
+anywhere in the system ``PATH``.
+
+As to what is done when Ghostscript is found:
+
+- ``GS_PROG`` is set to ``Ghostscript\bin\gswin64c.exe`` if it exists and the
+  system is 64-bit, or ``Ghostscript\bin\gswin32c.exe`` otherwise;
+
+- ``Ghostscript\bin`` is appended to ``PATH``.
+
+If Ghostscript is not found, the GS_PROG environment variable will not be set.
+
+If the base app needs to be told about the path to Ghostscript in some other
+way, you may use :ref:`custom code <custom-code>`; the variable
+``$GSDirectory`` refers to the root Ghostscript directory (the parent directory
+of the ``bin`` directory which contains ``gswin32c.exe`` or ``gswin64c.exe``)
+and the variable ``$GSExecutable`` is the full path to ``gswin32c.exe`` or
+``gswin64c.exe``. Use it in the :ref:`Pre hook <segments-hooks>`.
 
 .. ini-key:: [Activate]:XML
 
