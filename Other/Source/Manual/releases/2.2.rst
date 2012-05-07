@@ -34,6 +34,22 @@ RuntimeData INI file to using mutexes. This change allows system-wide blocking
 of apps in those phases, where the current method works installation-wide,
 i.e. it will not work if you run the same app from different directories.
 
+UNC paths supported
+-------------------
+
+Running the launcher from UNC paths (i.e. unmapped network shares, of the form
+``\\server\share\etc``) is now supported; however, because there is risk of
+data corruption if an app doesn't take care of such paths correctly, for now
+running portable apps from UNC paths will trigger a warning. It's up for each
+developer to determine if their portable app supports UNC paths correctly and
+set :ini-key:`[Launch]:SupportsUNC` accordingly.
+
+In view of this change, app developers should avoid using
+:env:`PAL:DriveLetter` as its value is meaningless on a UNC path. If you have a
+case where you wish to use it, please `contact the PAL developers <help>`_ and
+explain the situation, as they wish to gain an understanding as to what is
+needed here.
+
 Running from Program Files is now forbidden
 -------------------------------------------
 

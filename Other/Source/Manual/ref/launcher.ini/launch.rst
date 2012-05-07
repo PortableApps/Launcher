@@ -661,3 +661,26 @@ NoSpacesInPath
 If the application will not function if you try to run it in a directory with
 spaces in the path, you can set this to true to provide a useful error message
 to the user in this situation.
+
+.. ini-key:: [Launch]:SupportsUNC
+
+SupportsUNC
+-----------
+
+| Values: ``yes`` / ``warn`` / ``no``
+| Default: ``warn``
+| Optional.
+
+.. versionadded:: 2.2
+
+----
+
+Sets if the launcher supports being run from an UNC path (i.e. in the form
+``\\server\share\etc``).
+
+Before this can validly be set to ``yes``, you should test your portable app
+and make sure that it really does support UNC paths correctly. Some apps (or
+their portability wrapper) may corrupt data when not specially designed to cope
+with UNC paths, because of which the default is ``warn``. When thus set to
+``warn`` or omitted, the user will be notified that it may not work correctly
+and given a chance to exit.

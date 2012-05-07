@@ -63,6 +63,11 @@ with :ini-section:`[FileWriteN]` find and replace where the colon is not
 included in the path, e.g.  ``file:////%PAL:DriveLetter%/`` for ``file:////X/``
 or even ``%PAL:DriveLetter%\:/`` for ``X\:/``.
 
+If you wish your app to support UNC paths (see
+:ini-key:`[Launch]:SupportsUNC`), you should not use this. For UNC paths, this
+will be ``\`` (the first letter of the UNC path). Instead, you should figure
+out something probably in the custom code or `ask for help <help>`_.
+
 **Example:** ``X``
 
 .. env:: PAL:LastDriveLetter
@@ -74,6 +79,8 @@ The drive letter from which the portable app ran last. Useful with
 :ini-section:`[FileWriteN]` find and replace where the colon is not included in
 the path, e.g.  ``file:////%PAL:LastDriveLetter%/`` for ``file:////X/`` or even
 ``%PAL:LastDriveLetter%\:/`` for ``X\:/``.
+
+See above for comments on UNC paths.
 
 **Example:** ``W``
 

@@ -177,6 +177,7 @@ FunctionEnd
 Function Init             ;{{{1
 	${RunSegment} Custom
 	${RunSegment} Core
+	${RunSegment} PathChecks
 	${RunSegment} Settings
 	${RunSegment} DriveLetter
 	${RunSegment} DirectoryMoving
