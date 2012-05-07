@@ -1,0 +1,188 @@
+.. index:: Release notes; 3.0
+
+.. _releases-3.0:
+
+===============================================================
+PortableApps.com Launcher 3.0 release notes - UNDER DEVELOPMENT
+===============================================================
+
+Coming after 2.1, 3.0 is being developed with `more new features`_, `some
+changes`_, `a bug fix`_ and further improved documentation. It's never been
+easier to make a high quality portable app.
+
+.. _`more new features`: `New features`_
+.. _`some changes`: `Changes`_
+.. _`a bug fix`: `Bugs fixed`_
+
+New features
+============
+
+New hook for custom code
+------------------------
+
+Three new hooks have been added which allows custom code to execute immediately
+after the completion of the execution of the app, before all the standard
+segments' ``Post`` hooks are executed (which does things like moving files
+back, saving registry data and cleaning up some other things): ``PostExec``,
+``PostExecPrimary`` and ``PostExecSecondary``. If you don't *know* that you
+need this, you probably don't. See :ref:`Segments: Hooks <segments-hooks>` for
+a little bit more information.
+
+Run additional commands before or after the main program
+--------------------------------------------------------
+
+:ini-key:`[Launch]:RunBeforeN` and :ini-key:`[Launch]:RunAfterN` have been
+added, providing a way to execute commands just before and just after the main
+program's execution. These are useful for apps which need to (or can) do some
+special setup or cleanup of their own to improve portability. Refer to the
+linked documentation for further information.
+
+:ini-key:`[LanguageFile]:TrimLeft`
+----------------------------------
+
+:ini-key:`[LanguageFile]:TrimLeft` has been added, the counterpart of
+:ini-key:`[LanguageFile]:TrimRight` for trimming the start of a read string.
+
+Save the language easily
+------------------------
+
+The new options :ini-key:`[LanguageFile]:SaveAs` and
+:ini-key:`[Language]:Save` can be used instead of :ini-section:`[FileWriteN]`
+for the most common cases in order to save the custom language when using
+:ini-section:`[LanguageFile]` or working only with environment variables (e.g.
+``LANG``).
+
+New environment variables
+-------------------------
+
+Lots of new environment variables were added, like :env:`PAL:AppID`, a
+:ref:`ref-launcher.ini` counterpart to ``$AppID`` in
+:ref:`custom code <custom-code>`.
+
+Another environment variable, :env:`PAL:Bits`, can be used for different
+configurations on 32-bit and 64-bit machines. Its value defaults to ``32``
+when running on a 32-bit machine or ``64`` when running on a 64-bit machine.
+The values which will be taken can be configured in
+:ini-key:`[Launch]:BitsVariable32` and :ini-key:`[Launch]:BitsVariable64`.
+For :ref:`custom code <custom-code>`, there is ``$Bits``, which is ``64`` or
+``32``. It is not affected by :ini-key:`[Launch]:BitsVariable32` or
+:ini-key:`[Launch]:BitsVariable64`.
+
+:env:`PAL:DrivePath` and :env:`PAL:LastDrivePath` contains another form of the
+current and previous drives, this time with a path separator in the end.
+
+The environment variables :env:`PAL:LastAppDirectory`,
+:env:`PAL:LastDataDirectory`, :env:`PAL:LastPortableAppsDirectory`,
+:env:`PAL:LastPortableApps.comDocumentsDirectory`,
+:env:`PAL:LastPortableApps.comPicturesDirectory`,
+:env:`PAL:LastPortableApps.comMusicDirectory`
+and :env:`PAL:LastPortableApps.comVideosDirectory` hold the values of
+:env:`PAL:AppDir`, :env:`PAL:DataDir`, :env:`PAL:PortableAppsDir`,
+:env:`PortableApps.comDocuments`, :env:`PortableApps.comPictures`,
+:env:`PortableApps.comMusic` and :env:`PortableApps.comVideos` from the last
+execution of the app.
+
+Persist variables between launches
+----------------------------------
+
+A new section, :ini-section:`[LastRunEnvironment]`, has been introduced. It
+allows you to save arbitrary content, thus you can refer to it in the next
+launch. This is useful when you need to e.g. know the value of
+:env:`%PAL:LastDrive% <PAL:LastDrive>` from the previous run.
+
+New catch-all find/replace
+--------------------------
+
+Two new :ini-key:`[FileWriteN]:Type`\ ``s`` were added: ``ReplaceAll`` and
+``ReplaceCommon``. Both can be used to automatically perform the most common
+path updates: app and data directories, plus drive path. Additionally,
+``ReplaceAll`` also updates several platform-level directories, like the paths
+to documents and to other portable apps.
+
+Ghostscript support
+-------------------
+
+Turn on :ini-key:`[Activate]:Ghostscript` and your launcher will now get the
+appropriate Ghostscript environment variables added and the Ghostscript
+directory added to the ``PATH``.
+
+Apps like the GIMP, Inkscape, Scribus and XnView can all now take advantage of
+this.
+
+Support for managed code applications
+-------------------------------------
+
+The launcher can now detect the presence of any .NET Framework version before
+trying to execute the program. If an application depends on the .NET Framework,
+you just need to set the value ``[Dependencies]:UsesDotNetVersion`` in
+:ref:`appinfo.ini <paf-appinfo>` to the version required by the application.
+
+Changes
+=======
+
+Directory variables
+-------------------
+
+Now you can define environment variables as
+:ref:`directory variables <ref-envsub-directory>` by appending a ``~`` (tilde)
+to the key name. This way, you will get the same additional variables as the
+built-in ones.
+
+Currently, :ini-section:`[Environment]` and :ini-section:`[LastRunEnvironment]`
+support this feature. Refer to their documentation for details.
+
+Environment variable parsing on :ini-key:`[Launch]:ProgramExecutable`
+---------------------------------------------------------------------
+
+:ini-key:`[Launch]:ProgramExecutable` and
+:ini-key:`[Launch]:ProgramExecutableWhenParameters` now have environment
+variables parsed. This allows the use of :env:`%PAL:Bits% <PAL:Bits>` instead of
+the -64 variants, :ini-key:`[Launch]:ProgramExecutable64` and
+:ini-key:`[Launch]:ProgramExecutableWhenParameters64`.
+
+Mutex-based starting/stopping checks
+------------------------------------
+
+The starting/stopping checks introduced in 2.1 were switched from using a
+RuntimeData INI file to using mutexes. This change allows system-wide blocking
+of apps in those phases, where the current one is installation-wide, i.e. it
+will not work if you run the same app from different directories.
+
+Renamed language environment variables
+--------------------------------------
+
+The language environment variables were renamed in order to fix a conflict with
+the PortableApps.com Platform. The following tables lists their new names:
+
+============================= =================
+Old name                      New name
+============================= =================
+PortableApps.comLanguageCode  PAL:LanguageCode
+PortableApps.comLocaleCode2   PAL:LanguageCode2
+PortableApps.comLocaleCode3   PAL:LanguageCode3
+PortableApps.comLocaleGlibc   PAL:LanguageGlibc
+PortableApps.comLocaleWinName PAL:LanguageNSIS
+PortableApps.comLocaleName    PAL:LanguageName
+PortableApps.comLocaleID      PAL:LanguageLCID
+============================= =================
+
+The PortableApps.com Launcher Generator will automatically change your code to
+use the new environment variables.
+
+Dealing with default values with :ini-section:`[RegistryValueBackupDelete]`
+---------------------------------------------------------------------------
+
+Due to an oversight, the :ini-section:`[RegistryValueBackupDelete]` section
+couldn't cope with the default value (while :ini-section:`[RegistryValueWrite]`
+could). This omission has now been amended.
+
+Bugs fixed
+==========
+
+Additional command-line parameters with runtime privilege elevation
+-------------------------------------------------------------------
+
+On Windows Vista and later, when the :ini-key:`[Launch]:RunAsAdmin` options were
+enabled, two extra command-line parameters were added to the program's arguments.
+Those extra arguments could confuse some apps and are now removed from the
+command-line.

@@ -33,11 +33,10 @@ registry, with the value appended to it after a final slash, and the value is of
 the form REG\_\ *TYPE*:*value*; *REG_TYPE:* is optional, and defaults to
 ``REG_SZ`` (a string).
 
-**Note:** if there is any possibility that the value does contain a colon,
-write the type explicitly.
+The default value can be set by leaving the "value" part empty (so that the INI
+key will have a trailing slash).
 
-**Examples:** ``HKCU\Software\AppName\Key\Value=REG_DWORD:16``,
-``HKCU\Software\AppName\Key\Value2=REG_SZ:%PAL:DataDir%``
+**Example:** ``HKCU\Software\AppName\Key\Value=REG_DWORD:16``
 
 .. ini-section:: [RegistryCleanupIfEmpty]
 
@@ -88,5 +87,8 @@ These are registry values which get backed up before hand and restored later,
 but any value which may have been set while the portable application is running
 will be deleted. This can be useful for "dead" values which serve no purpose and
 so there is no point in saving them anywhere.
+
+The default value can be set by leaving the "value" part empty (so that the INI
+value will have a trailing slash).
 
 **Example:** ``1=HKCU\Software\Publisher\AppName\Value``

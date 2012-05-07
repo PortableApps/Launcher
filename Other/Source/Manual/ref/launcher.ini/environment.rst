@@ -7,6 +7,9 @@
 
 |envsub|
 
+.. versionchanged:: 3.0
+   added support for :ref:`directory variables <ref-envsub-directory>`
+
 ----
 
 This section is for the setting of environment variables. The key names are the
@@ -49,6 +52,22 @@ later ``[Environment]`` pairs or in another section such as a
    File=%PAL:AppDir%\AppName\setting-file.conf
    Entry=config.filename=
    Value=%LongSettingFileDBS%
+
+If a key name has a ``~`` appended to it, it will be processed as a
+:ref:`directory variable <ref-envsub-directory>`, therefore getting the same
+additional variables:
+
+.. code-block:: ini
+
+   [Environment]
+   Home~=%PAL:DataDir%\AppHome
+
+This code will make available the following environment variables:
+
+* ``%Home%`` -- ``X:\PortableApps\AppNamePortable\Data\AppHome``
+* ``%Home:ForwardSlash%`` -- ``X:/PortableApps/AppNamePortable/Data/AppHome``
+* ``%Home:DoubleBackslash%`` -- ``X:\\PortableApps\\AppNamePortable\\Data\\AppHome``
+* ``%Home:java.util.prefs%`` -- ``/X:///Portable/Apps///App/Name/Portable///Data///AppHome``
 
 For a list of the extra environment variables that the PortableApps.com Launcher
 makes available, see :ref:`ref-envsub`.

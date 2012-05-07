@@ -92,6 +92,15 @@ ${SegmentFile}
 !macroend
 !define SetEnvironmentVariablesPathFromEnvironmentVariable "!insertmacro SetEnvironmentVariablesPathFromEnvironmentVariable"
 
+!macro SetEnvironmentVariableFromEnvironmentVariableWithDefault _VARIABLE_NAME _ENVIRONMENT_VARIABLE _DEFAULT
+	Push $R0
+	ReadEnvStr $R0 "${_ENVIRONMENT_VARIABLE}"
+	${IfThen} $R0 == "" ${|} StrCpy $R0 "${_DEFAULT}" ${|}
+	${SetEnvironmentVariable} "${_VARIABLE_NAME}" $R0
+	Pop $R0
+!macroend
+!define SetEnvironmentVariableFromEnvironmentVariableWithDefault "!insertmacro SetEnvironmentVariableFromEnvironmentVariableWithDefault"
+
 !macro GetParentUNC path out ;{{{2
 	; A variant of GetParent which deals appropriately with UNC paths, stopping
 	; at the share level. While GetParent would turn \\server\share into

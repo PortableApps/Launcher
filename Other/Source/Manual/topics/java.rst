@@ -15,17 +15,18 @@ Turn on Java support
 
 If your application uses Java at all, whether it requires it or can merely use
 it to benefit if it's there, you will need to turn on Java support in
-:ref:`ref-launcher.ini`. To do this you will need to set the value
-:ini-key:`[Activate]:Java`; see that page for details on how to turn on Java
-support and what the different modes (``try`` and ``force``) mean.
+:ref:`appinfo.ini <paf-appinfo>`. To do this you will need to set the value
+``[Dependencies]:UsesJava``; see that page for details on how to turn on Java
+support and what the different modes (``yes`` and ``optional``) mean.
 
 The ``ProgramExecutable``
 =========================
 
 When you need to launch a Java application with ``java.exe`` or (more commonly)
-``javaw.exe``, set :ini-key:`[Activate]:Java` to ``force`` and then you can set
-:ini-key:`ProgramExecutable <[Launch]:ProgramExecutable>` to ``java.exe`` or ``javaw.exe`` and it
-will be rewritten to the path to that Java binary.
+``javaw.exe``, set ``appinfo.ini\[Dependencies]:UsesJava`` to ``yes`` and then
+you can set :ini-key:`ProgramExecutable <[Launch]:ProgramExecutable>` to
+``java.exe`` or ``javaw.exe`` and it will be rewritten to the path to that Java
+binary.
 
 Build systems and command line arguments
 ========================================
@@ -146,7 +147,6 @@ Here's what we'd put into ``App\AppInfo\Launcher\JestPortable.ini``.
    WaitForOtherInstances=false
 
    [Activate]
-   Java=require
    Registry=true
 
    [FileWrite1]

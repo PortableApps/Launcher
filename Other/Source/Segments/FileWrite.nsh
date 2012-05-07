@@ -1,5 +1,20 @@
 ${SegmentFile}
 
+Function _FileWrite_ReplaceCommon_Replace
+	${WordReplace} $2 %Paths% $R1 + $R1
+	${WordReplace} $2 %Paths% $R2 + $R2
+	${If} $5 == UTF-16LE
+		${ReplaceInFileUTF16LE} $1 $R1 $R2
+	${Else}
+		${ReplaceInFile} $1 $R1 $R2
+	${EndIf}
+FunctionEnd
+!macro _FileWrite_ReplaceCommon_Replace last_name current_name
+	ReadEnvStr $R1 ${last_name}$3
+	ReadEnvStr $R2 ${current_name}$3
+	Call _FileWrite_ReplaceCommon_Replace
+!macroend
+
 ${SegmentPrePrimary}
 	StrCpy $R0 0
 	${Do}
@@ -79,6 +94,20 @@ ${SegmentPrePrimary}
 			${EndIf}
 			; With Replace we actually leave Encoding calculation till later.
 			; Generally this will be more efficient as it's probably auto.
+		${ElseIf} $0 == ReplaceCommon
+		${OrIf} $0 == ReplaceAll
+			${ReadLauncherConfig} $2 FileWrite$R0 Context
+			${IfThen} ${Errors} ${|} StrCpy $2 %Paths% ${|}
+			${ReadLauncherConfig} $3 FileWrite$R0 PathForm
+			${If} ${Errors} ; not present
+				Nop
+			${ElseIf} $3 == ForwardSlash
+			${OrIf}   $3 == DoubleBackslash
+			${OrIf}   $3 == java.util.prefs ; valid values
+				StrCpy $3 :$3
+			${Else} ; invalid value
+				${InvalidValueError} [FileWrite$R0]:PathForm $3
+			${EndIf}
 		${Else}
 			${InvalidValueError} [FileWrite$R0]:Type $0
 			${Continue}
@@ -110,47 +139,57 @@ ${SegmentPrePrimary}
 ;				${IfThen} ${Errors} ${|} ${DebugMsg} "XMLWriteText XPath error" ${|}
 !endif
 			${ElseIf} $0 == Replace
+			${OrIf} $0 == ReplaceCommon
+			${OrIf} $0 == ReplaceAll
 				ClearErrors
 				${ReadLauncherConfig} $5 FileWrite$R0 Encoding
 				${If} ${Errors}
 					FileOpen $9 $1 r
-
-					; Using FileReadWord would end up with 0xFEFF as it
-					; flips everything back to front like a good little
-					; endian parser. (Lilliput and Blefuscu really did
-					; cause a lot of trouble!)
-
-					FileReadByte $9 $5
-					FileReadByte $9 $6
-					IntOp $5 $5 << 8
-					IntOp $5 $5 + $6
-
-					${IfThen} $5 = 0xFFFE ${|} StrCpy $5 UTF-16LE ${|}
+					FileReadWord $9 $5
+					${IfThen} $5 = 0xFEFF ${|} StrCpy $5 UTF-16LE ${|}
 					FileClose $9
 				${ElseIf} $5 != UTF-16LE
 				${AndIf} $5 != ANSI
 					${InvalidValueError} [FileWrite$R0]:Encoding $5
 				${EndIf}
+				${If} $0 == Replace
 ${!getdebug}
 !ifdef DEBUG
-				${IfThen} $5 == UTF-16LE ${|} StrCpy $R8 "a UTF-16LE" ${|}
-				${IfThen} $5 != UTF-16LE ${|} StrCpy $R8 "an ANSI" ${|}
-				StrCpy $R9 ``
-				${IfThen} $4 != true ${|} StrCpy $R9 in ${|}
-				${DebugMsg} "Finding and replacing in $R8 file (case $R9sensitive).$\r$\nFile: $1$\r$\nFind: `$2`$\r$\nReplace: `$3`"
+					${IfThen} $5 == UTF-16LE ${|} StrCpy $R8 "a UTF-16LE" ${|}
+					${IfThen} $5 != UTF-16LE ${|} StrCpy $R8 "an ANSI" ${|}
+					StrCpy $R9 ``
+					${IfThen} $4 != true ${|} StrCpy $R9 in ${|}
+					${DebugMsg} "Finding and replacing in $R8 file (case $R9sensitive).$\r$\nFile: $1$\r$\nFind: `$2`$\r$\nReplace: `$3`"
 !endif
-				${If} $5 == UTF-16LE
-					${If} $4 == true
-						${ReplaceInFileUTF16LECS} $1 $2 $3
+					${If} $5 == UTF-16LE
+						${If} $4 == true
+							${ReplaceInFileUTF16LECS} $1 $2 $3
+						${Else}
+							${ReplaceInFileUTF16LE} $1 $2 $3
+						${EndIf}
 					${Else}
-						${ReplaceInFileUTF16LE} $1 $2 $3
+						${If} $4 == true
+							${ReplaceInFileCS} $1 $2 $3
+						${Else}
+							${ReplaceInFile} $1 $2 $3
+						${EndIf}
 					${EndIf}
 				${Else}
-					${If} $4 == true
-						${ReplaceInFileCS} $1 $2 $3
-					${Else}
-						${ReplaceInFile} $1 $2 $3
+${!getdebug}
+!ifdef DEBUG
+					${IfThen} $5 != UTF-16LE ${|} StrCpy $5 "ANSI" ${|}
+					${DebugMsg} "Finding and replacing common paths in the $5-encoded file $1 (format: $2)"
+!endif
+					${If} $0 == ReplaceAll
+						!insertmacro _FileWrite_ReplaceCommon_Replace PAL:LastPortableAppsDirectory              PAL:PortableAppsDir
+						!insertmacro _FileWrite_ReplaceCommon_Replace PAL:LastPortableApps.comDocumentsDirectory PortableApps.comDocuments
+						!insertmacro _FileWrite_ReplaceCommon_Replace PAL:LastPortableApps.comPicturesDirectory  PortableApps.comPictures
+						!insertmacro _FileWrite_ReplaceCommon_Replace PAL:LastPortableApps.comMusicDirectory     PortableApps.comMusic
+						!insertmacro _FileWrite_ReplaceCommon_Replace PAL:LastPortableApps.comVideosDirectory    PortableApps.comVideos
 					${EndIf}
+					!insertmacro _FileWrite_ReplaceCommon_Replace PAL:LastDataDirectory PAL:DataDir
+					!insertmacro _FileWrite_ReplaceCommon_Replace PAL:LastAppDirectory  PAL:AppDir
+					!insertmacro _FileWrite_ReplaceCommon_Replace PAL:LastDrivePath     PAL:DrivePath
 				${EndIf}
 			${EndIf}
 		${NextFile}
@@ -160,3 +199,4 @@ ${!getdebug}
 		;${EndIf}
 	${Loop}
 !macroend
+
