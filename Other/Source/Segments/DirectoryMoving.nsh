@@ -20,8 +20,15 @@ Var LastDirectory
 Var CurrentDirectory
 
 ${SegmentInit}
+	; Strip the root from the current executable's directory; take UNC path into account
+	${GetRoot} $EXEDIR $0
+	StrLen $0 $0
+	StrCpy $CurrentDirectory $EXEDIR '' $0
+	${If} $CurrentDirectory == ''
+		StrCpy $CurrentDirectory '\'
+	${EndIf}
+
 	ReadINIStr $LastDirectory $EXEDIR\Data\settings\$AppIDSettings.ini $AppIDSettings LastDirectory
-	StrCpy $CurrentDirectory $EXEDIR "" 2
 	${IfThen} $LastDirectory == "" ${|} StrCpy $LastDirectory $CurrentDirectory ${|}
 	${If} $LastDirectory != $CurrentDirectory
 		${DebugMsg} "Directory has been moved from $LastDirectory to $CurrentDirectory."

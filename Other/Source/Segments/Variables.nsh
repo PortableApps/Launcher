@@ -92,6 +92,17 @@ ${SegmentFile}
 !macroend
 !define SetEnvironmentVariablesPathFromEnvironmentVariable "!insertmacro SetEnvironmentVariablesPathFromEnvironmentVariable"
 
+!macro GetParentUNC path out ;{{{2
+	; A variant of GetParent which deals appropriately with UNC paths, stopping
+	; at the share level. While GetParent would turn \\server\share into
+	; \\server, this leaves it as \\server\share.
+	${GetRoot} `${path}` `${out}`
+	${If} `${path}` != `${out}`
+		${GetParent} `${path}` `${out}`
+	${EndIf}
+!macroend
+!define GetParentUNC '!insertmacro GetParentUNC'
+
 !macro ParseLocations VAR ;{{{2
 	; Expands environment variables on a variable and provides a debug message
 	; about it.
@@ -130,10 +141,10 @@ ${SegmentInit}
 	${SetEnvironmentVariablesPath} PAL:DataDir $DataDirectory
 	; These may be changed in the RunLocally segment's Pre hook.
 
-	${GetParent} $EXEDIR $PortableAppsDirectory
+	${GetParentUNC} $EXEDIR $PortableAppsDirectory
 	${SetEnvironmentVariablesPath} PAL:PortableAppsDir $PortableAppsDirectory
 
-	${GetParent} $PortableAppsDirectory $PortableAppsBaseDirectory
+	${GetParentUNC} $PortableAppsDirectory $PortableAppsBaseDirectory
 	${SetEnvironmentVariablesPath} PAL:PortableAppsBaseDir $PortableAppsBaseDirectory
 	ClearErrors
 	ReadINIStr $LastPortableAppsBaseDirectory $DataDirectory\settings\$AppIDSettings.ini PortableApps.comLauncherLastRunEnvironment PAL:LastPortableAppsBaseDir

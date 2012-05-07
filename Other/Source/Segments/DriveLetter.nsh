@@ -20,6 +20,7 @@ ${SegmentInit}
 	StrCpy $1 $LastDrive 1
 	${SetEnvironmentVariable} PAL:Drive $CurrentDrive
 	${SetEnvironmentVariable} PAL:LastDrive $LastDrive
+	; TODO: decide what to do about this for UNC paths
 	${SetEnvironmentVariable} PAL:DriveLetter $0
 	${SetEnvironmentVariable} PAL:LastDriveLetter $1
 !macroend

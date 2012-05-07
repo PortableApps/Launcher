@@ -4,55 +4,6 @@ Var LauncherFile
 Var Bits
 
 ${Segment.onInit}
-	StrCpy $0 $EXEDIR 2
-	${If} $0 == "\\"
-		; UNC path; may occur in the inner instance with RunAsAdmin?
-		; I'm not sure if this is actually true or whether it was some other
-		; issue, but I'm leaving the code in until I can be sure.
-
-		; Store the value of $EXEDIR for debug builds for the message.
-		${!getdebug}
-		!ifdef DEBUG
-			StrCpy $0 $EXEDIR
-		!endif
-		ClearErrors
-		ReadEnvStr $EXEDIR _PAL:EXEDIR
-		${If} ${Errors}
-			MessageBox MB_OK|MB_ICONSTOP "$(LauncherNoUNCSupport)"
-			Quit
-		${EndIf}
-		${DebugMsg} "$$EXEDIR ($0) was a UNC path (due to the UAC plug-in), set $$EXEDIR to %_PAL:EXEDIR% which is $EXEDIR."
-	${Else}
-		${SetEnvironmentVariable} _PAL:EXEDIR $EXEDIR
-	${EndIf}
-
-	; We don't permit running from PROGRAMFILES at all; the Installer will take
-	; care of most people (same restrictions), but some may shift it back in
-	; there... so, we offer the nice and verbose environment variable (but
-	; don't tell them about it normally) if they *really* want to void the
-	; warranty they don't have under the GPL.
-
-	; Fear not, $PROGRAMFILES64 == $PROGRAMFILES32 on a 32-bit machine
-	${If} $EXEDIR startswith $PROGRAMFILES32
-		StrCpy $0 $PROGRAMFILES32
-	${ElseIf} $EXEDIR startswith $PROGRAMFILES64
-		StrCpy $0 $PROGRAMFILES64
-	${Else}
-		StrCpy $0 ""
-	${EndIf}
-
-	${If} $0 != ""
-		; We had fun deciding on these.
-		ReadEnvStr $1 IPromiseNotToComplainWhenPortableAppsDontWorkRightInProgramFiles
-		${If} $1 == "I understand that this may not work and that I can not ask for help with any of my apps when operating in this fashion."
-			${DebugMsg} "You're making me sad by the way you voided your warranty, running in Program Files."
-		${Else}
-			; This string doesn't let on about the disable switch (by design)
-			MessageBox MB_OK|MB_ICONSTOP `$(LauncherProgramFiles)`
-			Quit
-		${EndIf}
-	${EndIf}
-
 	; These may be needed with RunAsAdmin so they can't go in Init.
 
 	${GetBaseName} $EXEFILE $BaseName
@@ -141,19 +92,6 @@ ${SegmentInit}
 		Quit
 	${EndIf}
 
-	; Is it allowable to have spaces in the path?
-	ClearErrors
-	${ReadLauncherConfig} $0 Launch NoSpacesInPath
-	${If} $0 == true
-		${WordFind} $EXEDIR ` ` E+1 $R9
-		${IfNot} ${Errors} ; errors = space not found, no errors means space in path
-			MessageBox MB_OK|MB_ICONSTOP `$(LauncherNoSpaces)`
-			Quit
-		${EndIf}
-	${ElseIf} $0 != false
-	${AndIfNot} ${Errors}
-		${InvalidValueError} [Launch]:NoSpacesInPath $0
-	${EndIf}
 !macroend
 
 ${SegmentPreExecPrimary}
