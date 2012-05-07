@@ -2,40 +2,38 @@
 
 .. _releases-2.2:
 
-=============================================
+===========================================
 PortableApps.com Launcher 2.2 release notes
-=============================================
+===========================================
 
 This release improves the runtime state saving mechanism which was introduced
 in version 2.1, to improve stability and decrease the probability of portable
 apps getting stuck in a non-functional state which could occasionally happen.
-No new features have been added and there will be no apparent changes to normal
-portable app developers.
-
-New features
-============
-
-:env:`PAL:PortableAppsBaseDir` and ``$PortableAppsBaseDirectory``
------------------------------------------------------------------
-
-A new directory environment variable pair,
-``PAL:LastPortableAppsBaseDirectory`` and ``PAL:PortableAppsBaseDirectory``,
-has been added.  It will allow to replace the path to all the PortableApps.com-
-related directories in a single shot.
-
-Changes
-=======
+Several other minor but significant alterations have been made, as described
+below. To normal portable app developers, there will be no apparent changes,
+except for the desire that all apps now be checked for support of UNC paths.
+More significant changes are underway for 3.0 (the next planned non-maintenance
+release).
 
 Mutex-based starting/stopping checks
-------------------------------------
+====================================
 
 The starting/stopping checks introduced in 2.1 were switched from using the
 RuntimeData INI file to using mutexes. This change allows system-wide blocking
 of apps in those phases, where the current method works installation-wide,
 i.e. it will not work if you run the same app from different directories.
 
+:env:`PAL:PortableAppsBaseDir` and ``$PortableAppsBaseDirectory``
+=================================================================
+
+A new pair of directory environment variables,
+:env:`PAL:LastPortableAppsBaseDirectory` and
+:env:`PAL:PortableAppsBaseDirectory`, have been added. These allow developers
+to replace the path to all the PortableApps.com-related directories in a single
+pass. (The variables are available for use in custom code also.)
+
 UNC paths supported
--------------------
+===================
 
 Running the launcher from UNC paths (i.e. unmapped network shares, of the form
 ``\\server\share\etc``) is now supported; however, because there is risk of
@@ -51,7 +49,7 @@ explain the situation, as they wish to gain an understanding as to what is
 needed here.
 
 Running from Program Files is now forbidden
--------------------------------------------
+===========================================
 
 In former times portable apps would not always complain if they were run from
 the system's Program Files directory, leading to quite a few support requests
