@@ -29,18 +29,19 @@ ${SegmentInit}
 	${EndIf}
 
 	; Check if UNC paths are permitted
+	StrCpy $1 nounc
+	${IfThen} $EXEDIR startswith "\\" ${|} StrCpy $1 unc ${|}
 	ClearErrors
 	${ReadLauncherConfig} $0 Launch SupportsUNC
 	${If} $0 == no
-		StrCpy $0 $EXEDIR 2
-		${If} $0 == "\\"
-			MessageBox MB_OK|MB_ICONSTOP $(LauncherNoUNCSupport)
+		${If} $1 == unc
+			MessageBox MB_OK|MB_ICONSTOP `$(LauncherNoUNCSupport)`
 			Quit
 		${EndIf}
 	${ElseIf} $0 == warn
 	${OrIf} ${Errors}
-		; Are you sure you want to continue?
-		${If} ${Cmd} ${|} MessageBox MB_YESNO|MB_ICONSTOP "$(LauncherUNCWarn)" IDNO ${|}
+		${If} $1 == unc
+		${AndIf} ${Cmd} ${|} MessageBox MB_YESNO|MB_ICONSTOP `$(LauncherUNCWarn)` IDNO ${|}
 			Quit
 		${EndIf}
 	${ElseIf} $0 == yes
