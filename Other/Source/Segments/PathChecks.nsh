@@ -41,7 +41,7 @@ ${SegmentInit}
 	${ElseIf} $0 == warn
 	${OrIf} ${Errors}
 		${If} $1 == unc
-		${AndIf} ${Cmd} ${|} MessageBox MB_YESNO|MB_ICONSTOP `$(LauncherUNCWarn)` IDNO ${|}
+		${AndIf} ${Cmd} `MessageBox MB_YESNO|MB_ICONSTOP $(LauncherUNCWarn) IDNO`
 			Quit
 		${EndIf}
 	${ElseIf} $0 == yes
