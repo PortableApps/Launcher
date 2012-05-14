@@ -133,6 +133,42 @@ ${SegmentFile}
 !macroend
 !define ParseLocations "!insertmacro ParseLocations"
 
+; !macro SetPortableApps.comPath {{{2
+!define SetPortableApps.comPath "!insertmacro SetPortableApps.comPathCall"
+!macro SetPortableApps.comPathCall _ID
+	Push "${_ID}"
+	${CallArtificialFunction} SetPortableApps.comPath_
+!macroend
+
+!macro SetPortableApps.comPath_
+	; Set the PortableApps.com<ID> environment variable to an existing path based
+	; on the following algorithm:
+	;   - %PortableApps.com<ID>%
+	;   - $EXEDIR\..\..\<ID>
+	;   - %PAL:Drive%\<ID>
+	;   - %PAL:Drive%
+
+	Exch $R1
+	Push $R0
+
+	ClearErrors
+	ReadEnvStr $R0 PortableApps.com$R1
+	${IfNot} ${Errors}
+	${AndIf} ${FileExists} $R0\*.*
+		Nop
+	${ElseIf} ${FileExists} $PortableAppsBaseDirectory\$R1
+		StrCpy $R0 $PortableAppsBaseDirectory\$R1
+	${ElseIf} ${FileExists} $CurrentDrive\$R1
+		StrCpy $R0 $CurrentDrive\$R1
+	${Else}
+		StrCpy $R0 $CurrentDrive
+	${EndIf}
+
+	${SetEnvironmentVariablesPath} PortableApps.com$R1 $R0
+	Pop $R0
+	Exch $R1
+!macroend
+
 ; Variables {{{1
 Var AppDirectory
 Var DataDirectory
@@ -161,33 +197,10 @@ ${SegmentInit}
 		${SetEnvironmentVariablesPath} PAL:LastPortableAppsBaseDir $LastPortableAppsBaseDirectory
 	${EndIf}
 
-	ReadEnvStr $0 PortableApps.comDocuments
-	${If} $0 == ""
-	${OrIfNot} ${FileExists} $0
-		StrCpy $0 $CurrentDrive\Documents
-	${EndIf}
-	${SetEnvironmentVariablesPath} PortableApps.comDocuments $0
-
-	ReadEnvStr $1 PortableApps.comPictures
-	${If} $1 == ""
-	${OrIfNot} ${FileExists} $1
-		StrCpy $1 $0\Pictures
-	${EndIf}
-	${SetEnvironmentVariablesPath} PortableApps.comPictures $1
-
-	ReadEnvStr $1 PortableApps.comMusic
-	${If} $1 == ""
-	${OrIfNot} ${FileExists} $1
-		StrCpy $1 $0\Music
-	${EndIf}
-	${SetEnvironmentVariablesPath} PortableApps.comMusic $1
-
-	ReadEnvStr $1 PortableApps.comVideos
-	${If} $1 == ""
-	${OrIfNot} ${FileExists} $1
-		StrCpy $1 $0\Videos
-	${EndIf}
-	${SetEnvironmentVariablesPath} PortableApps.comVideos $1
+	${SetPortableApps.comPath} Documents
+	${SetPortableApps.comPath} Pictures
+	${SetPortableApps.comPath} Music
+	${SetPortableApps.comPath} Videos
 
 	; Language variables are in the Language segment
 
