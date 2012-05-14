@@ -66,6 +66,7 @@ SetDatablockOptimize On
 ;=== Icon & Stye ===
 !define MUI_ICON "..\..\App\AppInfo\appicon.ico"
 !define MUI_HEADERIMAGE
+!define MUI_HEADERIMAGE_RIGHT
 !define MUI_HEADERIMAGE_BITMAP header.bmp
 
 BrandingText "PortableApps.com - Your Digital Life, Anywhere®"
