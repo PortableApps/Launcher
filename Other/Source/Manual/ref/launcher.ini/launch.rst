@@ -25,7 +25,7 @@ naming scheme ("*AppName* Portable") instead of specifying this value.
 
 **Example:** for the program "App Name", this value would be ``App Name``
 (though it should be unset and ``Name`` in AppInfo.ini should be set to ``App
-Name Portable`` or ``App Name, Portable Edition``.) 
+Name Portable`` or ``App Name, Portable Edition``.)
 
 .. ini-key:: [Launch]:ProgramExecutable
 
@@ -33,6 +33,7 @@ ProgramExecutable
 -----------------
 
 | Mandatory.
+| |envsub|
 
 ----
 
@@ -40,7 +41,7 @@ Specify the program to be launched by the PortableApps.com Launcher here,
 relative to the App directory of the portable application.
 
 There is a special case for Java applications; after specifying
-:ini-key:`[Activate]:Java`\ ``=require`` they can specify a value of
+``appinfo.ini\[Dependencies]:UsesJava``=``yes`` they can specify a value of
 ``java.exe`` or ``javaw.exe`` and it will be interpreted into the path to that
 executable in the Java Runtime Environment.
 
@@ -60,18 +61,22 @@ the next.
   given)
 * :ini-key:`[Launch]:ProgramExecutable`
 
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
+
 .. ini-key:: [Launch]:ProgramExecutableWhenParameters
 
 ProgramExecutableWhenParameters
 -------------------------------
 
 | Optional.
+| |envsub|
 
 ----
 
 Specify the program to be launched by the PortableApps.com Launcher when
 command-line arguments are given here, relative to the App directory of the
-portable application. This has the effect of overriding :ref:`ProgramExecutable
+portable application. This has the effect of overriding :ini-key:`ProgramExecutable
 <[Launch]:ProgramExecutable>` when specified if command-line arguments are
 given. If none are given, the value in ProgramExecutable will be used.
 
@@ -84,25 +89,32 @@ is launched, it is desirable for the menu, ``NSIS.exe``, to be shown, but if a
 file is given to it in its command line, the NSIS compiler, ``makensisw.exe``,
 should be launched, as the menu does not recognise file names given to it.
 
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
+
 .. ini-key:: [Launch]:ProgramExecutable64
 
 ProgramExecutable64
 -------------------
 
 | Optional.
+| |envsub|
 
 .. versionadded:: 2.1
 
 ----
 
-An override for :ref:`[Launch]:ProgramExecutable` when the portable app is
+An override for :ini-key:`[Launch]:ProgramExecutable` when the portable app is
 running on a 64-bit operating system. Typically a portable app should not
 include a 64-bit version whether provided by the publisher or not, but if there
 are significant benefits in having a 64-bit version, or it is required for
 functionality (e.g. defragmentation or system information analysis), it may be
 included.
 
-All the rules of :ref:`[Launch]:ProgramExecutable` hold for this.
+All the rules of :ini-key:`[Launch]:ProgramExecutable` hold for this.
+
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
 
 .. ini-key:: [Launch]:ProgramExecutableWhenParameters64
 
@@ -110,19 +122,24 @@ ProgramExecutableWhenParameters64
 ---------------------------------
 
 | Optional.
+| |envsub|
 
 .. versionadded:: 2.1
 
 ----
 
-An override for :ref:`[Launch]:ProgramExecutableWhenParameters` when the
+An override for :ini-key:`[Launch]:ProgramExecutableWhenParameters` when the
 portable app is running on a 64-bit operating system. Typically a portable app
 should not include a 64-bit version whether provided by the publisher or not,
 but if there are significant benefits in having a 64-bit version, or it is
 required for functionality (e.g. defragmentation or system information
 analysis), it may be included.
 
-All the rules of :ref:`[Launch]:ProgramExecutableWhenParameters` hold for this.
+All the rules of :ini-key:`[Launch]:ProgramExecutableWhenParameters` hold for
+this.
+
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
 
 .. ini-key:: [Launch]:CommandLineArguments
 
@@ -176,6 +193,40 @@ command line fail unless it is only a single file given (which will be
 automatically corrected).
 
 **Example:** ``%PAL:AppDir%\AppName``
+
+.. ini-key:: [Launch]:BitsVariable32
+
+BitsVariable32
+--------------
+
+| Default: ``32``
+| Optional.
+
+.. versionadded:: 3.0
+
+----
+
+This is the value that will be stored in the environment variable
+:env:`PAL:Bits` when run on a 32-bit machine. See also
+:ini-key:`[Launch]:BitsVariable64` for configuring the value on 64-bit
+machines.
+
+.. ini-key:: [Launch]:BitsVariable64
+
+BitsVariable64
+--------------
+
+| Default: ``64``
+| Optional.
+
+.. versionadded:: 3.0
+
+----
+
+This is the value that will be stored in the environment variable
+:env:`PAL:Bits` when run on a 64-bit machine. See also
+ini-key:`[Launch]:BitsVariable32` for configuring the value on 32-bit
+machines.
 
 .. ini-key:: [Launch]:MinOS
 
@@ -233,9 +284,6 @@ RunAsAdmin
 
 ----
 
-.. versionchanged:: 2.1
-   added the ``compile-force`` value
-
 Setting this to ``force`` or ``try`` causes the user to be prompted to run the
 program as an administrator (or a UAC prompt on Windows Vista or Windows 7 when
 UAC is turned on). If the user cannot elevate to admin or cancels the operation
@@ -286,6 +334,9 @@ In such a situation, you should probably set this to ``force`` and use values
 for 2000, XP and 2003, ``none``, for future compatibility. On Linux or Mac with
 Wine, the user will always be reported as running as the administrator, and so
 you don't need a special case for it.
+
+.. versionchanged:: 2.1
+   added the ``compile-force`` value
 
 .. ini-key:: [Launch]:RunAsAdmin2000
 
@@ -464,7 +515,7 @@ omit this value. If it is set to ``true`` or omitted, if the launcher is
 started while a local copy of the application is already running, it will abort
 with an error message. This value only affects running a portable instance
 while a local instance is already running; if a second portable instance is
-launched, this value this value will not affect it.  See
+launched, this value will not affect it.  See
 :ini-key:`SinglePortableAppInstance <[Launch]:SinglePortableAppInstance>` for
 controlling that case.
 
@@ -475,7 +526,7 @@ If the application stores settings in a local location like %APPDATA%, or in the
 registry, then it is not correct to set this to ``false``. You should only set
 it to ``false`` in such a case as when it stores its settings in the
 executable's directory or some path specified by an environment variable or
-command-line argument, and will not interfere with a local instance or vica
+command-line argument, and will not interfere with a local instance or vice
 versa.
 
 .. ini-key:: [Launch]:CloseEXE
@@ -493,6 +544,52 @@ portable application is started than the :ini-key:`ProgramExecutable
 <[Launch]:ProgramExecutable>` entry, enter the file name in here. This is
 particularly useful with Java applications which use Launch4J. See
 :ref:`java-launch4j` for details on that.
+
+.. ini-key:: [Launch]:RunBeforeN
+
+RunBefore\ *N*
+--------------
+
+| Optional.
+| |envsub|
+
+----
+
+Execute a given command string just before launching the main app. This will
+typically be something like ``"%PAL:AppDir%\AppName\foo.exe"`` or
+``"%PAL:AppDir%\AppName\foo.exe" --arguments``.  Remember that this is a full
+command line, not just a path to an executable, and so you must quote the
+executable path with double quotes so that it will work from paths with spaces.
+Following INI style guidelines, this means your line should be like this:
+
+.. code-block:: ini
+
+   [Launch]
+   RunBefore1='"%PAL:AppDir%\AppName\appname.exe" --setup'
+   RunBefore2='"%PAL:AppDir%\AppName\setup.exe"'
+
+If the read value does not start with double quotes, a warning will always be
+displayed, indicating you should fix it.
+
+The Launcher will wait for the command to complete before continuing.
+
+The standard use case for this is for apps which need to (or can) do some
+special setup or cleanup of their own to improve portability.
+
+.. ini-key:: [Launch]:RunAfterN
+
+RunAfter\ *N*
+--------------
+
+| Optional.
+| |envsub|
+
+----
+
+Execute a given command string just after all tracked instances of the main app
+have finished. This will not run if :ini-key:`[Launch]:WaitForProgram` is set
+to ``false``. See :ini-key:`[Launch]:RunBeforeN` above for information on
+suitable values for keys in this group.
 
 .. ini-key:: [Launch]:SplashTime
 

@@ -5,6 +5,7 @@ Var _FEIP_Line
 Var _FEIP_LineLength
 Var _FEIP_CharNum
 Var _FEIP_Char
+Var _FEIP_UTF16
 
 !macro ForEachINIPair SECTION KEY VALUE
 	!ifdef _ForEachINIPair_Open
@@ -13,12 +14,31 @@ Var _FEIP_Char
 	!define _ForEachINIPair_Open
 	${If} $_FEIP_FileHandle == ""
 		FileOpen $_FEIP_FileHandle $LauncherFile r
-	${Else}
-		FileSeek $_FEIP_FileHandle 0
 	${EndIf}
+
+	${Select} $_FEIP_UTF16
+	${Case} ""
+		FileSeek $_FEIP_FileHandle 0
+		FileReadWord $_FEIP_FileHandle $_FEIP_Char
+		${If} $_FEIP_Char = 0xFEFF
+			StrCpy $_FEIP_UTF16 true
+		${Else}
+			StrCpy $_FEIP_UTF16 false
+			FileSeek $_FEIP_FileHandle 0
+		${EndIf}
+	${Case} true
+		FileSeek $_FEIP_FileHandle 2
+	${Case} false
+		FileSeek $_FEIP_FileHandle 0
+	${EndSelect}
+
 	${Do}
 		ClearErrors
-		FileRead $_FEIP_FileHandle $_FEIP_Line
+		${If} $_FEIP_UTF16 == true
+			FileReadUTF16LE $_FEIP_FileHandle $_FEIP_Line
+		${Else}
+			FileRead $_FEIP_FileHandle $_FEIP_Line
+		${EndIf}
 		${TrimNewLines} $_FEIP_Line $_FEIP_Line
 		${If} ${Errors} ; end of file
 		${OrIf} $_FEIP_Line == "[${SECTION}]" ; right section
@@ -29,7 +49,11 @@ Var _FEIP_Char
 	${IfNot} ${Errors} ; right section
 		${Do}
 			ClearErrors
-			FileRead $_FEIP_FileHandle $_FEIP_Line
+			${If} $_FEIP_UTF16 == true
+				FileReadUTF16LE $_FEIP_FileHandle $_FEIP_Line
+			${Else}
+				FileRead $_FEIP_FileHandle $_FEIP_Line
+			${EndIf}
 
 			StrCpy $_FEIP_LineLength $_FEIP_Line 1
 			${If} ${Errors} ; end of file
@@ -80,8 +104,23 @@ Var _FEIP_Char
 			${EndIf}
 		${Loop}
 	${EndIf}
-	;FileClose $_FEIP_FileHandle
+!macroend
+
+!macro ForEachINIPairWithFile file section key value
+	FileClose $_FEIP_FileHandle
+	FileOpen $_FEIP_FileHandle "${file}" r
+	StrCpy $_FEIP_UTF16 ""
+	${ForEachINIPair} `${section}` `${key}` `${value}`
+!macroend
+
+!macro NextINIPairWithFile
+	${NextINIPair}
+	FileClose $_FEIP_FileHandle
+	StrCpy $_FEIP_FileHandle ""
+	StrCpy $_FEIP_UTF16 ""
 !macroend
 
 !define ForEachINIPair '!insertmacro ForEachINIPair'
 !define NextINIPair '!insertmacro NextINIPair'
+!define ForEachINIPairWithFile '!insertmacro ForEachINIPairWithFile'
+!define NextINIPairWithFile '!insertmacro NextINIPairWithFile'

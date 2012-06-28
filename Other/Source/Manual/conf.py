@@ -48,7 +48,7 @@ master_doc = 'contents'
 
 # General information about the project.
 project = u'PortableApps.com Launcher'
-copyright = u'2010, Chris Morgan of PortableApps.com'
+copyright = u'2010-2012, the PortableApps.com Launcher development team'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
