@@ -74,6 +74,7 @@ InstallButtonText "Go >"
 ShowInstDetails show
 SubCaption 3 " | Generating Launcher"
 
+
 ;=== Variables
 Var FINISHTEXT
 Var FINISHTITLE
@@ -154,8 +155,8 @@ Function ShowWelcomeWindow
 FunctionEnd
 
 Function ShowOptionsWindow
-	${IfThen} $AUTOMATICCOMPILE == "true" ${|} Abort ${|}
 	!insertmacro MUI_HEADER_TEXT "PortableApps.com Launcher" "the open portable software standard"
+	${IfThen} $AUTOMATICCOMPILE == "true" ${|} Abort ${|}
 	InstallOptions::InitDialog /NOUNLOAD "$PLUGINSDIR\GeneratorWizardForm.ini"
     Pop $0
     InstallOptions::Show
