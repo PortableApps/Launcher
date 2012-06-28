@@ -10,6 +10,7 @@
 !macroend
 !define IncludeLang "!insertmacro IncludeLang"
 ${IncludeLang} English
+${IncludeLang} Armenian
 ${IncludeLang} Bulgarian
 ${IncludeLang} Danish
 ${IncludeLang} Dutch
@@ -26,13 +27,16 @@ ${IncludeLang} Japanese
 ${IncludeLang} Polish
 ${IncludeLang} Portuguese
 ${IncludeLang} PortugueseBR
+${IncludeLang} Romanian
 ${IncludeLang} SimpChinese
 ${IncludeLang} Slovenian
 ${IncludeLang} Spanish
+${IncludeLang} Sundanese
 ${IncludeLang} Swedish
 ${IncludeLang} Thai
 ${IncludeLang} TradChinese
 ${IncludeLang} Turkish
+${IncludeLang} Vietnamese
 
 ; Use the Case statements formed above.
 ; Used in Segments/Language.nsh

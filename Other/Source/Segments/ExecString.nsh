@@ -6,7 +6,7 @@ ${SegmentPre}
 	${DebugMsg} "Constructing execution string"
 
 	; If ProgramExecutable was java.exe or javaw.exe and
-	; [Activate]:Java=require, we want to run Java from elsewhere (portable
+	; Java is required, we want to run Java from elsewhere (portable
 	; CommonFiles or a local installation), not something in the current
 	; directory tree.
 	${If} $UsingJavaExecutable != true
@@ -27,6 +27,29 @@ ${SegmentPre}
 
 	; Get any user-passed command line arguments
 	${GetParameters} $0
+	${If} ${UAC_IsInnerInstance}
+		; UAC plugin prepends "/UAC:ABCDE /NCRC " (for arbitrary hex
+		; ABCDE) to the command line arguments
+
+		; First get rid of /UAC...
+		${WordFind} $0 " " "E+1" $1
+		StrCpy $2 $1 5
+		${If} $2 == "/UAC:"
+			; The hexadecimal value doesn't have a fixed length,
+			; so we get the length of the entire parameter plus
+			; a space character, and trim that length from the
+			; beginning of the command-line parameters.
+			StrLen $1 $1
+			IntOp $1 $1 + 1
+			StrCpy $0 $0 "" $1
+		${EndIf}
+		; ...then of /NCRC. With /UAC removed, we don't need to search
+		; for this.
+		StrCpy $1 $0 5
+		${If} $1 == "/NCRC"
+			StrCpy $0 $0 "" 6
+		${EndIf}
+	${EndIf}
 	${If} $0 != ""
 		${DebugMsg} "Parameters were passed ($0).  Adding them to execution string."
 		ClearErrors

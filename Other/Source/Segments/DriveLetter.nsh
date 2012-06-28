@@ -23,6 +23,8 @@ ${SegmentInit}
 	; TODO: decide what to do about this for UNC paths
 	${SetEnvironmentVariable} PAL:DriveLetter $0
 	${SetEnvironmentVariable} PAL:LastDriveLetter $1
+	${SetEnvironmentVariablesPath} PAL:DrivePath "$CurrentDrive\"
+	${SetEnvironmentVariablesPath} PAL:LastDrivePath "$LastDrive\"
 !macroend
 
 ${SegmentPrePrimary}

@@ -11,7 +11,8 @@ For writing data to files. The values which must be set depend on the
 Type
 ----
 
-| Values: ``ConfigWrite``, ``INI``, ``Replace``, ``XML attribute``, ``XML text``
+| Values: ``ConfigWrite``, ``INI``, ``Replace``, ``ReplaceCommon``,
+  ``ReplaceAll``, ``XML attribute``, ``XML text``
 | Mandatory.
 
 ----
@@ -28,11 +29,22 @@ Specify the type of file writing which is to be used:
   (using :env:`%PAL:Drive% <PAL:Drive>` and :env:`%PAL:LastDrive%
   <PAL:LastDrive>`)
 
+* ``ReplaceCommon``: like ``Replace``, but automatically performs the most
+  common updates (application and data directories, and drive letters)
+
+* ``ReplaceAll``: the same as ``ReplaceCommon``, with additional updates to
+  :env:`PAL:PortableAppsDir`, :env:`PortableApps.comDocuments`,
+  :env:`PortableApps.comPictures`, :env:`PortableApps.comMusic` and
+  :env:`PortableApps.comVideos`
+
 * ``XML attribute``: write an attribute to an XML file. Only available when
   :ini-key:`[Activate]:XML`\ =\ ``true``.
 
 * ``XML text``: write a text node to an XML file. Only available when
   :ini-key:`[Activate]:XML`\ =\ ``true``.
+
+.. versionchanged:: 3.0
+   added ``ReplaceCommon`` and ``ReplaceAll``
 
 .. ini-key:: [FileWriteN]:File
 
@@ -41,6 +53,8 @@ File
 
 | Mandatory.
 | |envsub|
+
+:ref:`Wildcards <wildcards>` are supported.
 
 ----
 
@@ -88,6 +102,9 @@ Key
 
 The INI key to write the value to.
 
+Remember that, when writing to Registry files (``.REG``), the key should always be quoted, e.g.
+``Key='"RegistryKey"'``.
+
 .. ini-key:: [FileWriteN]:Value
 
 Value
@@ -104,6 +121,9 @@ The value which will be written to the file. If dealing with :ini-key:`Type
 XML files that you will normally need to close the tag, for example
 ``%PAL:DataDir%\settings</config>``. In such cases you can also try using the
 inbuilt XML support.
+
+When writing string values to Registry files, remember that it should be quoted, e.g.
+``Value='"registry value"'``.
 
 .. ini-key:: [FileWriteN]:Find
 
@@ -131,6 +151,44 @@ The string to replace the search string with. If, after environment variable
 replacement, this is the same as the :ini-key:`Find <[FileWriteN]:Find>` string,
 the replacement will be skipped (e.g. if you use it to update drive letters and
 it's on the same letter).
+
+.. ini-key:: [FileWriteN]:Context
+
+Context
+-------
+
+| Applies for for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``ReplaceAll``,
+  ``ReplaceCommon``.
+| Optional.
+
+.. versionadded:: 3.0
+
+----
+
+The format string used to during search and replacement. It is used to
+contextualize the paths, as sometimes the path by itself can not be
+enough in order to correctly perform the updates.
+
+A ``%Paths%`` in the context string is replaced with the value of the path
+variable.
+
+.. ini-key:: [FileWriteN]:PathForm
+
+PathForm
+--------
+
+| Values: ``ForwardSlash`` / ``DoubleBackSlash`` / ``java.util.prefs``
+| Applies for :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``ReplaceAll``,
+  ``ReplaceCommon``.
+| Optional.
+
+.. versionadded:: 3.0
+
+----
+
+The form of the directories variables being updated, as detailed at
+:ref:`ref-envsub-directory`. If not present, defaults to a single backslash
+separating directories.
 
 .. ini-key:: [FileWriteN]:Attribute
 
@@ -188,7 +246,8 @@ Encoding
 
 | Values: auto / ``ANSI`` / ``UTF-16LE``
 | Default: auto
-| Applies to :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``Replace``.
+| Applies to :ini-key:`Type <[FileWriteN]:Type>`\ =\ ``Replace``,
+  ``ReplaceAll``, ``ReplaceCommon``.
 | Optional.
 
 ----
@@ -203,9 +262,10 @@ For UTF-8 files, leave this value out. The value ``ANSI`` isn't really ANSI,
 it's just "normal", which includes ANSI, UTF-8 and really anything which doesn't
 use null bytes all over the place.
 
-This value only works with the :ini-key:`Type <[FileWriteN]:Type>` ``Replace``;
-both ``ConfigWrite`` and ``INI`` automatically detect the encoding of the file
-(this requires that the file start with the UTF-16LE BOM, ``U+FFFE``).
+This value only works with the :ini-key:`Types <[FileWriteN]:Type>`
+``Replace``, ``ReplaceAll`` and ``ReplaceCommon``; both ``ConfigWrite`` and
+``INI`` automatically detect the encoding of the file (this requires that the
+file start with the UTF-16LE BOM, ``U+FFFE``).
 
 .. versionchanged:: 2.1
    previously ``ConfigWrite`` was not able to write to UTF-16LE files.

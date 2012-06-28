@@ -31,7 +31,7 @@ General issues
    Read the :ref:`java` section, your issue may be covered there.
 
 The base application says it can't find Java
-   If the base application requires Java, :ini-key:`[Activate]:Java` must be
-   set to ``require``. Not setting it, or setting it to ``try``
+   If the base application requires Java,
+   ``appinfo.ini\[Dependencies]:UsesJava`` must be set to ``yes``.
 
 *This document is not complete (not that it ever will be)*

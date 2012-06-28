@@ -27,8 +27,8 @@ fails, you can `disable hooks and segments`_.
 ==============
 
 All modifications to the PortableApps.com Launcher which do not involve
-:ref:`debugging <debug>` go in a file ``Custom.nsh`` in the ``Other\Source``
-directory of a package.
+:ref:`debugging <debug>` go in a file ``Custom.nsh`` in the
+``App\AppInfo\Launcher`` directory of a package.
 
 .. versionchanged:: 2.1
    previously this file was ``Other\Source\PortableApps.comLauncherCustom.nsh``.
