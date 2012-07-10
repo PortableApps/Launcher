@@ -44,8 +44,8 @@ set :ini-key:`[Launch]:SupportsUNC` accordingly.
 
 In view of this change, app developers should avoid using
 :env:`PAL:DriveLetter` as its value is meaningless on a UNC path. If you have a
-case where you wish to use it, please `contact the PAL developers <help>`_ and
-explain the situation, as they wish to gain an understanding as to what is
+case where you wish to use it, please :ref:`contact the PAL developers <help>`
+and explain the situation, as they wish to gain an understanding as to what is
 needed here.
 
 Running from Program Files is now forbidden
