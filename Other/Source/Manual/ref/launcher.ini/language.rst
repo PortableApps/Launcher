@@ -170,6 +170,7 @@ Entry
 -----
 
 | Mandatory for :ini-key:`Type <[LanguageFile]:Type>`\ =\ ``ConfigRead``.
+| |envsub|
 
 ----
 
@@ -273,6 +274,7 @@ TrimRight
 ---------
 
 | Optional.
+| |envsub|
 
 ----
 

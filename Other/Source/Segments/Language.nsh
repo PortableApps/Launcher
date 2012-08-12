@@ -70,6 +70,7 @@ ${SegmentInit}
 				ReadINIStr $8 $1 $AppIDSettings Language
 			${ElseIf} $0 == ConfigRead
 				${ReadLauncherConfig} $2 LanguageFile Entry
+				${ParseLocations} $2
 				${IfNot} ${Errors}
 					${ReadLauncherConfig} $4 LanguageFile CaseSensitive
 					${If} ${FileExists} $1
@@ -89,6 +90,7 @@ ${SegmentInit}
 			${ElseIf} $0 == INI
 				${ReadLauncherConfig} $2 LanguageFile Section
 				${ReadLauncherConfig} $3 LanguageFile Key
+				${ParseLocations} $3
 				${IfNot} ${Errors}
 					${DebugMsg} "Reading the language from $1, section `$2`, key `$3`, with ReadINIStr."
 					ReadINIStr $8 $1 $2 $3
@@ -130,6 +132,7 @@ ${SegmentInit}
 				; closing quotation marks, or something similar.
 				ClearErrors
 				${ReadLauncherConfig} $0 LanguageFile TrimRight
+				${ParseLocations} $0
 				${IfNot} ${Errors}
 					; See if it ends with this string.
 					StrLen $1 $0
