@@ -185,16 +185,23 @@ If you need to cut something off the start or end such as a quotation mark or a
 closing XML tag, see :ini-key:`[LanguageFile]:TrimRight` and
 :ini-key:`[LanguageFile]:TrimLeft`.
 
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
+
 .. ini-key:: [LanguageFile]:Section
 
 Section
 -------
 
 | Mandatory for :ini-key:`Type <[LanguageFile]:Type>`\ =\ ``INI``.
+| |envsub|
 
 ----
 
 The INI section to read the value from.
+
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
 
 .. ini-key:: [LanguageFile]:Key
 
@@ -202,10 +209,14 @@ Key
 ---
 
 | Mandatory for :ini-key:`Type <[LanguageFile]:Type>`\ =\ ``INI``.
+| |envsub|
 
 ----
 
 The INI key to read the value from.
+
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
 
 .. ini-key:: [LanguageFile]:Attribute
 
@@ -225,6 +236,7 @@ XPath
 -----
 
 | Mandatory for :ini-key:`Type <[LanguageFile]:Type>`\ =\ ``XML attribute``, ``XML text``.
+| |envsub|
 
 ----
 
@@ -235,6 +247,9 @@ before writing one.
 For information about what this should look like, see :ref:`xml`.
 
 .. _XPath: http://en.wikipedia.org/wiki/XPath
+
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
 
 .. ini-key:: [LanguageFile]:CaseSensitive
 
@@ -257,6 +272,7 @@ TrimLeft
 --------
 
 | Optional.
+| |envsub|
 
 .. versionadded:: 3.0
 
@@ -283,6 +299,9 @@ for example if you want to get rid of a file extension, a quotation mark, a
 closing XML tag or similar, put the text in here and if it is at the end of
 the string it will be removed. Remember the rule about whitespace and
 quotation marks.
+
+.. versionchanged:: 3.0
+   added support for :ref:`ref-envsub`
 
 .. ini-key:: [LanguageFile]:SaveAs
 
