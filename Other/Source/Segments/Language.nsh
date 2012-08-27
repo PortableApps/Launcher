@@ -90,6 +90,7 @@ ${SegmentInit}
 			${ElseIf} $0 == INI
 				${ReadLauncherConfig} $2 LanguageFile Section
 				${ReadLauncherConfig} $3 LanguageFile Key
+				${ParseLocations} $2
 				${ParseLocations} $3
 				${IfNot} ${Errors}
 					${DebugMsg} "Reading the language from $1, section `$2`, key `$3`, with ReadINIStr."
@@ -99,6 +100,8 @@ ${SegmentInit}
 			${ElseIf} $0 == "XML attribute"
 				${ReadLauncherConfig} $2 LanguageFile XPath
 				${ReadLauncherConfig} $3 LanguageFile Attribute
+				${ParseLocations} $2
+				${ParseLocations} $3
 				${IfNot} ${Errors}
 					${If} ${FileExists} $1
 						${DebugMsg} "Reading the language from $1, XPath `$2`, Attribute `$3` with XMLReadAttrib."
@@ -108,6 +111,7 @@ ${SegmentInit}
 				${EndIf}
 			${ElseIf} $0 == "XML text"
 				${ReadLauncherConfig} $2 LanguageFile XPath
+				${ParseLocations} $2
 				${If} ${FileExists} $1
 					${DebugMsg} "Reading the language from $1, XPath `$2`, with XMLReadText."
 					${XMLReadText} $1 $2 $8
@@ -146,6 +150,7 @@ ${SegmentInit}
 				; This could potentially be useful for some types.
 				ClearErrors
 				${ReadLauncherConfig} $0 LanguageFile TrimLeft
+				${ParseLocations} $0
 				${IfNot} ${Errors}
 					; See if it ends with this string.
 					StrLen $1 $0
@@ -168,7 +173,7 @@ ${SegmentInit}
 	ClearErrors
 	ReadEnvStr $8 PAL:LanguageCustom
 	${If} ${Errors}
-		; See topics/langauges in the Manual for an explanation of this code
+		; See topics/languages in the Manual for an explanation of this code
 		; and a diagram to illustrate how it works.
 		${ReadLauncherConfig} $0 Language Base
 		${If} $0 != ""
@@ -220,6 +225,7 @@ ${SegmentInit}
 			WriteINIStr $1 $AppIDSettings Language $8
 		${ElseIf} $0 == ConfigRead
 			${ReadLauncherConfig} $2 LanguageFile Entry
+			${ParseLocations} $2
 			${IfNot} ${Errors}
 				${ReadLauncherConfig} $4 LanguageFile CaseSensitive
 				${If} $4 == true
@@ -235,6 +241,8 @@ ${SegmentInit}
 		${ElseIf} $0 == INI
 			${ReadLauncherConfig} $2 LanguageFile Section
 			${ReadLauncherConfig} $3 LanguageFile Key
+			${ParseLocations} $2
+			${ParseLocations} $3
 			${IfNot} ${Errors}
 				${DebugMsg} "Writing the language ($8) to $1, section `$2`, key `$3`, with WriteINIStr."
 				WriteINIStr $1 $2 $3 $8
@@ -243,6 +251,8 @@ ${SegmentInit}
 		${ElseIf} $0 == "XML attribute"
 			${ReadLauncherConfig} $2 LanguageFile XPath
 			${ReadLauncherConfig} $3 LanguageFile Attribute
+			${ParseLocations} $2
+			${ParseLocations} $3
 			${IfNot} ${Errors}
 				${DebugMsg} "Writing the language ($8) to $1, XPath `$2`, Attribute `$3` with XMLWriteAttrib."
 				${XMLWriteAttrib} $1 $2 $3 $8
@@ -250,6 +260,7 @@ ${SegmentInit}
 			${EndIf}
 		${ElseIf} $0 == "XML text"
 			${ReadLauncherConfig} $2 LanguageFile XPath
+			${ParseLocations} $2
 			${IfNot} ${Errors}
 				${DebugMsg} "Writing the language to $1, XPath `$2`, with XMLWriteText."
 				${XMLWriteText} $1 $2 $8
