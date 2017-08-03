@@ -92,3 +92,30 @@ The default value can be set by leaving the "value" part empty (so that the INI
 value will have a trailing slash).
 
 **Example:** ``1=HKCU\Software\Publisher\AppName\Value``
+
+.. ini-section:: [RegistryKeysDisableRedirect]
+
+[RegistryKeysDisableRedirect]
+=============================
+
+.. ini-section:: [RegistryValueWriteDisableRedirect]
+
+[RegistryValueWriteDisableRedirect]
+===================================
+
+.. ini-section:: [RegistryCleanupIfEmptyDisableRedirect]
+
+[RegistryCleanupIfEmptyDisableRedirect]
+=======================================
+
+.. ini-section:: [RegistryCleanupForceDisableRedirect]
+
+[RegistryCleanupForceDisableRedirect]
+=====================================
+
+.. ini-section:: [RegistryValueBackupDeleteDisableRedirect]
+
+[RegistryValueBackupDeleteDisableRedirect]
+==========================================
+
+These sections are identical to the ones above, with the exception of disabling redirection to Wow6432Node when running on an x64 system if desired.

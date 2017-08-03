@@ -104,11 +104,16 @@ Here is the current list of segments included in the PortableApps.com Launcher:
 * **Registry:** :ini-key:`[Activate]:Registry` and helper utilities for
   other Registry segments. See also :ref:`registry` for this and the
   other Registry segments listed here.
-* **RegistryCleanup:** :ini-section:`[RegistryCleanupIfEmpty]` and
-  :ini-section:`[RegistryCleanupForce]`
 * **RegistryKeys:** :ini-section:`[RegistryKeys]`
 * **RegistryValueBackupDelete:** :ini-section:`[RegistryValueBackupDelete]`
 * **RegistryValueWrite:** :ini-section:`[RegistryValueWrite]`
+* **RegistryCleanup:** :ini-section:`[RegistryCleanupIfEmpty]` and
+  :ini-section:`[RegistryCleanupForce]`
+* **RegistryKeysDisableRedirect:** :ini-section:`[RegistryKeysDisableRedirect]`
+* **RegistryValueBackupDeleteDisableRedirect:** :ini-section:`[RegistryValueBackupDeleteDisableRedirect]`
+* **RegistryValueWriteDisableRedirect:** :ini-section:`[RegistryValueWriteDisableRedirect]`
+* **RegistryCleanupDisableRedirect:** :ini-section:`[RegistryCleanupIfEmptyDisableRedirect]` and
+  :ini-section:`[RegistryCleanupForceDisableRedirect]`
 * **RunAsAdmin:** :ini-key:`[Launch]:RunAsAdmin` et al.
 * **RunLocally:** live mode support (mainly a user feature, but slightly
   configurable with :ini-section:`[LiveMode]`)

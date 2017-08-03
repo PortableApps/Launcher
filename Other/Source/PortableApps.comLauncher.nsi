@@ -1,25 +1,27 @@
-/* Copyright 2004-2010 PortableApps.com
- * Website: http://portableapps.com/development
- * Main developer and contact: Chris Morgan
- *
- * This software is OSI Certified Open Source Software.
- * OSI Certified is a certification mark of the Open Source Initiative.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+;Copyright (C) 2004-2017 PortableApps.com
+;Website: http://PortableApps.com/
 
+;This software is OSI Certified Open Source Software.
+;OSI Certified is a certification mark of the Open Source Initiative.
+
+;This program is free software; you can redistribute it and/or
+;modify it under the terms of the GNU General Public License
+;as published by the Free Software Foundation; either version 2
+;of the License, or (at your option) any later version.
+
+;This program is distributed in the hope that it will be useful,
+;but WITHOUT ANY WARRANTY; without even the implied warranty of
+;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;GNU General Public License for more details.
+
+;You should have received a copy of the GNU General Public License
+;along with this program; if not, write to the Free Software
+;Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+;=== For NSIS3
+Unicode true 
+ManifestDPIAware true 
+ 
 !verbose 3
 
 !ifndef PACKAGE
@@ -214,8 +216,11 @@ Function PrePrimary        ;{{{1
 	${RunSegment} DirectoriesMove
 	;${RunSegment} RegisterDLL
 	${RunSegment} RegistryKeys
+    ${RunSegment} RegistryKeysDisableRedirect
 	${RunSegment} RegistryValueBackupDelete
+    ${RunSegment} RegistryValueBackupDeleteDisableRedirect
 	${RunSegment} RegistryValueWrite
+    ${RunSegment} RegistryValueWriteDisableRedirect
 	${RunSegment} Services
 FunctionEnd
 
@@ -327,8 +332,11 @@ FunctionEnd
 
 Function PostPrimary       ;{{{1
 	${RunSegment} Services
+    ${RunSegment} RegistryValueBackupDeleteDisableRedirect
 	${RunSegment} RegistryValueBackupDelete
+    ${RunSegment} RegistryKeysDisableRedirect
 	${RunSegment} RegistryKeys
+    ${RunSegment} RegistryCleanupDisableRedirect
 	${RunSegment} RegistryCleanup
 	;${RunSegment} RegisterDLL
 	${RunSegment} Qt
