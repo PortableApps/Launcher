@@ -66,6 +66,14 @@ set to false. Instead, if mixing local and portable instances is not valid, set
 still running ``AppName.exe``, will be required to close before the portable
 application will start.
 
+Java Development Kit
+--------------------
+
+If your application uses the Java Development Kit at all, whether it requires it
+or can merely use it to benefit if it's there, you will need to turn on JDK
+support in :ini-key:`[Activate]:JDK`. See that page for details on how to turn
+on JDK support and what the different modes (``find`` and ``require``) mean.
+
 Others
 ------
 

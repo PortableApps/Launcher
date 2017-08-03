@@ -53,6 +53,36 @@ javaw.exe instance.
 
 See :ref:`java` for more discussion about Java apps.
 
+.. ini-key:: [Activate]:JDK
+
+JDK
+---
+
+| Values: none, ``find`` or ``require``
+| Default: none
+| Optional.
+
+----
+
+If the application can use the Java Development Kit (JDK) but does not depend on its
+being available, set this to ``find``, and a JDK will be found if available,
+and the environment variable :env:%JAVA_HOME% <JAVA_HOME> will become available
+for use.
+
+If the application is completely dependent on the JDK, set this to ``require``.
+Then you may set :ini-key:`[Launch]:ProgramExecutable` to ``javaw.exe`` (normal
+use) or ``java.exe`` (command line version which may be useful for testing and
+debugging) and it will use the JDK.
+
+**Caveat:** With ``require``, if you can possibly help it, set
+:ini-key:`[Launch]:WaitForProgram` or :ini-key:`[Launch]:WaitForOtherInstances`
+to false if you use java.exe or javaw.exe. Otherwise you'll run into problems
+cleaning up if other Java or JDK applications get run, as it'll look for
+instances of the application, and find javaw.exe, even though it's another
+application's javaw.exe instance.
+
+See :ref:`java` for more discussion about Java apps.
+
 .. ini-key:: [Activate]:Ghostscript
 
 Ghostscript
