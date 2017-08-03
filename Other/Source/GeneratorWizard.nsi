@@ -1,6 +1,6 @@
-﻿;Copyright (C) 2006-2009 John T. Haller
-
-;Website: http://PortableApps.com/Installer
+﻿;Copyright (C) 2006-2017 John T. Haller
+;Copyright (C) 2006-2017 PortableApps.com
+;Website: http://PortableApps.com/
 
 ;This software is OSI Certified Open Source Software.
 ;OSI Certified is a certification mark of the Open Source Initiative.
@@ -19,6 +19,10 @@
 ;along with this program; if not, write to the Free Software
 ;Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+;=== For NSIS3
+Unicode true
+ManifestDPIAware true
+
 !define CustomIconAndName
 
 ;=== Require at least Unicode NSIS 2.46
@@ -29,14 +33,14 @@ Name "PortableApps.com Launcher Generator"
 OutFile ..\..\PortableApps.comLauncherGenerator.exe
 Icon ..\..\App\AppInfo\appicon.ico
 Caption "PortableApps.com Launcher Generator"
-VIProductVersion 1.0.0.0
+VIProductVersion 2.9.0.99
 VIAddVersionKey ProductName "PortableApps.com Launcher Generator"
 VIAddVersionKey Comments "A compiler for custom PortableApps.com Launcher builds. For additional details, visit PortableApps.com"
 VIAddVersionKey CompanyName PortableApps.com
 VIAddVersionKey LegalCopyright PortableApps.com
 VIAddVersionKey FileDescription "PortableApps.com Launcher Generator"
-VIAddVersionKey FileVersion 1.0.0.0
-VIAddVersionKey ProductVersion 1.0.0.0
+VIAddVersionKey FileVersion 2.9.0.99
+VIAddVersionKey ProductVersion 2.9.0.99
 VIAddVersionKey InternalName "PortableApps.com Launcher Generator"
 VIAddVersionKey LegalTrademarks "PortableApps.com is a Trademark of Rare Ideas, LLC."
 VIAddVersionKey OriginalFilename PortableApps.comLauncherGenerator.exe
@@ -127,11 +131,8 @@ Function .onInit
 		StrCpy $PACKAGE $0$PACKAGE
 	${EndIf}
 
-	ReadINIStr $NSIS $EXEDIR\Data\settings.ini GeneratorWizard makensis
-	${If} $NSIS == ""
-		StrCpy $NSIS ..\NSISPortable\App\NSIS\makensis.exe
-		WriteINIStr $EXEDIR\Data\settings.ini GeneratorWizard makensis $NSIS
-	${EndIf}
+	StrCpy $NSIS "$EXEDIR\App\NSIS\makensis.exe"
+
 
 	${GetParameters} $R0
 	StrCmp $R0 "" PreFillForm
@@ -227,7 +228,7 @@ Section Main
 	${IfNot} ${FileExists} $NSIS
 		StrCpy $ERROROCCURED true
 		${WriteErrorToLog} "NSIS not found at $NSIS."
-		MessageBox MB_ICONSTOP "NSIS was not found! (Looked for it in $NSIS)$\r$\n$\r$\nYou can specify a custom path to makensis.exe in $EXEDIR\Data\settings.ini, [GeneratorWizard]:makensis"
+		MessageBox MB_ICONSTOP "NSIS was not found! (Looked for it in $NSIS)"
 		Abort
 	${EndIf}
 
