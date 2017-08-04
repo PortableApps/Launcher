@@ -1,6 +1,6 @@
 ﻿# .NET Framework detection code
 # Copyright © 2011 Aluísio Augusto Silva Gonçalves
-
+# Copyright © 2017 PortableApps.com
 #
 # This software is provided 'as-is', without any express or implied warranty.  In no event will the
 # authors be held liable for any damages arising from the use of this software.
@@ -34,6 +34,9 @@
 # 3.0, 3.0SP1, 3.0SP2
 # 3.5, 3.5SP1
 # 4.0C, 4.0F
+# 4.5, 4.5.1, 4.5.2
+# 4.6, 4.6.1, 4.6.2
+# 4.7
 #
 
 !ifndef _<DotNet>_
@@ -49,6 +52,61 @@ Var _DotNet_Version
 Var _DotNet_Temp
 Var _DotNet_Profile
 
+# Detect .Net 4.5+
+#
+# Parameters:
+# ver:     reported Release Version of .Net Framework (378389 or none)
+# fullver: requested .Net Franmework version
+# _t:      label to which to go to if the required .Net version is installed
+# _f:      label to which to go to if the required .Net version is not installed
+!macro _DotNet_HasNET45 ver fullver _t _f
+    ClearErrors
+    ReadRegDWORD $_DotNet_Temp HKLM "Software\Microsoft\Net Framework Setup\NDP\v4\Full" Release
+    ${If} $_DotNet_Temp == 378389
+    ${AndIf} ${ver} == 378389
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp == 378675
+    ${AndIf} ${fullver} == "4.5.1"
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp == 378758
+    ${AndIf} ${fullver} == "4.5.1"
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp == 379893
+    ${AndIf} ${fullver} == "4.5.2"
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp == 393295
+    ${AndIf} ${fullver} == "4.6"
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp == 393297
+    ${AndIf} ${fullver} == "4.6"
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp == 394254
+    ${AndIf} ${fullver} == "4.6.1"
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp == 394271
+    ${AndIf} ${fullver} == "4.6.1"
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp == 394802
+    ${AndIf} ${fullver} == "4.6.2"
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp == 394806
+    ${AndIf} ${fullver} == "4.6.2"
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp == 460798
+    ${AndIf} ${fullver} == "4.7"
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp == 460805
+    ${AndIf} ${fullver} == "4.7"
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp > 460805
+        Goto `${_t}`
+    ${ElseIf} $_DotNet_Temp == ""
+        Goto `${_f}`
+    ${Else}
+        Goto `${_f}`
+    ${EndIf}
+    IfErrors `${_f}`
+!macroend
 
 # Detect .NET 4.0, with an optional service pack
 #
@@ -165,6 +223,39 @@ Function IsValidDotNetVersion
 		IntCmp $_DotNet_ServicePack 0 "" Invalid Invalid
 		StrCmp $_DotNet_Profile C Valid
 		StrCmp $_DotNet_Profile F Valid
+    ${Case} 4.5
+        IntCmp $_DotNet_ServicePack 0 "" Invalid Invalid
+        ${VersionCompare} "$_DotNet_Temp" "4.5" $R0
+        ${If} $R0 == 0 
+            Goto Valid
+        ${ElseIf} $R0 == 2
+            ${AndIf} $_DotNet_Temp == 4.5.1
+            ${OrIf} $_DotNet_Temp == 4.5.2
+            Goto Valid
+        ${Else}
+            Goto Invalid
+        ${EndIf}
+    ${Case} 4.6
+        IntCmp $_DotNet_ServicePack 0 "" Invalid Invalid
+        ${VersionCompare} "$_DotNet_Temp" "4.6" $R0
+        ${If} $R0 == 0 
+            Goto Valid
+        ${ElseIf} $R0 == 2
+            ${AndIf} $_DotNet_Temp == 4.6.1
+            ${OrIf} $_DotNet_Temp == 4.6.2
+            Goto Valid
+        ${Else}
+            Goto Invalid
+        ${EndIf}
+    ${Case} 4.7
+        IntCmp $_DotNet_ServicePack 0 "" Invalid Invalid
+        ${VersionCompare} "$_DotNet_Temp" "4.7" $R0
+        ${If} $R0 == 0
+            ${OrIf} $R0 == 2
+            Goto Valid
+        ${Else}
+            Goto Invalid
+        ${EndIf}
 	${EndSelect}
 
 	Valid:
@@ -208,6 +299,25 @@ Function HasDotNetFramework
 		!insertmacro _DotNet_HasNET   2.0.50727 $_DotNet_ServicePack Found NotFound
 	${Case} 4.0
 		!insertmacro _DotNet_HasNET40 $_DotNet_ServicePack $_DotNet_Profile Found NotFound
+    ${Case} 4.5
+        ${VersionCompare} "$_DotNet_Temp" "4.5" $R0
+        ${If} $R0 == 0
+            !insertmacro _DotNet_HasNET45 378389 "4.5" Found NotFound
+        ${ElseIf} $R0 == 2
+            !insertmacro _DotNet_HasNET45 "" "$_DotNet_Temp" Found NotFound
+        ${EndIf}
+    ${Case} 4.6
+        ${VersionCompare} "$_DotNet_Temp" "4.6" $R0
+        ${If} $R0 == 0
+        ${OrIf} $R0 == 2
+            !insertmacro _DotNet_HasNET45 "" "$_DotNet_Temp" Found NotFound
+        ${EndIf}
+    ${Case} 4.7
+        ${VersionCompare} "$_DotNet_Temp" "4.7" $R0
+        ${If} $R0 == 0
+        ${OrIf} $R0 == 2
+            !insertmacro _DotNet_HasNET45 "" "$_DotNet_Temp" Found NotFound
+        ${EndIf}        
 	${CaseElse}
 		!insertmacro _DotNet_HasNET   $_DotNet_Version $_DotNet_ServicePack Found NotFound
 	${EndSelect}

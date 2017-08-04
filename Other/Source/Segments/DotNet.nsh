@@ -10,6 +10,7 @@ ${SegmentInit}
 	;
 	;  - (1.0|1.1|2.0|3.0|3.5)[SP<n>]
 	;  - 4.0[SP<n>][C|F]
+    ;  - (4.5|4.5.1|4.5.2|4.6|4.6.1|4.6.2|4.7)
 
 	ReadINIStr $0 $EXEDIR\App\AppInfo\appinfo.ini Dependencies UsesDotNetVersion
 	${If} $0 != ""
