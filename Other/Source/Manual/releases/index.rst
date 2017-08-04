@@ -17,6 +17,14 @@ have been made in that release from the previous release.
    :maxdepth: 1
 
    3.0
+   
+2.2.1 release
+===========
+
+.. toctree::
+   :maxdepth: 1
+
+   2.2.1
 
 2.2 release
 ===========

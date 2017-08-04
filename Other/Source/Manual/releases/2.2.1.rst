@@ -1,0 +1,9 @@
+.. index:: Release notes; 2.2.1
+
+.. _releases-2.2.1:
+
+=============================================
+PortableApps.com Launcher 2.2.1 release notes
+=============================================
+
+This release bundles NSIS within the PortableApps.com Launcher.

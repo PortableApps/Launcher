@@ -6,7 +6,7 @@
 PortableApps.com Launcher 3.0 release notes - UNDER DEVELOPMENT
 ===============================================================
 
-Coming after 2.1, 3.0 is being developed with `more new features`_, `some
+Coming after 2.2.1, 3.0 is being developed with `more new features`_, `some
 changes`_, `a bug fix`_ and further improved documentation. It's never been
 easier to make a high quality portable app.
 
@@ -104,7 +104,7 @@ Ghostscript support
 
 Turn on :ini-key:`[Activate]:Ghostscript` and your launcher will now get the
 appropriate Ghostscript environment variables added and the Ghostscript
-directory added to the ``PATH``.
+directories added to the ``PATH``.
 
 Apps like the GIMP, Inkscape, Scribus and XnView can all now take advantage of
 this.
@@ -116,6 +116,18 @@ The launcher can now detect the presence of any .NET Framework version before
 trying to execute the program. If an application depends on the .NET Framework,
 you just need to set the value ``[Dependencies]:UsesDotNetVersion`` in
 :ref:`appinfo.ini <paf-appinfo>` to the version required by the application.
+
+JDK Support
+-----------
+
+Turn on :ini-key:`[Activate]:JDK` and your launcher will now detect the
+Java Development Kit, if installed and required.
+
+Disable Registry Redirect
+-------------------------
+
+You are now able to disable registry redirection when running on a 64-bit
+machine. Support has been added for all :ini-section:`[RegistryKeys]` commands.
 
 Changes
 =======
