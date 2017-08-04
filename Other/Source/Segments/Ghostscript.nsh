@@ -86,7 +86,7 @@ ${SegmentInit}
 		${DebugMsg} "Selected Ghostscript path: $GSDirectory"
 		${DebugMsg} "Selected Ghostscript executable: $GSExecutable"
 		ReadEnvStr $0 PATH
-		StrCpy $0 "$0;$GSDirectory\bin"
+		StrCpy $0 "$0;$GSDirectory\lib;$GSDirectory\bin"
 		${SetEnvironmentVariablesPath} PATH $0
 		${SetEnvironmentVariablesPath} GS_PROG $GSExecutable
 	${ElseIfNot} ${Errors}
