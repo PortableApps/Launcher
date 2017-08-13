@@ -4,7 +4,6 @@ Var UsingJavaExecutable
 Var JavaMode
 Var JavaDirectory
 Var JDKMode
-Var jdkDirectory
 
 !macro _Java_CheckJavaInstall _t _f
 	${IfNot} ${Errors}
@@ -95,6 +94,7 @@ ${SegmentInit}
 		${ElseIf} $JavaMode == find
 			StrCpy $JavaMode optional
 		${EndIf}
+    ${EndIf}
     ${If} ${Errors}
         ${ReadLauncherConfig} $JavaMode Activate JDK
         ${If} $JavaMode == require
@@ -135,6 +135,7 @@ ${SegmentInit}
                         ;=== The required Java binary (java.exe or javaw.exe) is missing.
                         MessageBox MB_OK|MB_ICONSTOP `$(LauncherNoJDK)`
                         Quit
+                    ${EndIf}
                 ${Else}
                     StrCpy $UsingJavaExecutable true
                     ${IfNot} ${FileExists} $JavaDirectory\bin\$ProgramExecutable
