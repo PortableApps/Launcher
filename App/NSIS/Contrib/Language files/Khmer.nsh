@@ -1,7 +1,7 @@
 ﻿;Language: Khmer (1033)
 ;By yi.sophally
 
-!insertmacro LANGFILE "Khmer" "ភាសាខ្មែរ"
+!insertmacro LANGFILE "Khmer" = "ភាសាខ្មែរ" "Khmer"
 
 !ifdef MUI_WELCOMEPAGE
   ${LangFileString} MUI_TEXT_WELCOME_INFO_TITLE "សូមស្វាគមន៍ចំពោះការ​ដំឡើង​កម្មវិធី​ $(^NameDA)"

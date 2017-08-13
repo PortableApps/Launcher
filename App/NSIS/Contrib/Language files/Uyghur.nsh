@@ -1,7 +1,7 @@
 ;Language: Uyghur (1152)
 ;Uyghur(China), Translated By Yasinjan Ghupur (yasenghupur@sina.com)
 
-!insertmacro LANGFILE "Uyghur" "Uyghur"
+!insertmacro LANGFILE "Uyghur" = "Uyghur" =
 
 !ifdef MUI_WELCOMEPAGE
   ${LangFileString} MUI_TEXT_WELCOME_INFO_TITLE " $(^NameDA) نى قاچىلاش يېتەكچىسىنى ئىشلىتىشىڭىزنى قارشى ئالىدۇ"

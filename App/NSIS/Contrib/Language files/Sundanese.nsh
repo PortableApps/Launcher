@@ -1,7 +1,7 @@
 ;Language: Sundanese  (33)
 ;By sukma gemala - http://facebook.com/sukma.gemala
 
-!insertmacro LANGFILE "Sundanese" "Basa Sunda"
+!insertmacro LANGFILE "Sundanese" = "Basa Sunda" =
 
 !ifdef MUI_WELCOMEPAGE
   ${LangFileString} MUI_TEXT_WELCOME_INFO_TITLE "Bagéa, ieu téh Apingan Masang $(^NameDA)"
