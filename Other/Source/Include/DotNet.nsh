@@ -65,54 +65,80 @@ Var _DotNet_Profile
     ${If} "$R0" == "378389"
         ${If} "${ver}" == "378389"
             Goto  `${_t}`
+        ${Else}
+            Goto `${_f}`
         ${EndIf}
     ${ElseIf} $R0 = 378675
         ${If} "${fullver}" == "4.5.1"
             Goto `${_t}`
+        ${Else}
+            Goto `${_f}`
         ${EndIf}
     ${ElseIf} $R0 = 378758"
         ${If} "${fullver}" == "4.5.1"
             Goto `${_t}`
+        ${Else}
+            Goto `${_f}`
         ${EndIf}
     ${ElseIf} $R0 = 379893
         ${If} "${fullver}" == "4.5.2"
             Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
         ${EndIf}
     ${ElseIf} $R0 = 393295
         ${If} "${fullver}" == "4.6"
             Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
         ${EndIf}
     ${ElseIf} $R0 = 393297
         ${If} "${fullver}" == "4.6"
             Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
         ${EndIf}
     ${ElseIf} $R0 = 394254
         ${If} "${fullver}" == "4.6.1"
             Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
         ${EndIf}
     ${ElseIf} $R0 = 394271
         ${If} "${fullver}" == "4.6.1"
             Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
         ${EndIf}
     ${ElseIf} $R0 = 394802
         ${If} "${fullver}" == "4.6.2"
             Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
         ${EndIf}
     ${ElseIf} $R0 = 394806
         ${If} "${fullver}" == "4.6.2"
             Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
         ${EndIf}
     ${ElseIf} $R0 = 460798
         ${If} "${fullver}" == "4.7"
             Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
         ${EndIf}
     ${ElseIf} $R0 = 460805
         ${If} "${fullver}" == "4.7"
             Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
         ${EndIf}
     ${ElseIf} $R0 > 460805
         Goto `${_t}`
     ${ElseIf} $R0 == ""
+        Goto `${_f}`
+    ${Else}
         Goto `${_f}`
     ${EndIf}
 !macroend
