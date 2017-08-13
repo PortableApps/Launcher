@@ -35,7 +35,7 @@
 		Pop $R0
 		StrCmp $R0 PortableApps.com "" _CFPSDStackEnd
 
-		FindProcDLL:FindProc $R0 PortableAppsPlatform.exe
+		FindProcDLL::FindProc $R0 PortableAppsPlatform.exe
 		IntCmp $R0 1 "" _CFPSDStackEnd _CFPSDStackEnd
 
 		StrCpy $0 true
