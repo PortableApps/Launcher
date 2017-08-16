@@ -129,6 +129,13 @@ Disable Registry Redirect
 You are now able to disable registry redirection when running on a 64-bit
 machine. Support has been added for all :ini-section:`[RegistryKeys]` commands.
 
+Integrity Check
+---------------
+
+The launcher now detects if the application's files were installed using the
+PortableApps.com Installer or if they were installed in an unsupported
+manner.
+
 Changes
 =======
 

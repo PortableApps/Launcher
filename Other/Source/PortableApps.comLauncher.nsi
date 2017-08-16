@@ -207,6 +207,7 @@ FunctionEnd
 
 Function PrePrimary        ;{{{1
 	${RunSegment} Custom
+    ${RunSegment} Integrity
 	${RunSegment} DriveLetter
 	${RunSegment} Variables
 	${RunSegment} DirectoryMoving
