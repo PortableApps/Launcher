@@ -7,11 +7,11 @@ PortableApps.com Launcher 3.0 release notes - UNDER DEVELOPMENT
 ===============================================================
 
 Coming after 2.2.1, 3.0 is being developed with `more new features`_, `some
-changes`_, `a bug fix`_ and further improved documentation. It's never been
-easier to make a high quality portable app.
+more changes`_, `a bug fix`_ and further improved documentation. It's never
+been easier to make a high quality portable app.
 
 .. _`more new features`: `New features`_
-.. _`some changes`: `Changes`_
+.. _`some more changes`: `Changes`_
 .. _`a bug fix`: `Bugs fixed`_
 
 New features

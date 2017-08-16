@@ -19,7 +19,7 @@ have been made in that release from the previous release.
    3.0
    
 2.2.1 release
-===========
+=============
 
 .. toctree::
    :maxdepth: 1
