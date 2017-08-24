@@ -17,189 +17,175 @@ table{font-size:inherit;font:100%;}
 pre,code,kbd,samp,tt{font-family:Courier New,Courier,monospace;*font-size:108%;line-height:100%;}
 
 body {
-	margin: 20px;
-	background: #e6e8ea none repeat scroll 0% 50%;
-	font-family: Verdana,Arial,Helvetica,sans-serif;
-	font-size: 76%;
-	color: #000000;
-	text-align: center;
+	font-family         : Verdana,Arial,Helvetica,sans-serif;
+    font-size           : 76%;
+    color               : black;
+    margin              : 20px;
+	background          : #e6e8ea;
+	text-align          : center;
 }
 pre {
-	border: 1px dotted #808080;
-	padding: 10px;
-	background-color: #e6e8ea;
+	border              : 1px dotted #808080;
+	padding             : 10px;
+	background-color    : #e6e8ea;
 }
 h1, h2, h3, h4, h5, h6 {
-	font-family: "Trebuchet MS",Arial,sans-serif;
-	font-weight: bold;
+	font-family         : "Trebuchet MS",Arial,sans-serif;
+	font-weight         : normal;
 }
 h1 {
-	/*border-bottom: 1px solid silver;*/
-	color: #b31616;
-	font-weight: bold;
-	letter-spacing: -2px;
-	font-size: 2.2em;
-	padding-bottom: 5px;
-	line-height: 100%;
+	border-bottom       : 1px solid silver;
+	color               : #b31616;
+	font-weight         : bold;
+	letter-spacing      : -2px;
+	font-size           : 2.2em;
+	padding-bottom      : 5px;
 }
 h2 {
-	border-top: 1px solid silver;
-	border-bottom: 1px solid silver;
-	background-color: #e6e8ea;
-	font-size: 1.5em;
-	clear: both;
-	/* option one: stay inside margin * /
-		padding: 0.3em;
-		margin: 0.4em 0;/**/
-	/* option two: shade all the way up to the page edge */
-		padding: 0.3em 20px 0.3em 25px;
-		margin: 0.4em -20px 0.4em -25px;/**/
+	border-bottom       : 1px solid silver;
+	font-size           : 1.5em;
+	padding-bottom      : 3px;
+	clear               : both;
 }
 h3 {
-	font-size: 1.2em;
+	font-size           : 1.2em;
 }
 h4 {
-	font-size: 1.1em;
+	font-size           : 1.1em;
 }
 h5 {
-	font-size: 1em;
+	font-size           : 1em;
 }
 h6 {
-	font-size: 0.8em;
+	font-size           : 0.8em;
 }
 img {
-	border: none;
+	border              : 0;
 }
-ol, ul, li {
-	font-size: 1em;
-}
-p, table, tr, td, th {
-	font-size: 1em;
-}
-pre {
-	font-size: 1em;
+ol, ul, li, p, pre, table, tr, td, th {
+	font-size           : 1em;
 }
 strong, b {
-	font-weight: bold;
+	font-weight         : bold;
 }
 table, tr, td {
-	font-size: 1em;
-	border-collapse: collapse;
+	font-size           : 1em;
+	border-collapse     : collapse;
 }
 td, th {
-	border: 1px solid #aaaaaa;
-	padding: 3px;
-	border-collapse: collapse;
+	border              : 1px solid #aaaaaa;
+	padding             : 3px;
+	border-collapse     : collapse;
 }
 th {
-	background: #3667a8 none repeat scroll 0% 50%;
-	color: white;
+	background          : #3667a8;
+	color               : white;
 }
 ol ol {
-	list-style-type: lower-alpha;
+	list-style-type     : lower-alpha;
 }
 .document {
-	border-left: 1px solid black;
-	border-right: 1px solid black;
-	padding: 0 25px;
-	text-align: left;
-	margin-left: auto;
-	margin-right: auto;
-	width: 790px;
-	background: #ffffff url(help_background_header.png) repeat-x 0 -32px;
-	line-height: 150%;
+	border-left         : 1px solid black;
+	border-right        : 1px solid black;
+	padding             : 12px 30px;
+	text-align          : left;
+	margin-left         : auto;
+	margin-right        : auto;
+	width               : 780px;
+	background          : white;
+	line-height         : 150%;
 }
 .page {
-	padding-top: 27px;
-	padding-bottom: 12px;
+	padding-top         : 27px;
+	padding-bottom      : 12px;
 }
 
 .page.withsidebar {
-	float: left;
-	width: 555px;
-	border-right: 1px solid black;
-	padding-right: 20px;
+	float               : left;
+	width               : 555px;
+	border-right        : 1px solid black;
+	padding-right       : 20px;
 }
 .sphinxsidebar {
-	float: right;
-	margin-left: -1px;
-	border-left: 1px solid black;
-	padding-left: 15px;
-	width: 199px;
-	padding-top: 27px;
+	float               : right;
+	margin-left         : -1px;
+	border-left         : 1px solid black;
+	padding-left        : 15px;
+	width               : 199px;
+	padding-top         : 27px;
 }
 .sphinxsidebar h3 {
-	border-top: 1px solid silver;
-	border-bottom: 1px solid silver;
-	background-color: #e6e8ea;
-	padding: 0.3em 25px 0.3em 15px;
-	margin: 0.4em -25px 0.4em -15px;
-	font-weight: normal;
+	border-top          : 1px solid silver;
+	border-bottom       : 1px solid silver;
+	background-color    : #e6e8ea;
+	padding             : 0.3em 25px 0.3em 15px;
+	margin              : 0.4em -25px 0.4em -15px;
+	font-weight         : normal;
 }
 .header {
-	border-left: 1px solid black;
-	border-right: 1px solid black;
-	background: #ffffff url(help_background_header.png) repeat-x;
-	width: 840px;
-	margin-top: 20px;
-	margin-bottom: -15px;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: left;
+	border-left         : 1px solid black;
+	border-right        : 1px solid black;
+	background          : white url(Help_Background_Header.png) repeat-x;
+	width               : 840px;
+	margin-top          : 20px;
+	margin-left         : auto;
+	margin-right        : auto;
+	text-align          : left;
 }
 .footer {
-	border-left: 1px solid black;
-	border-right: 1px solid black;
-	background: #ffffff url(help_background_footer.png) repeat-x scroll 0% 50%;
-	width: 840px;
-	height: 16px;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: left;
+	border-left         : 1px solid black;
+	border-right        : 1px solid black;
+	background          : white url(Help_Background_Footer.png) repeat-x;
+	width               : 840px;
+	height              : 16px;
+	margin-left         : auto;
+	margin-right        : auto;
+	text-align          : left;
 }
 .clearer {
-	clear: both;
+	clear               : both;
 }
 .header img {
-	border: none;
-	padding-left: 0px;
-	position: relative;
-	top: -4px;
+	border              : none;
+	padding-left        : 0px;
+	position            : relative;
+	top                 : -4px;
 }
 * html .document {
-	width: 760px;
+	width               : 760px;
 }
 * html .header, * html .footer {
-	width: 820px;
+	width               : 820px;
 }
 @media print {
-	body, .document { margin: 0;
-		padding: 0;
+	body, .document { 
+        margin          : 0;
+        padding         : 0;
 	}
 	.navigation, .locator, .footer a, .message, .footer-links {
-		display: none;
+		display         : none;
 	}
 	.footer, .document, .header {
-		border: none;
+		border          : none;
 	}
 	a {
-		text-decoration: none;
-		font-weight: normal;
-		color: black;
+		text-decoration : none;
+		font-weight     : normal;
+		color           : black;
 	}
 }
 
 .rubric {
-	color: #747673;
-	clear: none;
-	margin-top: 0em;
-	font-family: Arial,sans-serif;
-	font-weight: bold;
-	border-bottom: 1px solid silver;
-	font-size: 1.5em;
-	padding-bottom: 3px;
-	clear: both;
-	margin-bottom: 0.4em;
+	color               : #747673;
+	clear               : none;
+	margin-top          : 0em;
+	font-family         : Arial,sans-serif;
+	font-weight         : bold;
+	border-bottom       : 1px solid silver;
+	font-size           : 1.5em;
+	padding-bottom      : 3px;
+	clear               : both;
+	margin-bottom       : 0.4em;
 }
 
 
@@ -209,7 +195,7 @@ a img {border: none;}
 a:link, a:visited { color:#b31616; font-weight: bold; }
 .sphinxsidebar a:link, .sphinxsidebar a:visited, .toctree-l2 a:link, .toctree-l2 a:visited, .toctree-l3 a:link, .toctree-l3 a:visited { font-weight: normal; }
 .sphinxsidebar h3 a:link, .sphinxsidebar h3 a:visited { font-weight: bold; }
-a:hover { color:#f00; text-decoration: underline; }
+a:hover { color:red; text-decoration: underline; }
 h2 a, h3 a, h4 a { text-decoration:none !important; }
 a.reference.internal em { font-style: normal; font-weight: bold; }
 
@@ -317,10 +303,10 @@ div#contents ul ul li { margin-top: 0.3em;}
 
 /*** nav ***/
 .nav { font-size: 11px; text-align: right; color: #000; padding-right: 8px; }
-.nav a:link, .nav a:visited {color:#a0a0a0; font-weight: bold;}
+.nav a:link, .nav a:visited {color: white; font-weight: bold;}
 .nav a {padding:0 4px;}
 .footer:hover .nav, .header:hover .nav {color:#999;}
-.footer:hover a:link, .footer:hover a:visited, .header:hover a:link, .header:hover a:visited { color:#d0d0d0; }
+.footer:hover a:link, .footer:hover a:visited, .header:hover a:link, .header:hover a:visited { color: white; }
 .footer:hover a:hover, .header:hover a:hover { color:#fff; }
 #global-nav { float: right; margin-top: 8px; }
 
