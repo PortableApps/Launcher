@@ -218,5 +218,5 @@ In custom code, the macro ``${ReadUserOverrideConfig}`` has been renamed to
 
 None of these changes are backwards-incompatible insofar as the Generator will
 upgrade the paths and macro name when you first run it. Developers who are
-using the :ref:`development version of the PortableApps.com Launcher <hg>` will
+using the :ref:`development version of the PortableApps.com Launcher <src>` will
 need to :ref:`recompile the Generator <compile-pal-generator>`.
