@@ -77,7 +77,7 @@ additional environment variables ``FullAppDir:ForwardSlash``, :ref:`etc.
    http://portableapps.com/apps/utilities/jkdefrag_portable
 
 .. _`7-Zip Portable`:
-   http://portableapps.com/apps/utilities/7zip_portable
+   http://portableapps.com/apps/utilities/7-zip_portable
 
 .. _`64-bit Software: Where It Fits Into Portable Apps`:
    http://portableapps.com/node/24371

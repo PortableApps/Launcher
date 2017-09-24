@@ -165,9 +165,9 @@ Context
 
 ----
 
-The format string used to during search and replacement. It is used to
-contextualize the paths, as sometimes the path by itself can not be
-enough in order to correctly perform the updates.
+The format string used during search and replacement. It is used to
+contextualize the paths, as sometimes the path by itself is not
+enough to correctly perform the updates.
 
 A ``%Paths%`` in the context string is replaced with the value of the path
 variable.

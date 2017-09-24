@@ -177,7 +177,7 @@ the app only needs Client Profile. If it needs the full framework, that can be
 specified as 4.0F. If .NET is not needed, this value should be omitted.
 
 *Please note that PortableApps.com does not currently accept .NET-based apps for
-inclusion in our application listings. Most PCs "in the wild" do not have .NET
+inclusion in our application listings. Many PCs "in the wild" do not have .NET
 available, so portable apps that require .NET will not function on them.*
 
 .. _paf-appinfo-control:
