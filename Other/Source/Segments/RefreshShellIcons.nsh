@@ -1,28 +1,19 @@
+!ifndef SHCNE_ASSOCCHANGED
+	!define SHCNE_ASSOCCHANGED 0x08000000
+!endif
+!ifndef SHCNF_IDLIST
+	!define SHCNF_IDLIST 0
+!endif
 ${SegmentFile}
-
-Var RefreshShellIcons
-
-${SegmentInit}
-	ClearErrors
-	${ReadLauncherConfig} $RefreshShellIcons Launch RefreshShellIcons
-	${IfNot} ${Errors}
-	${AndIf} $RefreshShellIcons != before
-	${AndIf} $RefreshShellIcons != after
-	${AndIf} $RefreshShellIcons != both
-		${InvalidValueError} [Launch]:RefreshShellIcons $RefreshShellIcons
-	${EndIf}
-!macroend
-
 ${SegmentPreExec}
-	${If} $RefreshShellIcons == before
-	${OrIf} $RefreshShellIcons == both
-		${RefreshShellIcons}
-	${EndIf}
+	${ReadLauncherConfig} $0 Launch RefreshShellIcons
+	StrCmp $0 before +2
+	StrCmp $0 both 0 +2
+	System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (${SHCNE_ASSOCCHANGED}, ${SHCNF_IDLIST}, 0, 0)'
 !macroend
-
 ${SegmentPost}
-	${If} $RefreshShellIcons == after
-	${OrIf} $RefreshShellIcons == both
-		${RefreshShellIcons}
-	${EndIf}
+	${ReadLauncherConfig} $0 Launch RefreshShellIcons
+	StrCmp $0 after +2
+	StrCmp $0 both 0 +2
+	System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (${SHCNE_ASSOCCHANGED}, ${SHCNF_IDLIST}, 0, 0)'
 !macroend

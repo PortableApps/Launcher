@@ -1,28 +1,18 @@
-${SegmentFile}
-
-; The compile-force value is dealt with in PortableApps.comLauncher.nsi
-
 !include UAC.nsh
-
 Var RunAsAdmin
-
-; Macro for producing the right message box based on the error code {{{1
 !macro CaseUACCodeAlert CODE FORCEMESSAGE TRYMESSAGE
 	!if "${CODE}" == ""
 		${Default}
 	!else
 		${Case} "${CODE}"
 	!endif
-		${If} $RunAsAdmin == force
-			MessageBox MB_OK|MB_ICONSTOP|MB_TOPMOST|MB_SETFOREGROUND "${FORCEMESSAGE}"
-			Quit
-		${ElseIf} $RunAsAdmin == try
-			MessageBox MB_OK|MB_ICONINFORMATION|MB_TOPMOST|MB_SETFOREGROUND "${TRYMESSAGE}"
-		${EndIf}
-		${Break}
+		StrCmpS $RunAsAdmin force 0 +3
+		MessageBox MB_OK|MB_ICONSTOP|MB_TOPMOST "${FORCEMESSAGE}"
+		Quit
+		MessageBox MB_OK|MB_ICONINFORMATION|MB_TOPMOST "${TRYMESSAGE}"
+	${Break}
 !macroend
 !define CaseUACCodeAlert "!insertmacro CaseUACCodeAlert"
-
 !macro RunAsAdmin_OSOverride OS
 	${If} ${IsWin${OS}}
 		ClearErrors
@@ -35,43 +25,39 @@ Var RunAsAdmin
 		${EndIf}
 	${EndIf}
 !macroend
-
+${SegmentFile}
 ${Segment.onInit} ; {{{1
 	; Run as admin if needed {{{2
 	ClearErrors
 	${ReadLauncherConfig} $RunAsAdmin Launch RunAsAdmin
-!ifdef RUNASADMIN_COMPILEFORCE
-	${If} ${Errors}
-	${OrIf} $RunAsAdmin != compile-force
+	!ifdef RUNASADMIN_COMPILEFORCE
+		IfErrors +2
+		StrCmpS $RunAsAdmin compile-force +2
 		MessageBox MB_OK|MB_ICONSTOP "To turn off compile-time RunAsAdmin, you must regenerate the launcher."
-	${EndIf}
-!else
-	${IfNot} ${Errors}
-	${AndIf} $RunAsAdmin != force
-	${AndIf} $RunAsAdmin != try
-		${If} $RunAsAdmin == compile-force
-			MessageBox MB_OK|MB_ICONSTOP "To use [Launch]:RunAsAdmin=compile-force, you must regenerate the launcher. Continuing with 'force'."
-			StrCpy $RunAsAdmin force
-		${Else}
-			${InvalidValueError} [Launch]:RunAsAdmin $RunAsAdmin
+	!else
+		${IfNot} ${Errors}
+		${AndIf} $RunAsAdmin != force
+		${AndIf} $RunAsAdmin != try
+			${If} $RunAsAdmin == compile-force
+				MessageBox MB_OK|MB_ICONSTOP "To use [Launch]:RunAsAdmin=compile-force, you must regenerate the launcher. Continuing with 'force'."
+				StrCpy $RunAsAdmin force
+			${Else}
+				${InvalidValueError} [Launch]:RunAsAdmin $RunAsAdmin
+			${EndIf}
 		${EndIf}
-	${EndIf}
-
-	!insertmacro RunAsAdmin_OSOverride 2000
-	!insertmacro RunAsAdmin_OSOverride XP
-	!insertmacro RunAsAdmin_OSOverride 2003
-	!insertmacro RunAsAdmin_OSOverride Vista
-	!insertmacro RunAsAdmin_OSOverride 2008
-	!insertmacro RunAsAdmin_OSOverride 7
-	!insertmacro RunAsAdmin_OSOverride 2008R2
-
-	${If} $RunAsAdmin == force
-	${OrIf} $RunAsAdmin == try
+		!insertmacro RunAsAdmin_OSOverride 2000
+		!insertmacro RunAsAdmin_OSOverride XP
+		!insertmacro RunAsAdmin_OSOverride 2003
+		!insertmacro RunAsAdmin_OSOverride Vista
+		!insertmacro RunAsAdmin_OSOverride 2008
+		!insertmacro RunAsAdmin_OSOverride 7
+		!insertmacro RunAsAdmin_OSOverride 2008R2
+		${If} $RunAsAdmin == force
+		${OrIf} $RunAsAdmin == try
 		${DebugMsg} "[Launch]:RunAsAdmin value is $RunAsAdmin"
-		Elevate: ; Attempt to elevate to admin {{{2
+			Elevate: ; Attempt to elevate to admin {{{2
 			${DebugMsg} "Attempting to run as admin"
 			!insertmacro UAC_RunElevated
-
 			${!getdebug}
 			!ifdef DEBUG
 				${Select} $0
@@ -94,24 +80,23 @@ ${Segment.onInit} ; {{{1
 				${EndSelect}
 				${DebugMsg} "UAC_RunElevated return values: $$0=$0, $$1=$1, $$2=$2, $$3=$3; $R9"
 			!endif
-
 			${Switch} $0
 				; Success in changing credentials in some way {{{3
 				${Case} 0
-					${IfThen} $1 = 1 ${|} Quit ${|} ; This is the user-level process and the admin-level process has finished successfully.
+					StrCmpS $1 1 0 +2 ; This is the user-level process and the admin-level process has finished successfully.
+					Quit
 					${If} $3 <> 0 ; This is the admin-level process: great!
 						${Break}
 					${EndIf}
-					${If} $1 = 3 ; RunAs completed successfully, but with a non-admin user
-						${If} $RunAsAdmin == force
-							MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION|MB_TOPMOST|MB_SETFOREGROUND "$(LauncherRequiresAdmin)$\r$\n$\r$\n$(LauncherNotAdminTryAgain)" IDRETRY Elevate
-							Quit
-						${ElseIf} $RunAsAdmin == try
-							MessageBox MB_ABORTRETRYIGNORE|MB_ICONEXCLAMATION|MB_TOPMOST|MB_SETFOREGROUND "$(LauncherNotAdminLimitedFunctionality)$\r$\n$\r$\n$(LauncherNotAdminLimitedFunctionalityTryAgain)" IDRETRY Elevate IDIGNORE RunAsAdminEnd
-							Quit
-						${EndIf}
-					${EndIf}
-					; If we're still here, we'll fall through as there's no ${Break}
+					StrCmpS $1 3 0 +6 ; RunAs completed successfully, but with a non-admin user
+					StrCmpS $RunAsAdmin force 0 +3
+					MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION|MB_TOPMOST \ 
+					"$(LauncherRequiresAdmin)$\r$\n$\r$\n$(LauncherNotAdminTryAgain)" IDRETRY Elevate
+					Quit
+					MessageBox MB_ABORTRETRYIGNORE|MB_ICONEXCLAMATION|MB_TOPMOST \ 
+					"$(LauncherNotAdminLimitedFunctionality)$\r$\n$\r$\n$(LauncherNotAdminLimitedFunctionalityTryAgain)" \ 
+					IDRETRY Elevate IDIGNORE RunAsAdminEnd
+					Quit
 				; Explicitly failed to get admin {{{3
 				${CaseUACCodeAlert} 1223 \
 					"$(LauncherRequiresAdmin)" \
@@ -125,8 +110,7 @@ ${Segment.onInit} ; {{{1
 					"$(LauncherAdminError)$\r$\n$(LauncherRequiresAdmin)" \
 					"$(LauncherAdminError)$\r$\n$(LauncherNotAdminLimitedFunctionality)"
 			${EndSwitch}
-
-		RunAsAdminEnd:
-	${EndIf}
-!endif
+			RunAsAdminEnd:
+		${EndIf}
+	!endif
 !macroend
