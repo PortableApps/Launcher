@@ -36,7 +36,7 @@ Hooks
 -----
 
 Here is a list of the hooks which can be executed (in the order in which they
-are called:
+are called):
 
 * ``.onInit``: things which must go in the NSIS ``.onInit`` function (see the
   `NSIS documentation`_ for details about ``.onInit``)
@@ -64,7 +64,7 @@ are called:
   related things in here.
 * ``Unload``: unload plug-ins and clean up traces from the launcher itself.
 
-.. _`NSIS documentation`: http://nsis.sourceforge.net/Docs/Chapter4.html#4.7.2.1.2
+.. _`NSIS documentation`: http://nsis.sourceforge.net/Docs/Chapter4.html#oninit
 
 .. _segments-disable:
 

@@ -8,39 +8,37 @@ If you want to test features of the PortableApps.com Launcher, or get
 development builds in between releases, you'll need to get it and compile the
 Generator. Here's how.
 
-.. _hg:
+.. _src:
 
 The PortableApps.com Launcher source repository
 ===============================================
 
-Development of the PortableApps.com Launcher takes place in a Mercurial_
-repository at SourceForge_. The URL is
-http://portableapps.hg.sourceforge.net/hgweb/portableapps/launcher/. To check
-out ("clone") a copy of the repository, you will need Mercurial_ or TortoiseHg_.
+Development of the PortableApps.com Launcher takes place in a Git_ repository
+at GitHub_. The URL is https://github.com/PortableApps/Launcher.git. To check
+out ("clone") a copy of the repository, you will need Git_ or TortoiseGit_.
 
-To clone the repository with Mercurial,
+To clone the repository with Git,
 
 .. code-block:: bash
 
-   hg clone http://portableapps.hg.sourceforge.net/hgweb/portableapps/launcher
-   cd launcher
+   git clone https://github.com/PortableApps/Launcher.git
+   cd Launcher
 
 (To use a different directory name, put the directory name at the end of the
-``hg clone`` line after a space.)
+``git clone`` line after a space.)
 
-To clone the repository with TortoiseHg, create a directory, right click on it
-in Explorer and find the TortoiseHg "Clone..." option. Specify the path to clone
-as ``http://portableapps.hg.sourceforge.net/hgweb/portableapps/launcher/``.
+To clone the repository with TortoiseGit, create a directory, right click on it
+in Explorer and find the TortoiseGit "Clone..." option. Specify the path to
+clone as ``https://github.com/PortableApps/Launcher.git``.
 
 You can also get a copy of the latest version in this repository without
-Mercurial in the bz2_, gzip_ or zip_ formats.
+Git in the zip_ or gzip_ formats.
 
-.. _Mercurial: http://mercurial.selenic.com
-.. _SourceForge: http://sourceforge.net
-.. _TortoiseHg: http://tortoisehg.bitbucket.org
-.. _bz2: http://portableapps.hg.sourceforge.net/hgweb/portableapps/launcher/archive/tip.tar.bz2
-.. _gzip: http://portableapps.hg.sourceforge.net/hgweb/portableapps/launcher/archive/tip.tar.gz
-.. _zip: http://portableapps.hg.sourceforge.net/hgweb/portableapps/launcher/archive/tip.zip
+.. _Git: http://git-scm.com
+.. _GitHub: http://github.com
+.. _TortoiseGit: http://tortoisegit.org
+.. _zip: http://github.com/PortableApps/Launcher/archive/master.zip
+.. _gzip: http://github.com/PortableApps/Launcher/archive/master.tar.gz
 
 .. _compile-pal-generator:
 
@@ -52,7 +50,7 @@ will need NSIS Portable to compile it (it has the necessary plug-ins included).
 
 1. :ref:`Install the PortableApps.com Launcher <install-launcher>`. Instead of
    installing the PortableApps.com Launcher package, you can get a copy of the
-   :ref:`source repository <hg>`.
+   :ref:`source repository <src>`.
 
 2. Run NSIS Portable and compile ``Other\Source\GeneratorWizard.nsi``
    from the PortableApps.com Launcher source.
