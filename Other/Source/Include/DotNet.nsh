@@ -1,6 +1,6 @@
 ﻿# .NET Framework detection code
 # Copyright © 2011 Aluísio Augusto Silva Gonçalves
-# Copyright © 2017 PortableApps.com
+# Copyright © 2019 PortableApps.com
 #
 # This software is provided 'as-is', without any express or implied warranty.  In no event will the
 # authors be held liable for any damages arising from the use of this software.
@@ -36,7 +36,8 @@
 # 4.0C, 4.0F
 # 4.5, 4.5.1, 4.5.2
 # 4.6, 4.6.1, 4.6.2
-# 4.7
+# 4.7, 4.7.1, 4.7.2
+# 4.8
 #
 
 !ifndef _<DotNet>_
@@ -62,8 +63,8 @@ Var _DotNet_Profile
 !macro _DotNet_HasNET45 ver fullver _t _f
     ClearErrors
     ReadRegDWORD "$R0" HKLM "Software\Microsoft\Net Framework Setup\NDP\v4\Full" Release
-    ${If} "$R0" == "378389"
-        ${If} "${ver}" == "378389"
+    ${If} "$R0" == 378389
+        ${If} "${fullver}" == "4.5"
             Goto  `${_t}`
         ${Else}
             Goto `${_f}`
@@ -74,7 +75,7 @@ Var _DotNet_Profile
         ${Else}
             Goto `${_f}`
         ${EndIf}
-    ${ElseIf} $R0 = 378758"
+    ${ElseIf} $R0 = 378758
         ${If} "${fullver}" == "4.5.1"
             Goto `${_t}`
         ${Else}
@@ -134,7 +135,43 @@ Var _DotNet_Profile
         ${Else}
             Goto `${_f}`            
         ${EndIf}
-    ${ElseIf} $R0 > 460805
+	${ElseIf} $R0 = 461308
+        ${If} "${fullver}" == "4.7.1"
+            Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
+        ${EndIf}	
+	${ElseIf} $R0 = 461310
+        ${If} "${fullver}" == "4.7.1"
+            Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
+        ${EndIf}
+    ${ElseIf} $R0 = 461814
+        ${If} "${fullver}" == "4.7.2"
+            Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
+        ${EndIf}
+    ${ElseIf} $R0 = 461808
+        ${If} "${fullver}" == "4.7.2"
+            Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
+        ${EndIf}
+    ${ElseIf} $R0 = 528040
+        ${If} "${fullver}" == "4.8"
+            Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
+        ${EndIf}
+    ${ElseIf} $R0 = 528049
+        ${If} "${fullver}" == "4.8"
+            Goto `${_t}`
+        ${Else}
+            Goto `${_f}`            
+        ${EndIf}
+    ${ElseIf} $R0 > 528049
         Goto `${_t}`
     ${ElseIf} $R0 == ""
         Goto `${_f}`
@@ -282,9 +319,19 @@ Function IsValidDotNetVersion
         IntCmp $_DotNet_ServicePack 0 "" Invalid Invalid
         ${VersionCompare} "$_DotNet_Temp" "4.7" "$R0"
         ${If} "$R0" == 0
-        ${OrIf} "$R0" == 2
+			Goto Valid
+        ${ElseIf} "$R0" == 2
+		${AndIf} $_DotNet_Temp == 4.7.1
+		${OrIf} $_DotNet_Temp == 4.7.2
             Goto Valid
         ${EndIf}
+	${Case} 4.8
+		IntCmp $_DotNet_ServicePack 0 "" Invalid Invalid
+		${VersionCompare} "$_DotNet_Temp" "4.8" "$R0"
+		${If} "$R0" == 0
+		${OrIf} "$R0" == 2
+			Goto Valid
+		${EndIf}
 	${EndSelect}
 
 	Valid:
@@ -331,9 +378,7 @@ Function HasDotNetFramework
     ${Case} 4.5
         ${VersionCompare} "$_DotNet_Temp" "4.5" "$R0"
         ${If} "$R0" == 0
-            !insertmacro _DotNet_HasNET45 378389 "4.5" Found NotFound
-        ${EndIf}
-        ${If} "$R0" == 2
+        ${OrIf} "$R0" == 2
             !insertmacro _DotNet_HasNET45 "" "$_DotNet_Temp" Found NotFound
         ${EndIf}
     ${Case} 4.6
@@ -344,6 +389,12 @@ Function HasDotNetFramework
         ${EndIf}
     ${Case} 4.7
         ${VersionCompare} "$_DotNet_Temp" "4.7" "$R0"
+        ${If} "$R0" == 0
+        ${OrIf} "$R0" == 2
+            !insertmacro _DotNet_HasNET45 "" "$_DotNet_Temp" Found NotFound
+        ${EndIf}
+    ${Case} 4.8
+        ${VersionCompare} "$_DotNet_Temp" "4.8" "$R0"
         ${If} "$R0" == 0
         ${OrIf} "$R0" == 2
             !insertmacro _DotNet_HasNET45 "" "$_DotNet_Temp" Found NotFound
