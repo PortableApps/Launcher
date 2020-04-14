@@ -22,12 +22,12 @@ ${SegmentInit}
 	${EndIf}
 
 	; Set languages variables; fallback to U.S. English if not launched from the PortableApps.com Platform.
-	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageCode  PortableApps.comLanguageCode  en
-	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageCode2 PortableApps.comLocaleCode2   en
-	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageCode3 PortableApps.comLocaleCode3   eng
-	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageGlibc PortableApps.comLocaleglibc   en_US
-	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageLCID  PortableApps.comLocaleID      1033
-	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageNSIS  PortableApps.comLocaleWinName LANG_ENGLISH
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageCode  LanguageCode  en
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageCode2 LocaleCode2   en
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageCode3 LocaleCode3   eng
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageGlibc Localeglibc   en_US
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageLCID  LocaleID      1033
+	${SetEnvironmentVariableFromEnvironmentVariableWithDefault} PAL:LanguageNSIS  LocaleWinName LANG_ENGLISH
 
 	; LanguageName: added in Platform 2.0 Beta 5.
 	; It's a mixed-case variant of LocaleWinName minus the LANG_.
