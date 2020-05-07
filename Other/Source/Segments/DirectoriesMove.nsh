@@ -119,13 +119,13 @@ ${SegmentPostPrimary}
 					Rename $4 $3\$2 ; same volume, rename OK
 					${If} ${Errors}
 						${DebugMsg} "Rename failed, directory handle presumably open. Trying to recover with copy."
-						RMDir /R $3\$2
+						RMDir /r $3\$2
 						CreateDirectory $3\$2
 						CopyFiles /SILENT $4\*.* $3\$2
 					${EndIf}
 				${Else}
 					${DebugMsg} "Copying $4\*.* to $3\$2\*.*"
-					RMDir /R $3\$2
+					RMDir /r $3\$2
 					CreateDirectory $3\$2
 					CopyFiles /SILENT $4\*.* $3\$2
 				${EndIf}
@@ -139,7 +139,7 @@ ${!getdebug}
 				${DebugMsg} "Removing portable settings directory from run location ($4)."
 			${EndIf}
 !endif
-			RMDir /R $4
+			RMDir /r $4
 !ifdef DEBUG
 			${If} $7 != in-package
 			${AndIf} ${FileExists} $4
@@ -157,7 +157,7 @@ ${!getdebug}
 		${GetParent} $1 $4
 		${ReadRuntimeData} $2 DirectoriesMove RemoveIfEmpty:$4
 		${If} $2 == true
-			RMDir $4
+			${RMDirIfNotJunction} $4
 		${EndIf}
 
 		; And move that backup of any local data from earlier if it exists.

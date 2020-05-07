@@ -10,7 +10,7 @@ ${SegmentPostPrimary}
 			${ParseLocations} $1
 			${ForEachDirectory} $2 $3 $1
 				${DebugMsg} "Cleaning up $2 if it is empty."
-				RMDir $2
+				${RMDirIfNotJunction} $2
 			${NextDirectory}
 			IntOp $R0 $R0 + 1
 		${Loop}
