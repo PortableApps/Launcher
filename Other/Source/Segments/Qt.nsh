@@ -2,7 +2,7 @@ ${SegmentFile}
 
 ${SegmentPostPrimary}
 	; The Qt plugin cache and a few other things leave keys inside
-	; HKCU\Software\Trolltech\OrganizationDefaults\*\X:\...\dirname which need
+	; HKCU\Software\QtProject\OrganizationDefaults\*\X:\...\dirname which need
 	; to be cleared up. They're useless, they've got just values like foo.dll
 	; with a version number in them, but they need removing. Due to the
 	; directory-recursive key nature of them, we can just scrap the package
@@ -12,12 +12,12 @@ ${SegmentPostPrimary}
 		ClearErrors
 		${ReadLauncherConfig} $0 QtKeysCleanup $R0
 		${IfThen} ${Errors} ${|} ${ExitDo} ${|}
-		StrCpy $1 Software\Trolltech\OrganizationDefaults\$0\$AppDirectory
+		StrCpy $1 Software\QtProject\OrganizationDefaults\$0\$AppDirectory
 		DeleteRegKey HKCU $1
 		${Do}
 			${GetParent} $1 $1
 			DeleteRegKey /ifempty HKCU $1
-		${LoopUntil} $1 == "Software\Trolltech"
+		${LoopUntil} $1 == "Software\QtProject"
 
 		IntOp $R0 $R0 + 1
 	${Loop}
