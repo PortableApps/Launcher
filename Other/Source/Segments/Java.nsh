@@ -21,30 +21,56 @@ ${SegmentInit}
 	${ReadLauncherConfig} $JavaMode Activate Java
 	${If} $JavaMode == find
 	${OrIf} $JavaMode == require
-		StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\Java
-		${IfNot} ${FileExists} $JavaDirectory
-			ClearErrors
-			ReadRegStr $0 HKLM "Software\JavaSoft\Java Runtime Environment" CurrentVersion
-			ReadRegStr $JavaDirectory HKLM "Software\JavaSoft\Java Runtime Environment\$0" JavaHome
-			${If} ${Errors}
-			${OrIfNot} ${FileExists} $JavaDirectory\bin\java.exe
-			${AndIfNot} ${FileExists} $JavaDirectory\bin\javaw.exe
-				ClearErrors
-				ReadEnvStr $JavaDirectory JAVA_HOME
-				${If} ${Errors}
-				${OrIfNot} ${FileExists} $JavaDirectory\bin\java.exe
-				${AndIfNot} ${FileExists} $JavaDirectory\bin\javaw.exe
-					ClearErrors
-					SearchPath $JavaDirectory java.exe
-					${IfNot} ${Errors}
-						${GetParent} $JavaDirectory $JavaDirectory
-						${GetParent} $JavaDirectory $JavaDirectory
-					${Else}
-						StrCpy $JavaDirectory $WINDIR\Java
-						${IfNot} ${FileExists} $JavaDirectory\bin\java.exe
-						${AndIfNot} ${FileExists} $JavaDirectory\bin\javaw.exe
-							StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\Java
-							${DebugMsg} "Unable to find Java installation."
+		${If} $Bits == 64
+			StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\OpenJDK64
+			${IfNot} ${FileExists} $JavaDirectory
+				StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\JDK64
+				${IfNot} ${FileExists} $JavaDirectory
+					StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\OpenJDKJRE64
+					${IfNot} ${FileExists} $JavaDirectory
+						StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\Java64
+						${IfNot} ${FileExists} $JavaDirectory
+							StrCpy $JavaDirectory ""
+						${EndIf}
+					${EndIf}
+				${EndIf}
+			${EndIf}
+		${EndIf}
+		${If} $JavaDirectory == ""
+			StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\OpenJDK
+			${IfNot} ${FileExists} $JavaDirectory
+				StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\JDK
+				${IfNot} ${FileExists} $JavaDirectory
+					StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\OpenJDKJRE
+					${IfNot} ${FileExists} $JavaDirectory
+						StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\Java
+						${IfNot} ${FileExists} $JavaDirectory
+							ClearErrors
+							ReadRegStr $0 HKLM "Software\JavaSoft\Java Runtime Environment" CurrentVersion
+							ReadRegStr $JavaDirectory HKLM "Software\JavaSoft\Java Runtime Environment\$0" JavaHome
+							${If} ${Errors}
+							${OrIfNot} ${FileExists} $JavaDirectory\bin\java.exe
+							${AndIfNot} ${FileExists} $JavaDirectory\bin\javaw.exe
+								ClearErrors
+								ReadEnvStr $JavaDirectory JAVA_HOME
+								${If} ${Errors}
+								${OrIfNot} ${FileExists} $JavaDirectory\bin\java.exe
+								${AndIfNot} ${FileExists} $JavaDirectory\bin\javaw.exe
+									ClearErrors
+									SearchPath $JavaDirectory java.exe
+									${IfNot} ${Errors}
+										${GetParent} $JavaDirectory $JavaDirectory
+										${GetParent} $JavaDirectory $JavaDirectory
+									${Else}
+										StrCpy $JavaDirectory $WINDIR\Java
+										${IfNot} ${FileExists} $JavaDirectory\bin\java.exe
+										${AndIfNot} ${FileExists} $JavaDirectory\bin\javaw.exe
+											StrCpy $JavaDirectory $PortableAppsDirectory\CommonFiles\Java
+											${DebugMsg} "Unable to find Java installation."
+										${EndIf}
+									${EndIf}
+								${EndIf}
+							${EndIf}
 						${EndIf}
 					${EndIf}
 				${EndIf}
